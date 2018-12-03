@@ -34,14 +34,6 @@
 
     <footer class="footer container-fluid mt-5">
       <div class="row">
-        <div class="col text-left d-none d-md-inline-block"></div>
-        <div class="col text-center small">
-          <router-link :to="{ name: 'home' }">Home</router-link>
-          &bull;
-          <router-link :to="{ name: 'account' }">My cards</router-link>
-          &bull;
-          <router-link :to="{ name: 'create' }">Create</router-link>
-        </div>
         <div class="col text-right small">
           <current-network></current-network>
           [<clickable-address :eth-address="contractAddress"></clickable-address>]

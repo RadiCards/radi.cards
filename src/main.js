@@ -6,13 +6,11 @@ import router from './router'
 import store from './store'
 import logging from './logging'
 import BootstrapVue from 'bootstrap-vue'
-import VueMoment from 'vue-moment/vue-moment'
 import Web3 from 'web3'
 
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
-Vue.use(VueMoment);
 
 Vue.filter('toEth', function (value) {
   if (!value) return '';

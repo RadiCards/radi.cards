@@ -8,9 +8,7 @@
 
     <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
       <div class="col text-center">
-        <code>You don't own any kaijus yet...</code>
-        <br/>
-        <a href="https://cryptokaiju.io/shop/" target="_blank" class="btn btn-primary btn-lg mt-5">Buy now</a>
+        <code>No cards yet - *Sad face*</code>
       </div>
     </div>
 

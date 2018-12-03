@@ -2,8 +2,8 @@
   <div class="container">
     <h1>Card Foundry</h1>
 
-    <div class="row mt-5">
-      <div class="col ml-3 mr-3">
+    <div class="row">
+      <div class="col">
         <form>
 
           <div class="form-group row" v-if="formData.errors.length">
@@ -60,26 +60,29 @@
 
           <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button>
 
-          <div class="row">
-            <div class="col mt-5" v-if="response.ipfsHash">
-              <code>IPFS Metadata: <a target="_blank" :href="'https://ipfs.infura.io/ipfs/' + response.ipfsHash">{{response.ipfsHash}}</a></code>
-            </div>
-            <div class="col mt-5" v-if="uploadedHashs">
-              <clickable-transaction :transaction="uploadedHashs"></clickable-transaction>
-            </div>
-          </div>
+          <hr/>
+
+          <code class="small">IPFS Metadata: <a target="_blank" :href="'https://ipfs.infura.io/ipfs/' + response.ipfsHash">{{response.ipfsHash}}</a></code>
+
+          <clickable-transaction :transaction="uploadedHashs" class="small"></clickable-transaction>
+
         </form>
 
-        <div class="row mt-5">
-          <div class="col-sm-10">
-            <code>{{generateIpfsData()}}</code>
-          </div>
-          <div class="col-sm-2">
-            <img v-if="formData.card" :src="'https://ipfs.infura.io/ipfs/' + formData.card.hash"
-                 class=""
-                 style="max-height: 150px"/>
-          </div>
-        </div>
+
+
+      </div>
+      <div class="col text-center">
+        <h2 v-if="formData.card">{{generateIpfsData().name}}</h2>
+        <img v-if="formData.card" :src="'https://ipfs.infura.io/ipfs/' + formData.card.hash" class="img-thumbnail" style="max-height: 150px"/>
+
+        <h4 v-if="formData.card">{{generateIpfsData().description}}</h4>
+
+        <p v-if="formData.card && formData.message"><span class="text-muted small">Message:</span> {{formData.message}}</p>
+        <p v-if="formData.card && formData.recipient"><span class="text-muted small">Recipient:</span> <code>{{formData.recipient}}</code></p>
+
+        <hr/>
+
+        <pre class="small">{{generateIpfsData()}}</pre>
 
       </div>
     </div>
