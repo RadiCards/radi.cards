@@ -1,0 +1,70 @@
+<template>
+  <div class="container">
+
+    <h2>My cards <span class="badge badge-primary">{{accountCards.length}}</span></h2>
+    <p>
+      <clickable-address :eth-address="account"></clickable-address>
+    </p>
+
+    <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
+      <div class="col text-center">
+        <code>You don't own any kaijus yet...</code>
+        <br/>
+        <a href="https://cryptokaiju.io/shop/" target="_blank" class="btn btn-primary btn-lg mt-5">Buy now</a>
+      </div>
+    </div>
+
+    <div class="row mt-5" v-else>
+      <div class="col">
+        <div class="card-columns">
+          <div class="card shadow-sm text-center" v-for="searchResult in accountCards">
+            <div class="card-footer w-100 text-muted small">
+            {{searchResult}}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+
+<script>
+
+  import { mapGetters, mapState } from 'vuex';
+  import * as actions from '../../store/actions';
+  import ClickableTransaction from '../widgets/ClickableTransaction';
+  import ClickableAddress from '../widgets/ClickableAddress';
+
+  export default {
+    name: 'account',
+    components: {ClickableTransaction, ClickableAddress},
+    computed: {
+      ...mapState(['account', 'accountCards', 'transfers']),
+      ...mapGetters(['findTx'])
+    },
+    created () {
+
+      //FIXME in App.vue so prob not needed
+      const loadData = function () {
+        this.$store.dispatch(actions.LOAD_ACCOUNT_CARDS, {account: this.account});
+      }.bind(this);
+
+      this.$store.watch(
+        () => this.$store.state.account,
+        () => loadData()
+      );
+
+      if (this.$store.state.account) {
+        loadData();
+      }
+    }
+  };
+</script>
+
+<style lang="scss" scoped>
+  .card-body {
+  }
+
+  .card-img-top {
+  }
+</style>
