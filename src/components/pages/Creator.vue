@@ -54,8 +54,10 @@
                 placeholder="donation"
               >
               <select id="benefactor" v-model="formData.benefactor">
-                <option value="1">EEF</option>
-                <option value="2">Freedom of the Press Foundation</option>
+                <option
+                  v-for="benefactor in formLookupData.benefactors"
+                  :value="benefactor.id"
+                >{{benefactor.name}}</option>
               </select>
             </div>
           </div>
@@ -94,9 +96,7 @@
           <span class="text-muted small">Recipient:</span>
           <code>{{formData.recipient}}</code>
         </p>
-
         <hr>
-
         <pre class="small">{{generateIpfsData()}}</pre>
       </div>
     </div>
@@ -127,7 +127,8 @@ export default {
             uri:
               "https://ipfs.infura.io/ipfs/QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR"
           }
-        ]
+        ],
+        benefactors: this.$store.state.benefactors
       },
       formData: {
         errors: []

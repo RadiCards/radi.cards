@@ -7,3 +7,5 @@ export const BIRTH = 'BIRTH';
 export const LOAD_ACCOUNT_CARDS = 'LOAD_ACCOUNT_CARDS';
 
 export const WATCH_TRANSFERS = 'WATCH_TRANSFERS';
+
+export const LOAD_BENEFACTORS = 'LOAD_BENEFACTORS';
