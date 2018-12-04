@@ -25,8 +25,9 @@ function shouldBehaveLikeERC721 (
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(owner, TOKEN_URI, 1, {from: minter});
-      await this.token.gift(owner, TOKEN_URI, 1, {from: minter});
+      this.minContribution = await this.token.minContribution();
+      await this.token.gift(owner, TOKEN_URI, 1, {from: minter, value: this.minContribution});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: minter, value: this.minContribution});
       this.toWhom = anyone; // default to anyone for toWhom in context-dependent tests
     });
 

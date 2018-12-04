@@ -1,8 +1,5 @@
-<h1 align="center">
-  LOGO
-</h1>
-
 <h1 align="center">Radi.Cards</h1>
+
 <div align="center">
 Blah blah
 </div>

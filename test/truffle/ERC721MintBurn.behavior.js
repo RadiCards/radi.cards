@@ -21,8 +21,9 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(owner, TOKEN_URI, 1, {from: creator});
-      await this.token.gift(owner, TOKEN_URI, 1, {from: creator});
+      this.minContribution = await this.token.minContribution();
+      await this.token.gift(owner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
     });
 
     describe('mint', function () {
@@ -30,7 +31,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, TOKEN_URI, 1, {from: creator});
+          const result = await this.token.gift(newOwner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
           logs = result.logs;
         });
 
@@ -80,11 +81,6 @@ function shouldBehaveLikeMintAndBurnERC721 (
           logs[0].args._from.should.be.equal(owner);
           logs[0].args._to.should.be.equal(ZERO_ADDRESS);
           logs[0].args._tokenId.should.be.bignumber.equal(tokenId);
-        });
-
-        it('cleans up custom properties', async function () {
-          const tokenOf = await this.token.tokenOf(_.padStart(_.toString(tokenId), 32, '0'));
-          tokenOf.should.be.bignumber.equal(0);
         });
       });
 
