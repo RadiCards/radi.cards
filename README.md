@@ -18,7 +18,7 @@ Blah blah
 
 # Authors
 
-* CryptoDecks
+* D1Labs
 * KnownOrigin.io
 
 # Features
