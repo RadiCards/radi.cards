@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract.only('RadiCards ERC721 Custom', function (accounts) {
+contract('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
 
@@ -42,7 +42,7 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
     this.minContribution = await this.token.minContribution();
   });
 
-  describe.only('custom radi.cards logic', function () {
+  describe('custom radi.cards logic', function () {
     beforeEach(async function () {
       await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
       await this.token.gift(account1, TOKEN_URI, benefactorFPF, {from: owner, value: this.minContribution});

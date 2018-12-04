@@ -10,7 +10,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-function shouldBehaveLikeERC721(
+function shouldBehaveLikeERC721 (
   creator,
   minter,
   [owner, approved, anotherApproved, operator, anyone]
@@ -21,12 +21,12 @@ function shouldBehaveLikeERC721(
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
-  const TOKEN_URI = "123abcHash";
+  const TOKEN_URI = '123abcHash';
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(owner, TOKEN_URI, {from: minter});
-      await this.token.gift(owner, TOKEN_URI, {from: minter});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: minter});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: minter});
       this.toWhom = anyone; // default to anyone for toWhom in context-dependent tests
     });
 

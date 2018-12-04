@@ -36,15 +36,15 @@ contract RadiCards is ERC721Token, Whitelist {
 
     benefactors[1] = Benefactor(
       address(0xb189f76323678E094D4996d182A792E52369c005),
-        "Electronic Frontier Foundation",
-        "https://www.eff.org/pages/ethereum-and-litecoin-donations"
+      "Electronic Frontier Foundation",
+      "https://www.eff.org/pages/ethereum-and-litecoin-donations"
     );
     benefactorsIndex.push(1);
 
     benefactors[2] = Benefactor(
       address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
-        "Freedom of the Press Foundation",
-        "https://freedom.press/donate/cryptocurrency/"
+      "Freedom of the Press Foundation",
+      "https://freedom.press/donate/cryptocurrency/"
     );
     benefactorsIndex.push(2);
   }
@@ -70,8 +70,6 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   function burn(uint256 tokenId) public onlyIfWhitelisted(msg.sender) {
-    // Cleanup custom data
-
     // Super burn
     _burn(ownerOf(tokenId), tokenId);
   }
@@ -82,7 +80,7 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   function setMinContribution(uint256 _minContribution) external onlyIfWhitelisted(msg.sender) {
-      minContribution = _minContribution;
+    minContribution = _minContribution;
   }
 
   function tokenURI(uint256 _tokenId) public view returns (string) {
@@ -96,5 +94,16 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function benefactorsKeys() public view returns (uint256[] _keys) {
     return benefactorsIndex;
+  }
+
+  function addBenefactor(uint256 _index, address _ethAddress, string _name, string _website) external onlyIfWhitelisted(msg.sender) {
+    require(benefactors[_index].ethAddress == address(0), "Must not be an existing benefactor");
+
+    benefactors[_index] = Benefactor(
+      _ethAddress,
+      _name,
+      _website
+    );
+    benefactorsIndex.push(_index);
   }
 }

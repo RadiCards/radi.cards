@@ -31,14 +31,17 @@ contract('RadiCards ERC721 Common', function (accounts) {
   const secondTokenId = 1;
   const unknownTokenId = 2;
 
+  const benefactorEFF = 1;
+  const benefactorFPF = 2;
+
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
   const name = 'RadiCards';
   const symbol = 'RADI';
 
-  const TOKEN_URI = "123abcHash";
-  const BASE_URI = "https://ipfs.infura.io/ipfs/";
+  const TOKEN_URI = '123abcHash';
+  const BASE_URI = 'https://ipfs.infura.io/ipfs/';
 
   before(async function () {
     await advanceBlock();
@@ -51,8 +54,8 @@ contract('RadiCards ERC721 Common', function (accounts) {
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
-      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, benefactorFPF, {from: owner, value: this.minContribution});
     });
 
     describe('balanceOf', function () {

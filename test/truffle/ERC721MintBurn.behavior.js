@@ -21,8 +21,8 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(owner, TOKEN_URI, {from: creator});
-      await this.token.gift(owner, TOKEN_URI, {from: creator});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: creator});
+      await this.token.gift(owner, TOKEN_URI, 1, {from: creator});
     });
 
     describe('mint', function () {
@@ -30,7 +30,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, TOKEN_URI, {from: creator});
+          const result = await this.token.gift(newOwner, TOKEN_URI, 1, {from: creator});
           logs = result.logs;
         });
 
@@ -54,7 +54,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when the given owner address is the zero address', function () {
         it('reverts', async function () {
-          await assertRevert(this.token.gift(ZERO_ADDRESS,TOKEN_URI, {from: creator}));
+          await assertRevert(this.token.gift(ZERO_ADDRESS, TOKEN_URI, 1, {from: creator}));
         });
       });
     });
