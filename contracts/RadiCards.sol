@@ -11,9 +11,6 @@ import "./Strings.sol";
 *
 * Non-profit e-card NFT for good!
 *
-* Electronic Frontier Foundation	0xb189f76323678E094D4996d182A792E52369c005	https://www.eff.org/pages/ethereum-and-litecoin-donations
-* Freedom of the Press Foundation	0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7	https://freedom.press/donate/cryptocurrency/
-*
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -22,16 +19,44 @@ contract RadiCards is ERC721Token, Whitelist {
 
   // A pointer to the next token to be minted, zero indexed
   uint256 public tokenIdPointer = 0;
+
   uint256 public minContribution = 0.05 ether;
+
+  struct Benefactor {
+    address ethAddress;
+    string name;
+    string website;
+  }
+
+  mapping(uint256 => Benefactor) public benefactors;
+  uint256[] internal benefactorsIndex;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
+
+    benefactors[1] = Benefactor(
+      address(0xb189f76323678E094D4996d182A792E52369c005),
+        "Electronic Frontier Foundation",
+        "https://www.eff.org/pages/ethereum-and-litecoin-donations"
+    );
+    benefactorsIndex.push(1);
+
+    benefactors[2] = Benefactor(
+      address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
+        "Freedom of the Press Foundation",
+        "https://freedom.press/donate/cryptocurrency/"
+    );
+    benefactorsIndex.push(2);
   }
 
-  function gift(address to, string tokenURI) payable public returns (bool) {
-    require(msg.value >= minContribution);
+  function gift(address to, string tokenURI, uint256 _benefactor) payable public returns (bool) {
+    require(msg.value >= minContribution, "Must send at least the minimum amount");
+    require(benefactors[_benefactor].ethAddress != address(0), "Must specify existing benefactor");
 
     _mint(to, tokenURI);
+
+    benefactors[_benefactor].ethAddress.transfer(msg.value);
+
     return true;
   }
 
@@ -67,5 +92,9 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function tokensOf(address _owner) public view returns (uint256[] _tokenIds) {
     return ownedTokens[_owner];
+  }
+
+  function benefactorsKeys() public view returns (uint256[] _keys) {
+    return benefactorsIndex;
   }
 }

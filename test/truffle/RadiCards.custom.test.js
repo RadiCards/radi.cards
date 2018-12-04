@@ -17,16 +17,15 @@ require('chai')
 contract.only('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
-  const account2 = accounts[2];
-  const account3 = accounts[4];
-  const account4 = accounts[5];
-  const account5 = accounts[6];
 
   const firstTokenId = 0;
   const secondTokenId = 1;
   const unknownTokenId = 2;
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
+
+  const benefactorEFF = 1;
+  const benefactorFPF = 2;
 
   const name = 'RadiCards';
   const symbol = 'RADI';
@@ -43,22 +42,43 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
     this.minContribution = await this.token.minContribution();
   });
 
-  describe('custom radi.cards logic', function () {
+  describe.only('custom radi.cards logic', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
-      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, benefactorFPF, {from: owner, value: this.minContribution});
     });
 
     context('should have to send at least the minimum amount', function () {
-
       it('reverts if below minimum amount', async function () {
-        await assertRevert(this.token.gift(account1, TOKEN_URI, {from: owner, value: 0}));
-        await assertRevert(this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution.sub(1)}));
+        await assertRevert(this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: 0}));
+        await assertRevert(this.token.gift(account1, TOKEN_URI, benefactorEFF, {
+          from: owner,
+          value: this.minContribution.sub(1)
+        }));
       });
 
       it('can send minimum contribution', async function () {
-        await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
-        await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution.plus(1)});
+        await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
+        await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution.plus(1)});
+      });
+    });
+
+    context('should allow whitelisted to change min contribution', function () {
+      it('reverts if not whitelisted', async function () {
+        await assertRevert(this.token.setMinContribution(1, {from: account1}));
+      });
+
+      it('can send minimum contribution', async function () {
+        await this.token.setMinContribution(1, {from: owner});
+        const newMin = await this.token.minContribution();
+        newMin.should.be.bignumber.equal('1');
+      });
+    });
+
+    context('should have two benefactors initially', function () {
+      it('returns indexes', async function () {
+        const indexes = await this.token.benefactorsKeys();
+        indexes.length.should.be.bignumber.equal(2);
       });
     });
   });
