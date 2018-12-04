@@ -195,7 +195,7 @@ export default {
         attributes: {
           message: _.get(this.formData, "message")
         },
-        external_uri: "https://radicards.io"
+        external_uri: "https://radi.cards"
       };
     }
   }
