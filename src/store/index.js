@@ -34,35 +34,35 @@ const store = new Vuex.Store({
   },
   getters: {},
   mutations: {
-    [mutations.SET_ACCOUNT] (state, account) {
+    [mutations.SET_ACCOUNT](state, account) {
       state.account = account;
     },
-    [mutations.SET_CURRENT_NETWORK] (state, currentNetwork) {
+    [mutations.SET_CURRENT_NETWORK](state, currentNetwork) {
       state.currentNetwork = currentNetwork;
     },
-    [mutations.SET_ETHERSCAN_NETWORK] (state, etherscanBase) {
+    [mutations.SET_ETHERSCAN_NETWORK](state, etherscanBase) {
       state.etherscanBase = etherscanBase;
     },
-    [mutations.SET_WEB3]: async function (state, {web3, contract}) {
+    [mutations.SET_WEB3]: async function (state, { web3, contract }) {
       state.web3 = web3;
       state.contract = contract;
       state.contractAddress = (await RadiCards.deployed()).address;
     },
-    [mutations.SET_UPLOAD_HASH] (state, hash) {
+    [mutations.SET_UPLOAD_HASH](state, hash) {
       state.uploadedHashs = hash;
     },
-    [mutations.SET_TOTAL_SUPPLY] (state, totalSupply) {
+    [mutations.SET_TOTAL_SUPPLY](state, totalSupply) {
       state.totalSupply = totalSupply;
     },
-    [mutations.SET_ACCOUNT_CARDS] (state, accountCards) {
+    [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
     },
-    [mutations.SET_TRANSFER] (state, transfer) {
+    [mutations.SET_TRANSFER](state, transfer) {
       Vue.set(state, 'transfers', state.transfers.concat(transfer));
     },
   },
   actions: {
-    [actions.GET_CURRENT_NETWORK]: function ({commit, dispatch, state}) {
+    [actions.GET_CURRENT_NETWORK]: function ({ commit, dispatch, state }) {
       getNetIdString()
         .then((currentNetwork) => {
           commit(mutations.SET_CURRENT_NETWORK, currentNetwork);
@@ -73,7 +73,7 @@ const store = new Vuex.Store({
           commit(mutations.SET_ETHERSCAN_NETWORK, etherscanBase);
         });
     },
-    [actions.INIT_APP]: async function ({commit, dispatch, state}, web3) {
+    [actions.INIT_APP]: async function ({ commit, dispatch, state }, web3) {
 
       RadiCards.setProvider(web3.currentProvider);
 
@@ -87,7 +87,7 @@ const store = new Vuex.Store({
       }
 
       // Set the web3 instance
-      commit(mutations.SET_WEB3, {web3, contract: RadiCards});
+      commit(mutations.SET_WEB3, { web3, contract: RadiCards });
 
       dispatch(actions.GET_CURRENT_NETWORK);
 
@@ -117,21 +117,21 @@ const store = new Vuex.Store({
 
       // dispatch(actions.WATCH_TRANSFERS);
     },
-    [actions.BIRTH]: async function ({commit, dispatch, state}, {ipfsData, tokenURI, recipient}) {
+    [actions.BIRTH]: async function ({ commit, dispatch, state }, { ipfsData, tokenURI, recipient, valueInETH, benefactor }) {
       const contract = await state.contract.deployed();
 
-      let {attributes} = ipfsData;
-      let {message, name} = attributes;
+      let { attributes } = ipfsData;
+      let { message, name } = attributes;
 
       console.log(recipient, tokenURI, name, message);
 
-      const {tx} = await contract.mintTo(recipient, tokenURI, {from: state.account});
+      const { tx } = await contract.gift(recipient, tokenURI, benefactor, { from: state.account, value: web3.utils.toWei(valueInETH, 'ether') });
 
       console.log(tx);
 
       commit(mutations.SET_UPLOAD_HASH, tx);
     },
-    [actions.LOAD_ACCOUNT_CARDS]: async function ({commit, dispatch, state}, {account}) {
+    [actions.LOAD_ACCOUNT_CARDS]: async function ({ commit, dispatch, state }, { account }) {
 
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
@@ -143,7 +143,7 @@ const store = new Vuex.Store({
       // });
       commit(mutations.SET_ACCOUNT_CARDS, tokenIds);
     },
-    [actions.WATCH_TRANSFERS]: async function ({commit, dispatch, state}) {
+    [actions.WATCH_TRANSFERS]: async function ({ commit, dispatch, state }) {
 
       const contract = await state.contract.deployed();
 
@@ -165,7 +165,7 @@ const store = new Vuex.Store({
   }
 });
 
-async function mapTokenDetails (results) {
+async function mapTokenDetails(results) {
   let data = {
     tokenId: results[0].toString('10'),
     nfcId: Web3.utils.toAscii(results[1]).replace(/\0/g, ''),
