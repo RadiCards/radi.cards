@@ -28,6 +28,17 @@ Blah blah
 * **Full ERC-165 Compatibility** - Smart Contract is fully ERC-165 compliant
 * **IPFS Support** - Internally IPFS is used for storing asset files and metadata
 
+
+# Setup
+
+Add a local `mnemonic.js` at the root with your testnet mnemonic (used for deployments)
+
+`npm install`
+
+`npm start`
+
+`npm test`
+
 # License
 
 [MIT](https://opensource.org/licenses/MIT)
