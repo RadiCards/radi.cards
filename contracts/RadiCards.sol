@@ -8,6 +8,12 @@ import "./Strings.sol";
 
 /**
 * @title Radi.Cards
+*
+* Non-profit e-card NFT for good!
+*
+* Electronic Frontier Foundation	0xb189f76323678E094D4996d182A792E52369c005	https://www.eff.org/pages/ethereum-and-litecoin-donations
+* Freedom of the Press Foundation	0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7	https://freedom.press/donate/cryptocurrency/
+*
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -16,17 +22,15 @@ contract RadiCards is ERC721Token, Whitelist {
 
   // A pointer to the next token to be minted, zero indexed
   uint256 public tokenIdPointer = 0;
+  uint256 public minContribution = 0.05 ether;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
   }
 
-  function mint(string tokenURI) public returns (bool) {
-    _mint(msg.sender, tokenURI);
-    return true;
-  }
+  function gift(address to, string tokenURI) payable public returns (bool) {
+    require(msg.value >= minContribution);
 
-  function mintTo(address to, string tokenURI) public returns (bool) {
     _mint(to, tokenURI);
     return true;
   }
@@ -47,13 +51,13 @@ contract RadiCards is ERC721Token, Whitelist {
     _burn(ownerOf(tokenId), tokenId);
   }
 
-  function setTokenURI(uint256 tokenId, string uri) public onlyIfWhitelisted(msg.sender) {
-    _setTokenURI(tokenId, uri);
-  }
-
   function setTokenBaseURI(string _newBaseURI) external onlyIfWhitelisted(msg.sender) {
     require(bytes(_newBaseURI).length != 0, "Base URI invalid");
     tokenBaseURI = _newBaseURI;
+  }
+
+  function setMinContribution(uint256 _minContribution) external onlyIfWhitelisted(msg.sender) {
+      minContribution = _minContribution;
   }
 
   function tokenURI(uint256 _tokenId) public view returns (string) {

@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract('RadiCards ERC721 Custom', function (accounts) {
+contract.only('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
   const account2 = accounts[2];
@@ -40,14 +40,26 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
   beforeEach(async function () {
     this.token = await RadiCards.new({from: owner});
+    this.minContribution = await this.token.minContribution();
   });
 
-  describe('custom logic', function () {
+  describe('custom radi.cards logic', function () {
     beforeEach(async function () {
-      await this.token.mintTo(account1, TOKEN_URI, {from: owner});
-      await this.token.mintTo(account1, TOKEN_URI, {from: owner});
+      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
     });
 
-  });
+    context('should have to send at least the minimum amount', function () {
 
+      it('reverts if below minimum amount', async function () {
+        await assertRevert(this.token.gift(account1, TOKEN_URI, {from: owner, value: 0}));
+        await assertRevert(this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution.sub(1)}));
+      });
+
+      it('can send minimum contribution', async function () {
+        await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
+        await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution.plus(1)});
+      });
+    });
+  });
 });

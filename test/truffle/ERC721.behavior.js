@@ -23,22 +23,10 @@ function shouldBehaveLikeERC721(
 
   const TOKEN_URI = "123abcHash";
 
-  let currentNfcId = 1;
-
-  const genNfcId = () => {
-    const nfcId = _.padStart(_.toString(currentNfcId), 32, '0');
-    currentNfcId++;
-    return nfcId;
-  };
-
-  const genBirthDate = () => {
-    return new Date().getTime();
-  };
-
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.mintTo(owner, genNfcId(), TOKEN_URI, genBirthDate(), {from: minter});
-      await this.token.mintTo(owner, genNfcId(), TOKEN_URI, genBirthDate(), {from: minter});
+      await this.token.gift(owner, TOKEN_URI, {from: minter});
+      await this.token.gift(owner, TOKEN_URI, {from: minter});
       this.toWhom = anyone; // default to anyone for toWhom in context-dependent tests
     });
 

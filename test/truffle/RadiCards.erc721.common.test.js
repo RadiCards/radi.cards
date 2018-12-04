@@ -46,12 +46,13 @@ contract('RadiCards ERC721 Common', function (accounts) {
 
   beforeEach(async function () {
     this.token = await RadiCards.new({from: owner});
+    this.minContribution = await this.token.minContribution();
   });
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.mintTo(account1, TOKEN_URI, {from: owner});
-      await this.token.mintTo(account1, TOKEN_URI, {from: owner});
+      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, TOKEN_URI, {from: owner, value: this.minContribution});
     });
 
     describe('balanceOf', function () {
