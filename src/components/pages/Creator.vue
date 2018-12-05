@@ -9,7 +9,7 @@
             <div class="col-sm-4">
               <b>Please correct the following error(s):</b>
               <ul>
-                <li v-for="error in formData.errors">{{ error }}</li>
+                <li v-for="error in formData.errors" v-bind:key="error">{{ error }}</li>
               </ul>
             </div>
           </div>
@@ -18,7 +18,11 @@
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
               <select class="form-control" id="colour" v-model="formData.card">
-                <option v-for="card in formLookupData.cards" :value="card">{{card.name}}</option>
+                <option
+                  v-for="card in formLookupData.cards"
+                  v-bind:key="card.id"
+                  :value="card"
+                >{{card.name}}</option>
               </select>
             </div>
           </div>
@@ -56,6 +60,7 @@
               <select id="benefactor" v-model="formData.benefactor">
                 <option
                   v-for="benefactor in formLookupData.benefactors"
+                  v-bind:key="benefactor.id"
                   :value="benefactor.id"
                 >{{benefactor.name}}</option>
               </select>
