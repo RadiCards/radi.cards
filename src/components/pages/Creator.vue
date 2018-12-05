@@ -9,7 +9,7 @@
             <div class="col-sm-4">
               <b>Please correct the following error(s):</b>
               <ul>
-                <li v-for="error in formData.errors">{{ error }}</li>
+                <li v-for="error in formData.errors" v-bind:key="error">{{ error }}</li>
               </ul>
             </div>
           </div>
@@ -18,7 +18,11 @@
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
               <select class="form-control" id="colour" v-model="formData.card">
-                <option v-for="card in formLookupData.cards" :value="card">{{card.name}}</option>
+                <option
+                  v-for="card in formLookupData.cards"
+                  v-bind:key="card.id"
+                  :value="card"
+                >{{card.name}}</option>
               </select>
             </div>
           </div>
@@ -54,8 +58,11 @@
                 placeholder="donation"
               >
               <select id="benefactor" v-model="formData.benefactor">
-                <option value="1">EEF</option>
-                <option value="2">Freedom of the Press Foundation</option>
+                <option
+                  v-for="benefactor in formLookupData.benefactors"
+                  v-bind:key="benefactor.id"
+                  :value="benefactor.id"
+                >{{benefactor.name}}</option>
               </select>
             </div>
           </div>
@@ -94,9 +101,7 @@
           <span class="text-muted small">Recipient:</span>
           <code>{{formData.recipient}}</code>
         </p>
-
         <hr>
-
         <pre class="small">{{generateIpfsData()}}</pre>
       </div>
     </div>
@@ -127,7 +132,8 @@ export default {
             uri:
               "https://ipfs.infura.io/ipfs/QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR"
           }
-        ]
+        ],
+        benefactors: this.$store.state.benefactors
       },
       formData: {
         errors: []

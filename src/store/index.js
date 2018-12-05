@@ -34,6 +34,9 @@ const store = new Vuex.Store({
   },
   getters: {},
   mutations: {
+    [mutations.SET_BENEFACTORS](state, benefactors) {
+      state.benefactors = benefactors;
+    },
     [mutations.SET_ACCOUNT](state, account) {
       state.account = account;
     },
@@ -143,6 +146,19 @@ const store = new Vuex.Store({
       // });
       commit(mutations.SET_ACCOUNT_CARDS, tokenIds);
     },
+    [actions.LOAD_BENEFACTORS]: async function ({ commit, dispatch, state }) {
+      const contract = await state.contract.deployed();
+      let benefactorIds = await contract.benefactorsKeys();
+
+      let benefactorsPromises = await _.map(benefactorIds, async (id) => {
+        let results = await contract.benefactors.call(id)
+        let result = mapBenefactorDetails(results, id);
+        return result;
+      });
+      const benefactors = await Promise.all(benefactorsPromises);
+
+      commit(mutations.SET_BENEFACTORS, benefactors);
+    },
     [actions.WATCH_TRANSFERS]: async function ({ commit, dispatch, state }) {
 
       const contract = await state.contract.deployed();
@@ -174,6 +190,18 @@ async function mapTokenDetails(results) {
   };
 
   data.ipfsData = (await axios.get(data.tokenUri)).data;
+  return data;
+}
+
+function mapBenefactorDetails(results, id) {
+  let data = {
+    address: results[0],
+    name: results[1],
+    website: results[2],
+    id: id
+  };
+
+  console.log(data);
   return data;
 }
 
