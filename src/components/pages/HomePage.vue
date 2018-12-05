@@ -1,6 +1,31 @@
 <template>
   <div class="container">
-    <h1>RadiCards</h1>
+    <h1>
+      <span style="position: absolute; left: -9999px;">RadiCards</span>
+      <img src="/static/images/logo.svg" alt="" />
+    </h1>
+    <blockquote><p>
+      Send unique greeting eCards<br/>
+      built on Ethereum & IPFS
+    </p></blockquote>
+
+    <div class="row">
+      <div class="col">
+
+        <a href="/" class="card">
+          <figure>
+            <img src="" alt="" />
+            <figcaption>
+              <h4 class="title">Artwork name</h4>
+              <p class="creator">Artist name</p>
+              <p class="descr">Artwork description</p>
+              <div class="value">0.5 ETH</div>
+            </figcaption>
+          </figure>
+        </a>
+        
+      </div>
+    </div>
 
     <div class="row">
       <div class="col">
