@@ -119,28 +119,113 @@ export default {
 </script>
 
 <style lang="scss">
-$body-bg: #f5f5f5;
-$body-color: brown;
-$primary: darkgreen;
-$secondary: #fff0f2;
+
+// NB: Styles in progress here, @ldanielswakman will organise and componentify
+
+$white: #fff;
 $gray: #707070;
-$black: #040505;
-$white: #f5f5f5;
+$black: #000;
 
-$border-radius-base: 50;
+$yellow: #FFFF53;
+$primary: $black;
 
-@import url("https://fonts.googleapis.com/css?family=Open+Sans");
+// @import url("https://fonts.googleapis.com/css?family=Open+Sans");
+// $font-family-base: "Open Sans", sans-serif;
+// @import "../node_modules/bootstrap/scss/bootstrap.scss";
+// @import "../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
 
-$font-family-base: "Open Sans", sans-serif;
-
-@import "../node_modules/bootstrap/scss/bootstrap.scss";
-@import "../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
-
-body {
-  background-color: $body-bg;
+// Mixin
+@mixin tabletAndUp() {
+  @media screen and (min-width: 48em) {
+    @content;
+  }
 }
 
-#app {
+* {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  background-color: $white;
+  background-image: url('/static/images/background.svg');
+  background-repeat: no-repeat;
+  background-attachment: static;
+  background-position: top left;
+
+  @include tabletAndUp() {
+    background-position: top center;
+  }
+
+  color: $black;
+  font-size: 100%; // 1rem = 16px
+  font-family: "Helvetica", "Helvetica Neue", "Arial", sans-serif;
+  letter-spacing: -0.03rem;
+  line-height: 1.25rem;
+}
+
+// Anchor
+a {
+  text-decoration: none;
+
+  &:hover {
+    border-bottom: 1px solid currentColor;
+  }
+  &:visited {
+    color: $gray;
+  }
+}
+
+// Blockquote
+blockquote {
+  margin: 0;
+}
+
+// Header
+header {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+  border-bottom: 1px solid $black;
+}
+
+// Main
+main {
+  max-width: 48rem;
+  margin: 0 auto;
+  padding: 1.25rem;
+}
+
+// Card
+.card {
+  display: block;
+  padding: 1rem 2rem;
+  box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
+  background: $white;
+
+  &:hover {
+    box-shadow: 0 0.25rem 1.5rem rgba($black, 0.15);
+    border-bottom: none;
+  }
+
+  figure { margin: 0; }
+  figure img {
+    min-height: 5rem;
+    margin: 0;
+    background: $gray;
+  }
+}
+
+// Button
+.btn {
+  display: inline-block;
+  padding: 1rem 2rem;
+  background: $black;
+  color: $white;
 }
 
 footer {
@@ -175,12 +260,6 @@ footer {
 
 code {
   color: $primary;
-}
-
-main {
-  min-height: 400px;
-  margin-bottom: 50px;
-  margin-top: 50px;
 }
 
 .no-metamask {

@@ -9,7 +9,7 @@
             <div class="col-sm-4">
               <b>Please correct the following error(s):</b>
               <ul>
-                <li v-for="error in formData.errors" v-bind:key="error">{{ error }}</li>
+                <li v-for="error in formData.errors">{{ error }}</li>
               </ul>
             </div>
           </div>
@@ -18,11 +18,7 @@
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
               <select class="form-control" id="colour" v-model="formData.card">
-                <option
-                  v-for="card in formLookupData.cards"
-                  v-bind:key="card.ipfs"
-                  :value="card.ipfs"
-                >{{card.name}}</option>
+                <option v-for="card in formLookupData.cards" :value="card">{{card.name}}</option>
               </select>
             </div>
           </div>
@@ -60,7 +56,6 @@
               <select id="benefactor" v-model="formData.benefactor">
                 <option
                   v-for="benefactor in formLookupData.benefactors"
-                  v-bind:key="benefactor.id"
                   :value="benefactor.id"
                 >{{benefactor.name}}</option>
               </select>
@@ -83,15 +78,15 @@
         </form>
       </div>
       <div class="col text-center">
-        <h2 v-if="formData.card">{{generateIpfsData().name}}</h2>
+        <h2 v-if="formData.card">{{formData.card.name}}</h2>
         <img
           v-if="formData.card"
-          :src="'https://ipfs.infura.io/ipfs/' + formData.card.hash"
+          :src="formData.card.img"
           class="img-thumbnail"
           style="max-height: 150px"
         >
 
-        <h4 v-if="formData.card">{{generateIpfsData().description}}</h4>
+        <h4 v-if="formData.card">{{formData.card.description}}</h4>
 
         <p v-if="formData.card && formData.message">
           <span class="text-muted small">Message:</span>
@@ -102,7 +97,7 @@
           <code>{{formData.recipient}}</code>
         </p>
         <hr>
-        <pre class="small">{{generateIpfsData()}}</pre>
+        <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
       </div>
     </div>
   </div>
@@ -189,7 +184,7 @@ export default {
       return {
         name: _.get(this.formData, "card.name"),
         description: _.get(this.formData, "card.description"),
-        image: _.get(this.formData, "card.uri"),
+        image: _.get(this.formData, "card.img"),
         attributes: {
           message: _.get(this.formData, "message")
         },
