@@ -20,8 +20,8 @@
               <select class="form-control" id="colour" v-model="formData.card">
                 <option
                   v-for="card in formLookupData.cards"
-                  v-bind:key="card.id"
-                  :value="card"
+                  v-bind:key="card.ipfs"
+                  :value="card.ipfs"
                 >{{card.name}}</option>
               </select>
             </div>
@@ -124,15 +124,7 @@ export default {
   data() {
     return {
       formLookupData: {
-        cards: [
-          {
-            name: "Grinch",
-            description: "Ho ho ho...NO!",
-            hash: "QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR",
-            uri:
-              "https://ipfs.infura.io/ipfs/QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR"
-          }
-        ],
+        cards: this.$store.state.cards,
         benefactors: this.$store.state.benefactors
       },
       formData: {

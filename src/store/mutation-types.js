@@ -6,6 +6,7 @@ export const SET_WEB3 = 'SET_WEB3';
 
 export const SET_UPLOAD_HASH = 'SET_UPLOAD_HASH';
 export const SET_ACCOUNT_CARDS = 'SET_ACCOUNT_CARDS';
+export const SET_CARDS = 'SET_CARDS';
 
 export const SET_TOTAL_SUPPLY = 'SET_TOTAL_SUPPLY';
 

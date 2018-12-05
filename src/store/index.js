@@ -40,6 +40,9 @@ const store = new Vuex.Store({
     [mutations.SET_ACCOUNT](state, account) {
       state.account = account;
     },
+    [mutations.SET_CARDS](state, cards) {
+      state.cards = cards;
+    },
     [mutations.SET_CURRENT_NETWORK](state, currentNetwork) {
       state.currentNetwork = currentNetwork;
     },
@@ -159,6 +162,21 @@ const store = new Vuex.Store({
 
       commit(mutations.SET_BENEFACTORS, benefactors);
     },
+    [actions.LOAD_CARDS]: async function ({ commit, dispatch, state }) {
+      const contract = await state.contract.deployed();
+      let cardIds = await contract.cardKeys();
+      let ipfsPrefix = await contract.tokenBaseURI();
+
+      let cardPromises = await _.map(cardIds, async (id) => {
+        let results = await contract.cards.call(id)
+        console.log(results);
+        let result = mapTokenDetails(results, ipfsPrefix);
+        return result;
+      });
+      const cards = await Promise.all(cardPromises);
+
+      commit(mutations.SET_CARDS, cards);
+    },
     [actions.WATCH_TRANSFERS]: async function ({ commit, dispatch, state }) {
 
       const contract = await state.contract.deployed();
@@ -181,15 +199,14 @@ const store = new Vuex.Store({
   }
 });
 
-async function mapTokenDetails(results) {
+async function mapTokenDetails(results, ipfsPrefix) {
   let data = {
-    tokenId: results[0].toString('10'),
-    nfcId: Web3.utils.toAscii(results[1]).replace(/\0/g, ''),
-    tokenUri: results[2],
-    dob: results[3].toString('10'),
+    ipfs: ipfsPrefix + results[0],
+    name: results[1],
+    description: results[2],
   };
 
-  data.ipfsData = (await axios.get(data.tokenUri)).data;
+  data.ipfsData = (await axios.get(data.ipfs)).data;
   return data;
 }
 

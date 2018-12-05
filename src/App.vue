@@ -106,6 +106,7 @@ export default {
         account: this.account
       });
       this.$store.dispatch(actions.LOAD_BENEFACTORS);
+      this.$store.dispatch(actions.LOAD_CARDS);
     }.bind(this);
 
     this.$store.watch(() => this.$store.state.account, () => loadData());
