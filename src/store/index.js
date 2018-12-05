@@ -175,8 +175,7 @@ const store = new Vuex.Store({
 
       let cardPromises = await _.map(cardIds, async id => {
         let results = await contract.cards.call(id);
-        let result = mapTokenDetails(results, ipfsPrefix);
-        result.tokenId = id;
+        let result = mapTokenDetails(results, ipfsPrefix, id);
         return result;
       });
       const cards = await Promise.all(cardPromises);
@@ -207,11 +206,12 @@ const store = new Vuex.Store({
   }
 });
 
-async function mapTokenDetails(results, ipfsPrefix) {
+async function mapTokenDetails(results, ipfsPrefix, id) {
   let data = {
     img: ipfsPrefix + results[0],
     name: results[1],
-    description: results[2]
+    description: results[2],
+    tokenId: id
   };
 
   console.log(data);
