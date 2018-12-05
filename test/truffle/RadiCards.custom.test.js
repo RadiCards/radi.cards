@@ -81,5 +81,12 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         indexes.length.should.be.bignumber.equal(2);
       });
     });
+
+    context('should have two cards initially', function () {
+      it('returns indexes', async function () {
+        const indexes = await this.token.cardsKeys();
+        indexes.length.should.be.bignumber.equal(2);
+      });
+    });
   });
 });

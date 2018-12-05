@@ -43,33 +43,33 @@ contract RadiCards is ERC721Token, Whitelist {
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
 
-    benefactors[1] = Benefactor(
+    addBenefactor(
+      1,
       address(0xb189f76323678E094D4996d182A792E52369c005),
       "Electronic Frontier Foundation",
       "https://www.eff.org/pages/ethereum-and-litecoin-donations"
     );
-    benefactorsIndex.push(1);
 
-    benefactors[2] = Benefactor(
+    addBenefactor(
+      2,
       address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
       "Freedom of the Press Foundation",
       "https://freedom.press/donate/cryptocurrency/"
     );
-    benefactorsIndex.push(2);
 
-    cards[1] = Card(
+    addCard(
+      1,
       "QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR",
       "Grinch",
       "Green fella"
     );
-    cardsIndex.push(1);
 
-    cards[2] = Card(
+    addCard(
+      2,
       "QmSD3wWx4tSXsCaDrKMVHU8aGhXzbruLw1jLm4PBUXLdT3",
       "Skull",
       "Santa's head!"
     );
-    cardsIndex.push(2);
   }
 
   function gift(address to, string tokenURI, uint256 _benefactor) payable public returns (bool) {
@@ -123,14 +123,21 @@ contract RadiCards is ERC721Token, Whitelist {
     return cardsIndex;
   }
 
-  function addBenefactor(uint256 _index, address _ethAddress, string _name, string _website) external onlyIfWhitelisted(msg.sender) {
-    require(benefactors[_index].ethAddress == address(0), "Must not be an existing benefactor");
-
+  function addBenefactor(uint256 _index, address _ethAddress, string _name, string _website) public onlyIfWhitelisted(msg.sender) {
     benefactors[_index] = Benefactor(
       _ethAddress,
       _name,
       _website
     );
     benefactorsIndex.push(_index);
+  }
+
+  function addCard(uint256 _index, string _ipfs, string _name, string _description) public onlyIfWhitelisted(msg.sender) {
+    cards[_index] = Card(
+      _ipfs,
+      _name,
+      _description
+    );
+    cardsIndex.push(_index);
   }
 }
