@@ -56,18 +56,20 @@ contract RadiCards is ERC721Token, Whitelist {
       "https://freedom.press/donate/cryptocurrency/"
     );
 
+    // REPLACE THIS TEST IMAGE
     addCard(
       1,
       "QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR",
       "Grinch",
-      "Green fella"
+      "Little green fella"
     );
 
+    // REPLACE THIS TEST IMAGE
     addCard(
       2,
       "QmSD3wWx4tSXsCaDrKMVHU8aGhXzbruLw1jLm4PBUXLdT3",
       "Skull",
-      "Santa's head!"
+      "Test image"
     );
   }
 
