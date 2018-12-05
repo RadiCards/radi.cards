@@ -42,7 +42,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     this.minContribution = await this.token.minContribution();
   });
 
-  describe('custom radi.cards logic', function () {
+  describe.only('custom radi.cards logic', function () {
     beforeEach(async function () {
       await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
       await this.token.gift(account1, TOKEN_URI, benefactorFPF, {from: owner, value: this.minContribution});

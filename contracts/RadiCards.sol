@@ -9,7 +9,6 @@ import "./Strings.sol";
 /**
 * @title Radi.Cards
 *
-* Non-profit e-card NFT for good!
 *
 */
 contract RadiCards is ERC721Token, Whitelist {
@@ -119,7 +118,7 @@ contract RadiCards is ERC721Token, Whitelist {
     return benefactorsIndex;
   }
 
-  function cardKeys() public view returns (uint256[] _keys) {
+  function cardsKeys() public view returns (uint256[] _keys) {
     return cardsIndex;
   }
 
