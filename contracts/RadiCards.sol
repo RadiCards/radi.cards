@@ -28,8 +28,17 @@ contract RadiCards is ERC721Token, Whitelist {
     string website;
   }
 
+  struct Card {
+    string ipfs;
+    string name;
+    string description;
+  }
+
   mapping(uint256 => Benefactor) public benefactors;
   uint256[] internal benefactorsIndex;
+
+  mapping(uint256 => Card) public cards;
+  uint256[] internal cardsIndex;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
@@ -47,6 +56,20 @@ contract RadiCards is ERC721Token, Whitelist {
       "https://freedom.press/donate/cryptocurrency/"
     );
     benefactorsIndex.push(2);
+
+    cards[1] = Card(
+      "QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR",
+      "Grinch",
+      "Green fella"
+    );
+    cardsIndex.push(1);
+
+    cards[2] = Card(
+      "QmSD3wWx4tSXsCaDrKMVHU8aGhXzbruLw1jLm4PBUXLdT3",
+      "Skull",
+      "Santa's head!"
+    );
+    cardsIndex.push(2);
   }
 
   function gift(address to, string tokenURI, uint256 _benefactor) payable public returns (bool) {
@@ -94,6 +117,10 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function benefactorsKeys() public view returns (uint256[] _keys) {
     return benefactorsIndex;
+  }
+
+  function cardKeys() public view returns (uint256[] _keys) {
+    return cardsIndex;
   }
 
   function addBenefactor(uint256 _index, address _ethAddress, string _name, string _website) external onlyIfWhitelisted(msg.sender) {

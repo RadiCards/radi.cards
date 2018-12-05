@@ -1,7 +1,7 @@
 <h1 align="center">Radi.Cards</h1>
 
 <div align="center">
-Blah blah
+TOBY TO ADD DETAILS
 </div>
 
 <br/>
@@ -30,11 +30,22 @@ Blah blah
 
 Add a local `mnemonic.js` at the root with your testnet mnemonic (used for deployments)
 
+The `mnemonic.js` should be like so:
+```javascript
+module.exports = 'dog alley hunt pen away brew matter frog rural salad educate kebab';
+```
+
+Install dependencies:
+
 `npm install`
 
-`npm start`
+Start VueJs Front End:
 
-`npm test`
+`npm run start`
+
+Run Smart Contract tests:
+
+`npm run test`
 
 # License
 
