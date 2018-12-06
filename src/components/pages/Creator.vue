@@ -2,6 +2,8 @@
   <div class="container">
     <h1>Card Foundry</h1>
 
+    {{ cards }}
+    {{ benefactors }}
     <div class="row">
       <div class="col">
         <form>
@@ -14,7 +16,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" v-if="cards && cards.length > 0">
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
               <select class="form-control" id="colour" v-model="formData.card">
@@ -36,7 +38,7 @@
             </div>
           </div>
 
-          <div class="form-group row">
+          <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <label for="message" class="col-sm-2 col-form-label">Message</label>
             <div class="col-sm-10">
               <input
@@ -81,7 +83,7 @@
         <h2 v-if="formData.card">{{formData.card.name}}</h2>
         <img
           v-if="formData.card"
-          :src="formData.card.img"
+          :src="formData.card.image"
           class="img-thumbnail"
           style="max-height: 150px"
         >
