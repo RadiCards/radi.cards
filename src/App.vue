@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <header>
+    <!-- <header>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">RadiCards</router-link>
 
@@ -19,8 +19,7 @@
           </li>
         </ul>
       </nav>
-    </header>
-
+    </header>-->
     <div class="container-fluid mt-5" v-if="!web3Detected">
       <div class="row no-metamask text-center">
         <div class="col mt-2 mb-2">
@@ -124,7 +123,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 // NB: Styles in progress here, @ldanielswakman will organise and componentify
 
 // @import url("https://fonts.googleapis.com/css?family=Open+Sans");
@@ -148,7 +146,7 @@ body {
   padding: 0;
 
   background-color: $white;
-  background-image: url('/static/images/background.svg');
+  background-image: url("/static/images/background.svg");
   background-repeat: no-repeat;
   background-attachment: static;
   background-position: top left;
@@ -177,7 +175,9 @@ a {
   }
 }
 
-p { letter-spacing: 0.02rem; }
+p {
+  letter-spacing: 0.02rem;
+}
 
 // Blockquote
 blockquote {
@@ -209,7 +209,9 @@ main {
   display: flex;
   align-items: center;
 
-  li + li { margin-left: 1rem; }
+  li + li {
+    margin-left: 1rem;
+  }
 }
 
 // Button
@@ -219,7 +221,9 @@ main {
   background: rgba($black, 0.8);
   color: $white;
 
-  &:visited { color: $white; }
+  &:visited {
+    color: $white;
+  }
 
   &:hover {
     background: $black;
@@ -248,8 +252,8 @@ main {
   perspective: 1000px;
 
   &::after {
-    content: '';
-    flex: 0 0 0.25rem; 
+    content: "";
+    flex: 0 0 0.25rem;
   }
 }
 

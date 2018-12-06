@@ -179,17 +179,6 @@ export default {
       if (!this.formData.card) {
         this.formData.errors.push("Card is required.");
       }
-    },
-    generateIpfsData: function() {
-      return {
-        name: _.get(this.formData, "card.name"),
-        description: _.get(this.formData, "card.description"),
-        image: _.get(this.formData, "card.img"),
-        attributes: {
-          message: _.get(this.formData, "message")
-        },
-        external_uri: "https://radi.cards"
-      };
     }
   }
 };
