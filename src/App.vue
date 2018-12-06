@@ -206,6 +206,8 @@ main {
   padding: 1rem 2rem;
   box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   background: $white;
+  cursor: ew-resize;
+  cursor: alias;
 
   &:hover {
     box-shadow: 0 0.25rem 1.5rem rgba($black, 0.15);

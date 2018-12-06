@@ -1,5 +1,6 @@
 <template>
-  <a href="/" class="card">
+
+  <div class="card">
     <figure>
       <img src="" alt="" />
       <figcaption>
@@ -9,13 +10,14 @@
         <div class="value">0.5 ETH</div>
       </figcaption>
     </figure>
-  </a>
+  </div>
+
 </template>
 
 <script>
   /* global web3:true */
 
-  import {mapState} from 'vuex'
+  import {mapState} from 'vuex';
 
   export default {
     name: 'card',

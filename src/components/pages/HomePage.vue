@@ -12,18 +12,8 @@
     <div class="row">
       <div class="col">
 
-        <a href="/" class="card">
-          <figure>
-            <img src="" alt="" />
-            <figcaption>
-              <h4 class="title">Artwork name</h4>
-              <p class="creator">Artist name</p>
-              <p class="descr">Artwork description</p>
-              <div class="value">0.5 ETH</div>
-            </figcaption>
-          </figure>
-        </a>
-        
+        <card v-for="item in 10"></card>
+
       </div>
     </div>
 
@@ -45,12 +35,11 @@
 
   import { mapGetters, mapState } from 'vuex';
   import * as actions from '../../store/actions';
+  import Card from "../../components/widgets/Card";
 
   export default {
     name: 'home',
-    components: {
-
-    },
+    components: { Card },
     data () {
       return {};
     },
