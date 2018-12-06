@@ -122,24 +122,15 @@ export default {
 
 // NB: Styles in progress here, @ldanielswakman will organise and componentify
 
-$white: #fff;
-$gray: #707070;
-$black: #000;
-
-$yellow: #FFFF53;
-$primary: $black;
-
 // @import url("https://fonts.googleapis.com/css?family=Open+Sans");
 // $font-family-base: "Open Sans", sans-serif;
 // @import "../node_modules/bootstrap/scss/bootstrap.scss";
 // @import "../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
 
-// Mixin
-@mixin tabletAndUp() {
-  @media screen and (min-width: 48em) {
-    @content;
-  }
-}
+@import "styles/reset.scss";
+
+@import "styles/variables.scss";
+@import "styles/mixins.scss";
 
 * {
   -webkit-box-sizing: border-box;
@@ -180,6 +171,8 @@ a {
   }
 }
 
+p { letter-spacing: 0.02rem; }
+
 // Blockquote
 blockquote {
   margin: 0;
@@ -198,28 +191,6 @@ main {
   max-width: 48rem;
   margin: 0 auto;
   padding: 1.25rem;
-}
-
-// Card
-.card {
-  display: block;
-  padding: 1rem 2rem;
-  box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
-  background: $white;
-  cursor: ew-resize;
-  cursor: alias;
-
-  &:hover {
-    box-shadow: 0 0.25rem 1.5rem rgba($black, 0.15);
-    border-bottom: none;
-  }
-
-  figure { margin: 0; }
-  figure img {
-    min-height: 5rem;
-    margin: 0;
-    background: $gray;
-  }
 }
 
 // Button

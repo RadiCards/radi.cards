@@ -9,13 +9,41 @@
       built on Ethereum & IPFS
     </p></blockquote>
 
-    <div class="row">
-      <div class="col">
+    <section class="section">
 
+      <h4 class="section__title">STEP ONE</h4>
+      <h2>Choose your favourite radicard</h2>
+      <p>All unique designs</p>
+
+      <div class="card-slider">
         <card v-for="item in 10"></card>
-
       </div>
-    </div>
+
+    </section>
+
+    <section class="section">
+
+      <h4 class="section__title">STEP TWO</h4>
+      <h2>Choose a project to support</h2>
+      <p>From environmental protection to online privacy rights</p>
+
+      <div class="card-slider">
+        <card v-for="item in 3"></card>
+      </div>
+
+    </section>
+
+    <section class="section">
+
+      <h4 class="section__title">STEP THREE</h4>
+      <h2>Send radicards to friends and family</h2>
+      <p>Spread hope & joy</p>
+
+      <div class="card-slider">
+        <card></card>
+      </div>
+
+    </section>
 
     <div class="row">
       <div class="col">
@@ -52,16 +80,39 @@
 
 <style lang="scss" scoped>
 
+  @import "../../styles/variables.scss";
+  @import "../../styles/variables.scss";
+
   body > .container {
     padding: 60px 60px 0;
   }
 
-  h1 {}
+  .section {
+    padding: 2rem 0;
 
-  .card {}
+    &__title {
+      display: inline-block;
+      margin-bottom: 0.5rem;
+      padding: 0.125rem 0.75rem;
+      font-size: 0.75rem;
+      border: 2px solid $black;
+    }
 
-  /* mobile only */
-  @media screen and (max-width: 767px) {
+  }
+
+
+  .card-slider {
+    display: flex;
+    margin: 0 -1.25rem;
+    padding: 2rem 1.25rem;
+    overflow-x: auto;
+
+    perspective: 1000px;
+  
+    &::after {
+      content: '';
+      flex: 0 0 0.25rem; 
+    }
   }
 
 </style>
