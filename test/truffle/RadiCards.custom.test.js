@@ -30,7 +30,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
   const cardOne = 1;
   const cardTwo = 2;
 
-  const cardOneUri = 'QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR';
+  const cardOneUri = 'QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy';
 
   const name = 'RadiCards';
   const symbol = 'RADI';
@@ -47,7 +47,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     this.minContribution = await this.token.minContribution();
   });
 
-  describe.only('custom radi.cards logic', function () {
+  describe('custom radi.cards logic', function () {
     beforeEach(async function () {
       await this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
         from: owner,
