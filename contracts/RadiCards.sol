@@ -55,20 +55,6 @@ contract RadiCards is ERC721Token, Whitelist {
       "Freedom of the Press Foundation",
       "https://freedom.press/donate/cryptocurrency/"
     );
-
-    // REPLACE THIS TEST CARD
-    addCard(
-      1,
-      "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy",
-      true
-    );
-
-    // REPLACE THIS TEST CARD
-    addCard(
-      2,
-      "QmZP4jyXX5opusczig8C91jKw2NNZbNsxdSuyj7wVh46H5",
-      true
-    );
   }
 
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra) payable public returns (bool) {
