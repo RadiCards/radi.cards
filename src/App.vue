@@ -12,6 +12,11 @@
               <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>
             </router-link>
           </li>
+          <li class="nav-item nav-link">
+            <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
+              Send
+            </router-link>
+          </li>
         </ul>
       </nav>
     </header>
@@ -161,6 +166,7 @@ body {
 
 // Anchor
 a {
+  color: $black;
   text-decoration: none;
 
   &:hover {
@@ -193,12 +199,58 @@ main {
   padding: 1.25rem;
 }
 
+.navbar {
+  display: flex;
+  justify-content: space-between;
+}
+
+// Nav
+.navbar-nav {
+  display: flex;
+  align-items: center;
+
+  li + li { margin-left: 1rem; }
+}
+
 // Button
 .btn {
   display: inline-block;
-  padding: 1rem 2rem;
-  background: $black;
+  padding: 0.5rem 1.5rem;
+  background: rgba($black, 0.8);
   color: $white;
+
+  &:visited { color: $white; }
+
+  &:hover {
+    background: $black;
+    border-bottom: 0;
+  }
+}
+
+.section {
+  padding: 2rem 0;
+
+  &__title {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 0.125rem 0.75rem;
+    font-size: 0.75rem;
+    border: 2px solid $black;
+  }
+}
+
+.card-slider {
+  display: flex;
+  margin: 0 -1.25rem;
+  padding: 2rem 1.25rem;
+  overflow-x: auto;
+
+  perspective: 1000px;
+
+  &::after {
+    content: '';
+    flex: 0 0 0.25rem; 
+  }
 }
 
 footer {
@@ -217,18 +269,6 @@ footer {
   }
 
   margin-bottom: 30px;
-}
-
-.nav-link {
-  color: $primary;
-
-  a:visited {
-    color: $primary;
-  }
-
-  a:hover {
-    color: $primary;
-  }
 }
 
 code {

@@ -49,11 +49,6 @@
       <div class="col">
         <span class="mt-5" v-if="totalSupply">There are currently <span class="badge badge-primary pl-2 pr-2 ml-2 mr-2">{{ totalSupply }}</span> cards in existence</span>
       </div>
-      <div class="col">
-        <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
-          Send
-        </router-link>
-      </div>
     </div>
   </div>
 
@@ -79,40 +74,4 @@
 </script>
 
 <style lang="scss" scoped>
-
-  @import "../../styles/variables.scss";
-  @import "../../styles/variables.scss";
-
-  body > .container {
-    padding: 60px 60px 0;
-  }
-
-  .section {
-    padding: 2rem 0;
-
-    &__title {
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      padding: 0.125rem 0.75rem;
-      font-size: 0.75rem;
-      border: 2px solid $black;
-    }
-
-  }
-
-
-  .card-slider {
-    display: flex;
-    margin: 0 -1.25rem;
-    padding: 2rem 1.25rem;
-    overflow-x: auto;
-
-    perspective: 1000px;
-  
-    &::after {
-      content: '';
-      flex: 0 0 0.25rem; 
-    }
-  }
-
 </style>

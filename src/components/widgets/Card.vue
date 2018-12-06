@@ -4,16 +4,17 @@
 
     <figure class="card__front">
       <div class="card__image">
-        <img src="" alt="" />
+        <img v-if="(image_url && image_url.length > 0)" :src="image_url" :alt="name" />
+        <img v-else src="/static/icons/radi-cards.svg" alt="" class="img--placeholder" />
       </div>
       <figcaption>
         <div class="card__meta">
-          <h4 class="title">Artwork name</h4>
-          <p class="creator">Artist name</p>
-          <p class="descr">Artwork description</p>
+          <h4 class="title">{{ name }}</h4>
+          <p class="creator">{{ creator.name }}</p>
+          <p class="descr">{{ descr }}</p>
         </div>
         <div class="card__value">
-          <div class="badge">0.5 ETH</div>
+          <div class="badge">{{ value }} ETH</div>
           <div class="help"><img src="/static/icons/flip.svg" alt="" />Flip</div>
         </div>
       </figcaption>
@@ -46,7 +47,15 @@
 
     data() {
       return {
-        isFlipped: false
+        isFlipped: false,
+        name: 'Artwork name',
+        descr: 'Artwork description',
+        value: 0.5,
+        image_url: '',
+
+        creator: {
+          name: 'Artist name',
+        }
       }
     },
 
@@ -116,9 +125,15 @@
     background: $greylight;
   }
 
-  .card__image img {
-    min-height: 5rem;
-    background: $gray;
+  .card__image {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+
+    img {
+      min-height: 5rem;
+    }
+    .img--placeholder { opacity: 0.1; }
   }
 
   figcaption {
