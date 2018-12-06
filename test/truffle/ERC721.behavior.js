@@ -18,16 +18,29 @@ function shouldBehaveLikeERC721 (
   const firstTokenId = 0;
   const secondTokenId = 1;
   const unknownTokenId = 2;
+
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
+
+  const benefactorEFF = 1;
+  const benefactorFPF = 2;
+
+  const cardOne = 1;
+  const cardTwo = 2;
 
   const TOKEN_URI = '123abcHash';
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
       this.minContribution = await this.token.minContribution();
-      await this.token.gift(owner, TOKEN_URI, 1, {from: minter, value: this.minContribution});
-      await this.token.gift(owner, TOKEN_URI, 1, {from: minter, value: this.minContribution});
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+        from: minter,
+        value: this.minContribution
+      });
+      await this.token.gift(owner, benefactorEFF, cardTwo, 'Happy Hols', 'FFFFFF', {
+        from: minter,
+        value: this.minContribution
+      });
       this.toWhom = anyone; // default to anyone for toWhom in context-dependent tests
     });
 
@@ -247,12 +260,6 @@ function shouldBehaveLikeERC721 (
             it('should call onERC721Received', async function () {
               const result = await transferFun.call(this, owner, this.receiver.address, tokenId, {from: owner});
               result.receipt.logs.length.should.be.equal(2);
-              // const [log] = decodeLogs([result.receipt.logs[1]], ERC721Receiver, this.receiver.address);
-              // log.event.should.be.equal('Received');
-              // log.args._operator.should.be.equal(owner);
-              // log.args._from.should.be.equal(owner);
-              // log.args._tokenId.toNumber().should.be.equal(tokenId);
-              // log.args._data.should.be.equal(data);
             });
 
             it('should call onERC721Received from approved', async function () {
@@ -260,16 +267,6 @@ function shouldBehaveLikeERC721 (
                 from: approved,
               });
               result.receipt.logs.length.should.be.equal(2);
-              // const [log] = decodeLogs(
-              //   [result.receipt.logs[1]],
-              //   ERC721Receiver,
-              //   this.receiver.address
-              // );
-              // log.event.should.be.equal('Received');
-              // log.args._operator.should.be.equal(approved);
-              // log.args._from.should.be.equal(owner);
-              // log.args._tokenId.toNumber().should.be.equal(tokenId);
-              // log.args._data.should.be.equal(data);
             });
 
             describe('with an invalid token id', function () {

@@ -14,16 +14,29 @@ function shouldBehaveLikeMintAndBurnERC721 (
   const secondTokenId = 1;
   const thirdTokenId = 2;
   const unknownTokenId = 3;
+
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const MOCK_URI = 'https://example.com';
+
+  const benefactorEFF = 1;
+  const benefactorFPF = 2;
+
+  const cardOne = 1;
+  const cardTwo = 2;
 
   const TOKEN_URI = '123abcHash';
 
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
       this.minContribution = await this.token.minContribution();
-      await this.token.gift(owner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
-      await this.token.gift(owner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+        from: creator,
+        value: this.minContribution
+      });
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+        from: creator,
+        value: this.minContribution
+      });
     });
 
     describe('mint', function () {
@@ -31,7 +44,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, TOKEN_URI, 1, {from: creator, value: this.minContribution});
+          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {from: creator, value: this.minContribution});
           logs = result.logs;
         });
 
@@ -55,7 +68,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when the given owner address is the zero address', function () {
         it('reverts', async function () {
-          await assertRevert(this.token.gift(ZERO_ADDRESS, TOKEN_URI, 1, {from: creator}));
+          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {from: creator}));
         });
       });
     });

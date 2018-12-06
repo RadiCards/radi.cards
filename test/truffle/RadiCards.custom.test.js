@@ -27,6 +27,11 @@ contract('RadiCards ERC721 Custom', function (accounts) {
   const benefactorEFF = 1;
   const benefactorFPF = 2;
 
+  const cardOne = 1;
+  const cardTwo = 2;
+
+  const cardOneUri = 'QmUyLttKRZxneFmmoETXoVfy3X1dmoimQ2PFLrSNM5EDMR';
+
   const name = 'RadiCards';
   const symbol = 'RADI';
 
@@ -44,22 +49,37 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
   describe.only('custom radi.cards logic', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
-      await this.token.gift(account1, TOKEN_URI, benefactorFPF, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+        from: owner,
+        value: this.minContribution
+      });
+      await this.token.gift(account1, benefactorFPF, cardTwo, 'Happy Holiday - God', '000000', {
+        from: owner,
+        value: this.minContribution
+      });
     });
 
     context('should have to send at least the minimum amount', function () {
       it('reverts if below minimum amount', async function () {
-        await assertRevert(this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: 0}));
-        await assertRevert(this.token.gift(account1, TOKEN_URI, benefactorEFF, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+          from: owner,
+          value: 0
+        }));
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
           from: owner,
           value: this.minContribution.sub(1)
         }));
       });
 
       it('can send minimum contribution', async function () {
-        await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution});
-        await this.token.gift(account1, TOKEN_URI, benefactorEFF, {from: owner, value: this.minContribution.plus(1)});
+        await this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+          from: owner,
+          value: this.minContribution
+        });
+        await this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+          from: owner,
+          value: this.minContribution.plus(1)
+        });
       });
     });
 
@@ -86,6 +106,21 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       it('returns indexes', async function () {
         const indexes = await this.token.cardsKeys();
         indexes.length.should.be.bignumber.equal(2);
+      });
+    });
+
+    context('should set token data', function () {
+      it('returns message and extra', async function () {
+        const message = await this.token.messages(firstTokenId);
+        message.should.be.equal('Happy Xmas');
+
+        const extras = await this.token.extras(firstTokenId);
+        extras.should.be.equal('FFFFFF');
+      });
+
+      it('returns token URI', async function () {
+        const uri = await this.token.tokenURI(firstTokenId);
+        uri.should.be.equal(BASE_URI + cardOneUri);
       });
     });
   });
