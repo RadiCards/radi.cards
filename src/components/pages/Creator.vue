@@ -17,18 +17,19 @@
           <div class="form-group row" v-if="cards && cards.length > 0">
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
-              <select class="form-control" id="colour" v-model="formData.card">
+              <select class="field" id="colour" v-model="formData.card">
                 <option v-for="card in cards" :value="card">{{card.name}}</option>
               </select>
             </div>
           </div>
 
           <div class="form-group row">
+            <br>
             <label for="recipient" class="col-sm-2 col-form-label">Recipient</label>
             <div class="col-sm-10">
               <input
                 type="text"
-                class="form-control"
+                class="field"
                 id="recipient"
                 v-model="formData.recipient"
                 placeholder="0x0abc"
@@ -37,23 +38,33 @@
           </div>
 
           <div class="form-group row" v-if="benefactors && benefactors.length > 0">
-            <label for="message" class="col-sm-2 col-form-label">Message</label>
+            <br>
+            <label for="message" class="col-sm-2 col-form-label">Message <span style="opacity: 0.3">(max 280 characters)</span></label>
+            <div class="col-sm-10">
+              <textarea
+                class="field field--textarea"
+                id="message"
+                v-html="formData.message"
+                placeholder="Happy holidays..."
+                rows="3"
+              ></textarea>
+            </div>
+            <br>
+            <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
             <div class="col-sm-10">
               <input
                 type="text"
-                class="form-control"
-                id="message"
-                v-model="formData.message"
-                placeholder="Happy holidays..."
-              >
-              <input
-                type="text"
-                class="form-control"
+                class="field"
                 id="valueInETH"
                 v-model="formData.valueInETH"
                 placeholder="donation"
               >
-              <select id="benefactor" v-model="formData.benefactor">
+            </div>
+            <br>
+            <label for="benefactor">Benefactor</label>
+            <div class="col-sm-10">
+              <select id="benefactor" class="field" v-model="formData.benefactor" required>
+                <option disabled selected>Select a benefactor</option>
                 <option
                   v-for="benefactor in benefactors"
                   :value="benefactor.id"
@@ -61,7 +72,7 @@
               </select>
             </div>
           </div>
-
+          <br>
           <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button>
 
           <hr>

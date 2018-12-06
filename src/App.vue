@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <!-- <header>
+     <header>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">RadiCards</router-link>
 
@@ -19,7 +19,7 @@
           </li>
         </ul>
       </nav>
-    </header>-->
+    </header>
     <div class="container-fluid mt-5" v-if="!web3Detected">
       <div class="row no-metamask text-center">
         <div class="col mt-2 mb-2">
@@ -216,10 +216,17 @@ main {
 
 // Button
 .btn {
+  appearance: none;
   display: inline-block;
   padding: 0.5rem 1.5rem;
+  border: none;
   background: rgba($black, 0.8);
+
+  font: inherit;
+  line-height: 1.5rem;
   color: $white;
+
+  cursor: pointer;
 
   &:visited {
     color: $white;
@@ -228,6 +235,47 @@ main {
   &:hover {
     background: $black;
     border-bottom: 0;
+  }
+}
+
+// Input field
+.field {
+  appearance: none;
+  display: inline-block;
+  min-width: 15rem;
+  padding: 0.5rem;
+  border-radius: 0;
+  border: 1px solid $greylight;
+  background: rgba($white, 0.9);
+  color: $black;
+
+  font: inherit;
+
+  &:hover {
+    background: $white;
+    border-color: $gray;
+  }
+  &:focus {
+    outline: none;
+    background: $white;
+    border-color: $black;
+  }
+
+  &--textarea {
+    resize: none;
+  }
+
+  &::-webkit-input-placeholder {
+    color: rgba($gray, 0.5);
+  }
+  &:-moz-placeholder {
+    color: rgba($gray, 0.5);
+  }
+  &::-moz-placeholder {
+    color: rgba($gray, 0.5);
+  }
+  &:-ms-input-placeholder {
+    color: rgba($gray, 0.5);
   }
 }
 

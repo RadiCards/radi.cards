@@ -1,30 +1,32 @@
 <template>
-  <div v-if="cdata != undefined" :class="['card', {'card--flipped': isFlipped}]" @click="flip">
+  <div v-if="cdata != undefined" :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]" @click="flip">
     <figure class="card__front">
+      
       <div class="card__image">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
       </div>
+
       <figcaption>
         <div class="card__meta">
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator">{{ cdata.attributes.artist }}</p>
-          <p class="descr">{{ cdata.description }}</p>
         </div>
         <div class="card__value">
-          <div class="badge">0 ETH</div>
-          <div class="help">
-            <img src="/static/icons/flip.svg" alt>Flip
-          </div>
+          <div class="badge"><img src="/static/icons/shopping-cart.svg" /> 0 ETH</div>
         </div>
       </figcaption>
+
+      <p class="descr">{{ cdata.description }}</p>
+
+      <div class="help" v-if="isFlippable">
+        <img src="/static/icons/flip.svg" alt>Flip
+      </div>
+
     </figure>
 
-    <div class="card__back">
-      <p>This is the personal message! Go NFT!
-        <br>
-        <br>&mdash; Vitalik
-      </p>
+    <div class="card__back" v-if="message && message.length > 0">
+      <p v-html="message"></p>
     </div>
   </div>
 </template>
@@ -38,7 +40,10 @@ export default {
   name: "card",
 
   computed: {
-    ...mapState(["card"])
+    ...mapState(["card"]),
+    isFlippable: function() {
+      return (this.message && this.message.length > 0)
+    }
   },
   props: {
     cdata: {
@@ -48,15 +53,8 @@ export default {
 
   data() {
     return {
+      // message: 'This is the personal message! Go NFT!<br><br>&mdash; Vitalik',
       isFlipped: false
-      // name: "Artwork name",
-      // descr: "Artwork description",
-      // value: 0.5,
-      // image_url: "",
-
-      // creator: {
-      //   name: "Artist name"
-      // }
     };
   },
 
@@ -88,27 +86,28 @@ export default {
 
   box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   background: $white;
-  cursor: ew-resize;
-  cursor: alias;
 
   transition: all 0.2s ease-in-out;
-  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
-  // perspective: 1000px;
-  transform-style: preserve-3d;
 
-  // &:hover {
-  //   box-shadow: 0 0.25rem 1.5rem rgba($black, 0.2);
-  //   border-bottom: none;
-  //   transform: scale(1.01);
-  //   transform-style: preserve-3d;
-  // }
+  &:hover {
+    box-shadow: 0 0.25rem 1.5rem rgba($black, 0.2);
+    border-bottom: none;
+  }
+  &:not(.card--flippable):hover {
+    transform: translateY(-2px);
+  }
 
-  // Flip effect
-  &--flipped {
-    transform: rotateY(-180deg);
+  &--flippable {
+    cursor: e-resize;
+    cursor: alias;
+    transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
     transform-style: preserve-3d;
 
-    // &:hover { transform: scale(1.01) rotateY(180deg); }
+    // Flip effect
+    &.card--flipped {
+      transform: rotateY(-180deg);
+      transform-style: preserve-3d;
+    }
   }
 
   &__front,
@@ -124,25 +123,23 @@ export default {
 
   &__image {
     flex: 1;
-    min-height: 12rem;
     margin: -#{$p_v} -#{$p_h} $p_v;
     background: $greylight;
-  }
-
-  .card__image {
-    display: flex;
-    justify-content: center;
-    text-align: center;
 
     img {
-      min-height: 5rem;
+      display: block;
+      width: 100%;
       max-width: 100%;
-      width: 538px;
-      height: 538px;
-      // max-height: 100%;
+      height: 100%;
+      min-height: 12rem;
+      object-fit: cover;
+      object-position: center;
     }
     .img--placeholder {
       opacity: 0.1;
+      display: flex;
+      justify-content: center;
+      text-align: center;
     }
   }
 
@@ -171,13 +168,19 @@ export default {
   }
 
   .badge {
-    display: inline-block;
+    display: flex;
+    align-items: center;
     margin-right: -$p_h;
-    padding: 0.75rem 0.5rem;
+    padding: 0.5rem;
     background: $black;
     color: $white;
     white-space: nowrap;
     font-weight: bold;
+
+    img {
+      width: 0.875rem;
+      margin-right: 0.25rem;
+    }
   }
 
   .help {
