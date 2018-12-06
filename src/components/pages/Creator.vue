@@ -1,9 +1,7 @@
 <template>
   <div class="container">
     <h1>Card Foundry</h1>
-
-    {{ cards }}
-    {{ benefactors }}
+    
     <div class="row">
       <div class="col">
         <form>

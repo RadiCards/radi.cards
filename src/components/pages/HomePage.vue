@@ -11,7 +11,7 @@
     </blockquote>
 
     <section class="section">
-      <h4 class="section__title">STEP ONE</h4>
+      <h4 class="section__title"><router-link :to="{ name: 'create' }">STEP ONE</router-link></h4>
       <h2>Choose your favourite radicard</h2>
       <p>All unique designs</p>
 
