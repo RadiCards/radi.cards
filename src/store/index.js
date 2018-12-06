@@ -170,7 +170,7 @@ const store = new Vuex.Store({
     },
     [actions.LOAD_CARDS]: async function({ commit, dispatch, state }) {
       const contract = await state.contract.deployed();
-      let cardIds = await contract.cardKeys();
+      let cardIds = await contract.cardsKeys();
       let ipfsPrefix = await contract.tokenBaseURI();
 
       let cardPromises = await _.map(cardIds, async id => {
@@ -207,17 +207,8 @@ const store = new Vuex.Store({
 });
 
 async function mapTokenDetails(results, ipfsPrefix, id) {
-  let data = {
-    img: ipfsPrefix + results[0],
-    name: results[1],
-    description: results[2],
-    tokenId: id
-  };
-
-  console.log(data);
-
-  //data.ipfsData = JSON.parse((await axios.get(data.ipfs)).data);
-  return data;
+  var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
+  return dataResp;
 }
 
 function mapBenefactorDetails(results, id) {
