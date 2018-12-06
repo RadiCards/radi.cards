@@ -218,8 +218,6 @@ function mapBenefactorDetails(results, id) {
     website: results[2],
     id: id
   };
-
-  console.log(data);
   return data;
 }
 

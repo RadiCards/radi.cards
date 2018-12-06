@@ -1,74 +1,74 @@
 <template>
-
-  <div :class="['card', {'card--flipped': isFlipped}]" @click="flip">
-
+  <div v-if="cdata != undefined" :class="['card', {'card--flipped': isFlipped}]" @click="flip">
     <figure class="card__front">
       <div class="card__image">
-        <img v-if="(image_url && image_url.length > 0)" :src="image_url" :alt="name" />
-        <img v-else src="/static/icons/radi-cards.svg" alt="" class="img--placeholder" />
+        <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="name">
+        <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
       </div>
       <figcaption>
         <div class="card__meta">
-          <h4 class="title">{{ name }}</h4>
-          <p class="creator">{{ creator.name }}</p>
-          <p class="descr">{{ descr }}</p>
+          <h4 class="title">{{ cdata.name }}</h4>
+          <p class="creator">{{ cdata.attributes.artist }}</p>
+          <p class="descr">{{ cdata.description }}</p>
         </div>
         <div class="card__value">
-          <div class="badge">{{ value }} ETH</div>
-          <div class="help"><img src="/static/icons/flip.svg" alt="" />Flip</div>
+          <div class="badge">0 ETH</div>
+          <div class="help">
+            <img src="/static/icons/flip.svg" alt>Flip
+          </div>
         </div>
       </figcaption>
     </figure>
 
     <div class="card__back">
-      <p>
-        This is the personal message! Go NFT!
-        <br/><br/>
-        &mdash; Vitalik
+      <p>This is the personal message! Go NFT!
+        <br>
+        <br>&mdash; Vitalik
       </p>
     </div>
-
   </div>
-
 </template>
 
 <script>
-  /* global web3:true */
+/* global web3:true */
 
-  import {mapState} from 'vuex';
+import { mapState } from "vuex";
 
-  export default {
+export default {
+  name: "card",
 
-    name: 'card',
+  computed: {
+    ...mapState(["card"])
+  },
+  props: {
+    cdata: {
+      type: Object
+    }
+  },
 
-    computed: {
-      ...mapState(['card']),
-    },
+  data() {
+    return {
+      isFlipped: false
+      // name: "Artwork name",
+      // descr: "Artwork description",
+      // value: 0.5,
+      // image_url: "",
 
-    data() {
-      return {
-        isFlipped: false,
-        name: 'Artwork name',
-        descr: 'Artwork description',
-        value: 0.5,
-        image_url: '',
+      // creator: {
+      //   name: "Artist name"
+      // }
+    };
+  },
 
-        creator: {
-          name: 'Artist name',
-        }
-      }
-    },
-
-    methods: {
-      flip: function(event) {
-        this.isFlipped = !this.isFlipped;
-      }
+  methods: {
+    flip: function(event) {
+      this.isFlipped = !this.isFlipped;
     }
   }
+};
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../styles/variables.scss";
 @import "../../styles/variables.scss";
 
@@ -92,7 +92,7 @@
   cursor: alias;
 
   transition: all 0.2s ease-in-out;
-  transition: all 1s cubic-bezier(0.4, 0.0, 0.2, 1);
+  transition: all 1s cubic-bezier(0.4, 0, 0.2, 1);
   // perspective: 1000px;
   transform-style: preserve-3d;
 
@@ -111,12 +111,16 @@
     // &:hover { transform: scale(1.01) rotateY(180deg); }
   }
 
-  &__front, &__back {
+  &__front,
+  &__back {
     transform-style: preserve-3d;
     backface-visibility: hidden;
   }
 
-  figure { display: block; width: 100%; }
+  figure {
+    display: block;
+    width: 100%;
+  }
 
   &__image {
     flex: 1;
@@ -132,8 +136,14 @@
 
     img {
       min-height: 5rem;
+      max-width: 100%;
+      width: 538px;
+      height: 538px;
+      // max-height: 100%;
     }
-    .img--placeholder { opacity: 0.1; }
+    .img--placeholder {
+      opacity: 0.1;
+    }
   }
 
   figcaption {
@@ -149,9 +159,16 @@
   }
 
   // Content
-  .title { font-size: 1.125rem; }
-  .creator {}
-  .descr { margin-top: 0.5rem; font-size: 0.875rem; color: $gray; }
+  .title {
+    font-size: 1.125rem;
+  }
+  .creator {
+  }
+  .descr {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: $gray;
+  }
 
   .badge {
     display: inline-block;
@@ -175,7 +192,9 @@
     font-size: 0.75rem;
     opacity: 0.2;
 
-    &:hover { opacity: 0.4; }
+    &:hover {
+      opacity: 0.4;
+    }
 
     img {
       width: 0.875rem;
@@ -186,7 +205,8 @@
   // Card back side
   &__back {
     position: absolute;
-    top: 0; left: 0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     padding: $p_v $p_h;

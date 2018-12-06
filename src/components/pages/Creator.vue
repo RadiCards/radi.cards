@@ -18,7 +18,7 @@
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
               <select class="form-control" id="colour" v-model="formData.card">
-                <option v-for="card in formLookupData.cards" :value="card">{{card.name}}</option>
+                <option v-for="card in cards" :value="card">{{card.name}}</option>
               </select>
             </div>
           </div>
@@ -55,7 +55,7 @@
               >
               <select id="benefactor" v-model="formData.benefactor">
                 <option
-                  v-for="benefactor in formLookupData.benefactors"
+                  v-for="benefactor in benefactors"
                   :value="benefactor.id"
                 >{{benefactor.name}}</option>
               </select>
@@ -118,10 +118,6 @@ export default {
   components: { ClickableTransaction },
   data() {
     return {
-      formLookupData: {
-        cards: this.$store.state.cards,
-        benefactors: this.$store.state.benefactors
-      },
       formData: {
         errors: []
       },
@@ -131,7 +127,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["account", "uploadedHashs"])
+    ...mapState(["account", "uploadedHashs", 'cards', 'benefactors'])
   },
   mounted() {
     this.$nextTick(function() {
@@ -179,17 +175,6 @@ export default {
       if (!this.formData.card) {
         this.formData.errors.push("Card is required.");
       }
-    },
-    generateIpfsData: function() {
-      return {
-        name: _.get(this.formData, "card.name"),
-        description: _.get(this.formData, "card.description"),
-        image: _.get(this.formData, "card.img"),
-        attributes: {
-          message: _.get(this.formData, "message")
-        },
-        external_uri: "https://radi.cards"
-      };
     }
   }
 };
