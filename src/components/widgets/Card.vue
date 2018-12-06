@@ -2,7 +2,7 @@
   <div v-if="cdata != undefined" :class="['card', {'card--flipped': isFlipped}]" @click="flip">
     <figure class="card__front">
       <div class="card__image">
-        <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="name">
+        <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
       </div>
       <figcaption>

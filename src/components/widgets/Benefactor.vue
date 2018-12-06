@@ -4,12 +4,14 @@
 
     <div class="benefactor-text">
       <span class="benefactor-name">{{benefactor.name}}</span>
-      <span class="benefactor-description">{{benefactor.description}}</span>
+      <span class="benefactor-description">No Description in the Contract!</span>
     </div>
 
-    <a href="{benefactor.website}">
-      <img class="arrow">
-    </a>
+    <div class="arrow-container">
+      <a :href="benefactor.website">
+        <img class="arrow">
+      </a>
+    </div>
   </div>
 </template>
 
@@ -19,8 +21,7 @@
 import { mapState } from "vuex";
 
 export default {
-  name: "card",
-
+  name: "benefactor",
   computed: {},
   props: {
     benefactor: {
@@ -39,6 +40,7 @@ export default {
 
 .benefactor-row {
   display: flex;
+  // justify-content: center;
 
   .benefactor-img {
     width: 60px;
@@ -49,12 +51,22 @@ export default {
   .arrow {
     width: 10px;
     height: 20px;
-    margin: 0 auto;
-    border-bottom: 1px solid #c4c4c4;
   }
 
   .benefactor-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     border-bottom: 1px solid #c4c4c4;
+    flex-grow: 1;
+  }
+
+  .arrow-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-bottom: 1px solid #c4c4c4;
+    margin-right: 20px;
   }
 }
 </style>

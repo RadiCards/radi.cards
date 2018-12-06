@@ -106,11 +106,11 @@ export default {
   },
   created() {
     const loadData = function() {
+      this.$store.dispatch(actions.LOAD_BENEFACTORS);
+      this.$store.dispatch(actions.LOAD_CARDS);
       this.$store.dispatch(actions.LOAD_ACCOUNT_CARDS, {
         account: this.account
       });
-      this.$store.dispatch(actions.LOAD_BENEFACTORS);
-      this.$store.dispatch(actions.LOAD_CARDS);
     }.bind(this);
 
     this.$store.watch(() => this.$store.state.account, () => loadData());

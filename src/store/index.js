@@ -30,6 +30,8 @@ const store = new Vuex.Store({
     uploadedHashs: null,
     searchResult: null,
     notFound: null,
+    benefactors: null,
+    cards: null,
     transfers: []
   },
   getters: {},
@@ -161,6 +163,7 @@ const store = new Vuex.Store({
       });
       const benefactors = await Promise.all(benefactorsPromises);
 
+      console.log(benefactors);
       commit(mutations.SET_BENEFACTORS, benefactors);
     },
     [actions.LOAD_CARDS]: async function({ commit, dispatch, state }) {
