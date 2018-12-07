@@ -1,8 +1,8 @@
 {
   "contractName": "Strings",
   "abi": [],
-  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820a5111f385f4343de7fb65ff11fa077bde3ecb5c22a8b3285a36a7d26838dc9870029",
-  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a72305820a5111f385f4343de7fb65ff11fa077bde3ecb5c22a8b3285a36a7d26838dc9870029",
+  "bytecode": "0x604c602c600b82828239805160001a60731460008114601c57601e565bfe5b5030600052607381538281f30073000000000000000000000000000000000000000030146080604052600080fd00a165627a7a723058202304b1fa19e2edb6a18861f83705bd3ead06848a7581499c43cd009f70ba51190029",
+  "deployedBytecode": "0x73000000000000000000000000000000000000000030146080604052600080fd00a165627a7a723058202304b1fa19e2edb6a18861f83705bd3ead06848a7581499c43cd009f70ba51190029",
   "sourceMap": "26:992:2:-;;132:2:-1;166:7;155:9;146:7;137:37;252:7;246:14;243:1;238:23;232:4;229:33;270:1;265:20;;;;222:63;;265:20;274:9;222:63;;298:9;295:1;288:20;328:4;319:7;311:22;352:7;343;336:24",
   "deployedSourceMap": "26:992:2:-;;;;;;;;",
   "source": "pragma solidity ^0.4.19;\n\nlibrary Strings {\n  // via https://github.com/oraclize/ethereum-api/blob/master/oraclizeAPI_0.5.sol\n  function strConcat(string _a, string _b, string _c, string _d, string _e) internal pure returns (string) {\n    bytes memory _ba = bytes(_a);\n    bytes memory _bb = bytes(_b);\n    bytes memory _bc = bytes(_c);\n    bytes memory _bd = bytes(_d);\n    bytes memory _be = bytes(_e);\n    string memory abcde = new string(_ba.length + _bb.length + _bc.length + _bd.length + _be.length);\n    bytes memory babcde = bytes(abcde);\n    uint k = 0;\n    for (uint i = 0; i < _ba.length; i++) babcde[k++] = _ba[i];\n    for (i = 0; i < _bb.length; i++) babcde[k++] = _bb[i];\n    for (i = 0; i < _bc.length; i++) babcde[k++] = _bc[i];\n    for (i = 0; i < _bd.length; i++) babcde[k++] = _bd[i];\n    for (i = 0; i < _be.length; i++) babcde[k++] = _be[i];\n    return string(babcde);\n  }\n\n  function strConcat(string _a, string _b) internal pure returns (string) {\n    return strConcat(_a, _b, \"\", \"\", \"\");\n  }\n}\n",
@@ -5543,5 +5543,5 @@
   },
   "networks": {},
   "schemaVersion": "3.0.0-beta.1",
-  "updatedAt": "2018-12-07T16:37:02.017Z"
+  "updatedAt": "2018-12-07T16:54:30.870Z"
 }
