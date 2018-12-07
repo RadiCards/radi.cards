@@ -1,6 +1,6 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
 const infuraApikey = '4396873c00c84479991e58a34a54ebd9';
-let mnemonic = require('mnemonic');
+let mnemonic = require('./mnemonic');
 
 module.exports = {
   mocha: {
@@ -27,8 +27,8 @@ module.exports = {
       host: '127.0.0.1',
       port: 8545,
       network_id: '*', // Match any network id
-      gas: 0xfffffffffff,
-      gasPrice: 0x01
+      // gas: 6721975,
+      // gasPrice: 0x01
     },
     ganache: {
       host: "127.0.0.1",
