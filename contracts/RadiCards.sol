@@ -17,7 +17,7 @@ contract RadiCards is ERC721Token, Whitelist {
   string public tokenBaseURI = "https://ipfs.infura.io/ipfs/";
 
   uint256 public tokenIdPointer = 0;
-  uint256 public minContribution = 0.05 ether;
+  uint256 public minContribution = 0.01 ether; // under $1..now
 
   struct Benefactor {
     address ethAddress;
@@ -58,10 +58,10 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra) payable public returns (bool) {
+    require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].active, "Must be an active card");
-
     require(msg.value >= minContribution, "Must send at least the minimum amount");
 
     messages[tokenIdPointer] = _message;

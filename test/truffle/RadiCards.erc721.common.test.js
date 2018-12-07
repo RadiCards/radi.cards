@@ -37,6 +37,9 @@ contract('RadiCards ERC721 Common', function (accounts) {
   const cardOne = 1;
   const cardTwo = 2;
 
+  const message = 'Happy Xmas';
+  const extra = 'FFFFFF';
+
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
@@ -53,12 +56,15 @@ contract('RadiCards ERC721 Common', function (accounts) {
   beforeEach(async function () {
     this.token = await RadiCards.new({from: owner});
     this.minContribution = await this.token.minContribution();
+
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
+    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
   });
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {from: owner, value: this.minContribution});
-      await this.token.gift(account1, benefactorFPF, cardTwo, 'Happy Holiday - God', '000000', {from: owner, value: this.minContribution});
+      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, {from: owner, value: this.minContribution});
+      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, {from: owner, value: this.minContribution});
     });
 
     describe('balanceOf', function () {
