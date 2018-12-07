@@ -36,6 +36,8 @@ contract RadiCards is ERC721Token, Whitelist {
   mapping(uint256 => Card) public cards;
   uint256[] internal cardsIndex;
 
+  mapping(uint256 => address) public gifters;
+  mapping(uint256 => uint256) public giftAmounts;
   mapping(uint256 => string) public messages;
   mapping(uint256 => string) public extras;
 
@@ -66,6 +68,8 @@ contract RadiCards is ERC721Token, Whitelist {
 
     messages[tokenIdPointer] = _message;
     extras[tokenIdPointer] = _extra;
+    gifters[tokenIdPointer] = msg.sender;
+    giftAmounts[tokenIdPointer] = msg.value;
 
     _mint(to, cards[_cardIndex].tokenURI);
 
@@ -88,6 +92,8 @@ contract RadiCards is ERC721Token, Whitelist {
     // custom fields
     messages[_tokenId] = "";
     extras[_tokenId] = "";
+    gifters[tokenIdPointer] = address(0);
+    giftAmounts[tokenIdPointer] = 0;
 
     // Super burn
     _burn(ownerOf(_tokenId), _tokenId);

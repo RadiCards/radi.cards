@@ -53,7 +53,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
   });
 
-  describe('custom radi.cards logic', function () {
+  describe.only('custom radi.cards logic', function () {
     beforeEach(async function () {
       await this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
         from: owner,
@@ -134,6 +134,12 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
         const extras = await this.token.extras(firstTokenId);
         extras.should.be.equal('FFFFFF');
+
+        const gifter = await this.token.gifters(firstTokenId);
+        gifter.should.be.equal(owner);
+
+        const giftAmt = await this.token.giftAmounts(firstTokenId);
+        giftAmt.should.be.bignumber.equal(this.minContribution);
       });
 
       it('returns token URI', async function () {
