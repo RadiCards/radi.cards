@@ -17,7 +17,7 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true, // Default: false
-          runs: 200      // Default: 200
+          runs: 700      // Default: 200
         },
       }
     }
@@ -27,8 +27,8 @@ module.exports = {
       host: '127.0.0.1',
       port: 8545,
       network_id: '*', // Match any network id
-      gas: 0xfffffffffff,
-      gasPrice: 0x01
+      // gas: 6721975,
+      // gasPrice: 0x01
     },
     ganache: {
       host: "127.0.0.1",
