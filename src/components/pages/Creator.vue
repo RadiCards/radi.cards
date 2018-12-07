@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>Card Foundry</h1>
-    
+
     <div class="row">
       <div class="col">
         <form>
@@ -39,15 +39,18 @@
 
           <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <br>
-            <label for="message" class="col-sm-2 col-form-label">Message <span style="opacity: 0.3">(max 280 characters)</span></label>
+            <label for="message" class="col-sm-2 col-form-label">
+              Message
+              <span style="opacity: 0.3">(max 280 characters)</span>
+            </label>
             <div class="col-sm-10">
-              <textarea
-                class="field field--textarea"
-                id="message"
-                v-html="formData.message"
+              <b-form-textarea
+                id="textarea1"
+                v-model="formData.message"
                 placeholder="Happy holidays..."
-                rows="3"
-              ></textarea>
+                :rows="3"
+                :max-rows="6"
+              ></b-form-textarea>
             </div>
             <br>
             <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
@@ -65,10 +68,7 @@
             <div class="col-sm-10">
               <select id="benefactor" class="field" v-model="formData.benefactor" required>
                 <option disabled selected>Select a benefactor</option>
-                <option
-                  v-for="benefactor in benefactors"
-                  :value="benefactor.id"
-                >{{benefactor.name}}</option>
+                <option v-for="benefactor in benefactors" :value="benefactor.id">{{benefactor.name}}</option>
               </select>
             </div>
           </div>
@@ -138,7 +138,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["account", "uploadedHashs", 'cards', 'benefactors'])
+    ...mapState(["account", "uploadedHashs", "cards", "benefactors"])
   },
   mounted() {
     this.$nextTick(function() {
@@ -149,28 +149,21 @@ export default {
     giveBirth: function() {
       this.checkForm();
       if (this.formData.errors.length === 0) {
-        let ipfsData = this.generateIpfsData();
         let recipient = this.formData.recipient;
         let valueInETH = this.formData.valueInETH;
-        let benefactor = this.formData.benefactor;
+        let benefactorIndex = this.formData.benefactor.toNumber();
+        let cardIndex = this.formData.card.id;
+        let message = this.formData.message
+        let extra = ""
 
-        let buffer = Buffer.from(JSON.stringify(ipfsData));
-        ipfs
-          .add(buffer)
-          .then(
-            function(response) {
-              console.log(response);
-              this.response.ipfsHash = response[0].hash;
-              this.$store.dispatch(actions.BIRTH, {
-                recipient,
-                tokenURI: response[0].hash,
-                ipfsData,
-                valueInETH,
-                benefactor
-              });
-            }.bind(this)
-          )
-          .catch(error => console.error(error));
+        this.$store.dispatch(actions.BIRTH, {
+          recipient,
+          benefactorIndex,
+          cardIndex,
+          message,
+          extra,
+          valueInETH
+        });
       }
     },
     checkForm: function() {
