@@ -191,9 +191,14 @@ const store = new Vuex.Store({
           console.log(giftAmount)
           console.log(web3.utils.fromWei(giftAmount + '', 'ether'))
         }
+        let accountCreatedCard = false;
+        if (gifter === account.toLowerCase()) {
+          accountCreatedCard = true
+        }
         let ownedNFTInformation = {
           tokenIdNumber: tokenIdNumber,
           gifter: gifter,
+          accountCreatedCard: accountCreatedCard,
           giftAmount: web3.utils.fromWei(giftAmount + '', 'ether'),
           cardIndex: cardIndex.toNumber(),
           BenefactorIndex: BenefactorIndex.toNumber(),

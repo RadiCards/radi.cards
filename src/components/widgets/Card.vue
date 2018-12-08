@@ -44,9 +44,12 @@
       <div class="descr" v-if="cdata.message && cdata.message.length > 0">
         <strong>Benefactor:</strong>
         <p>
-          
           <a :href="benefactors[cdata.BenefactorIndex-1].website" target="_blank">{{benefactors[cdata.BenefactorIndex-1].name}}</a>
         </p>
+      </div>
+      <div class="descr" v-if="cdata.accountCreatedCard">
+        <strong>Did I create this card?:</strong>
+        <p>{{cdata.accountCreatedCard}}</p>
       </div>
     </figure>
   </div>
