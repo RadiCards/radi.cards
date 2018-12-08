@@ -48,7 +48,7 @@
         </p>
       </div>
       <div class="descr" v-if="cdata.accountCreatedCard">
-        <strong>Did I create this card?:</strong>
+        <strong>Did I create this card:</strong>
         <p>{{cdata.accountCreatedCard}}</p>
       </div>
     </figure>
