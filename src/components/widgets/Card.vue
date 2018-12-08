@@ -30,7 +30,7 @@
       <div v-if="!cdata.description">
         <p class="descr">No description...</p>
       </div>
-      
+
       <div class="help" v-if="isFlippable">
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
@@ -40,6 +40,13 @@
       <div class="descr" v-if="cdata.message && cdata.message.length > 0">
         <strong>Message:</strong>
         <p>{{cdata.message}}</p>
+      </div>
+      <div class="descr" v-if="cdata.message && cdata.message.length > 0">
+        <strong>Benefactor:</strong>
+        <p>
+          
+          <a :href="benefactors[cdata.BenefactorIndex-1].website" target="_blank">{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+        </p>
       </div>
     </figure>
   </div>
@@ -54,7 +61,7 @@ export default {
   name: "card",
 
   computed: {
-    ...mapState(["card"]),
+    ...mapState(["card", "benefactors"]),
     isFlippable: function() {
       return this.message && this.message.length > 0;
     }

@@ -191,7 +191,6 @@ const store = new Vuex.Store({
           console.log(giftAmount)
           console.log(web3.utils.fromWei(giftAmount + '', 'ether'))
         }
-
         let ownedNFTInformation = {
           tokenIdNumber: tokenIdNumber,
           gifter: gifter,
@@ -288,7 +287,7 @@ function mapBenefactorDetails(results, id) {
     address: results[0],
     name: results[1],
     website: results[2],
-    id: id
+    id: id.toNumber()
   };
   return data;
 }
