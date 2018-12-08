@@ -35,9 +35,9 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
 
-      <hr>
 
       <div class="descr" v-if="cdata.message && cdata.message.length > 0">
+      <hr>
         <strong>Message:</strong>
         <p>{{cdata.message}}</p>
       </div>
