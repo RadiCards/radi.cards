@@ -182,13 +182,13 @@ const store = new Vuex.Store({
       for (const tokenId of tokenIds) {
         let tokenIdNumber = tokenId.toNumber()
         let cardIndex = await contract.tokenIdToCardIndex(tokenIdNumber)
-        // let cardInformation = await state.cards[cardIndex.toNumber()]
+
         let BenefactorIndex = await contract.tokenIdToBenefactorIndex(tokenIdNumber)
         let tokenInformation = await contract.cards(tokenIdNumber)
         let messageInformation = await contract.messages(tokenIdNumber)
         let gifter = await contract.gifters(tokenIdNumber)
         let giftAmount = await contract.giftAmounts(tokenIdNumber)
-        userCardsInformation.push({
+        let ownedNFTInformation = {
           tokenIdNumber: tokenIdNumber,
           gifter: gifter,
           giftAmount: giftAmount.toNumber(),
@@ -196,7 +196,16 @@ const store = new Vuex.Store({
           BenefactorIndex: BenefactorIndex.toNumber(),
           tokenInformation: tokenInformation,
           messageInformation: messageInformation
-        })
+        }
+        let allCardInformation = {}
+        if (state.cards) {
+          let cardInformation = state.cards[cardIndex.toNumber()]
+          allCardInformation = {
+            ...ownedNFTInformation,
+            ...cardInformation
+          }
+          userCardsInformation.push(allCardInformation)
+        }
       }
       console.log(userCardsInformation)
 

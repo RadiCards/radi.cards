@@ -19,6 +19,7 @@
         <div class="card-columns">
           <div class="card shadow-sm text-center" v-for="card in accountCards">
             <div class="card-footer w-100 text-muted small">{{card}}</div>
+            <br>
           </div>
         </div>
       </div>
@@ -32,6 +33,7 @@ import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import ClickableAddress from "../widgets/ClickableAddress";
 
+import Card from "../../components/widgets/Card";
 export default {
   name: "account",
   components: { ClickableTransaction, ClickableAddress },
