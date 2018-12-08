@@ -16,11 +16,8 @@
 
     <div class="row mt-5" v-else>
       <div class="col">
-        <div class="card-columns">
-          <div class="card shadow-sm text-center" v-for="card in accountCards">
-            <div class="card-footer w-100 text-muted small">{{card}}</div>
-            <br>
-          </div>
+        <div class="card-slider" v-if="accountCards && accountCards.length > 0">
+          <card v-for="item in accountCards" :key="item.tokenId" :cdata="item">{{item}}</card>
         </div>
       </div>
     </div>
@@ -36,10 +33,10 @@ import ClickableAddress from "../widgets/ClickableAddress";
 import Card from "../../components/widgets/Card";
 export default {
   name: "account",
-  components: { ClickableTransaction, ClickableAddress },
+  components: { ClickableTransaction, ClickableAddress, Card },
   computed: {
     ...mapState(["account", "accountCards", "transfers", "cards"]),
-    ...mapGetters(["findTx"]),
+    ...mapGetters(["findTx"])
   },
   created() {
     //FIXME in App.vue so prob not needed
