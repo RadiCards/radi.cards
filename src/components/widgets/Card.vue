@@ -1,7 +1,10 @@
 <template>
-  <div v-if="cdata != undefined" :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]" @click="flip">
+  <div
+    v-if="cdata != undefined"
+    :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
+    @click="flip"
+  >
     <figure class="card__front">
-      
       <div class="card__image">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
@@ -12,8 +15,10 @@
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator">{{ cdata.attributes.artist }}</p>
         </div>
-        <div class="card__value">
-          <div class="badge"><img src="/static/icons/shopping-cart.svg" /> 0 ETH</div>
+        <div class="card__value" v-if="cdata.giftAmount && cdata.giftAmount.length > 0">
+          <div class="badge">
+            <img src="/static/icons/shopping-cart.svg"> {{cdata.giftAmount}} ETH
+          </div>
         </div>
       </figcaption>
 
@@ -23,11 +28,14 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
 
-    </figure>
+      <hr>
 
-    <div class="card__back" v-if="message && message.length > 0">
-      <p v-html="message"></p>
-    </div>
+      <div class="descr" v-if="cdata.message && cdata.message.length > 0">
+        <strong>Message:</strong>
+        <p>{{cdata.message}}</p>
+      </div>
+      
+    </figure>
   </div>
 </template>
 
@@ -42,7 +50,7 @@ export default {
   computed: {
     ...mapState(["card"]),
     isFlippable: function() {
-      return (this.message && this.message.length > 0)
+      return this.message && this.message.length > 0;
     }
   },
   props: {

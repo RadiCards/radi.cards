@@ -186,10 +186,16 @@ const store = new Vuex.Store({
         let message = await contract.messages(tokenIdNumber)
         let gifter = await contract.gifters(tokenIdNumber)
         let giftAmount = await contract.giftAmounts(tokenIdNumber)
+        console.log("PROVIDER")
+        if (giftAmount) {
+          console.log(giftAmount)
+          console.log(web3.utils.fromWei(giftAmount + '', 'ether'))
+        }
+
         let ownedNFTInformation = {
           tokenIdNumber: tokenIdNumber,
           gifter: gifter,
-          giftAmount: giftAmount.toNumber(),
+          giftAmount: web3.utils.fromWei(giftAmount + '', 'ether'),
           cardIndex: cardIndex.toNumber(),
           BenefactorIndex: BenefactorIndex.toNumber(),
           message: message
