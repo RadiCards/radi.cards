@@ -199,10 +199,12 @@ const store = new Vuex.Store({
         }
         let allCardInformation = {}
         if (state.cards) {
-          let cardInformation = state.cards[cardIndex.toNumber()]
+          let cardInformation = state.cards.filter(card => {
+            return card.cardIndex === cardIndex.toNumber()
+          })
           allCardInformation = {
             ...ownedNFTInformation,
-            ...cardInformation
+            ...cardInformation[0]
           }
           userCardsInformation.push(allCardInformation)
         }
@@ -274,7 +276,7 @@ const store = new Vuex.Store({
 
 async function mapTokenDetails(results, ipfsPrefix, id) {
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
-  dataResp.id = id.toNumber();
+  dataResp.cardIndex = id.toNumber();
   return dataResp;
 }
 

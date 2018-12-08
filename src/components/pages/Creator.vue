@@ -152,7 +152,7 @@ export default {
         let recipient = this.formData.recipient;
         let valueInETH = this.formData.valueInETH;
         let benefactorIndex = this.formData.benefactor.toNumber();
-        let cardIndex = this.formData.card.id;
+        let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message
         let extra = ""
 
