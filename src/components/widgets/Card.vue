@@ -17,13 +17,20 @@
         </div>
         <div class="card__value" v-if="cdata.giftAmount && cdata.giftAmount.length > 0">
           <div class="badge">
-            <img src="/static/icons/shopping-cart.svg"> {{cdata.giftAmount}} ETH
+            <img src="/static/icons/shopping-cart.svg">
+            {{cdata.giftAmount}} ETH
           </div>
         </div>
       </figcaption>
 
-      <p class="descr">{{ cdata.description }}</p>
+      <div v-if="cdata.description">
+        <p class="descr">{{ cdata.description }}</p>
+      </div>
 
+      <div v-if="!cdata.description">
+        <p class="descr">No description...</p>
+      </div>
+      
       <div class="help" v-if="isFlippable">
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
@@ -34,7 +41,6 @@
         <strong>Message:</strong>
         <p>{{cdata.message}}</p>
       </div>
-      
     </figure>
   </div>
 </template>
