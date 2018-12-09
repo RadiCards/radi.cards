@@ -4,7 +4,6 @@
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">RadiCards</router-link>
 
-        <ul class="navbar-nav mr-auto"></ul>
         <ul class="navbar-nav">
           <li class="nav-item nav-link">
             <router-link :to="{ name: 'account' }" class="nav-link">
@@ -298,10 +297,16 @@ main {
   overflow-x: auto;
 
   perspective: 1000px;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1.25rem;
 
   &::after {
     content: "";
     flex: 0 0 0.25rem;
+  }
+
+  & > * {
+    scroll-snap-align: start;
   }
 }
 

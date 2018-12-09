@@ -36,10 +36,6 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Send radicards to friends and family</h2>
       <p>Spread hope & joy</p>
-
-      <div class="card-slider">
-        <card></card>
-      </div>
     </section>
 
     <div class="row">
