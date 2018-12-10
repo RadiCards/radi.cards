@@ -11,9 +11,7 @@
     </blockquote>
 
     <section class="section">
-      <h4 class="section__title">
-        STEP ONE
-      </h4>
+      <h4 class="section__title">STEP ONE</h4>
       <h2>Choose your favourite radicard</h2>
       <p>All unique designs</p>
 
@@ -36,6 +34,9 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Send radicards to friends and family</h2>
       <p>Spread hope & joy</p>
+      <div class="card-slider" v-if="cards && cards.length > 0">
+        <cardsmall v-for="(item, index) in cards" :key="index" :cdata="item">{{item}}</cardsmall>
+      </div>
     </section>
 
     <div class="row">
@@ -53,11 +54,12 @@
 import { mapGetters, mapState } from "vuex";
 import * as actions from "../../store/actions";
 import Card from "../../components/widgets/Card";
+import Cardsmall from "../../components/widgets/CardSmall";
 import Benefactor from "../../components/widgets/Benefactor";
 
 export default {
   name: "home",
-  components: { Card, Benefactor },
+  components: { Card, Benefactor, Cardsmall },
   data() {
     return {};
   },
