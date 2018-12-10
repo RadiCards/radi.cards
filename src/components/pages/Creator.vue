@@ -9,9 +9,9 @@
         </ul>
       </div>
     </div>
-    <form-wizard title subtitle color="#333333" @on-complete="giveBirth">
-      <tab-content title="Select Card" icon="far fa-image">
-        <form>
+    <form>
+      <form-wizard title subtitle color="#333333" @on-complete="giveBirth">
+        <tab-content title="Select Card" icon="far fa-image">
           <div class="form-group row" v-if="cards && cards.length > 0">
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
             <div class="col-sm-10">
@@ -21,6 +21,17 @@
             </div>
           </div>
 
+          <img
+            v-if="formData.card"
+            :src="formData.card.image"
+            class="img-thumbnail"
+            style="max-height: 150px"
+          >
+
+          <br>
+          
+        </tab-content>
+        <tab-content title="Gift Recipient" icon="fas fa-gift">
           <div class="form-group row">
             <br>
             <label for="recipient" class="col-sm-2 col-form-label">Recipient</label>
@@ -33,9 +44,6 @@
                 placeholder="0x0abc"
               >
             </div>
-          </div>
-
-          <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <br>
             <label for="message" class="col-sm-2 col-form-label">
               Message
@@ -50,6 +58,10 @@
                 :max-rows="6"
               ></b-form-textarea>
             </div>
+          </div>
+        </tab-content>
+        <tab-content title="Donation Recipient" icon="fas fa-heart">
+          <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <br>
             <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
             <div class="col-sm-10">
@@ -70,48 +82,44 @@
               </select>
             </div>
           </div>
-          <br>
-          <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button>
-        </form>
-        <hr>
+        </tab-content>
+        <tab-content title="Send Card!" icon="fas fa-paper-plane">
+          <code class="small">
+            IPFS Metadata:
+            <a
+              target="_blank"
+              :href="'https://ipfs.infura.io/ipfs/' + response.ipfsHash"
+            >{{response.ipfsHash}}</a>
+          </code>
 
-        <code class="small">
-          IPFS Metadata:
-          <a
-            target="_blank"
-            :href="'https://ipfs.infura.io/ipfs/' + response.ipfsHash"
-          >{{response.ipfsHash}}</a>
-        </code>
+          <clickable-transaction :transaction="uploadedHashs" class="small"></clickable-transaction>
 
-        <clickable-transaction :transaction="uploadedHashs" class="small"></clickable-transaction>
+          <div class="col text-center">
+            <h2 v-if="formData.card">{{formData.card.name}}</h2>
+            <img
+              v-if="formData.card"
+              :src="formData.card.image"
+              class="img-thumbnail"
+              style="max-height: 150px"
+            >
 
-        <div class="col text-center">
-          <h2 v-if="formData.card">{{formData.card.name}}</h2>
-          <img
-            v-if="formData.card"
-            :src="formData.card.image"
-            class="img-thumbnail"
-            style="max-height: 150px"
-          >
+            <h4 v-if="formData.card">{{formData.card.description}}</h4>
 
-          <h4 v-if="formData.card">{{formData.card.description}}</h4>
-
-          <p v-if="formData.card && formData.message">
-            <span class="text-muted small">Message:</span>
-            {{formData.message}}
-          </p>
-          <p v-if="formData.card && formData.recipient">
-            <span class="text-muted small">Recipient:</span>
-            <code>{{formData.recipient}}</code>
-          </p>
-          <hr>
-          <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
-        </div>
-      </tab-content>
-      <tab-content title="Gift Recipiant" icon="fas fa-gift"></tab-content>
-      <tab-content title="Donation Recipiant" icon="fas fa-heart"></tab-content>
-      <tab-content title="Send Card!" icon="fas fa-paper-plane"></tab-content>
-    </form-wizard>
+            <p v-if="formData.card && formData.message">
+              <span class="text-muted small">Message:</span>
+              {{formData.message}}
+            </p>
+            <p v-if="formData.card && formData.recipient">
+              <span class="text-muted small">Recipient:</span>
+              <code>{{formData.recipient}}</code>
+            </p>
+            <hr>
+            <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
+          </div>
+          <!-- <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button> -->
+        </tab-content>
+      </form-wizard>
+    </form>
   </div>
 </template>
 
