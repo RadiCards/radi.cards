@@ -1,6 +1,12 @@
 <template>
   <div class="container">
     <h1>Card Foundry</h1>
+<i class="fas fa-eye"></i>
+    <form-wizard color="#333333" @on-complete="giveBirth">
+      <tab-content title="Personal details" icon="fas fa-eye">My first tab content</tab-content>
+      <tab-content title="Additional Info" icon="ti-settings">My second tab content</tab-content>
+      <tab-content title="Last step" icon="ti-check">Yuhuuu! This seems pretty damn simple</tab-content>
+    </form-wizard>
 
     <div class="row">
       <div class="col">
@@ -153,8 +159,8 @@ export default {
         let valueInETH = this.formData.valueInETH;
         let benefactorIndex = this.formData.benefactor.toNumber();
         let cardIndex = this.formData.card.cardIndex;
-        let message = this.formData.message
-        let extra = ""
+        let message = this.formData.message;
+        let extra = "";
 
         this.$store.dispatch(actions.BIRTH, {
           recipient,
