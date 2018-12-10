@@ -10,7 +10,10 @@
       </div>
     </div>
     <form>
-      <form-wizard title subtitle color="#333333" @on-complete="giveBirth">
+      <form-wizard title subtitle color="#333333" 
+      @on-complete="giveBirth"
+      finish-button-text="Create Card!"
+>
         <tab-content title="Select Card" icon="far fa-image">
           <div class="form-group row" v-if="cards && cards.length > 0">
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
