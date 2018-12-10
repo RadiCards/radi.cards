@@ -39,6 +39,13 @@
       </div>
     </section>
 
+    <section class="section">
+      <h4 class="section__title">Buidl-ers</h4>
+      <!-- <h2>Send radicards to friends and family</h2> -->
+      <p>All of us from the NFT and Web3 family!</p>
+      <buidlers></buidlers>
+    </section>
+
     <div class="row">
       <div class="col">
         <span class="mt-5" v-if="totalSupply">
@@ -53,13 +60,14 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import * as actions from "../../store/actions";
+import Buidlers from "../../components/widgets/Buidlers";
 import Card from "../../components/widgets/Card";
 import Cardsmall from "../../components/widgets/CardSmall";
 import Benefactor from "../../components/widgets/Benefactor";
 
 export default {
   name: "home",
-  components: { Card, Benefactor, Cardsmall },
+  components: { Card, Benefactor, Cardsmall, Buidlers },
   data() {
     return {};
   },
