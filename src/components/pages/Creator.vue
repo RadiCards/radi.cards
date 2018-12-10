@@ -3,9 +3,10 @@
     <h1>Card Foundry</h1>
 <i class="fas fa-eye"></i>
     <form-wizard color="#333333" @on-complete="giveBirth">
-      <tab-content title="Personal details" icon="fas fa-eye">My first tab content</tab-content>
-      <tab-content title="Additional Info" icon="ti-settings">My second tab content</tab-content>
-      <tab-content title="Last step" icon="ti-check">Yuhuuu! This seems pretty damn simple</tab-content>
+      <tab-content title="Select Card" icon="far fa-image">My first tab content</tab-content>
+      <tab-content title="Gift Recipiant" icon="fas fa-gift">My second tab content</tab-content>
+      <tab-content title="Donation Recipiant" icon="fas fa-heart">Yuhuuu! This seems pretty damn simple</tab-content>
+      <tab-content title="Send Card!" icon="fas fa-paper-plane">Yuhuuu! This seems pretty damn simple</tab-content>
     </form-wizard>
 
     <div class="row">
