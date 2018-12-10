@@ -36,6 +36,9 @@ export default {
   align-items: center;
   margin-right: 15px;
 
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease-in-out;
+
   img {
     width: 155px;
     height: 155px;
