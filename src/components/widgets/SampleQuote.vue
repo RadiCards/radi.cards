@@ -35,6 +35,15 @@ export default {
     margin-bottom: 10px;
     width: 153px;
     height: 153px;
+
+    box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
+
+    transition: all 0.2s ease-in-out;
+
+    &:hover {
+      box-shadow: 0 0.25rem 1.5rem rgba($black, 0.2);
+      border-bottom: none;
+    }
   }
 
   .quote {
