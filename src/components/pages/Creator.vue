@@ -10,10 +10,13 @@
       </div>
     </div>
     <form>
-      <form-wizard title subtitle color="#333333" 
-      @on-complete="giveBirth"
-      finish-button-text="Create Card!"
->
+      <form-wizard
+        title
+        subtitle
+        color="#333333"
+        @on-complete="giveBirth"
+        finish-button-text="Create Card!"
+      >
         <tab-content title="Select Card" icon="far fa-image">
           <div class="form-group row" v-if="cards && cards.length > 0">
             <label for="colour" class="col-sm-2 col-form-label">Cards</label>
@@ -21,6 +24,12 @@
               <select class="field" id="colour" v-model="formData.card">
                 <option v-for="card in cards" :value="card">{{card.name}}</option>
               </select>
+              <h2>Choose your favourite radicard</h2>
+              <p>All unique designs</p>
+
+              <div class="card-slider" v-if="cards && cards.length > 0">
+                <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
+              </div>
             </div>
           </div>
 
@@ -32,7 +41,6 @@
           >
 
           <br>
-          
         </tab-content>
         <tab-content title="Gift Recipient" icon="fas fa-gift">
           <div class="form-group row">
@@ -133,12 +141,13 @@ import IPFS from "ipfs-api";
 import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
+import Card from "../../components/widgets/Card";
 
 const ipfs = IPFS("ipfs.infura.io", "5001", { protocol: "https" });
 
 export default {
   name: "creator",
-  components: { ClickableTransaction },
+  components: { ClickableTransaction, Card },
   data() {
     return {
       formData: {

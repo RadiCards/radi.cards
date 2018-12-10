@@ -34,24 +34,25 @@
       <div class="help" v-if="isFlippable">
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
+    </figure>
 
+    <div class="card__back" v-if="cdata.message && cdata.message.length > 0">
+      <p v-html="cdata.message"></p>
 
-      <div class="descr" v-if="cdata.message && cdata.message.length > 0">
-      <hr>
-        <strong>Message:</strong>
-        <p>{{cdata.message}}</p>
-      </div>
       <div class="descr" v-if="cdata.message && cdata.message.length > 0">
         <strong>Benefactor:</strong>
         <p>
-          <a :href="benefactors[cdata.BenefactorIndex-1].website" target="_blank">{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+          <a
+            :href="benefactors[cdata.BenefactorIndex-1].website"
+            target="_blank"
+          >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
         </p>
       </div>
-      <div class="descr" v-if="cdata.accountCreatedCard">
-        <strong>Did I create this card:</strong>
+      <div class="descr" v-if="cdata.accountCreatedCard && cdata.accountCreatedCard">
+        <strong>Your Account created this card!</strong>
         <p>{{cdata.accountCreatedCard}}</p>
       </div>
-    </figure>
+    </div>
   </div>
 </template>
 
@@ -77,7 +78,7 @@ export default {
 
   data() {
     return {
-      // message: 'This is the personal message! Go NFT!<br><br>&mdash; Vitalik',
+      message: "This is the personal message! Go NFT!<br><br>&mdash; Vitalik",
       isFlipped: false
     };
   },
