@@ -9,7 +9,7 @@
 
     <div class="arrow-container">
       <a :href="benefactor.website">
-        <img class="arrow">
+        <img class="arrow" src="/static/icons/Arrow.png">
       </a>
     </div>
   </div>
