@@ -21,7 +21,4 @@ module.exports = async (deployer, network, accounts) => {
 
   const contract = await RadiCards.deployed();
   await contract.addCard(7, "QmZG4Pbj1kdR3pmChhkwJbYBQdSmTTuh9gW4WkUmtizHda", true);
-  await contract.addCard(8, "", true);
-  await contract.addCard(9, "", true);
-  await contract.addCard(10, "", true);
 };

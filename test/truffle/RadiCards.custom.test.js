@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract('RadiCards ERC721 Custom', function (accounts) {
+contract.only('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
 
@@ -49,11 +49,11 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     this.token = await RadiCards.new({from: owner});
     this.minContribution = await this.token.minContribution();
 
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
-    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, {from: owner});
+    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, {from: owner});
   });
 
-  describe.only('custom radi.cards logic', function () {
+  describe('custom radi.cards logic', function () {
     beforeEach(async function () {
       await this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
         from: owner,
@@ -184,7 +184,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       });
 
       it('reverts if not active', async function () {
-        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false);
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, {from: owner});
         await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, {
           from: owner,
           value: this.minContribution
