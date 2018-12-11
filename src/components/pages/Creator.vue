@@ -19,16 +19,13 @@
       >
         <tab-content title="Select Card" icon="far fa-image">
           <div class="form-group row" v-if="cards && cards.length > 0">
-            <label for="colour" class="col-sm-2 col-form-label">Cards</label>
-            <div class="col-sm-10">
-              <select class="field" id="colour" v-model="formData.card">
-                <option v-for="card in cards" :value="card">{{card.name}}</option>
-              </select>
-              <h2>Choose your favourite radicard</h2>
-              <p>All unique designs</p>
+            <h2>Choose your favourite radicard</h2>
+            <p>All unique designs</p>
 
-              <div class="card-slider" v-if="cards && cards.length > 0">
-                <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
+            <div class="card-slider" v-if="cards && cards.length > 0">
+              <div v-for="item in cards" :key="item.tokenId">
+                <card :cdata="item">{{item}}</card>
+                <button @click="selectCard(item)">Some card</button>
               </div>
             </div>
           </div>
@@ -167,6 +164,11 @@ export default {
     });
   },
   methods: {
+    selectCard(card) {
+      console.log("CARD SELECTED")
+      console.log(card)
+      this.formData.card = card;
+    },
     giveBirth: function() {
       this.checkForm();
       if (this.formData.errors.length === 0) {

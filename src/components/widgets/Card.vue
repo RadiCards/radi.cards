@@ -38,22 +38,23 @@
 
     <div v-if="cdata.message">
       <div class="card__back" style="padding-top:120px">
-        
         <h3>
-          <strong>{{cdata.message}}</strong></h3>
-        
+          <strong>{{cdata.message}}</strong>
+        </h3>
         <hr>
-        
         <p class="descr">
-        
-        Benefactor:
-        <strong><a
-          :href="benefactors[cdata.BenefactorIndex-1].website"
-          target="_blank"
-        >{{benefactors[cdata.BenefactorIndex-1].name}}</a></strong>
-        <div class="descr" v-if="cdata.accountCreatedCard && cdata.accountCreatedCard">
-          Your web3 account created this card!
-        </div>
+          Benefactor:
+          <strong>
+            <a
+              :href="benefactors[cdata.BenefactorIndex-1].website"
+              target="_blank"
+            >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+          </strong>
+        </p>
+        <div
+          class="descr"
+          v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
+        >Your web3 account created this card!</div>
         </p>
       </div>
     </div>
@@ -71,7 +72,7 @@ export default {
   computed: {
     ...mapState(["card", "benefactors"]),
     isFlippable: function() {
-      return this.message && this.message.length > 0;
+      return this.cdata.message && this.cdata.message.length > 0;
     }
   },
   props: {
