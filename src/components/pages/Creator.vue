@@ -170,7 +170,7 @@ export default {
       if (this.formData.errors.length === 0) {
         let recipient = this.formData.recipient;
         let valueInETH = this.formData.valueInETH;
-        let benefactorIndex = this.formData.benefactor.toNumber();
+        let benefactorIndex = this.formData.benefactor;
         let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message;
         let extra = "";
