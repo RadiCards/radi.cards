@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    <h1>Card Foundry</h1>
     <div class="form-group row" v-if="formData.errors.length">
       <div class="col-sm-4">
         <b>Please correct the following error(s):</b>
@@ -13,6 +12,7 @@
       <form-wizard
         title
         subtitle
+        shape="tab"
         color="#333333"
         @on-complete="giveBirth"
         finish-button-text="Create Card!"

@@ -2,18 +2,23 @@
   <div id="app">
      <header>
       <nav class="navbar navbar-expand-md">
-        <router-link :to="{ name: 'home' }" class="navbar-brand">RadiCards</router-link>
+        <router-link :to="{ name: 'home' }" class="navbar-brand">
+          <h1>
+            <span style="position: absolute; left: -9999px;">RadiCards</span>
+            <img src="/static/images/logo.svg" alt="RadiCards" />
+          </h1>
+        </router-link>
 
         <ul class="navbar-nav">
-          <li class="nav-item nav-link">
+          <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
               My cards
               <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>
             </router-link>
           </li>
-          <li class="nav-item nav-link">
+          <li class="nav-item">
             <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
-              Send
+              Send a card
             </router-link>
           </li>
         </ul>
@@ -134,12 +139,6 @@ export default {
 @import "styles/variables.scss";
 @import "styles/mixins.scss";
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
-
 body {
   margin: 0;
   padding: 0;
@@ -181,35 +180,83 @@ p {
 // Blockquote
 blockquote {
   margin: 0;
+
+  &.blockquote--hero {
+    position: relative;
+    margin-bottom: 8rem;
+
+    @include tabletAndUp() {
+      margin-bottom: 2rem;
+    }
+
+    p {
+      font-weight: bold;
+      font-size: 2.5rem;
+      line-height: 2.5rem;
+      letter-spacing: -0.1rem;
+
+      @include tabletAndUp() {
+        font-size: 4.5rem;
+        line-height: 4.5rem;
+      }
+    }
+  }
 }
 
 // Header
 header {
-  max-width: 48rem;
+  max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
-  border-bottom: 1px solid $black;
 }
 
 // Main
 main {
-  max-width: 48rem;
+  max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
+// Header
+footer {
+  max-width: $maxWidth;
+  margin: 0 auto;
+  padding: 1.25rem;
+  border-top: 1px solid rgba($black, 0.1);
 }
 
 // Nav
-.navbar-nav {
+.navbar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  li + li {
-    margin-left: 1rem;
+  &-brand {
+    img {
+      max-width: 10rem;
+
+      @include tabletAndUp() {
+        max-width: auto;
+      }
+    }
+    &:hover {
+      border-bottom: none;
+    }
+  }
+  &-nav {
+    display: flex;
+    align-items: center;
+
+    li + li {
+      margin-left: 1rem;
+    }
+  }
+  .nav-link {
+    display: none;
+
+    @include tabletAndUp() {
+      display: inherit;
+    }
   }
 }
 
