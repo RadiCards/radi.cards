@@ -174,11 +174,12 @@ const store = new Vuex.Store({
     }) {
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
+      console.log(tokenIds);
       let userCardsInformation = [];
       // this iterates over all the cards that the users address owns and then
       // gets all further details for that specific card. In future this should be
       // combine to one single contract call by making a view function within the RadiCards.sol
-      // smart contract that returns all this info in one call. 
+      // smart contract that returns all this info in one call.
       for (const tokenId of tokenIds) {
         let tokenIdNumber = tokenId.toNumber()
         let cardIndex = await contract.tokenIdToCardIndex(tokenIdNumber)
@@ -240,6 +241,7 @@ const store = new Vuex.Store({
     }) {
       const contract = await state.contract.deployed();
       let cardIds = await contract.cardsKeys();
+      console.log(cardIds);
       let ipfsPrefix = await contract.tokenBaseURI();
 
       let cardPromises = await _.map(cardIds, async id => {
