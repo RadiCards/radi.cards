@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract.only('RadiCards ERC721 Custom', function (accounts) {
+contract('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
 
@@ -29,7 +29,7 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
 
   const cardOne = 1;
   const cardTwo = 2;
-  
+
   const message = 'Happy Xmas';
   const extra = 'FFFFFF';
 
@@ -116,7 +116,7 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
     context('should have two benefactors initially', function () {
       it('returns indexes', async function () {
         const indexes = await this.token.benefactorsKeys();
-        indexes.length.should.be.bignumber.equal(2);
+        indexes.length.should.be.bignumber.equal(3);
       });
     });
 
@@ -129,17 +129,19 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
 
     context('should set data', function () {
       it('returns message and extra', async function () {
-        const message = await this.token.messages(firstTokenId);
-        message.should.be.equal(message);
+        const [
+          _gifter,
+          _giftingAmount,
+          _message,
+          _extra,
+          _tokenUri
+        ] = await this.token.tokenDetails(firstTokenId);
 
-        const extras = await this.token.extras(firstTokenId);
-        extras.should.be.equal('FFFFFF');
-
-        const gifter = await this.token.gifters(firstTokenId);
-        gifter.should.be.equal(owner);
-
-        const giftAmt = await this.token.giftAmounts(firstTokenId);
-        giftAmt.should.be.bignumber.equal(this.minContribution);
+        _message.should.be.equal(message);
+        _extra.should.be.equal('FFFFFF');
+        _gifter.should.be.equal(owner);
+        _giftingAmount.should.be.bignumber.equal(this.minContribution);
+        _tokenUri.should.be.equal(BASE_URI + cardOneUri);
       });
 
       it('returns token URI', async function () {

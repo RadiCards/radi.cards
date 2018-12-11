@@ -9,7 +9,7 @@ import "./Strings.sol";
 /**
 * @title Radi.Cards
 *
-*
+* @author Andy Gray & James Morgan - KnownOrigin.io
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -23,25 +23,41 @@ contract RadiCards is ERC721Token, Whitelist {
     address ethAddress;
     string name;
     string website;
+    string description;
+    string logo;
   }
 
-  struct Card {
+  struct CardDesign {
     string tokenURI;
     bool active;
   }
 
+  struct RadiCard {
+    // Metadata
+    address gifter;
+    uint256 giftingAmount;
+    string message;
+    string extra;
+    // Lookups
+    uint256 cardIndex;
+    uint256 benefactorIndex;
+  }
+
+  event BenefactorAdded(
+    uint256 indexed _benefactorIndex
+  );
+
+  event CardAdded(
+    uint256 indexed _benefactorIndex
+  );
+
   mapping(uint256 => Benefactor) public benefactors;
   uint256[] internal benefactorsIndex;
 
-  mapping(uint256 => Card) public cards;
+  mapping(uint256 => CardDesign) public cards;
   uint256[] internal cardsIndex;
 
-  mapping(uint256 => address) public gifters;
-  mapping(uint256 => uint256) public giftAmounts;
-  mapping(uint256 => string) public messages;
-  mapping(uint256 => string) public extras;
-  mapping(uint256 => uint256) public tokenIdToCardIndex;
-  mapping(uint256 => uint256) public tokenIdToBenefactorIndex;
+  mapping(uint256 => RadiCard) public tokenIdToRadiCardIndex;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
@@ -50,15 +66,39 @@ contract RadiCards is ERC721Token, Whitelist {
       1,
       address(0xb189f76323678E094D4996d182A792E52369c005),
       "Electronic Frontier Foundation",
-      "https://www.eff.org/pages/ethereum-and-litecoin-donations"
+      "https://www.eff.org/pages/ethereum-and-litecoin-donations",
+      "Electronic Frontier Foundation",
+      "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU"
+    );
+
+    // TODO complete
+    addBenefactor(
+      2,returns indexes
+      address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
+      "Freedom of the Press Foundation",
+      "https://freedom.press/donate/cryptocurrency/",
+      "Freedom of the Press Foundation",
+      "TODO logo"
     );
 
     addBenefactor(
-      2,
-      address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
-      "Freedom of the Press Foundation",
-      "https://freedom.press/donate/cryptocurrency/"
+      3,
+      address(0x59459B87c29167733818f1263665064Cadf10eE4),
+      "Open Money Initiative",
+      "https://www.openmoneyinitiative.org/",
+      "Open Money Initiative",
+      "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
     );
+
+    // TODO complete
+//    addBenefactor(
+//      4,
+//      address(0),
+//      "Tor project",
+//      "https://www.torproject.org/",
+//      "Tor project",
+//      "TODO logo"
+//    );
   }
 
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra) payable public returns (bool) {
@@ -68,12 +108,14 @@ contract RadiCards is ERC721Token, Whitelist {
     require(cards[_cardIndex].active, "Must be an active card");
     require(msg.value >= minContribution, "Must send at least the minimum amount");
 
-    messages[tokenIdPointer] = _message;
-    extras[tokenIdPointer] = _extra;
-    gifters[tokenIdPointer] = msg.sender;
-    giftAmounts[tokenIdPointer] = msg.value;
-    tokenIdToCardIndex[tokenIdPointer] = _cardIndex;
-    tokenIdToBenefactorIndex[tokenIdPointer] = _benefactorIndex;
+    tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
+      gifter : msg.sender,
+      giftingAmount : msg.value,
+      message : _message,
+      extra : _extra,
+      benefactorIndex : _benefactorIndex,
+      cardIndex : _cardIndex
+    });
 
     _mint(to, cards[_cardIndex].tokenURI);
 
@@ -94,12 +136,7 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function burn(uint256 _tokenId) public onlyIfWhitelisted(msg.sender) {
     // custom fields
-    messages[_tokenId] = "";
-    extras[_tokenId] = "";
-    gifters[tokenIdPointer] = address(0);
-    giftAmounts[tokenIdPointer] = 0;
-    tokenIdToCardIndex[tokenIdPointer] =  0;
-    tokenIdToBenefactorIndex[tokenIdPointer] =  0;
+    delete tokenIdToRadiCardIndex[tokenIdPointer];
 
     // Super burn
     _burn(ownerOf(_tokenId), _tokenId);
@@ -109,6 +146,47 @@ contract RadiCards is ERC721Token, Whitelist {
     require(exists(_tokenId));
 
     return Strings.strConcat(tokenBaseURI, tokenURIs[_tokenId]);
+  }
+
+  function tokenDetails(uint256 _tokenId)
+  public view
+  returns (
+    address _gifter,
+    uint256 _giftingAmount,
+    string _message,
+    string _extra,
+    string _tokenUri
+  ) {
+    require(exists(_tokenId));
+    RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
+    return (
+      _radiCard.gifter,
+      _radiCard.giftingAmount,
+      _radiCard.message,
+      _radiCard.extra,
+      Strings.strConcat(tokenBaseURI, tokenURIs[_tokenId])
+    );
+  }
+
+  function tokenBenefactor(uint256 _tokenId)
+  public view
+  returns (
+    address _ethAddress,
+    string _name,
+    string _website,
+    string _description,
+    string _logo
+  ) {
+    require(exists(_tokenId));
+    RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
+    Benefactor memory _benefactor = benefactors[_radiCard.benefactorIndex];
+    return (
+      _benefactor.ethAddress,
+      _benefactor.name,
+      _benefactor.website,
+      _benefactor.description,
+      _benefactor.logo
+    );
   }
 
   function tokensOf(address _owner) public view returns (uint256[] _tokenIds) {
@@ -123,27 +201,35 @@ contract RadiCards is ERC721Token, Whitelist {
     return cardsIndex;
   }
 
-  function addBenefactor(uint256 _benefactorIndex, address _ethAddress, string _name, string _website) public onlyIfWhitelisted(msg.sender) {
+  function addBenefactor(uint256 _benefactorIndex, address _ethAddress, string _name, string _website, string _description, string _logo) public onlyIfWhitelisted(msg.sender) {
     require(address(_ethAddress) != address(0), "Invalid address");
     require(bytes(_name).length != 0, "Invalid name");
     require(bytes(_website).length != 0, "Invalid name");
+    require(bytes(_description).length != 0, "Invalid name");
+    require(bytes(_logo).length != 0, "Invalid name");
 
     benefactors[_benefactorIndex] = Benefactor(
       _ethAddress,
       _name,
-      _website
+      _website,
+      _description,
+      _logo
     );
     benefactorsIndex.push(_benefactorIndex);
+
+    emit BenefactorAdded(_benefactorIndex);
   }
 
   function addCard(uint256 _cardIndex, string _tokenURI, bool _active) public onlyIfWhitelisted(msg.sender) {
     require(bytes(_tokenURI).length != 0, "Invalid token URI");
 
-    cards[_cardIndex] = Card(
+    cards[_cardIndex] = CardDesign(
       _tokenURI,
       _active
     );
     cardsIndex.push(_cardIndex);
+
+    emit CardAdded(_cardIndex);
   }
 
   function setTokenBaseURI(string _newBaseURI) external onlyIfWhitelisted(msg.sender) {
