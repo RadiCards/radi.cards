@@ -73,7 +73,7 @@ contract RadiCards is ERC721Token, Whitelist {
 
     // TODO complete
     addBenefactor(
-      2,returns indexes
+      2,
       address(0x998F25Be40241CA5D8F5fCaF3591B5ED06EF3Be7),
       "Freedom of the Press Foundation",
       "https://freedom.press/donate/cryptocurrency/",

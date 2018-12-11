@@ -18944,12 +18944,12 @@
         }
       },
       "links": {},
-      "address": "0x759A8dE72B03ff4b815634272a1Ada28f9A16e55",
-      "transactionHash": "0xbfac06a847eb6047183b07409b7e8b132496d164de041954e8ec653b8305d040"
+      "address": "0x194bAfbf8eb2096e63C5d9296363d6DAcdb32527",
+      "transactionHash": "0x0bbfd6b3c6c46867a43ec30b60f3fde20ba61dff5a8ff19a1a6499c799f1f6f8"
     }
   },
   "schemaVersion": "3.0.0-beta.2",
-  "updatedAt": "2018-12-11T10:29:40.695Z",
+  "updatedAt": "2018-12-11T10:51:52.462Z",
   "devdoc": {
     "author": "Andy Gray & James Morgan - KnownOrigin.io",
     "methods": {
