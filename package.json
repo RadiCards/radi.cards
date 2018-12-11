@@ -32,6 +32,7 @@
     "moment": "^2.22.2",
     "truffle-contract": "^3.0.6",
     "vue": "^2.5.17",
+    "vue-form-wizard": "^0.8.4",
     "vue-router": "^3.0.1",
     "vuejs-logger": "1.5.3",
     "vuex": "^3.0.1",

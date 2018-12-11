@@ -1,28 +1,40 @@
 <template>
   <div class="container">
     <h1>Card Foundry</h1>
-
-    <div class="row">
-      <div class="col">
-        <form>
-          <div class="form-group row" v-if="formData.errors.length">
-            <div class="col-sm-4">
-              <b>Please correct the following error(s):</b>
-              <ul>
-                <li v-for="error in formData.errors">{{ error }}</li>
-              </ul>
-            </div>
-          </div>
-
+    <div class="form-group row" v-if="formData.errors.length">
+      <div class="col-sm-4">
+        <b>Please correct the following error(s):</b>
+        <ul>
+          <li v-for="error in formData.errors">{{ error }}</li>
+        </ul>
+      </div>
+    </div>
+    <form>
+      <form-wizard
+        title
+        subtitle
+        color="#333333"
+        @on-complete="giveBirth"
+        finish-button-text="Create Card!"
+      >
+        <tab-content title="Select Card" icon="far fa-image">
           <div class="form-group row" v-if="cards && cards.length > 0">
-            <label for="colour" class="col-sm-2 col-form-label">Cards</label>
-            <div class="col-sm-10">
-              <select class="field" id="colour" v-model="formData.card">
-                <option v-for="card in cards" :value="card">{{card.name}}</option>
-              </select>
+            <h2>Choose your favourite radicard</h2>
+            <p>All unique designs</p>
+
+            <div class="card-slider" v-if="cards && cards.length > 0">
+              <div v-for="item in cards" :key="item.tokenId">
+                <div
+                  @click="selectCard(item)"
+                  v-bind:class="{'card-selected': formData.card == item}">
+                  <card :cdata="item"></card>
+                </div>
+              </div>
             </div>
           </div>
-
+          <br>
+        </tab-content>
+        <tab-content title="Gift Recipient" icon="fas fa-gift">
           <div class="form-group row">
             <br>
             <label for="recipient" class="col-sm-2 col-form-label">Recipient</label>
@@ -35,9 +47,6 @@
                 placeholder="0x0abc"
               >
             </div>
-          </div>
-
-          <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <br>
             <label for="message" class="col-sm-2 col-form-label">
               Message
@@ -52,6 +61,10 @@
                 :max-rows="6"
               ></b-form-textarea>
             </div>
+          </div>
+        </tab-content>
+        <tab-content title="Donation Recipient" icon="fas fa-heart">
+          <div class="form-group row" v-if="benefactors && benefactors.length > 0">
             <br>
             <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
             <div class="col-sm-10">
@@ -72,11 +85,8 @@
               </select>
             </div>
           </div>
-          <br>
-          <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button>
-
-          <hr>
-
+        </tab-content>
+        <tab-content title="Send Card!" icon="fas fa-paper-plane">
           <code class="small">
             IPFS Metadata:
             <a
@@ -86,31 +96,33 @@
           </code>
 
           <clickable-transaction :transaction="uploadedHashs" class="small"></clickable-transaction>
-        </form>
-      </div>
-      <div class="col text-center">
-        <h2 v-if="formData.card">{{formData.card.name}}</h2>
-        <img
-          v-if="formData.card"
-          :src="formData.card.image"
-          class="img-thumbnail"
-          style="max-height: 150px"
-        >
 
-        <h4 v-if="formData.card">{{formData.card.description}}</h4>
+          <div class="col text-center">
+            <h2 v-if="formData.card">{{formData.card.name}}</h2>
+            <img
+              v-if="formData.card"
+              :src="formData.card.image"
+              class="img-thumbnail"
+              style="max-height: 150px"
+            >
 
-        <p v-if="formData.card && formData.message">
-          <span class="text-muted small">Message:</span>
-          {{formData.message}}
-        </p>
-        <p v-if="formData.card && formData.recipient">
-          <span class="text-muted small">Recipient:</span>
-          <code>{{formData.recipient}}</code>
-        </p>
-        <hr>
-        <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
-      </div>
-    </div>
+            <h4 v-if="formData.card">{{formData.card.description}}</h4>
+
+            <p v-if="formData.card && formData.message">
+              <span class="text-muted small">Message:</span>
+              {{formData.message}}
+            </p>
+            <p v-if="formData.card && formData.recipient">
+              <span class="text-muted small">Recipient:</span>
+              <code>{{formData.recipient}}</code>
+            </p>
+            <hr>
+            <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
+          </div>
+          <!-- <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button> -->
+        </tab-content>
+      </form-wizard>
+    </form>
   </div>
 </template>
 
@@ -121,16 +133,18 @@ import IPFS from "ipfs-api";
 import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
+import Card from "../../components/widgets/Card";
 
 const ipfs = IPFS("ipfs.infura.io", "5001", { protocol: "https" });
 
 export default {
   name: "creator",
-  components: { ClickableTransaction },
+  components: { ClickableTransaction, Card },
   data() {
     return {
       formData: {
-        errors: []
+        errors: [],
+        card: {}
       },
       response: {
         ipfsHash: null
@@ -146,15 +160,20 @@ export default {
     });
   },
   methods: {
+    selectCard(card) {
+      console.log("CARD SELECTED");
+      console.log(card);
+      this.formData.card = card;
+    },
     giveBirth: function() {
       this.checkForm();
       if (this.formData.errors.length === 0) {
         let recipient = this.formData.recipient;
         let valueInETH = this.formData.valueInETH;
-        let benefactorIndex = this.formData.benefactor.toNumber();
+        let benefactorIndex = this.formData.benefactor;
         let cardIndex = this.formData.card.cardIndex;
-        let message = this.formData.message
-        let extra = ""
+        let message = this.formData.message;
+        let extra = "";
 
         this.$store.dispatch(actions.BIRTH, {
           recipient,
@@ -185,4 +204,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/variables.scss";
+@import "../../styles/variables.scss";
+.card-selected {
+  margin-top:-50px;
+  transition: all 0.2s ease-in-out;
+}
 </style>
