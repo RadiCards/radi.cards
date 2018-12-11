@@ -25,11 +25,16 @@
             <div class="card-slider" v-if="cards && cards.length > 0">
               <div v-for="item in cards" :key="item.tokenId">
                 <card :cdata="item">{{item}}</card>
-                <button @click="selectCard(item)">Some card</button>
+                <b-button @click="selectCard(item)">Select this card</b-button>
+                <div v-if="formData.card == item">
+                this card is selected
+                </div>
               </div>
             </div>
           </div>
 
+
+{{formData}}
           <img
             v-if="formData.card"
             :src="formData.card.image"
@@ -148,7 +153,8 @@ export default {
   data() {
     return {
       formData: {
-        errors: []
+        errors: [],
+        card: {}
       },
       response: {
         ipfsHash: null
