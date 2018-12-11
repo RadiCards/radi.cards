@@ -49,8 +49,7 @@
             </div>
             <br>
             <label for="message" class="col-sm-2 col-form-label">
-              Message
-              <span style="opacity: 0.3">(max 280 characters)</span>
+              Censor resistant message
             </label>
             <div class="col-sm-10">
               <b-form-textarea
@@ -60,6 +59,7 @@
                 :rows="3"
                 :max-rows="6"
               ></b-form-textarea>
+              <span style="opacity: 0.3">(max 128 characters)</span>
             </div>
           </div>
         </tab-content>
@@ -69,7 +69,7 @@
             <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
             <div class="col-sm-10">
               <input
-                type="text"
+                type="number"
                 class="field"
                 id="valueInETH"
                 v-model="formData.valueInETH"
@@ -116,10 +116,12 @@
               <span class="text-muted small">Recipient:</span>
               <code>{{formData.recipient}}</code>
             </p>
-            <hr>
-            <!-- <pre class="small">{{generateIpfsData()}}</pre> -->
+            <p v-if="formData.card && formData.benefactor">
+              <span class="text-muted small">Benefactor:</span>
+              <code>{{formData.benefactor}}</code>
+            </p>
+
           </div>
-          <!-- <button type="button" class="btn btn-primary" v-on:click="giveBirth">Create</button> -->
         </tab-content>
       </form-wizard>
     </form>
@@ -155,9 +157,7 @@ export default {
     ...mapState(["account", "uploadedHashs", "cards", "benefactors"])
   },
   mounted() {
-    this.$nextTick(function() {
-      this.formData.recipient = this.account;
-    });
+    this.$nextTick(function() {});
   },
   methods: {
     selectCard(card) {
