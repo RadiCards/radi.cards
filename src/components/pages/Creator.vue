@@ -24,24 +24,14 @@
 
             <div class="card-slider" v-if="cards && cards.length > 0">
               <div v-for="item in cards" :key="item.tokenId">
-                <card :cdata="item">{{item}}</card>
-                <b-button @click="selectCard(item)">Select this card</b-button>
-                <div v-if="formData.card == item">
-                this card is selected
+                <div
+                  @click="selectCard(item)"
+                  v-bind:class="{'card-selected': formData.card == item}">
+                  <card :cdata="item"></card>
                 </div>
               </div>
             </div>
           </div>
-
-
-{{formData}}
-          <img
-            v-if="formData.card"
-            :src="formData.card.image"
-            class="img-thumbnail"
-            style="max-height: 150px"
-          >
-
           <br>
         </tab-content>
         <tab-content title="Gift Recipient" icon="fas fa-gift">
@@ -171,8 +161,8 @@ export default {
   },
   methods: {
     selectCard(card) {
-      console.log("CARD SELECTED")
-      console.log(card)
+      console.log("CARD SELECTED");
+      console.log(card);
       this.formData.card = card;
     },
     giveBirth: function() {
@@ -214,4 +204,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../styles/variables.scss";
+@import "../../styles/variables.scss";
+.card-selected {
+  margin-top:-50px;
+  transition: all 0.2s ease-in-out;
+}
 </style>
