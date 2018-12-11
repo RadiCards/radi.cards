@@ -127,17 +127,12 @@ export default {
 </script>
 
 <style lang="scss">
-// NB: Styles in progress here, @ldanielswakman will organise and componentify
-
-// @import url("https://fonts.googleapis.com/css?family=Open+Sans");
-// $font-family-base: "Open Sans", sans-serif;
-// @import "../node_modules/bootstrap/scss/bootstrap.scss";
-// @import "../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
-
-@import "styles/reset.scss";
 
 @import "styles/variables.scss";
 @import "styles/mixins.scss";
+
+@import "styles/reset.scss";
+@import "styles/typography.scss";
 
 body {
   margin: 0;
@@ -158,49 +153,6 @@ body {
   font-family: "Helvetica", "Helvetica Neue", "Arial", sans-serif;
   letter-spacing: -0.03rem;
   line-height: 1.25rem;
-}
-
-// Anchor
-a {
-  color: $black;
-  text-decoration: none;
-
-  &:hover {
-    border-bottom: 1px solid currentColor;
-  }
-  &:visited {
-    color: $gray;
-  }
-}
-
-p {
-  letter-spacing: 0.02rem;
-}
-
-// Blockquote
-blockquote {
-  margin: 0;
-
-  &.blockquote--hero {
-    position: relative;
-    margin-bottom: 8rem;
-
-    @include tabletAndUp() {
-      margin-bottom: 2rem;
-    }
-
-    p {
-      font-weight: bold;
-      font-size: 2.5rem;
-      line-height: 2.5rem;
-      letter-spacing: -0.1rem;
-
-      @include tabletAndUp() {
-        font-size: 4.5rem;
-        line-height: 4.5rem;
-      }
-    }
-  }
 }
 
 // Header
