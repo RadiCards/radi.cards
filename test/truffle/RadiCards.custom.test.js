@@ -14,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-contract.only('RadiCards ERC721 Custom', function (accounts) {
+contract('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
 
@@ -116,7 +116,7 @@ contract.only('RadiCards ERC721 Custom', function (accounts) {
     context('should have two benefactors initially', function () {
       it('returns indexes', async function () {
         const indexes = await this.token.benefactorsKeys();
-        indexes.length.should.be.bignumber.equal(2);
+        indexes.length.should.be.bignumber.equal(3);
       });
     });
 
