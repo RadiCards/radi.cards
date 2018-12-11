@@ -1,9 +1,12 @@
 <template>
   <div class="container">
-    <h1>Card Foundry</h1>
+    <h1 style=" margin-bottom:10px;">Card Foundry</h1>
+    <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>
     <div class="form-group row" v-if="formData.errors.length">
       <div class="col-sm-4">
-        <b>Please correct the following error(s):</b>
+        <blockquote>
+          <b>Please correct the following error(s):</b>
+        </blockquote>
         <ul>
           <li v-for="error in formData.errors">{{ error }}</li>
         </ul>
@@ -121,19 +124,28 @@
         </tab-content>
       </form-wizard>-->
       <div role="tablist">
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion1 variant="info">Accordion 1</b-btn>
+        <b-card class="mb-1">
+          <b-card-header header-tag="header" v-b-toggle.accordion1>
+            <!-- <b-btn block href="#" v-b-toggle.accordion1 variant="info">Accordion 1</b-btn> -->
+            <h4 class="section__title">STEP ONE</h4>
+            <h2>Choose your favourite radicard</h2>
           </b-card-header>
           <b-collapse id="accordion1" visible accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <section class="section">
-                <h4 class="section__title">STEP ONE</h4>
-                <h2>Choose your favourite radicard</h2>
-                <p>All unique designs</p>
+                <div class="form-group row" v-if="cards && cards.length > 0">
+                  <p>All unique designs</p>
 
-                <div class="card-slider" v-if="cards && cards.length > 0">
-                  <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
+                  <div class="card-slider" v-if="cards && cards.length > 0">
+                    <div v-for="item in cards" :key="item.tokenId">
+                      <div
+                        @click="selectCard(item)"
+                        v-bind:class="{'card-selected': formData.card == item}"
+                      >
+                        <card :cdata="item"></card>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </section>
             </b-card-body>
@@ -185,12 +197,14 @@ import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import Card from "../../components/widgets/Card";
+import Benefactor from "../../components/widgets/Benefactor";
+import Samplequote from "../../components/widgets/SampleQuote";
 
 const ipfs = IPFS("ipfs.infura.io", "5001", { protocol: "https" });
 
 export default {
   name: "creator",
-  components: { ClickableTransaction, Card },
+  components: { ClickableTransaction, Card, Benefactor, Samplequote },
   data() {
     return {
       formData: {
@@ -224,7 +238,13 @@ export default {
     selectCard(card) {
       console.log("CARD SELECTED");
       console.log(card);
-      this.formData.card = card;
+      if (this.formData.card === card) {
+        this.formData.card = null;
+        return;
+      } else {
+        this.formData.card = card;
+        return;
+      }
     },
     giveBirth: function() {
       this.checkForm();
@@ -268,7 +288,7 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/variables.scss";
 .card-selected {
-  margin-top: -50px;
+  margin-top: -25px;
   transition: all 0.2s ease-in-out;
 }
 </style>
