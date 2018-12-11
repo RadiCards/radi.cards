@@ -36,21 +36,25 @@
       </div>
     </figure>
 
-    <div class="card__back" v-if="cdata.message && cdata.message.length > 0">
-      <p v-html="cdata.message"></p>
-
-      <div class="descr" v-if="cdata.message && cdata.message.length > 0">
-        <strong>Benefactor:</strong>
-        <p>
-          <a
-            :href="benefactors[cdata.BenefactorIndex-1].website"
-            target="_blank"
-          >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+    <div v-if="cdata.message">
+      <div class="card__back" style="padding-top:120px">
+        
+        <h3>
+          <strong>{{cdata.message}}</strong></h3>
+        
+        <hr>
+        
+        <p class="descr">
+        
+        Benefactor:
+        <strong><a
+          :href="benefactors[cdata.BenefactorIndex-1].website"
+          target="_blank"
+        >{{benefactors[cdata.BenefactorIndex-1].name}}</a></strong>
+        <div class="descr" v-if="cdata.accountCreatedCard && cdata.accountCreatedCard">
+          Your web3 account created this card!
+        </div>
         </p>
-      </div>
-      <div class="descr" v-if="cdata.accountCreatedCard && cdata.accountCreatedCard">
-        <strong>Your Account created this card!</strong>
-        <p>{{cdata.accountCreatedCard}}</p>
       </div>
     </div>
   </div>
