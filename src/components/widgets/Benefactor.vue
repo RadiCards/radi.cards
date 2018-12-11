@@ -1,10 +1,10 @@
 <template>
   <div class="benefactor-row">
-    <img class="benefactor-img">
+    <img class="benefactor-img" :src="benefactor.image">
 
     <div class="benefactor-text">
       <span class="benefactor-name">{{benefactor.name}}</span>
-      <span class="benefactor-description">No Description in the Contract!</span>
+      <span class="benefactor-description">{{benefactor.description}}</span>
     </div>
 
     <div class="arrow-container">

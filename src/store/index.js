@@ -6,10 +6,7 @@ import * as actions from "./actions";
 import * as mutations from "./mutation-types";
 import createLogger from "vuex/dist/logger";
 import moment from "moment";
-import {
-  getEtherscanAddress,
-  getNetIdString
-} from "../utils";
+import { getEtherscanAddress, getNetIdString } from "../utils";
 import _ from "lodash";
 
 import truffleContract from "truffle-contract";
@@ -54,10 +51,7 @@ const store = new Vuex.Store({
     [mutations.SET_ETHERSCAN_NETWORK](state, etherscanBase) {
       state.etherscanBase = etherscanBase;
     },
-    [mutations.SET_WEB3]: async function (state, {
-      web3,
-      contract
-    }) {
+    [mutations.SET_WEB3]: async function(state, { web3, contract }) {
       state.web3 = web3;
       state.contract = contract;
       state.contractAddress = (await RadiCards.deployed()).address;
@@ -76,11 +70,7 @@ const store = new Vuex.Store({
     }
   },
   actions: {
-    [actions.GET_CURRENT_NETWORK]: function ({
-      commit,
-      dispatch,
-      state
-    }) {
+    [actions.GET_CURRENT_NETWORK]: function({ commit, dispatch, state }) {
       getNetIdString().then(currentNetwork => {
         commit(mutations.SET_CURRENT_NETWORK, currentNetwork);
       });
@@ -89,16 +79,12 @@ const store = new Vuex.Store({
         commit(mutations.SET_ETHERSCAN_NETWORK, etherscanBase);
       });
     },
-    [actions.INIT_APP]: async function ({
-      commit,
-      dispatch,
-      state
-    }, web3) {
+    [actions.INIT_APP]: async function({ commit, dispatch, state }, web3) {
       RadiCards.setProvider(web3.currentProvider);
 
       //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
       if (typeof RadiCards.currentProvider.sendAsync !== "function") {
-        RadiCards.currentProvider.sendAsync = function () {
+        RadiCards.currentProvider.sendAsync = function() {
           return RadiCards.currentProvider.send.apply(
             RadiCards.currentProvider,
             arguments
@@ -140,38 +126,32 @@ const store = new Vuex.Store({
 
       // dispatch(actions.WATCH_TRANSFERS);
     },
-    [actions.BIRTH]: async function ({
-      commit,
-      dispatch,
-      state
-    }, {
-      recipient,
-      benefactorIndex,
-      cardIndex,
-      message,
-      extra,
-      valueInETH
-    }) {
+    [actions.BIRTH]: async function(
+      { commit, dispatch, state },
+      { recipient, benefactorIndex, cardIndex, message, extra, valueInETH }
+    ) {
       const contract = await state.contract.deployed();
 
-      const {
-        tx
-      } = await contract.gift(recipient, benefactorIndex, cardIndex, message, extra, {
-        from: state.account,
-        value: web3.utils.toWei(valueInETH, "ether")
-      });
+      const { tx } = await contract.gift(
+        recipient,
+        benefactorIndex,
+        cardIndex,
+        message,
+        extra,
+        {
+          from: state.account,
+          value: web3.utils.toWei(valueInETH, "ether")
+        }
+      );
 
       console.log(tx);
 
       // commit(mutations.SET_UPLOAD_HASH, tx);
     },
-    [actions.LOAD_ACCOUNT_CARDS]: async function ({
-      commit,
-      dispatch,
-      state
-    }, {
-      account
-    }) {
+    [actions.LOAD_ACCOUNT_CARDS]: async function(
+      { commit, dispatch, state },
+      { account }
+    ) {
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
       console.log(tokenIds);
@@ -181,46 +161,44 @@ const store = new Vuex.Store({
       // combine to one single contract call by making a view function within the RadiCards.sol
       // smart contract that returns all this info in one call.
       for (const tokenId of tokenIds) {
-        let tokenIdNumber = tokenId.toNumber()
-        let cardIndex = await contract.tokenIdToCardIndex(tokenIdNumber)
-        let BenefactorIndex = await contract.tokenIdToBenefactorIndex(tokenIdNumber)
-        let message = await contract.messages(tokenIdNumber)
-        let gifter = await contract.gifters(tokenIdNumber)
-        let giftAmount = await contract.giftAmounts(tokenIdNumber)
+        let tokenIdNumber = tokenId.toNumber();
+        let cardIndex = await contract.tokenIdToCardIndex(tokenIdNumber);
+        let BenefactorIndex = await contract.tokenIdToBenefactorIndex(
+          tokenIdNumber
+        );
+        let message = await contract.messages(tokenIdNumber);
+        let gifter = await contract.gifters(tokenIdNumber);
+        let giftAmount = await contract.giftAmounts(tokenIdNumber);
         let accountCreatedCard = false;
         if (gifter === account.toLowerCase()) {
-          accountCreatedCard = true
+          accountCreatedCard = true;
         }
         let ownedNFTInformation = {
           tokenIdNumber: tokenIdNumber,
           gifter: gifter,
           accountCreatedCard: accountCreatedCard,
-          giftAmount: web3.utils.fromWei(giftAmount + '', 'ether'),
+          giftAmount: web3.utils.fromWei(giftAmount + "", "ether"),
           cardIndex: cardIndex.toNumber(),
           BenefactorIndex: BenefactorIndex.toNumber(),
           message: message
-        }
-        let allCardInformation = {}
+        };
+        let allCardInformation = {};
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
-            return card.cardIndex === cardIndex.toNumber()
-          })
+            return card.cardIndex === cardIndex.toNumber();
+          });
           allCardInformation = {
             ...ownedNFTInformation,
             ...cardInformation[0]
-          }
-          userCardsInformation.push(allCardInformation)
+          };
+          userCardsInformation.push(allCardInformation);
         }
       }
-      console.log(userCardsInformation)
+      console.log(userCardsInformation);
 
       commit(mutations.SET_ACCOUNT_CARDS, userCardsInformation);
     },
-    [actions.LOAD_BENEFACTORS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
+    [actions.LOAD_BENEFACTORS]: async function({ commit, dispatch, state }) {
       const contract = await state.contract.deployed();
       let benefactorIds = await contract.benefactorsKeys();
 
@@ -230,15 +208,9 @@ const store = new Vuex.Store({
         return result;
       });
       const benefactors = await Promise.all(benefactorsPromises);
-
-      console.log(benefactors);
       commit(mutations.SET_BENEFACTORS, benefactors);
     },
-    [actions.LOAD_CARDS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
+    [actions.LOAD_CARDS]: async function({ commit, dispatch, state }) {
       const contract = await state.contract.deployed();
       let cardIds = await contract.cardsKeys();
       console.log(cardIds);
@@ -253,19 +225,18 @@ const store = new Vuex.Store({
 
       commit(mutations.SET_CARDS, cards);
     },
-    [actions.WATCH_TRANSFERS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
+    [actions.WATCH_TRANSFERS]: async function({ commit, dispatch, state }) {
       const contract = await state.contract.deployed();
 
-      let transferEvent = contract.Transfer({}, {
-        fromBlock: 0,
-        toBlock: "latest" // wait until event comes through
-      });
+      let transferEvent = contract.Transfer(
+        {},
+        {
+          fromBlock: 0,
+          toBlock: "latest" // wait until event comes through
+        }
+      );
 
-      transferEvent.watch(function (error, anEvent) {
+      transferEvent.watch(function(error, anEvent) {
         if (!error) {
           console.log(`Transfer event`, anEvent);
           commit(mutations.SET_TRANSFER, anEvent);
@@ -285,10 +256,13 @@ async function mapTokenDetails(results, ipfsPrefix, id) {
 }
 
 function mapBenefactorDetails(results, id) {
+  console.log(results);
   let data = {
     address: results[0],
     name: results[1],
     website: results[2],
+    description: results[3],
+    image: results[4],
     id: id.toNumber()
   };
   return data;
