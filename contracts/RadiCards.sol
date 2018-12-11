@@ -9,7 +9,7 @@ import "./Strings.sol";
 /**
 * @title Radi.Cards
 *
-*
+* @author Andy Gray & James Morgan - KnownOrigin.io
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -25,23 +25,29 @@ contract RadiCards is ERC721Token, Whitelist {
     string website;
   }
 
-  struct Card {
+  struct CardDesign {
     string tokenURI;
     bool active;
+  }
+
+  struct RadiCard {
+    // Metadata
+    address gifter;
+    uint256 giftingAmount;
+    string message;
+    string extra;
+    // Lookups
+    uint256 cardIndex;
+    uint256 benefactorIndex;
   }
 
   mapping(uint256 => Benefactor) public benefactors;
   uint256[] internal benefactorsIndex;
 
-  mapping(uint256 => Card) public cards;
-  uint256[] internal cardsIndex;
+  mapping(uint256 => CardDesign) public availableCards;
+  uint256[] internal availableCardsIndex;
 
-  mapping(uint256 => address) public gifters;
-  mapping(uint256 => uint256) public giftAmounts;
-  mapping(uint256 => string) public messages;
-  mapping(uint256 => string) public extras;
-  mapping(uint256 => uint256) public tokenIdToCardIndex;
-  mapping(uint256 => uint256) public tokenIdToBenefactorIndex;
+  mapping(uint256 => RadiCard) public tokenIdToRadiCardIndex;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
@@ -64,18 +70,20 @@ contract RadiCards is ERC721Token, Whitelist {
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra) payable public returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
-    require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
-    require(cards[_cardIndex].active, "Must be an active card");
+    require(bytes(availableCards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
+    require(availableCards[_cardIndex].active, "Must be an active card");
     require(msg.value >= minContribution, "Must send at least the minimum amount");
 
-    messages[tokenIdPointer] = _message;
-    extras[tokenIdPointer] = _extra;
-    gifters[tokenIdPointer] = msg.sender;
-    giftAmounts[tokenIdPointer] = msg.value;
-    tokenIdToCardIndex[tokenIdPointer] = _cardIndex;
-    tokenIdToBenefactorIndex[tokenIdPointer] = _benefactorIndex;
+    tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
+      gifter : msg.sender,
+      giftingAmount : msg.value,
+      message : _message,
+      extra : _extra,
+      benefactorIndex : _benefactorIndex,
+      cardIndex : _cardIndex
+    });
 
-    _mint(to, cards[_cardIndex].tokenURI);
+    _mint(to, availableCards[_cardIndex].tokenURI);
 
     // transfer the ETH to the benefactor
     benefactors[_benefactorIndex].ethAddress.transfer(msg.value);
@@ -94,12 +102,7 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function burn(uint256 _tokenId) public onlyIfWhitelisted(msg.sender) {
     // custom fields
-    messages[_tokenId] = "";
-    extras[_tokenId] = "";
-    gifters[tokenIdPointer] = address(0);
-    giftAmounts[tokenIdPointer] = 0;
-    tokenIdToCardIndex[tokenIdPointer] =  0;
-    tokenIdToBenefactorIndex[tokenIdPointer] =  0;
+    delete tokenIdToRadiCardIndex[tokenIdPointer];
 
     // Super burn
     _burn(ownerOf(_tokenId), _tokenId);
@@ -111,6 +114,43 @@ contract RadiCards is ERC721Token, Whitelist {
     return Strings.strConcat(tokenBaseURI, tokenURIs[_tokenId]);
   }
 
+  function tokenDetails(uint256 _tokenId)
+  public view
+  returns (
+    address _gifter,
+    uint256 _giftingAmount,
+    string _message,
+    string _extra,
+    string _tokenUri
+  ) {
+    require(exists(_tokenId));
+    RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
+    return (
+      _radiCard.gifter,
+      _radiCard.giftingAmount,
+      _radiCard.message,
+      _radiCard.extra,
+      Strings.strConcat(tokenBaseURI, tokenURIs[_tokenId])
+    );
+  }
+
+  function tokenBenefactor(uint256 _tokenId)
+  public view
+  returns (
+    address _ethAddress,
+    string _name,
+    string _website
+  ) {
+    require(exists(_tokenId));
+    RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
+    Benefactor memory _benefactor = benefactors[_radiCard.benefactorIndex];
+    return (
+      _benefactor.ethAddress,
+      _benefactor.name,
+      _benefactor.website
+    );
+  }
+
   function tokensOf(address _owner) public view returns (uint256[] _tokenIds) {
     return ownedTokens[_owner];
   }
@@ -120,7 +160,7 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   function cardsKeys() public view returns (uint256[] _keys) {
-    return cardsIndex;
+    return availableCardsIndex;
   }
 
   function addBenefactor(uint256 _benefactorIndex, address _ethAddress, string _name, string _website) public onlyIfWhitelisted(msg.sender) {
@@ -139,11 +179,11 @@ contract RadiCards is ERC721Token, Whitelist {
   function addCard(uint256 _cardIndex, string _tokenURI, bool _active) public onlyIfWhitelisted(msg.sender) {
     require(bytes(_tokenURI).length != 0, "Invalid token URI");
 
-    cards[_cardIndex] = Card(
+    availableCards[_cardIndex] = CardDesign(
       _tokenURI,
       _active
     );
-    cardsIndex.push(_cardIndex);
+    availableCardsIndex.push(_cardIndex);
   }
 
   function setTokenBaseURI(string _newBaseURI) external onlyIfWhitelisted(msg.sender) {
@@ -159,8 +199,8 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   function setActive(uint256 _cardIndex, bool _active) external onlyIfWhitelisted(msg.sender) {
-    require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
+    require(bytes(availableCards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
 
-    cards[_cardIndex].active = _active;
+    availableCards[_cardIndex].active = _active;
   }
 }
