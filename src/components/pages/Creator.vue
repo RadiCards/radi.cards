@@ -134,13 +134,7 @@
               </b-col>
             </b-row>
           </section>
-          <input
-            type="button"
-            @click="goToStep(3)"
-            :disabled="this.formData.valueInEth > 0.01"
-            class="nextButton"
-            value="PREVIEW CARD"
-          >
+          <input type="button" @click="goToStep(3)" class="nextButton" value="PREVIEW CARD">
         </div>
 
         <div v-if="this.step == 3">
@@ -148,6 +142,23 @@
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
+
+            <div class="sectionTitle">
+              <h4>Preview your radicard</h4>
+              <p>Send this card to any ETH wallet address</p>
+            </div>
+
+            <span class="detailsText">
+              Donation: {{formData.valueInETH}} ETH
+              <br>
+              Recipient: {{formData.recipient}}
+              <br>
+              <br>Message (display in the back of the card):
+              <br>
+              <pre>
+              {{formData.message}}
+              </pre>
+            </span>
           </section>
           <button class="nextButton" @click="giveBirth">gift this awesome card</button>
           <div class="form-group row" v-if="formData.errors.length">
