@@ -2,7 +2,8 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>We want to fight against
+        <p>
+          We want to fight against
           <s>internet surveillance</s> and
           <s>censorship</s> and so do you
         </p>
@@ -19,7 +20,7 @@
 
     <section class="section section--credits">
       <div class="container">
-        <div class="col">
+        <div class="col-md-4 col-xs-12">
           <h4>Buidl-t on Ethereum and IPFS by the crypto collectible family</h4>
           <ul>
             <li>
@@ -43,7 +44,7 @@
           </ul>
         </div>
 
-        <div class="col">
+        <div class="col-md-4 col-xs-12">
           <h4>In partnership with</h4>
           <ul>
             <li>
@@ -91,7 +92,7 @@
           </ul>
         </div>
 
-        <div class="col">
+        <div class="col-md-4 col-xs-12">
           <h4>All donations go to</h4>
           <ul>
             <li>
