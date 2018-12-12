@@ -1,5 +1,5 @@
 const HDWalletProvider = require('truffle-hdwallet-provider');
-const infuraApikey = '4396873c00c84479991e58a34a54ebd9';
+const infuraApikey = '4ed01157025d44b0b0ad5932e1d877ea';
 let mnemonic = require('./mnemonic');
 
 module.exports = {
@@ -65,7 +65,7 @@ module.exports = {
       },
       network_id: 3,
       gas: 7000000, // default = 4712388
-      gasPrice: 2000000000 // default = 100 gwei = 100000000000
+      gasPrice: 4000000000 // default = 100 gwei = 100000000000
     },
     rinkeby: {
       provider: function () {

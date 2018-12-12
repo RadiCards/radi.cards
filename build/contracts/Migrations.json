@@ -1381,8 +1381,8 @@
     "3": {
       "events": {},
       "links": {},
-      "address": "0xB1d158917CF12479922E1314Af615dF0C1fE2cb9",
-      "transactionHash": "0x2141b635d903624460a33740b29f7ad47d199b645891d85efb9c57c056f7dfec"
+      "address": "0x3E54955e160DA83045e49cdfC9014A785793e81d",
+      "transactionHash": "0xc69506a84afc331db493585cc26db47532f9a137e94fade724d986e9b208df60"
     },
     "5777": {
       "events": {},
@@ -1392,7 +1392,7 @@
     }
   },
   "schemaVersion": "3.0.0-beta.2",
-  "updatedAt": "2018-12-12T15:12:19.957Z",
+  "updatedAt": "2018-12-12T16:07:50.839Z",
   "devdoc": {
     "methods": {}
   },
