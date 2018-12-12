@@ -68,7 +68,7 @@
             <b-form-textarea
               id="textarea1"
               v-model="formData.message"
-              placeholder="add personal message (max 140 characters)"
+              placeholder="add personal message (max 128 characters)"
               :rows="3"
               :max-rows="6"
             ></b-form-textarea>
@@ -306,6 +306,9 @@ export default {
       }
       if (!this.formData.message) {
         this.formData.errors.push("Message is required.");
+      }
+      if (this.formData.message && this.formData.message.length > 128) {
+        this.formData.errors.push("Message is too long! Max 128 characters.");
       }
       if (this.formData.card === {}) {
         this.formData.errors.push("Card is required.");
