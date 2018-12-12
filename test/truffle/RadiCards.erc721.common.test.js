@@ -57,6 +57,30 @@ contract('RadiCards ERC721 Common', function (accounts) {
     this.token = await RadiCards.new({from: owner});
     this.minContribution = await this.token.minContribution();
 
+    await this.token.addBenefactor(
+      1,
+      "0xb189f76323678E094D4996d182A792E52369c005",
+      "Electronic Frontier Foundation",
+      "https://www.eff.org/pages/ethereum-and-litecoin-donations",
+      "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU"
+    );
+
+    await this.token.addBenefactor(
+      2,
+      "0x904f56d3c5D0C622f7f27D374ED7A07c5dEe887D",
+      "EnLAW Foundation",
+      "https://enlawfoundation.org",
+      "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
+    );
+
+    await this.token.addBenefactor(
+      3,
+      "0x59459B87c29167733818f1263665064Cadf10eE4",
+      "Open Money Initiative",
+      "https://www.openmoneyinitiative.org/",
+      "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
+    );
+
     await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
     await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
   });
