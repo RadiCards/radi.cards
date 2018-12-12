@@ -1,65 +1,114 @@
 <template>
   <div class="container">
-
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>We want to fight against <s>internet surveillance</s> and <s>censorship</s> and so do you</p>
-        <span class="cheeky-comment">with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
+        <p>We want to fight against
+          <s>internet surveillance</s> and
+          <s>censorship</s> and so do you
+        </p>
+        <span
+          class="cheeky-comment"
+        >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
       <p>NFT eCards for greater fun and greater good.</p>
-      <p>Fun goes to you. Income goes to non-profit projects that <br/> fight to keep our Internet Freedom alive.</p>
+      <p>Fun goes to you. Income goes to non-profit projects that
+        <br>fight to keep our Internet Freedom alive.
+      </p>
     </section>
 
     <section class="section section--credits">
       <div class="container">
-
         <div class="col">
           <h4>Buidl-t on Ethereum and IPFS by the crypto collectible family</h4>
           <ul>
-            <li><a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a></li>
-            <li><a href="https://knownorigin.io" target="_blank">knownorigin.io</a></li>
-            <li><a href="https://pheme.app" target="_blank">pheme.app</a></li>
-            <li><a href="https://d1labs.com" target="_blank">d1labs.com</a></li>
-            <li><a href="https://blockrocket.tech" target="_blank">blockrocket.tech</a></li>
-            <li><a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a></li>
+            <li>
+              <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
+            </li>
+            <li>
+              <a href="https://knownorigin.io" target="_blank">knownorigin.io</a>
+            </li>
+            <li>
+              <a href="https://pheme.app" target="_blank">pheme.app</a>
+            </li>
+            <li>
+              <a href="https://d1labs.com" target="_blank">d1labs.com</a>
+            </li>
+            <li>
+              <a href="https://blockrocket.tech" target="_blank">blockrocket.tech</a>
+            </li>
+            <li>
+              <a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a>
+            </li>
           </ul>
         </div>
 
         <div class="col">
           <h4>In partnership with</h4>
           <ul>
-            <li><a href="https://superrare.co" target="_blank">superrare.co</a>
-            <li><a href="https://pixura.io" target="_blank ">pixura.io</a>
-            <li><a href="https://bounties.network" target="_blank">bounties.network</a>
-            <li><a href="https://twitter.com/ETHBerlin" target="_blank ">ethberlin</a>
-            <li><a href="https://blockcities.co" target="_blank">blockcities.co</a>
-            <li><a href="https://blockpunk.net" target="_blank ">blockpunk.net</a>
-            <li><a href="https://0xcert.org" target="_blank">0xcert.org</a>
-            <li><a href="https://churchofconsensus.org" target="_blank ">churchofconsensus.org</a>
-            <li><a href="https://twitter.com/meta_cartel" target="_blank">metacartel</a>
-            <li><a href="knownorigin.io" target="_blank">knownorigin.io</a></li>
-            <li><a href="pheme.app" target="_blank">pheme.app</a></li>
-            <li><a href="d1labs.com" target="_blank">d1labs.com</a></li>
-            <li><a href="blockrocket.tech" target="_blank">blockrocket.tech</a></li>
-            <li><a href="mbdoesthings.com" target="_blank">mbdoesthings.com</a></li>
+            <li>
+              <a href="https://superrare.co" target="_blank">superrare.co</a>
+            </li>
+            <li>
+              <a href="https://pixura.io" target="_blank ">pixura.io</a>
+            </li>
+            <li>
+              <a href="https://bounties.network" target="_blank">bounties.network</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/ETHBerlin" target="_blank ">ethberlin</a>
+            </li>
+            <li>
+              <a href="https://blockcities.co" target="_blank">blockcities.co</a>
+            </li>
+            <li>
+              <a href="https://blockpunk.net" target="_blank ">blockpunk.net</a>
+            </li>
+            <li>
+              <a href="https://0xcert.org" target="_blank">0xcert.org</a>
+            </li>
+            <li>
+              <a href="https://churchofconsensus.org" target="_blank ">churchofconsensus.org</a>
+            </li>
+            <li>
+              <a href="https://twitter.com/meta_cartel" target="_blank">metacartel</a>
+            </li>
+            <li>
+              <a href="knownorigin.io" target="_blank">knownorigin.io</a>
+            </li>
+            <li>
+              <a href="pheme.app" target="_blank">pheme.app</a>
+            </li>
+            <li>
+              <a href="d1labs.com" target="_blank">d1labs.com</a>
+            </li>
+            <li>
+              <a href="blockrocket.tech" target="_blank">blockrocket.tech</a>
+            </li>
+            <li>
+              <a href="mbdoesthings.com" target="_blank">mbdoesthings.com</a>
+            </li>
           </ul>
         </div>
 
         <div class="col">
           <h4>All donations go to</h4>
           <ul>
-            <li><a href="https://eff.org" target="_blank">eff.org</a></li>
-            <li><a href="https://torproject.org" target="_blank">torproject.org</a></li>
+            <li>
+              <a href="https://eff.org" target="_blank">eff.org</a>
+            </li>
+            <li>
+              <a href="https://torproject.org" target="_blank">torproject.org</a>
+            </li>
           </ul>
         </div>
       </div>
-      <h2>Choose your favourite radicard</h2>
+      <!-- <h2>Choose your favourite radicard</h2>
       <p>All unique designs</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
-      </div>
+      </div>-->
     </section>
 
     <section class="section">
@@ -129,7 +178,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
@@ -158,11 +206,11 @@ export default {
     right: 100%;
     width: 3.5rem;
     height: 3.5rem;
-    background: url('/static/images/red-arrow.svg');
+    background: url("/static/images/red-arrow.svg");
     background-size: 85%;
     background-repeat: no-repeat;
 
-    @include tabletAndUp () {
+    @include tabletAndUp() {
       width: 5rem;
       height: 5rem;
     }
@@ -171,7 +219,7 @@ export default {
 .section--credits {
   h4 {
     margin-bottom: 1rem;
-    padding: 0 1rem; 
+    padding: 0 1rem;
     border-left: 2px solid $black;
     color: $gray;
   }
