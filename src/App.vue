@@ -2,18 +2,23 @@
   <div id="app">
      <header>
       <nav class="navbar navbar-expand-md">
-        <router-link :to="{ name: 'home' }" class="navbar-brand">RadiCards</router-link>
+        <router-link :to="{ name: 'home' }" class="navbar-brand">
+          <h1>
+            <span style="position: absolute; left: -9999px;">RadiCards</span>
+            <img src="/static/images/logo.svg" alt="RadiCards" />
+          </h1>
+        </router-link>
 
         <ul class="navbar-nav">
-          <li class="nav-item nav-link">
+          <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
               My cards
               <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>
             </router-link>
           </li>
-          <li class="nav-item nav-link">
+          <li class="nav-item">
             <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
-              Send
+              Send a card
             </router-link>
           </li>
         </ul>
@@ -122,23 +127,12 @@ export default {
 </script>
 
 <style lang="scss">
-// NB: Styles in progress here, @ldanielswakman will organise and componentify
-
-// @import url("https://fonts.googleapis.com/css?family=Open+Sans");
-// $font-family-base: "Open Sans", sans-serif;
-// @import "../node_modules/bootstrap/scss/bootstrap.scss";
-// @import "../node_modules/bootstrap-vue/dist/bootstrap-vue.css";
-
-@import "styles/reset.scss";
 
 @import "styles/variables.scss";
 @import "styles/mixins.scss";
 
-* {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-}
+@import "styles/reset.scss";
+@import "styles/typography.scss";
 
 body {
   margin: 0;
@@ -161,55 +155,60 @@ body {
   line-height: 1.25rem;
 }
 
-// Anchor
-a {
-  color: $black;
-  text-decoration: none;
-
-  &:hover {
-    border-bottom: 1px solid currentColor;
-  }
-  &:visited {
-    color: $gray;
-  }
-}
-
-p {
-  letter-spacing: 0.02rem;
-}
-
-// Blockquote
-blockquote {
-  margin: 0;
-}
-
 // Header
 header {
-  max-width: 48rem;
+  max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
-  border-bottom: 1px solid $black;
 }
 
 // Main
 main {
-  max-width: 48rem;
+  max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
 }
 
-.navbar {
-  display: flex;
-  justify-content: space-between;
+// Header
+footer {
+  max-width: $maxWidth;
+  margin: 0 auto;
+  padding: 1.25rem;
+  border-top: 1px solid rgba($black, 0.1);
 }
 
 // Nav
-.navbar-nav {
+.navbar {
   display: flex;
+  justify-content: space-between;
   align-items: center;
 
-  li + li {
-    margin-left: 1rem;
+  &-brand {
+    img {
+      max-width: 10rem;
+
+      @include tabletAndUp() {
+        max-width: auto;
+      }
+    }
+    &:hover {
+      border-bottom: none;
+    }
+  }
+  &-nav {
+    display: flex;
+    align-items: center;
+
+    li + li {
+      margin-left: 1rem;
+    }
+  }
+  .nav-link {
+    display: none;
+
+    @include tabletAndUp() {
+      display: inherit;
+    }
   }
 }
 

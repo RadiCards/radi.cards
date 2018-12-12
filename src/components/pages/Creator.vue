@@ -6,6 +6,7 @@
       <!-- <form-wizard
         title
         subtitle
+        shape="tab"
         color="#333333"
         @on-complete="giveBirth"
         finish-button-text="Create Card!"
@@ -42,8 +43,7 @@
             </div>
             <br>
             <label for="message" class="col-sm-2 col-form-label">
-              Message
-              <span style="opacity: 0.3">(max 280 characters)</span>
+              Censor resistant message
             </label>
             <div class="col-sm-10">
               <b-form-textarea
@@ -53,6 +53,7 @@
                 :rows="3"
                 :max-rows="6"
               ></b-form-textarea>
+              <span style="opacity: 0.3">(max 128 characters)</span>
             </div>
           </div>
         </tab-content>
@@ -62,7 +63,7 @@
             <label for="valueInETH" class="col-sm-2 col-form-label">Donation amount</label>
             <div class="col-sm-10">
               <input
-                type="text"
+                type="number"
                 class="field"
                 id="valueInETH"
                 v-model="formData.valueInETH"
@@ -314,9 +315,7 @@ export default {
     }
   },
   mounted() {
-    this.$nextTick(function() {
-      this.formData.recipient = this.account;
-    });
+    this.$nextTick(function() {});
   },
   methods: {
     setDonationAmount(amount) {
