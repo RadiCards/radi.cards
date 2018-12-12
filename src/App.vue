@@ -1,11 +1,11 @@
 <template>
   <div id="app">
-     <header>
+    <header>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
           <h1>
             <span style="position: absolute; left: -9999px;">RadiCards</span>
-            <img src="/static/images/logo.svg" alt="RadiCards" />
+            <img src="/static/images/logo.svg" alt="RadiCards">
           </h1>
         </router-link>
 
@@ -16,11 +16,11 @@
               <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>
             </router-link>
           </li>
-          <li class="nav-item">
+          <!-- <li class="nav-item">
             <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
               Send a card
             </router-link>
-          </li>
+          </li>-->
         </ul>
       </nav>
     </header>
@@ -127,7 +127,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 @import "styles/variables.scss";
 @import "styles/mixins.scss";
 

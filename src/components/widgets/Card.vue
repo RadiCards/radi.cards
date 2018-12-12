@@ -4,7 +4,7 @@
     :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
     @click="flip"
   >
-    <figure class="card__front">
+    <figure class="card__front" @click="redirect()">
       <div class="card__image">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
@@ -56,7 +56,7 @@
           class="descr"
           v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
         >Your web3 account created this card!</div>
-        </p>
+        <!-- </p> -->
       </div>
     </div>
   </div>
@@ -66,6 +66,7 @@
 /* global web3:true */
 
 import { mapState } from "vuex";
+import router from "../../router";
 
 export default {
   name: "card",
@@ -90,6 +91,12 @@ export default {
   },
 
   methods: {
+    redirect: function() {
+      var index = this.cdata.cardIndex;
+      router.push({
+        path: "create/" + index
+      });
+    },
     flip: function(event) {
       this.isFlipped = !this.isFlipped;
     }
