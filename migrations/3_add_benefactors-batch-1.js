@@ -26,22 +26,22 @@ module.exports = async (deployer, network, accounts) => {
     "0xb189f76323678E094D4996d182A792E52369c005",
     "Electronic Frontier Foundation",
     "https://www.eff.org/pages/ethereum-and-litecoin-donations",
-    "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU"
-    , {from: account});
+    "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU",
+    {from: account});
 
   await contract.addBenefactor(
     2,
     "0x904f56d3c5D0C622f7f27D374ED7A07c5dEe887D",
     "EnLAW Foundation",
     "https://enlawfoundation.org",
-    "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
-    , {from: account});
+    "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS",
+    {from: account});
 
   await contract.addBenefactor(
     3,
     "0x59459B87c29167733818f1263665064Cadf10eE4",
     "Open Money Initiative",
     "https://www.openmoneyinitiative.org/",
-    "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-  ), {from: account};
+    "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC",
+    {from: account});
 };
