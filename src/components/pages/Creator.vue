@@ -43,29 +43,35 @@
         </div>
 
         <div v-if="this.step == 0">
-          <section class="section">
+          <div class="centered">
             <card v-if="this.card !== undefined" :cdata="this.formData.card"></card>
+          </div>
 
-            <p>Enter your personal message for your card</p>
-            <b-form-textarea
-              id="textarea1"
-              v-model="formData.message"
-              placeholder="Happy holidays..."
-              :rows="3"
-              :max-rows="6"
-            ></b-form-textarea>
-            <br>
-            <p>Recipient</p>
+          <div class="sectionTitle">
+            <h4>Customise details</h4>
+            <p>Send this card to any ETH wallet address</p>
+          </div>
+          <section class="section">
             <b-form-input
               type="text"
               class="field"
               id="recipient"
               v-model="formData.recipient"
-              placeholder="0x0abc"
+              placeholder="add recipient wallet address"
             />
+
+            <b-form-textarea
+              id="textarea1"
+              v-model="formData.message"
+              placeholder="add personal message (max 140 characters)"
+              :rows="3"
+              :max-rows="6"
+            ></b-form-textarea>
+            <br>
           </section>
           <input
             type="button"
+            class="nextButton"
             @click="goToStep(1)"
             :disabled="this.formData.message === null || this.formData.recipient === null"
             value="NEXT"
@@ -73,10 +79,12 @@
         </div>
 
         <div v-if="this.step == 1">
-          <h4 class="section__title">STEP TWO</h4>
-          <h2>Choose a project to support</h2>
+          <div class="sectionTitle">
+            <h4 class="section__title">STEP TWO</h4>
+            <h4>Choose a project you want to support</h4>
+            <p>100% income after deducting gas cost will go straight to a charity of your choice</p>
+          </div>
           <section class="section">
-            <p>From environmental protection to online privacy rights</p>
             <div class="charities" v-if="benefactors && benefactors.length > 0">
               <div v-for="item in benefactors" :key="item.address">
                 <div @click="setBenefactor(item)">
@@ -88,15 +96,26 @@
         </div>
 
         <div v-if="this.step == 2">
-          <h4 class="section__title">STEP THREE</h4>
-          <h2>Add my donation</h2>
+          <div class="sectionTitle">
+            <h4 class="section__title">STEP THREE</h4>
+            <h4>Add your donation</h4>
+            <p>I’d like to donate...</p>
+          </div>
 
           <section class="section">
-            <p>I'd like to donate...</p>
             <div class="paymentPresets">
-              <b-button @click="setDonationAmount(0.2)">0.2ETH</b-button>
-              <b-button @click="setDonationAmount(0.3)">0.3ETH</b-button>
-              <b-button @click="setDonationAmount(0.4)">0.4ETH</b-button>
+              <button
+                :class="formData.valueInETH == 0.2 ? 'donationButton clicked' : 'donationButton'"
+                @click="setDonationAmount(0.2)"
+              >0.2ETH</button>
+              <button
+                :class="formData.valueInETH == 0.3 ? 'donationButton clicked' : 'donationButton'"
+                @click="setDonationAmount(0.3)"
+              >0.3ETH</button>
+              <button
+                :class="formData.valueInETH == 0.4 ? 'donationButton clicked' : 'donationButton'"
+                @click="setDonationAmount(0.4)"
+              >0.4ETH</button>
             </div>
             <b-row class="pt-5 text-center">
               <b-col>
@@ -114,20 +133,18 @@
             type="button"
             @click="goToStep(3)"
             :disabled="this.formData.valueInEth > 0.01"
+            class="nextButton"
             value="PREVIEW CARD"
           >
         </div>
 
         <div v-if="this.step == 3">
           <section class="section">
-            <p>Card Preview</p>
-            <b-row class="text-center">
-              <b-col>
-                <card v-if="formData.card" :cdata="previewCardObject"/>
-              </b-col>
-            </b-row>
+            <div class="centered">
+              <card v-if="formData.card" :cdata="previewCardObject"/>
+            </div>
           </section>
-          <b-button @click="giveBirth">gift this awesome card</b-button>
+          <button class="nextButton" @click="giveBirth">gift this awesome card</button>
           <div class="form-group row" v-if="formData.errors.length">
             <div class="col-sm-4">
               <blockquote>
@@ -221,6 +238,7 @@ export default {
     setDonationAmount(amount) {
       console.log("setting amount");
       console.log(amount);
+      event.preventDefault();
       this.formData.valueInETH = amount;
     },
     setBenefactor(benefactor) {
@@ -239,6 +257,8 @@ export default {
       }
     },
     giveBirth: function() {
+      event.preventDefault();
+
       this.checkForm();
       if (this.formData.errors.length === 0) {
         let recipient = this.formData.recipient;
@@ -284,6 +304,36 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 
+input {
+  border: 1px solid #000000;
+  margin-bottom: 20px;
+}
+textarea {
+  border: 1px solid #000000;
+}
+
+.sectionTitle {
+  h4 {
+    font-weight: bold;
+  }
+  margin-top: 40px;
+  font-size: 22px;
+  // margin-bottom: 40px;
+}
+
+.nextButton {
+  background: #000000;
+  width: 100%;
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 20px;
+  text-align: center;
+  text-transform: lowercase;
+  color: #ffffff;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
 .m20 {
   margin-right: 20px;
 }
@@ -325,6 +375,28 @@ export default {
   img {
     width: 50px;
     height: 50px;
+  }
+}
+
+.centered {
+  display: flex;
+  justify-content: center;
+  align-content: center;
+}
+
+.donationButton {
+  background: white;
+  color: black;
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 16px;
+  padding: 15px;
+  border: 1px solid black;
+
+  &.clicked {
+    background: black;
+    color: white;
+    border: 0;
   }
 }
 </style>
