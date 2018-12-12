@@ -17,10 +17,7 @@
     <div class="row mt-5" v-else>
       <div class="col">
         <div class="card-slider" v-if="accountCards && accountCards.length > 0">
-          <!--<card v-for="card in accountCards" :key="item.tokenId" :cdata="item">{{item}}</card>-->
-            <div v-for="card in accountCards">
-              <pre>{{ card }}</pre>
-            </div>
+          <card v-for="item in accountCards" :key="item.tokenId" :cdata="item">{{item}}</card>
         </div>
       </div>
     </div>
