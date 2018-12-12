@@ -12,6 +12,15 @@
         <img class="arrow" src="/static/icons/Arrow.png">
       </a>
     </div>
+
+    <div class v-if="mode=='send'">
+      <b-form-checkbox
+        id="checkbox1"
+        v-model="status"
+        value="accepted"
+        unchecked-value="not_accepted"
+      >Select This Charity</b-form-checkbox>
+    </div>
   </div>
 </template>
 
@@ -26,10 +35,15 @@ export default {
   props: {
     benefactor: {
       type: Object
+    },
+    mode: {
+      type: String
     }
   },
   data() {
-    return {};
+    return {
+      status: ""
+    };
   }
 };
 </script>
