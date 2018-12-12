@@ -73,13 +73,13 @@ contract('RadiCards ERC721 Common', function (accounts) {
       "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
     );
 
-    await this.token.addBenefactor(
-      3,
-      "0x59459B87c29167733818f1263665064Cadf10eE4",
-      "Open Money Initiative",
-      "https://www.openmoneyinitiative.org/",
-      "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-    );
+    // await this.token.addBenefactor(
+    //   3,
+    //   "0x59459B87c29167733818f1263665064Cadf10eE4",
+    //   "Open Money Initiative",
+    //   "https://www.openmoneyinitiative.org/",
+    //   "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
+    // );
 
     await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);
     await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true);

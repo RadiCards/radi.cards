@@ -1230,14 +1230,14 @@ contract RadiCards is ERC721Token, Whitelist {
       "TODO logo"
     );
 
-    addBenefactor(
-      3,
-      address(0x59459B87c29167733818f1263665064Cadf10eE4),
-      "Open Money Initiative",
-      "https://www.openmoneyinitiative.org/",
-      "Open Money Initiative",
-      "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-    );
+    // addBenefactor(
+    //   3,
+    //   address(0x59459B87c29167733818f1263665064Cadf10eE4),
+    //   "Open Money Initiative",
+    //   "https://www.openmoneyinitiative.org/",
+    //   "Open Money Initiative",
+    //   "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
+    // );
 
     // TODO complete
 //    addBenefactor(

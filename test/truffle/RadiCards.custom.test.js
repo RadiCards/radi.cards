@@ -1,5 +1,5 @@
-const {assertRevert} = require('../helpers/assertRevert');
-const {sendTransaction} = require('../helpers/sendTransaction');
+const { assertRevert } = require('../helpers/assertRevert');
+const { sendTransaction } = require('../helpers/sendTransaction');
 const etherToWei = require('../helpers/etherToWei');
 
 const advanceBlock = require('../helpers/advanceToBlock');
@@ -46,7 +46,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
   });
 
   beforeEach(async function () {
-    this.token = await RadiCards.new({from: owner});
+    this.token = await RadiCards.new({ from: owner });
     this.minContribution = await this.token.minContribution();
 
     await this.token.addBenefactor(
@@ -65,16 +65,16 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
     );
 
-    await this.token.addBenefactor(
-      3,
-      "0x59459B87c29167733818f1263665064Cadf10eE4",
-      "Open Money Initiative",
-      "https://www.openmoneyinitiative.org/",
-      "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-    );
+    // await this.token.addBenefactor(
+    //   3,
+    //   "0x59459B87c29167733818f1263665064Cadf10eE4",
+    //   "Open Money Initiative",
+    //   "https://www.openmoneyinitiative.org/",
+    //   "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
+    // );
 
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, {from: owner});
-    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, {from: owner});
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, { from: owner });
+    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, { from: owner });
   });
 
   describe('custom radi.cards logic', function () {
@@ -104,15 +104,15 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
     context('should allow whitelisted to change min contribution', function () {
       it('reverts if not whitelisted', async function () {
-        await assertRevert(this.token.setMinContribution(1, {from: account1}));
+        await assertRevert(this.token.setMinContribution(1, { from: account1 }));
       });
 
       it('reverts if zero value', async function () {
-        await assertRevert(this.token.setMinContribution(0, {from: account1}));
+        await assertRevert(this.token.setMinContribution(0, { from: account1 }));
       });
 
       it('can send minimum contribution', async function () {
-        await this.token.setMinContribution(1, {from: owner});
+        await this.token.setMinContribution(1, { from: owner });
         const newMin = await this.token.minContribution();
         newMin.should.be.bignumber.equal('1');
       });
@@ -120,19 +120,19 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
     context('should allow card to be set to active and inactive', function () {
       it('reverts if not whitelisted', async function () {
-        await assertRevert(this.token.setActive(cardOne, true, {from: account1}));
+        await assertRevert(this.token.setActive(cardOne, true, { from: account1 }));
       });
 
       it('reverts if no card', async function () {
-        await assertRevert(this.token.setActive(999, true, {from: owner}));
+        await assertRevert(this.token.setActive(999, true, { from: owner }));
       });
 
       it('can deactivate card', async function () {
-        let card = await this.token.cards(cardOne, {from: owner});
+        let card = await this.token.cards(cardOne, { from: owner });
         card[1].should.be.equal(true);
 
-        await this.token.setActive(cardOne, false, {from: owner});
-        card = await this.token.cards(cardOne, {from: owner});
+        await this.token.setActive(cardOne, false, { from: owner });
+        card = await this.token.cards(cardOne, { from: owner });
         card[1].should.be.equal(false);
       });
     });
@@ -212,7 +212,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       });
 
       it('reverts if not active', async function () {
-        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, {from: owner});
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, { from: owner });
         await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, {
           from: owner,
           value: this.minContribution
