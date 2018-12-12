@@ -307,7 +307,8 @@ export default {
         ...this.formData.card,
         ...{
           message: this.formData.message,
-          BenefactorIndex: this.formData.benefactor
+          BenefactorIndex: this.formData.benefactor,
+          giftAmount: this.formData.valueInETH
         }
       };
     }
