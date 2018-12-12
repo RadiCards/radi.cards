@@ -1,15 +1,18 @@
 <template>
   <div id="app">
-     <header>
+    <header>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
           <h1>
             <span style="position: absolute; left: -9999px;">RadiCards</span>
-            <img src="/static/images/logo.svg" alt="RadiCards" />
+            <img src="/static/images/logo.svg" alt="RadiCards">
           </h1>
         </router-link>
 
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <router-link :to="{ name: 'gallery' }" class="nav-link">Gallery</router-link>
+          </li>
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
               My cards
@@ -17,9 +20,7 @@
             </router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
-              Send a card
-            </router-link>
+            <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">Send a card</router-link>
           </li>
         </ul>
       </nav>
@@ -127,7 +128,6 @@ export default {
 </script>
 
 <style lang="scss">
-
 @import "styles/variables.scss";
 @import "styles/mixins.scss";
 
