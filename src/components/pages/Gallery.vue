@@ -3,7 +3,7 @@
     <h1 style=" margin-bottom:10px;">Artwork Gallery</h1>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
     <b-row>
-      <div v-for="card in cards" :key="card.tokenId">
+      <div v-for="card in cards" :key="card.tokenId" class="pt-3">
         <b-col cols="4">
           <card :cdata="card"/>
         </b-col>

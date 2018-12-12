@@ -137,8 +137,7 @@ const store = new Vuex.Store({
         benefactorIndex,
         cardIndex,
         message,
-        extra,
-        {
+        extra, {
           from: state.account,
           value: web3.utils.toWei(valueInETH, "ether")
         }
@@ -157,10 +156,25 @@ const store = new Vuex.Store({
       console.log(tokenIds);
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));
       let tokenDetailsArray = await Promise.all(tokenDetails);
-      const benefactorDetails = tokenIds.map(id =>
-        contract.tokenBenefactor(id)
-      );
-      let benefactorDetailsArray = await Promise.all(benefactorDetails);
+      let tokenDetailsArrayProcessed = []
+      tokenDetailsArray.forEach(function (accountToken) {
+        let gifter = accountToken[0]
+        let giftAmount = accountToken[1].toNumber()
+        let message = accountToken[2]
+        let extra = accountToken[3]
+        let tokenURI = accountToken[4]
+        if (state.cards) {
+          let cardInformation = state.cards.filter(card => {
+            return card.cardIndex === cardIndex.toNumber();
+          });
+          allCardInformation = {
+            ...ownedNFTInformation,
+            ...cardInformation[0]
+          };
+        }
+      })
+
+
 
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArray);
 
