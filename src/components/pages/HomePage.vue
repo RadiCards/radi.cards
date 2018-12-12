@@ -139,13 +139,6 @@
       <samplequote></samplequote>
     </section>
 
-    <section class="section">
-      <h4 class="section__title">Buidl-ers</h4>
-      <!-- <h2>Send radicards to friends and family</h2> -->
-      <p>All of us from the NFT and Web3 family!</p>
-      <buidlers></buidlers>
-    </section>
-
     <div class="row">
       <div class="col">
         <span class="mt-5" v-if="totalSupply">
