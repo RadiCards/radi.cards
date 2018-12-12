@@ -16,9 +16,11 @@
             @click="goToStep(0)"
           >
             <div class="m20">
-              <h4 class="section__title">STEP ONE</h4>
+              <h4 class="section__title">
+                <img src="/static/icons/Check.png">STEP ONE
+              </h4>
             </div>
-            <img class="m20" :src="this.formData.card.image">
+            <img class="m20 elementImg" :src="this.formData.card.image">
             <div>
               <span class="selCard">Selected Card</span>
               <h5>{{this.formData.card.name}}</h5>
@@ -32,9 +34,12 @@
             v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
           >
             <div class="m20">
-              <h4 class="section__title">STEP TWO</h4>
+              <h4 class="section__title">
+                <img src="/static/icons/Check.png">
+                STEP TWO
+              </h4>
             </div>
-            <img class="m20" :src="this.formData.benefactor.image">
+            <img class="m20 elementImg" :src="this.formData.benefactor.image">
             <div>
               <span class="selCard">Selected Charity</span>
               <h5>{{this.formData.benefactor.name}}</h5>
@@ -353,6 +358,7 @@ textarea {
 
   h4 {
     white-space: nowrap;
+    font-weight: bold;
   }
   .selCard {
     font-family: Helvetica;
@@ -372,7 +378,7 @@ textarea {
     font-weight: bold;
   }
 
-  img {
+  .elementImg {
     width: 50px;
     height: 50px;
   }
