@@ -10,57 +10,39 @@
         </div>
 
         <div class="summaryPreview">
-          <div class="stepOnePreview" v-if="this.formData.card !== null && this.step > 0">
-            <img :src="this.formData.card.image">
-            <div>
-              <span>Selected Card</span>
-              <h5>{{this.formData.card.name}}</h5>
-              <span>by {{this.formData.card.attributes.artist}}</span>
-            </div>
-            <div class="stepEdit">
+          <div
+            class="stepOnePreview"
+            v-if="this.formData.card !== null && this.step > 0"
+            @click="goToStep(0)"
+          >
+            <div class="m20">
               <h4 class="section__title">STEP ONE</h4>
-              <span>EDIT</span>
+            </div>
+            <img class="m20" :src="this.formData.card.image">
+            <div>
+              <span class="selCard">Selected Card</span>
+              <h5>{{this.formData.card.name}}</h5>
+              <span class="artist">by {{this.formData.card.attributes.artist}}</span>
             </div>
           </div>
 
           <div
-            class="stepThreePreview"
-            v-if="this.step != 2 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
+            class="stepOnePreview"
+            @click="goToStep(1)"
+            v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
           >
-            <h4 class="section__title">STEP THREE</h4>
-            <img :src="this.formData.benefactor.image">
-            {{this.formData.benefactor.name}}
+            <div class="m20">
+              <h4 class="section__title">STEP TWO</h4>
+            </div>
+            <img class="m20" :src="this.formData.benefactor.image">
+            <div>
+              <span class="selCard">Selected Charity</span>
+              <h5>{{this.formData.benefactor.name}}</h5>
+            </div>
           </div>
         </div>
 
-        <!--<div v-if="this.step == 0">
-          <h4 class="section__title">STEP ONE</h4>
-          <h2>Choose your favourite radicard</h2>
-
-          <div class="form-group row" v-if="cards && cards.length > 0">
-            <p>All unique designs</p>
-            <div class="card-slider" v-if="cards && cards.length > 0">
-              <div v-for="item in cards" :key="item.tokenId">
-                <div
-                  @click="selectCard(item)"
-                  v-bind:class="{'card-selected': formData.card == item}"
-                >
-                  <card :cdata="item"></card>
-                </div>
-              </div>
-            </div>
-
-            <input
-              type="button"
-              @click="goToStep(1)"
-              :disabled="this.formData.card.cardIndex === undefined"
-              value="NEXT"
-            >
-          </div>
-        </div>-->
         <div v-if="this.step == 0">
-          <!-- <h4 class="section__title">STEP TWO</h4>
-          <h2>Enter personal card message</h2>-->
           <section class="section">
             <card v-if="this.card !== undefined" :cdata="this.formData.card"></card>
 
@@ -84,14 +66,14 @@
           </section>
           <input
             type="button"
-            @click="goToStep(2)"
-            :disabled="this.formData.message === undefined && this.formData.recipient === undefined"
+            @click="goToStep(1)"
+            :disabled="this.formData.message === null || this.formData.recipient === null"
             value="NEXT"
           >
         </div>
 
-        <div v-if="this.step == 2">
-          <h4 class="section__title">STEP THREE</h4>
+        <div v-if="this.step == 1">
+          <h4 class="section__title">STEP TWO</h4>
           <h2>Choose a project to support</h2>
           <section class="section">
             <p>From environmental protection to online privacy rights</p>
@@ -105,23 +87,17 @@
           </section>
         </div>
 
-        <div v-if="this.step == 3">
-          <h4 class="section__title">STEP FOUR</h4>
+        <div v-if="this.step == 2">
+          <h4 class="section__title">STEP THREE</h4>
           <h2>Add my donation</h2>
 
           <section class="section">
             <p>I'd like to donate...</p>
-            <b-row class="pt-5">
-              <b-col>
-                <b-button @click="setDonationAmount(0.2)">0.2ETH</b-button>
-              </b-col>
-              <b-col>
-                <b-button @click="setDonationAmount(0.3)">0.3ETH</b-button>
-              </b-col>
-              <b-col>
-                <b-button @click="setDonationAmount(0.4)">0.4ETH</b-button>
-              </b-col>
-            </b-row>
+            <div class="paymentPresets">
+              <b-button @click="setDonationAmount(0.2)">0.2ETH</b-button>
+              <b-button @click="setDonationAmount(0.3)">0.3ETH</b-button>
+              <b-button @click="setDonationAmount(0.4)">0.4ETH</b-button>
+            </div>
             <b-row class="pt-5 text-center">
               <b-col>
                 <input
@@ -136,16 +112,13 @@
           </section>
           <input
             type="button"
-            @click="goToStep(4)"
+            @click="goToStep(3)"
             :disabled="this.formData.valueInEth > 0.01"
-            value="NEXT"
+            value="PREVIEW CARD"
           >
         </div>
 
-        <div v-if="this.step == 4">
-          <h4 class="section__title">STEP FIVE</h4>
-          <h2>Send your Radi Card!</h2>
-
+        <div v-if="this.step == 3">
           <section class="section">
             <p>Card Preview</p>
             <b-row class="text-center">
@@ -154,7 +127,7 @@
               </b-col>
             </b-row>
           </section>
-          <b-button @click="giveBirth">Send Card!</b-button>
+          <b-button @click="giveBirth">gift this awesome card</b-button>
           <div class="form-group row" v-if="formData.errors.length">
             <div class="col-sm-4">
               <blockquote>
@@ -165,12 +138,12 @@
               </ul>
             </div>
           </div>
-          <input
+          <!-- <input
             type="button"
             @click="goToStep(4)"
             :disabled="this.formData.valueInEth > 0.01"
             value="NEXT"
-          >
+          >-->
         </div>
       </div>
     </form>
@@ -252,7 +225,7 @@ export default {
     },
     setBenefactor(benefactor) {
       this.formData.benefactor = benefactor;
-      this.step = 3;
+      this.step = 2;
     },
     selectCard(card) {
       console.log("CARD SELECTED");
@@ -311,32 +284,43 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 
+.m20 {
+  margin-right: 20px;
+}
+
+.paymentPresets {
+  display: flex;
+  margin-top: 20px;
+  justify-content: space-between;
+}
+
 .stepOnePreview {
   display: flex;
-  justify-content: space-between;
   border-bottom: 2px solid #c4c4c4;
+  padding-bottom: 20px;
+  margin-bottom: 20px;
+  align-items: center;
 
-  img {
-    width: 50px;
-    height: 50px;
+  h4 {
+    white-space: nowrap;
   }
-}
-
-.stepEdit {
-  display: flex;
-  flex-direction: column;
-
-  span {
-    font-size: 12px;
-    text-align: right;
-
-    color: #c4c4c4;
+  .selCard {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 14px;
   }
-}
+  .artist {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 14px;
+  }
 
-.stepThreePreview {
-  display: flex;
-  justify-content: space-between;
+  h5 {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 14px;
+    font-weight: bold;
+  }
 
   img {
     width: 50px;

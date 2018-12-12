@@ -92,10 +92,12 @@ export default {
 
   methods: {
     redirect: function() {
-      var index = this.cdata.cardIndex;
-      router.push({
-        path: "create/" + index
-      });
+      if (this.$route.path.lastIndexOf("create") === -1) {
+        var index = this.cdata.cardIndex;
+        router.push({
+          path: "create/" + index
+        });
+      }
     },
     flip: function(event) {
       this.isFlipped = !this.isFlipped;
