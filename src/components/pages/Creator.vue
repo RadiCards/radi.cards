@@ -49,7 +49,7 @@
 
         <div v-if="this.step == 0">
           <div class="centered">
-            <card v-if="this.card !== undefined" :cdata="this.formData.card"></card>
+            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
 
           <div class="sectionTitle">
