@@ -126,13 +126,16 @@
               <b-col>
                 <input
                   type="number"
-                  class="field"
+                  class="field full"
                   id="valueInETH"
                   v-model="formData.valueInETH"
                   placeholder="or enter a custom amount"
                 >
               </b-col>
             </b-row>
+            <span
+              class="info"
+            >Every card has a base transactional price of 0.01 ETH, that’s why there is a minimum.</span>
           </section>
           <input type="button" @click="goToStep(3)" class="nextButton" value="PREVIEW CARD">
         </div>
@@ -318,6 +321,18 @@ export default {
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;
+}
+
+.full {
+  width: 100%;
+}
+
+.info {
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 12px;
+
+  color: #000000;
 }
 
 input {
