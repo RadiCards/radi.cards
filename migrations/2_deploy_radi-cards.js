@@ -1,7 +1,7 @@
 const RadiCards = artifacts.require("./RadiCards.sol");
 
 const HDWalletProvider = require('truffle-hdwallet-provider');
-const infuraApikey = '4396873c00c84479991e58a34a54ebd9';
+const infuraApikey = '4ed01157025d44b0b0ad5932e1d877ea';
 
 module.exports = async (deployer, network, accounts) => {
 
