@@ -20,8 +20,6 @@ module.exports = async (deployer, network, accounts) => {
   console.log(`Account = ${account}`);
 
   const contract = await RadiCards.deployed();
-  await contract.addCard(3, "QmQdNgFnmfKnWjYF6bvfH67f2rLLa74eTBQLWzozfdKfmo", true, {from: account});
-  await contract.addCard(4, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, {from: account});
-  await contract.addCard(5, "QmdT2mKTeQwEA8hd33iHxL9UCS8rjXwpFqCpXF5WALt7Pd", true, {from: account});
-  await contract.addCard(6, "QmTT82fZU1TTfcEWfiLP4HNbjGbsHJFh2uNwjUsveAYfnS", true, {from: account});
+  await contract.addCard(1, "Qmd16ovvFnvarp4fvXrWpLgPNsMEUJ3tMTMyhsmfbsNbMr", true, {from: account});
+  await contract.addCard(2, "QmQjkpEFWEWQz4KxUmG8U3hrJe5KmCTyWCVVXAjcQJST2N", true, {from: account});
 };

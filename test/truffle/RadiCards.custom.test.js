@@ -134,14 +134,16 @@ contract('RadiCards ERC721 Custom', function (accounts) {
           _giftingAmount,
           _message,
           _extra,
-          _tokenUri
+          _cardIndex,
+          _benefactorIndex,
         ] = await this.token.tokenDetails(firstTokenId);
 
         _message.should.be.equal(message);
         _extra.should.be.equal('FFFFFF');
         _gifter.should.be.equal(owner);
         _giftingAmount.should.be.bignumber.equal(this.minContribution);
-        _tokenUri.should.be.equal(BASE_URI + cardOneUri);
+        _cardIndex.should.be.bignumber.equal(cardOne);
+        _benefactorIndex.should.be.bignumber.equal(benefactorEFF);
       });
 
       it('returns token URI', async function () {
