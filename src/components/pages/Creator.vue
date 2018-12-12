@@ -2,16 +2,6 @@
   <div class="container">
     <h1 style=" margin-bottom:10px;">Card Foundry</h1>
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>
-    <div class="form-group row" v-if="formData.errors.length">
-      <div class="col-sm-4">
-        <blockquote>
-          <b>Please correct the following error(s):</b>
-        </blockquote>
-        <ul>
-          <li v-for="error in formData.errors">{{ error }}</li>
-        </ul>
-      </div>
-    </div>
     <form>
       <!-- <form-wizard
         title
@@ -151,36 +141,125 @@
             </b-card-body>
           </b-collapse>
         </b-card>
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion2 variant="info">Accordion 2</b-btn>
+        <b-card class="mb-1">
+          <b-card-header header-tag="header" v-b-toggle.accordion2>
+            <h4 class="section__title">STEP TWO</h4>
+            <h2>Enter personal card message</h2>
           </b-card-header>
           <b-collapse id="accordion2" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <section class="section">
-                <h4 class="section__title">STEP TWO</h4>
-                <h2>Choose a project to support</h2>
+                <p>Enter your personal message for your card</p>
+                <b-form-textarea
+                  id="textarea1"
+                  v-model="formData.message"
+                  placeholder="Happy holidays..."
+                  :rows="3"
+                  :max-rows="6"
+                ></b-form-textarea>
+                <br>
+                <p>Recipient</p>
+                <b-form-input
+                  type="text"
+                  class="field"
+                  id="recipient"
+                  v-model="formData.recipient"
+                  placeholder="0x0abc"
+                />
+              </section>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card class="mb-1">
+          <b-card-header header-tag="header" v-b-toggle.accordion3>
+            <h4 class="section__title">STEP TWO</h4>
+            <h2>Choose a project to support</h2>
+          </b-card-header>
+          <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <section class="section">
                 <p>From environmental protection to online privacy rights</p>
-
                 <div class="charities" v-if="benefactors && benefactors.length > 0">
-                  <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
+                  <div v-for="item in benefactors" :key="item.address">
+                    <b-row>
+                      <b-col cols="10">
+                        <benefactor :benefactor="item"/>
+                      </b-col>
+                      <b-col>
+                        <b-form-checkbox
+                          v-model="formData.benefactor"
+                          :value="item.id"
+                          class="pt-5"
+                        />
+                      </b-col>
+                    </b-row>
+                  </div>
                 </div>
               </section>
             </b-card-body>
           </b-collapse>
         </b-card>
-        <b-card no-body class="mb-1">
-          <b-card-header header-tag="header" class="p-1" role="tab">
-            <b-btn block href="#" v-b-toggle.accordion3 variant="info">Accordion 3</b-btn>
+        <b-card class="mb-1">
+          <b-card-header header-tag="header" v-b-toggle.accordion4>
+            <h4 class="section__title">STEP THREE</h4>
+            <h2>Add my donation</h2>
           </b-card-header>
-          <b-collapse id="accordion3" accordion="my-accordion" role="tabpanel">
+          <b-collapse id="accordion4" accordion="my-accordion" role="tabpanel">
             <b-card-body>
               <section class="section">
-                <h4 class="section__title">STEP THREE</h4>
-                <h2>Send radicards to friends and family</h2>
-                <p>Spread hope & joy</p>
-                <samplequote></samplequote>
+                <p>I'd like to donate...</p>
+                <b-row class="pt-5">
+                  <b-col>
+                    <b-button @click="setDonationAmount(0.2)">0.2ETH</b-button>
+                  </b-col>
+                  <b-col>
+                    <b-button @click="setDonationAmount(0.3)">0.3ETH</b-button>
+                  </b-col>
+                  <b-col>
+                    <b-button @click="setDonationAmount(0.4)">0.4ETH</b-button>
+                  </b-col>
+                </b-row>
+                <b-row class="pt-5 text-center">
+                  <b-col>
+                    <input
+                      type="number"
+                      class="field"
+                      id="valueInETH"
+                      v-model="formData.valueInETH"
+                      placeholder="or enter a custom amount"
+                    >
+                  </b-col>
+                </b-row>
               </section>
+            </b-card-body>
+          </b-collapse>
+        </b-card>
+        <b-card class="mb-1">
+          <b-card-header header-tag="header" v-b-toggle.accordion5>
+            <h4 class="section__title">STEP FIVE</h4>
+            <h2>Send your Radi Card!</h2>
+          </b-card-header>
+          <b-collapse id="accordion5" accordion="my-accordion" role="tabpanel">
+            <b-card-body>
+              <section class="section">
+                <p>Card Preview</p>
+                <b-row class="text-center">
+                  <b-col>
+                    <card v-if="formData.card" :cdata="previewCardObject"/>
+                  </b-col>
+                </b-row>
+              </section>
+              <b-button @click="giveBirth">Send Card!</b-button>
+              <div class="form-group row" v-if="formData.errors.length">
+                <div class="col-sm-4">
+                  <blockquote>
+                    <b>Please correct the following error(s):</b>
+                  </blockquote>
+                  <ul>
+                    <li v-for="error in formData.errors">{{ error }}</li>
+                  </ul>
+                </div>
+              </div>
             </b-card-body>
           </b-collapse>
         </b-card>
@@ -209,25 +288,29 @@ export default {
     return {
       formData: {
         errors: [],
-        card: {}
+        card: {},
+        valueInETH: null,
+        recipient: null,
+        benefactor: null,
+        message: null
       },
-      text: `
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry
-        richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor
-        brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon
-        tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-        assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore
-        wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-        vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic
-        synth nesciunt you probably haven't heard of them accusamus labore VHS.
-      `,
+      status: "",
       response: {
         ipfsHash: null
       }
     };
   },
   computed: {
-    ...mapState(["account", "uploadedHashs", "cards", "benefactors"])
+    ...mapState(["account", "uploadedHashs", "cards", "benefactors"]),
+    previewCardObject() {
+      return {
+        ...this.formData.card,
+        ...{
+          message: this.formData.message,
+          BenefactorIndex: this.formData.benefactor
+        }
+      };
+    }
   },
   mounted() {
     this.$nextTick(function() {
@@ -235,6 +318,11 @@ export default {
     });
   },
   methods: {
+    setDonationAmount(amount) {
+      console.log("setting amount");
+      console.log(amount);
+      this.formData.valueInETH = amount;
+    },
     selectCard(card) {
       console.log("CARD SELECTED");
       console.log(card);
@@ -250,7 +338,7 @@ export default {
       this.checkForm();
       if (this.formData.errors.length === 0) {
         let recipient = this.formData.recipient;
-        let valueInETH = this.formData.valueInETH;
+        let valueInETH = this.formData.valueInETH + "";
         let benefactorIndex = this.formData.benefactor;
         let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message;
@@ -276,7 +364,7 @@ export default {
       if (!this.formData.message) {
         this.formData.errors.push("Message is required.");
       }
-      if (!this.formData.card) {
+      if (this.formData.card === {}) {
         this.formData.errors.push("Card is required.");
       }
     }

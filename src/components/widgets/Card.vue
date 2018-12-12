@@ -13,7 +13,7 @@
       <figcaption>
         <div class="card__meta">
           <h4 class="title">{{ cdata.name }}</h4>
-          <p class="creator">{{ cdata.attributes.artist }}</p>
+          <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
         </div>
         <div class="card__value" v-if="cdata.giftAmount && cdata.giftAmount.length > 0">
           <div class="badge">
@@ -46,6 +46,7 @@
           Benefactor:
           <strong>
             <a
+              v-if="cdata.BenefactorIndex"
               :href="benefactors[cdata.BenefactorIndex-1].website"
               target="_blank"
             >{{benefactors[cdata.BenefactorIndex-1].name}}</a>

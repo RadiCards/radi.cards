@@ -9,6 +9,9 @@ import BootstrapVue from 'bootstrap-vue'
 import Web3 from 'web3'
 import VueFormWizard from 'vue-form-wizard'
 import 'vue-form-wizard/dist/vue-form-wizard.min.css'
+import "bootstrap/dist/css/bootstrap.css";
+import "bootstrap-vue/dist/bootstrap-vue.css";
+
 Vue.use(VueFormWizard)
 
 Vue.config.productionTip = false;
@@ -39,7 +42,9 @@ Vue.filter('capitalize', function (value) {
       store,
       router,
       logging,
-      components: {App},
+      components: {
+        App
+      },
       template: '<App/>'
     })
   }
