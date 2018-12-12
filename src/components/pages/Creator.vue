@@ -56,19 +56,23 @@
             <h4>Customise details</h4>
             <p>Send this card to any ETH wallet address</p>
           </div>
+
           <section class="section">
+            <span class="myWallet">My wallet: {{account}}</span>
+            <span class="inputLabel">Add recipient wallet address</span>
             <b-form-input
               type="text"
               class="field"
               id="recipient"
               v-model="formData.recipient"
-              placeholder="add recipient wallet address"
+              placeholder
             />
 
+            <span class="inputLabel">Add personal message</span>
             <b-form-textarea
               id="textarea1"
               v-model="formData.message"
-              placeholder="add personal message (max 128 characters)"
+              placeholder="max 128 characters"
               :rows="3"
               :max-rows="6"
             ></b-form-textarea>
@@ -122,17 +126,16 @@
                 @click="setDonationAmount(0.4)"
               >0.4ETH</button>
             </div>
-            <b-row class="pt-5 text-center">
-              <b-col>
-                <input
-                  type="number"
-                  class="field full"
-                  id="valueInETH"
-                  v-model="formData.valueInETH"
-                  placeholder="or enter a custom amount"
-                >
-              </b-col>
-            </b-row>
+            <div>
+              <span class="inputLabel">Or enter a custom amount</span>
+              <input
+                type="number"
+                class="field full"
+                id="valueInETH"
+                v-model="formData.valueInETH"
+                placeholder="0.01ETH"
+              >
+            </div>
             <span
               class="info"
             >Every card has a base transactional price of 0.01 ETH, that’s why there is a minimum.</span>
@@ -338,12 +341,28 @@ export default {
   color: #000000;
 }
 
+.inputLabel {
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 15px;
+  margin-bottom: 10px;
+  margin-top: 10px;
+  display: inline-block;
+  color: #000000;
+}
+
 input {
   border: 1px solid #000000;
   margin-bottom: 20px;
 }
 textarea {
   border: 1px solid #000000;
+
+  &::placeholder {
+    text-align: right;
+    text-align-last: right;
+    vertical-align: bottom;
+  }
 }
 
 .sectionTitle {
@@ -376,6 +395,14 @@ textarea {
   display: flex;
   margin-top: 20px;
   justify-content: space-between;
+}
+
+.myWallet {
+  padding: 10px;
+  border-radius: 50px;
+  font-size: 12px;
+  display: block;
+  background: #f3f3f3;
 }
 
 .stepOnePreview {
