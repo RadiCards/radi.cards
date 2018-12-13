@@ -126,8 +126,8 @@
 
     <section class="section">
       <h4 class="section__title">STEP THREE</h4>
-      <h2>Send radicards to friends and family</h2>
-      <p>Spread hope & joy</p>
+      <h2>Share radiCards with friends and donate to good causes</h2>
+      <p>Help spread hope and joy with eCards</p>
       <samplequote></samplequote>
     </section>
 
