@@ -208,49 +208,7 @@ const store = new Vuex.Store({
           tokenDetailsArrayProcessed.push(allCardInformation)
         }
       })
-
-
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
-
-      // // this iterates over all the cards that the users address owns and then
-      // // gets all further details for that specific card. In future this should be
-      // // combine to one single contract call by making a view function within the RadiCards.sol
-      // // smart contract that returns all this info in one call.
-      // for (const tokenId of tokenIds) {
-      //   let tokenIdNumber = tokenId.toNumber();
-      //   let cardIndex = await contract.tokenIdToCardIndex(tokenIdNumber);
-      //   let BenefactorIndex = await contract.tokenIdToBenefactorIndex(
-      //     tokenIdNumber
-      //   );
-      //   let message = await contract.messages(tokenIdNumber);
-      //   let gifter = await contract.gifters(tokenIdNumber);
-      //   let giftAmount = await contract.giftAmounts(tokenIdNumber);
-      //   let accountCreatedCard = false;
-      //   if (gifter === account.toLowerCase()) {
-      //     accountCreatedCard = true;
-      //   }
-      //   let ownedNFTInformation = {
-      //     tokenIdNumber: tokenIdNumber,
-      //     gifter: gifter,
-      //     accountCreatedCard: accountCreatedCard,
-      //     giftAmount: web3.utils.fromWei(giftAmount + "", "ether"),
-      //     cardIndex: cardIndex.toNumber(),
-      //     BenefactorIndex: BenefactorIndex.toNumber(),
-      //     message: message
-      //   };
-      //   let allCardInformation = {};
-      //   if (state.cards) {
-      //     let cardInformation = state.cards.filter(card => {
-      //       return card.cardIndex === cardIndex.toNumber();
-      //     });
-      //     allCardInformation = {
-      //       ...ownedNFTInformation,
-      //       ...cardInformation[0]
-      //     };
-      //     userCardsInformation.push(allCardInformation);
-      //   }
-      // }
-      // console.log(userCardsInformation);
     },
     [actions.LOAD_BENEFACTORS]: async function ({
       commit,
@@ -286,6 +244,9 @@ const store = new Vuex.Store({
       const cards = await Promise.all(cardPromises);
 
       commit(mutations.SET_CARDS, cards);
+      dispatch(actions.LOAD_ACCOUNT_CARDS, {
+        account: this.state.account
+      });
     },
     [actions.WATCH_TRANSFERS]: async function ({
       commit,

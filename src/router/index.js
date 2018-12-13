@@ -1,10 +1,9 @@
-
 import Vue from 'vue'
 import Router from 'vue-router'
 import HomePage from '@/components/pages/HomePage'
 import Creator from '@/components/pages/Creator'
 import Account from '@/components/pages/Account'
-import Gallery from '@/components/pages/Gallery'
+import CardShop from '@/components/pages/CardShop'
 
 Vue.use(Router);
 
@@ -23,10 +22,9 @@ export default new Router({
       component: Creator
     },
     {
-
-      path: '/gallery',
-      name: 'gallery',
-      component: Gallery
+      path: '/cardshop',
+      name: 'cardshop',
+      component: CardShop
     },
     {
       path: '/account',

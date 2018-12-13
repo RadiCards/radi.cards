@@ -14,7 +14,7 @@
       </div>
     </div>
 
-    <div class="row mt-5" v-else>
+    <div class="row mt-2" v-else>
       <div class="col">
         <div class="card-slider" v-if="accountCards && accountCards.length > 0">
           <card v-for="item in accountCards" :key="item.tokenId" :cdata="item">{{item}}</card>
