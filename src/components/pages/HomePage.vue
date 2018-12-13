@@ -95,8 +95,8 @@
           </ul>
         </div>
       </div>
-      <!-- <h2>Choose your favourite radicard</h2>
-      <p>All unique designs</p>
+      <!-- <h2>Choose and personalise your RadiCards</h2>
+      <p>Send your card & message to any ETH address</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
