@@ -115,8 +115,9 @@
 
     <section class="section">
       <h4 class="section__title">STEP TWO</h4>
-      <h2>Choose a project to support</h2>
-      <p>From environmental protection to online privacy rights</p>
+      <h2>Choose a project you wish to support</h2>
+      <p>Your donations* go directly to charities</p>
+      <p>*after deducting gas cost</p>
 
       <div class="charities" v-if="benefactors && benefactors.length > 0">
         <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
