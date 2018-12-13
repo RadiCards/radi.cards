@@ -90,7 +90,7 @@
               <a href="https://eff.org" target="_blank">eff.org</a>
             </li>
             <li>
-              <a href="https://torproject.org" target="_blank">torproject.org</a>
+              <a href="https://enlawfoundation.org" target="_blank">enlawfoundation.org</a>
             </li>
           </ul>
         </div>
