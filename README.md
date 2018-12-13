@@ -1,7 +1,7 @@
 <h1 align="center">Radi.Cards</h1>
 
 <div align="center">
-TOBY TO ADD DETAILS
+NFT eCards for greater fun and greater good. All income goes to charities working to promote Internet freedom and environmental rights. 
 </div>
 
 <br/>
