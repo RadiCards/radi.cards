@@ -75,19 +75,10 @@
               <a href="https://twitter.com/meta_cartel" target="_blank">metacartel</a>
             </li>
             <li>
-              <a href="knownorigin.io" target="_blank">knownorigin.io</a>
+              <a href="https://opensea.io/" target="_blank">opensea.io</a>
             </li>
             <li>
-              <a href="pheme.app" target="_blank">pheme.app</a>
-            </li>
-            <li>
-              <a href="d1labs.com" target="_blank">d1labs.com</a>
-            </li>
-            <li>
-              <a href="blockrocket.tech" target="_blank">blockrocket.tech</a>
-            </li>
-            <li>
-              <a href="mbdoesthings.com" target="_blank">mbdoesthings.com</a>
+              <a href="https://colony.io/" target="_blank">colony.io</a>
             </li>
           </ul>
         </div>
