@@ -45,7 +45,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h4>In partnership with</h4>
+          <h4>Community buidl-ing and creative partnership</h4>
           <ul>
             <li>
               <a href="https://superrare.co" target="_blank">superrare.co</a>
