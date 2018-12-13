@@ -12,9 +12,9 @@
         >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p>NFT eCards for greater fun and greater good.</p>
-      <p>Fun goes to you. Income goes to non-profit projects that
-        <br>fight to keep our Internet Freedom alive.
+      <p>Need new text here</p>
+      <p>Need new text here
+        <br>Need new text here
       </p>
     </section>
 
