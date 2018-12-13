@@ -11,7 +11,7 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <router-link :to="{ name: 'gallery' }" class="nav-link">Gallery</router-link>
+            <router-link :to="{ name: 'gallery' }" class="nav-link">Card Shop</router-link>
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1 style=" margin-bottom:10px;">Artwork Gallery</h1>
+    <h1 style=" margin-bottom:10px;">Card Shop</h1>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
     <b-row>
       <div v-for="card in cards" :key="card.tokenId" class="pt-3">

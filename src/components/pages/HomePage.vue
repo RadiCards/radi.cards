@@ -21,7 +21,6 @@
 
     <section class="section section--credits">
       <div class="container">
-<<<<<<< HEAD
         <div class="col-md-4 col-xs-12">
           <h4>Buidl-t on Ethereum and IPFS by the crypto collectible family</h4>
           <ul>
@@ -105,93 +104,6 @@
             </li>
           </ul>
         </div>
-=======
-        <b-row>
-          <b-col>
-            <h4>Buidl-t on Ethereum and IPFS by the crypto collectible family</h4>
-            <ul>
-              <li>
-                <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
-              </li>
-              <li>
-                <a href="https://knownorigin.io" target="_blank">knownorigin.io</a>
-              </li>
-              <li>
-                <a href="https://pheme.app" target="_blank">pheme.app</a>
-              </li>
-              <li>
-                <a href="https://d1labs.com" target="_blank">d1labs.com</a>
-              </li>
-              <li>
-                <a href="https://blockrocket.tech" target="_blank">blockrocket.tech</a>
-              </li>
-              <li>
-                <a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a>
-              </li>
-            </ul>
-          </b-col>
-
-          <b-col>
-            <h4>In partnership with</h4>
-            <ul>
-              <li>
-                <a href="https://superrare.co" target="_blank">superrare.co</a>
-              </li>
-              <li>
-                <a href="https://pixura.io" target="_blank ">pixura.io</a>
-              </li>
-              <li>
-                <a href="https://bounties.network" target="_blank">bounties.network</a>
-              </li>
-              <li>
-                <a href="https://twitter.com/ETHBerlin" target="_blank ">ethberlin</a>
-              </li>
-              <li>
-                <a href="https://blockcities.co" target="_blank">blockcities.co</a>
-              </li>
-              <li>
-                <a href="https://blockpunk.net" target="_blank ">blockpunk.net</a>
-              </li>
-              <li>
-                <a href="https://0xcert.org" target="_blank">0xcert.org</a>
-              </li>
-              <li>
-                <a href="https://churchofconsensus.org" target="_blank ">churchofconsensus.org</a>
-              </li>
-              <li>
-                <a href="https://twitter.com/meta_cartel" target="_blank">metacartel</a>
-              </li>
-              <li>
-                <a href="knownorigin.io" target="_blank">knownorigin.io</a>
-              </li>
-              <li>
-                <a href="pheme.app" target="_blank">pheme.app</a>
-              </li>
-              <li>
-                <a href="d1labs.com" target="_blank">d1labs.com</a>
-              </li>
-              <li>
-                <a href="blockrocket.tech" target="_blank">blockrocket.tech</a>
-              </li>
-              <li>
-                <a href="mbdoesthings.com" target="_blank">mbdoesthings.com</a>
-              </li>
-            </ul>
-          </b-col>
-
-          <b-col>
-            <h4>All donations go to</h4>
-            <ul>
-              <li>
-                <a href="https://eff.org" target="_blank">eff.org</a>
-              </li>
-              <li>
-                <a href="https://torproject.org" target="_blank">torproject.org</a>
-              </li>
-            </ul>
-          </b-col>
-        </b-row>
->>>>>>> Small fix and removed bootstrap rounding on buttons
       </div>
       <!-- <h2>Choose your favourite radicard</h2>
       <p>All unique designs</p>
