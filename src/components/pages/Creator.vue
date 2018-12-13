@@ -68,7 +68,7 @@
               placeholder
             />
 
-            <span class="inputLabel">Add a censorship-resistant message (This will be visable on the blockchain)</span>
+            <span class="inputLabel">Add a message (This will be visable on the blockchain)</span>
             <b-form-textarea
               id="textarea1"
               v-model="formData.message"
