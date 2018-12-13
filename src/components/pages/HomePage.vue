@@ -21,7 +21,7 @@
     <section class="section section--credits">
       <div class="container">
         <div class="col-md-4 col-xs-12">
-          <h4>Buidl-t on Ethereum and IPFS by the crypto collectible family</h4>
+          <h4>Buidl-t on Ethereum and IPFS by the crypto collectible community</h4>
           <ul>
             <li>
               <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
