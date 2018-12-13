@@ -68,7 +68,7 @@
               placeholder
             />
 
-            <span class="inputLabel">Add personal message</span>
+            <span class="inputLabel">Add a censorship-resistant message (This will be visable on the blockchain)</span>
             <b-form-textarea
               id="textarea1"
               v-model="formData.message"
@@ -90,8 +90,8 @@
         <div v-if="this.step == 1">
           <div class="sectionTitle">
             <h4 class="section__title">STEP TWO</h4>
-            <h4>Choose a project you want to support</h4>
-            <p>100% income after deducting gas cost will go straight to a charity of your choice</p>
+            <h4>Choose a project you wish to support</h4>
+            <p> Your donations go directly to charities of your choice</p>
           </div>
           <section class="section">
             <div class="charities" v-if="benefactors && benefactors.length > 0">
