@@ -35,7 +35,7 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
-    <figure class="card__transfer text-center" v-if="transfer">
+    <figure class="card__front text-center" v-if="transfer">
       <h2 class="pb-2">Transfer Card</h2>
       <p>Send your Radi card to any web3 address.</p>
       <hr>
