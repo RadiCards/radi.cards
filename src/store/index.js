@@ -171,6 +171,34 @@ const store = new Vuex.Store({
 
       // commit(mutations.SET_UPLOAD_HASH, tx);
     },
+
+    [actions.TRANSFER_CARD]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      recipient,
+      tokenId
+    }) {
+      const contract = await state.contract.deployed();
+
+      console.log(recipient)
+      console.log("transfering card...", recipient, tokenId)
+      const {
+        tx
+      } = await contract.safeTransferFrom(
+        state.account,
+        recipient,
+        tokenId, {
+          from: state.account,
+        }
+      );
+
+      // console.log(tx);
+
+      // commit(mutations.SET_UPLOAD_HASH, tx);
+    },
+
     [actions.LOAD_ACCOUNT_CARDS]: async function ({
       commit,
       dispatch,
@@ -183,6 +211,9 @@ const store = new Vuex.Store({
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));
       let tokenDetailsArray = await Promise.all(tokenDetails);
       let tokenDetailsArrayProcessed = []
+      console.log("IN STORE")
+      console.log(tokenDetails)
+      let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
         let gifter = accountToken[0]
         let giftAmount = accountToken[1].toNumber()
@@ -190,6 +221,7 @@ const store = new Vuex.Store({
         let extra = accountToken[3]
         let cardIndex = accountToken[4]
         let benefactorIndex = accountToken[5].toNumber()
+        let tokenId = tokenIds[loopIndex].toNumber();
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
@@ -202,12 +234,14 @@ const store = new Vuex.Store({
               giftAmount: giftAmount / 1000000000000000000,
               message: message,
               BenefactorIndex: benefactorIndex,
-              accountCreatedCard: accountCreatedCard
+              accountCreatedCard: accountCreatedCard,
+              tokenId: tokenId
             },
             ...cardInformation[0]
           };
           tokenDetailsArrayProcessed.push(allCardInformation)
         }
+        loopIndex++;
       })
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
     },

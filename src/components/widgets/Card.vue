@@ -2,6 +2,7 @@
   <div
     v-if="cdata != undefined"
     :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
+    @click="redirect"
   >
     <figure class="card__front" @click="flip" v-if="!transfer">
       <div class="card__image">
@@ -82,6 +83,7 @@
 
 import { mapState } from "vuex";
 import router from "../../router";
+import * as actions from "../../store/actions";
 
 export default {
   name: "card",
@@ -108,7 +110,10 @@ export default {
 
   methods: {
     executeCardTransfer() {
-      console.log("Transfer card");
+      let recipient = this.transferRecipient;
+      let tokenId = this.cdata.tokenId;
+      console.log("Transfer card", recipient);
+      this.$store.dispatch(actions.TRANSFER_CARD, { recipient, tokenId });
     },
     cancelTransfer() {
       this.transfer = false;
