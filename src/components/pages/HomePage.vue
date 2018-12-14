@@ -4,14 +4,14 @@
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
         <p>
-          We can change the world & fight for good, now so can you
+          We can change the world & fight for good & spread the fun, now so can you
         </p>
         <span
           class="cheeky-comment"
         >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p>You can share NFT eCards with friends and family for Free</p>
+      <p>Share NFT eCards with friends and family for Free and donate to the charities you wish to support</p>
       <p>(well almost, you just pay the gas)
       </p>
     </section>
