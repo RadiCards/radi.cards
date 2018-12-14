@@ -96,14 +96,12 @@
 
           <section class="section">
             <div class="charities" v-if="benefactors && benefactors.length > 0">
-              <div v-for="item in benefactors" :key="item.address">
-                <div>
-                  <benefactor
-                    :benefactor="item"
-                    @benefactorSelected="handelBenefactorSelected(item)"
-                  />
-                </div>
-              </div>
+              <benefactor 
+                v-for="item in benefactors"
+                :key="item.address"
+                :benefactor="item"
+                @benefactorSelected="handelBenefactorSelected(item)"
+              />
             </div>
           </section>
         </div>
@@ -327,8 +325,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 @import "../../styles/variables.scss";
-@import "../../styles/variables.scss";
+
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;

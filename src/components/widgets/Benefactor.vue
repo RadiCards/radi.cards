@@ -1,23 +1,23 @@
 <template>
-  <div class="benefactor-row">
-    <img class="benefactor-img" :src="benefactor.image">
-    <div class="benefactor-text">
-      <span class="benefactor-name mt-2">{{benefactor.name}}</span>
-      <div v-if="exapanded">
-        <p class="m-2">{{charityDescription}}</p>
-        <div v-if="this.$route.path.lastIndexOf('create') !== -1">
-          <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
-          <a target="__blank" :href="charityURL">Learn More about charity</a>
-        </div>
-      </div>
-      <span class="benefactor-description">{{benefactor.description}}</span>
+  <div :class="['benefactor', {'isExpanded': expanded}]">
+
+    <div class="benefactor__heading" @click="expandDescription">
+      <figure class="benefactor__img">
+        <img :src="benefactor.image">
+      </figure>
+
+      <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
+
+      <input type="button" @click="selectBenefactor" class="btn btn--narrow" value="Select">
     </div>
 
-    <div class="arrow-container">
-      <a @click="expandDescription">
-        <img class="arrow" src="/static/icons/Arrow.png">
-      </a>
+    <div class="benefactor__detail">
+      <div class="benefactor__text">  <!-- v-if="expanded" -->
+        <p>{{charityDescription}}</p>
+        <a  v-if="this.$route.path.lastIndexOf('create') !== -1" target="__blank" :href="charityURL" class="a--external">Learn more about charity</a>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -57,60 +57,104 @@ export default {
       this.$emit("benefactorSelected");
     },
     expandDescription() {
-      this.exapanded = !this.exapanded;
+      this.expanded = !this.expanded;
     }
   },
   data() {
     return {
       status: "",
-      exapanded: false
+      expanded: false
     };
   }
 };
 </script>
 
 <style lang="scss" scoped>
+
 @import "../../styles/variables.scss";
-@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
-.benefactor-row {
-  display: flex;
-  // justify-content: center;
+.benefactor {
+  margin: 0 -1rem;
+  transition: all 0.2s ease-in-out;
 
-  .benefactor-img {
-    width: 60px;
-    height: 60px;
-    margin: 20px;
+  @include tabletAndUp() +{
+    margin: 0;
   }
 
-  .arrow {
-    width: 10px;
+  &:hover, &.isExpanded {
+    background: $white;
+    box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   }
 
-  .benefactor-text {
+  &__heading {
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    border-bottom: 1px solid #c4c4c4;
-    flex-grow: 1;
-  }
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 1rem;
+    cursor: pointer;
 
-  .arrow-container {
+    &:after {
+      content: "";
+      display: inline-block;
+      width: 0.75rem;
+      height: 0.75rem;
+      margin-left: 0.75rem;
+      border-bottom: 2px solid $black;
+      border-right: 2px solid currentColor;
+      transform: rotate(45deg);
+      transition: all 0.4s ease-in-out;
+      opacity: 0.5;
+    }
+  }
+  &.isExpanded .benefactor__heading:after {
+    transform: rotate(-135deg);
+    opacity: 1;
+  }
+  &__img {
+    width: 4rem;
+    height: 4rem;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    border-bottom: 1px solid #c4c4c4;
-    margin-right: 20px;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+  }
+  &__name {
+    margin-left: 1rem;
+    margin-right: auto;
+    font-weight: bold;
   }
 
-  .selectButton {
-    background: #000000;
-    font-family: Helvetica;
-    line-height: normal;
-    text-align: center;
-    text-transform: lowercase;
-    color: #ffffff;
-    padding: 10px;
+  &__text {
+    padding: 1rem;
+
+    @include tabletAndUp() {
+      padding: 1rem 1rem 1rem 6rem;
+    }
+
+    p + a {
+      display: inline-block;
+      margin-top: 0.5rem;
+    }
+  }
+
+  &__detail {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s ease-in-out, opacity 0.6s ease-in-out;
+    opacity: 0;
+  }
+  &.isExpanded .benefactor__detail {
+    max-height: 70vh;
+    opacity: 1;
+  }
+
+  & + .benefactor {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
   }
 }
 </style>
