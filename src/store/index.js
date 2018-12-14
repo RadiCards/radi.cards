@@ -258,26 +258,19 @@ const store = new Vuex.Store({
       tokenId
     }) {
       if (state.deepUrlCardNumber === null) {
-        console.log("SET DEEP", tokenId)
         commit(mutations.SET_DEEP_URL_CARD_NUMBER, tokenId)
 
       } else {
-        console.log("IN DEEP", tokenId)
         if (state.contract) {
           const contract = await state.contract.deployed();
-          console.log("ALLIVE")
-          console.log(parseInt(tokenId))
           let accountToken = await contract.tokenDetails(tokenId);
-          console.log(accountToken)
           let gifter = accountToken[0]
           let giftAmount = accountToken[1].toNumber()
           let message = accountToken[2]
           let extra = accountToken[3]
           let cardIndex = accountToken[4]
           let benefactorIndex = accountToken[5].toNumber()
-          console.log("JUST BEFORE CARD INFOOOO")
           if (state.cards) {
-            console.log("INSISISIS")
             let cardInformation = state.cards.filter(card => {
               return card.cardIndex === cardIndex.toNumber();
             });
@@ -297,8 +290,6 @@ const store = new Vuex.Store({
               },
               ...cardInformation[0]
             };
-            console.log("SINGLE CARD LOADED!!!")
-            console.log(allCardInformation)
             commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
           }
         }

@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-        <card :cdata="deepUrlCard"/>
+    <card :cdata="deepUrlCard"/>
   </div>
 </template>
 
@@ -21,18 +21,8 @@ export default {
   },
   computed: {
     ...mapState(["deepUrlCard"])
-    // loadCard() {
-    //   try {
-    //     let value = this.loadIntoStoreCard();
-    //     return 1;
-    //   } catch (e) {
-    //     console.log(e);
-    //   }
-    //   return null;
-    // }
   },
   mounted() {
-    
     console.log("loading Started");
     let currentPath = this.$route.path;
     let tokenId = currentPath.substring(
@@ -52,17 +42,6 @@ export default {
       );
       console.log(tokenId);
       this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
-      //   if (this.dispatchCardCount === 0) {
-      //     console.log("LOADING CARD");
-      //     this.$store.dispatch(actions.LOAD_CARDS);
-      //     this.dispatchCardCount = 1;
-      //   }
-      //   if (this.$store.state.cards && this.dispatchCountDeep === 0) {
-      //     console.log("LOADING DEEP");
-      //     this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
-      //     this.dispatchCount = 1;
-      //   }
-      //   return 1;
     }
   }
 };
