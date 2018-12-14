@@ -11,9 +11,8 @@
         >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p>Need new text here</p>
-      <p>Need new text here
-        <br>Need new text here
+      <p>You can share NFT eCards with friends and family for Free</p>
+      <p>(well almost, you just pay the gas)
       </p>
     </section>
 
