@@ -17,6 +17,8 @@
 import { mapState } from "vuex";
 import Card from "../../components/widgets/Card";
 import router from "../../router";
+import * as actions from "../../store/actions";
+
 export default {
   name: "creator",
   components: { Card },
@@ -36,6 +38,7 @@ export default {
       currentPath.length
     );
     console.log(cardId)
+    this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { cardId });
   },
   methods: {}
 };

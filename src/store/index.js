@@ -246,7 +246,7 @@ const store = new Vuex.Store({
       })
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
     },
-    [actions.LOAD_DEEPURL_CARD]: async function ({
+    [actions.LOAD_DEEP_URL_CARD]: async function ({
       commit,
       dispatch,
       state
@@ -254,6 +254,7 @@ const store = new Vuex.Store({
       tokenId
     }) {
       const contract = await state.contract.deployed();
+      console.log("IN DEEP", tokenId)
       cardDetails = await contract.tokenDetails(tokenId);
       let gifter = accountToken[0]
       let giftAmount = accountToken[1].toNumber()

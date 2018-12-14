@@ -1,14 +1,14 @@
 export const INIT_APP = 'INIT_APP';
+
 export const GET_CURRENT_NETWORK = 'GET_CURRENT_NETWORK';
 export const GET_USD_PRICE = 'GET_USD_PRICE';
 
 export const BIRTH = 'BIRTH';
-
 export const TRANSFER_CARD = 'TRANSFER_CARD';
 
 export const LOAD_ACCOUNT_CARDS = 'LOAD_ACCOUNT_CARDS';
 export const LOAD_CARDS = 'LOAD_CARDS';
+export const LOAD_BENEFACTORS = 'LOAD_BENEFACTORS';
+export const LOAD_DEEP_URL_CARD = 'LOAD_DEEP_URL_CARD';
 
 export const WATCH_TRANSFERS = 'WATCH_TRANSFERS';
-
-export const LOAD_BENEFACTORS = 'LOAD_BENEFACTORS';
