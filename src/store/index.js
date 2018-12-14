@@ -194,7 +194,8 @@ const store = new Vuex.Store({
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
-          let accountCreatedCard = (account === gifter) //if the current account created the card 
+          console.log("ACCOUNT AND GIFTER", account, gifter)
+          let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
           let allCardInformation = {
             ...{
               extra: extra,
