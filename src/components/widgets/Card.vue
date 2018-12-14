@@ -15,12 +15,6 @@
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
         </div>
-        <!-- <div class="card__value" v-if="cdata.giftAmount">
-          <div class="badge">
-            <img src="/static/icons/shopping-cart.svg">
-            {{cdata.giftAmount}} ETH
-          </div>
-        </div> -->
       </figcaption>
 
       <div v-if="cdata.description">

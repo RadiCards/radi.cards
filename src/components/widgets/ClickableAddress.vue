@@ -1,5 +1,5 @@
 <template>
-  <a v-if="ethAddress" class="eth-address" :href="buildLink" target="_blank">{{ dotDotDot }}</a>
+  <a v-if="ethAddress" class="eth-address a--external" :href="buildLink" target="_blank">{{ dotDotDot }}</a>
 </template>
 
 <script>
@@ -40,22 +40,10 @@
   padding: 0.125rem 0.25rem;
   background: rgba($black, 0.05);
 
-  &:after {
-    content: "↗";
-    display: inline-block;
-    padding-left: 0.25rem;
-    font-size: 0.75rem;
-    opacity: 0.25;
-  }
-
   &:hover {
     background: rgba($black, 0.1);
     border-bottom: none;
 
-    &:after {
-      max-width: 2rem;
-      opacity: 1;
-    }
   }
 }
 </style>

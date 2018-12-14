@@ -155,6 +155,16 @@
     line-height: 1.25rem;
   }
 
+  // Selection */
+  ::-moz-selection {
+    background: $yellow;
+    color: $black;
+  }
+  ::selection {
+    background: $yellow;
+    color: $black;
+  }
+
   // Header
   header {
     max-width: $maxWidth;
@@ -227,7 +237,7 @@
   }
 
   // Button
-  .btn {
+  .btn, .button {
     appearance: none;
     display: inline-block;
     padding: 0.5rem 1.5rem;
@@ -247,6 +257,10 @@
     &:hover {
       background: $black;
       border-bottom: 0;
+    }
+
+    &--narrow {
+      padding: 0.5rem 0.75rem;
     }
   }
 
