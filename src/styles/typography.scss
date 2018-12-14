@@ -4,11 +4,10 @@ a {
   text-decoration: none;
 
   &:hover {
+    color: inherit;
     border-bottom: 1px solid currentColor;
+    text-decoration: none;
   }
-  // &:visited {
-  //   color: $gray;
-  // }
 }
 
 p {

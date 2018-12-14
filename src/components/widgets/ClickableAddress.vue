@@ -1,7 +1,5 @@
 <template>
-  <span v-if="ethAddress">
-    <a class="token-id" :href="buildLink" target="_blank">{{ dotDotDot }}</a>
-  </span>
+  <a v-if="ethAddress" class="eth-address" :href="buildLink" target="_blank">{{ dotDotDot }}</a>
 </template>
 
 <script>
@@ -33,6 +31,31 @@
   };
 </script>
 
-<style>
+<style lang="scss" scoped>
+@import "../../styles/variables.scss";
 
+// Eth Address
+.eth-address {
+  display: inline-block;
+  padding: 0.125rem 0.25rem;
+  background: rgba($black, 0.05);
+
+  &:after {
+    content: "↗";
+    display: inline-block;
+    padding-left: 0.25rem;
+    font-size: 0.75rem;
+    opacity: 0.25;
+  }
+
+  &:hover {
+    background: rgba($black, 0.1);
+    border-bottom: none;
+
+    &:after {
+      max-width: 2rem;
+      opacity: 1;
+    }
+  }
+}
 </style>

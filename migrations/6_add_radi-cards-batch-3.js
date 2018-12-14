@@ -20,8 +20,9 @@ module.exports = async (deployer, network, accounts) => {
   console.log(`Account = ${account}`);
 
   const contract = await RadiCards.deployed();
-  await contract.addCard(3, "QmQdNgFnmfKnWjYF6bvfH67f2rLLa74eTBQLWzozfdKfmo", true, {from: account});
-  await contract.addCard(4, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, {from: account});
-  await contract.addCard(5, "QmdT2mKTeQwEA8hd33iHxL9UCS8rjXwpFqCpXF5WALt7Pd", true, {from: account});
-  await contract.addCard(6, "QmTT82fZU1TTfcEWfiLP4HNbjGbsHJFh2uNwjUsveAYfnS", true, {from: account});
+  await contract.addCard(6, "QmTpGkY8hKS5bUMcVqYSaW82apqaXutdiBUN7N1BsduXE2", true, {from: account}); // catz on eth
+  await contract.addCard(7, "QmbYP1ywoeHPLWzG8iwL6tRdxBZiZhrLKf1eCCudfiwiVH", true, {from: account}); // uly18
+  await contract.addCard(8, "QmReorweLZz3fmRwrgULLmUS68ULpEZZVe3tc8km6QxEoG", true, {from: account}); // church
+  await contract.addCard(9, "QmbQui9FuborNrTvJ64viYxofPTC1MV6Sz1aeEqoFpFbZ4", true, {from: account}); // piracy
+  await contract.addCard(10, "QmYGTybj7oxLSuHajTDgusEsVGXVDXtdBCcEqwr39NmAsr", true, {from: account}); // free cat
 };

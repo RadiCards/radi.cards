@@ -4,16 +4,20 @@
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
         <p>
-          We can change the world & fight for good & spread the fun, now so can you
+          We want to change the world & fight for good.
+        </p>
+        <p> 
+          Want to help?
         </p>
         <span
           class="cheeky-comment"
-        >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
+        >with the power of memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p>Share NFT eCards with friends and family for Free and donate to the charities you wish to support</p>
-      <p>(well almost, you just pay the gas)
-      </p>
+      <p style="max-width: 24rem; margin-bottom: 1rem;">Share NFT eCards with friends and family for Free and donate to the charities you wish to support (well almost, you just pay the gas)</p>
+
+      <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+
     </section>
 
     <section class="section section--credits">
@@ -131,8 +135,8 @@
     <div class="row">
       <div class="col">
         <span class="mt-5" v-if="totalSupply">
-          There are currently
-          <span class="badge badge-primary pl-2 pr-2 ml-2 mr-2">{{ totalSupply }}</span> cards in existence
+          There <span v-if="totalSupply.length !== 1">are</span><span v-else>is</span> currently
+          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span> card<span v-if="totalSupply.length !== 1">s</span> in existence
         </span>
       </div>
     </div>
@@ -167,16 +171,16 @@ export default {
 // Page-specific style
 .section--hero .cheeky-comment {
   position: absolute;
-  top: 130%;
-  left: 15%;
+  top: 110%;
+  left: 50%;
   width: 14rem;
   transform: rotate(6deg);
 
   font-weight: bold;
 
   @include tabletAndUp() {
-    top: 100%;
-    left: 60%;
+    top: 95%;
+    left: 70%;
     width: 20rem;
     font-size: 1.5rem;
     line-height: 1.5rem;
@@ -185,7 +189,7 @@ export default {
   &:before {
     content: "";
     position: absolute;
-    top: -2rem;
+    top: -3rem;
     right: 100%;
     width: 3.5rem;
     height: 3.5rem;

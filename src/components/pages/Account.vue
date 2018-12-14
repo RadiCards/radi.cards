@@ -1,16 +1,19 @@
 <template>
   <div class="container">
-    <h2>
+    <h2 style="margin-bottom: 0.5rem;">
       My cards
       <span class="badge badge-primary">{{accountCards.length}}</span>
     </h2>
-    <p>
-      <clickable-address :eth-address="account"></clickable-address>
-    </p>
+    <clickable-address :eth-address="account"></clickable-address>
 
     <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
       <div class="col text-center">
-        <code>No cards yet - *Sad face*</code>
+        <img src="/static/icons/radi-cards.svg" alt class="img--placeholder">
+        <br><br>
+        <h4>Aww...</h4><br>
+        <p style="max-width: 24rem; margin: 0 auto;">You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!</p>
+        <br>
+        <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
       </div>
     </div>
 
