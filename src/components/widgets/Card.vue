@@ -15,12 +15,12 @@
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
         </div>
-        <div class="card__value" v-if="cdata.giftAmount">
+        <!-- <div class="card__value" v-if="cdata.giftAmount">
           <div class="badge">
             <img src="/static/icons/shopping-cart.svg">
             {{cdata.giftAmount}} ETH
           </div>
-        </div>
+        </div> -->
       </figcaption>
 
       <div v-if="cdata.description">
@@ -28,7 +28,7 @@
       </div>
 
       <div v-if="!cdata.description">
-        <p class="descr">No description...</p>
+        <p class="descr"> </p>
       </div>
 
       <div class="help" v-if="isFlippable">
@@ -57,7 +57,7 @@
       </h3>
       <hr>
       <p class="descr">
-        Benefactor:
+        Your donation goes to
         <strong>
           <a
             v-if="cdata.BenefactorIndex"
@@ -233,9 +233,11 @@ export default {
 
   // Content
   .title {
-    font-size: 1.125rem;
+    font-size: 1.2rem;
+    font-weight: bolder;
   }
   .creator {
+    font-size: 0.9rem;
   }
   .descr {
     margin-top: 0.5rem;
@@ -303,7 +305,7 @@ export default {
     width: 100%;
     height: 100%;
     padding: $p_v $p_h;
-    background: $greylightest;
+    background: #f5f5f5;
 
     cursor: default;
   }
