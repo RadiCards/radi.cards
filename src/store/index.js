@@ -189,7 +189,7 @@ const store = new Vuex.Store({
         let message = accountToken[2]
         let extra = accountToken[3]
         let cardIndex = accountToken[4]
-        let benefactorIndex = accountToken[5]
+        let benefactorIndex = accountToken[5].toNumber()
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();

@@ -37,7 +37,7 @@
     </figure>
 
     <div v-if="cdata.message">
-      <div class="card__back" style="padding-top:120px">
+      <div class="card__back text-center" style="padding-top:120px">
         <h3>
           <strong>{{cdata.message}}</strong>
         </h3>
@@ -56,6 +56,12 @@
           class="descr"
           v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
         >Your web3 account created this card!</div>
+        <div
+          class="descr pt-2"
+          v-if="this.$route.path.lastIndexOf('account') !== -1"
+        >
+          <button class="transferButton">Transfer Card</button>
+        </div>
         <!-- </p> -->
       </div>
     </div>
@@ -92,7 +98,10 @@ export default {
 
   methods: {
     redirect: function() {
-      if (this.$route.path.lastIndexOf("create") === -1 && this.$route.path.lastIndexOf("account") === -1) {
+      if (
+        this.$route.path.lastIndexOf("create") === -1 &&
+        this.$route.path.lastIndexOf("account") === -1
+      ) {
         var index = this.cdata.cardIndex;
         router.push({
           path: "create/" + index
@@ -257,6 +266,16 @@ export default {
     transform: rotateY(180deg);
 
     cursor: w-resize;
+  }
+
+  .transferButton {
+    background: #000000;
+    font-family: Helvetica;
+    line-height: normal;
+    text-align: center;
+    text-transform: lowercase;
+    color: #ffffff;
+    padding: 10px;
   }
 }
 </style>
