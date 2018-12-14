@@ -194,7 +194,7 @@ const store = new Vuex.Store({
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
-          let accountCreatedCard = (account === gifter) //if the current account created the card 
+          let accountCreatedCard = (account === gifter) //if the current account created the card
           let allCardInformation = {
             ...{
               extra: extra,
@@ -244,9 +244,11 @@ const store = new Vuex.Store({
       const cards = await Promise.all(cardPromises);
 
       commit(mutations.SET_CARDS, cards);
-      dispatch(actions.LOAD_ACCOUNT_CARDS, {
-        account: this.state.account
-      });
+      if (this.state.account) {
+        dispatch(actions.LOAD_ACCOUNT_CARDS, {
+          account: this.state.account
+        });
+      }
     },
     [actions.WATCH_TRANSFERS]: async function ({
       commit,
