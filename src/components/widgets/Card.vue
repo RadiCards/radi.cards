@@ -35,9 +35,14 @@
       </div>
     </figure>
     <figure class="card__transfer text-center" v-if="transfer">
-      <h2>Transfer Card</h2>
-      <button @click="cancelTransfer" class="transferButton">Transfer</button>
-      <button @click="cancelTransfer" class="cancelButton">Cancel</button>
+      <h2 class="pb-2">Transfer Card</h2>
+      <p>Send your Radi card to any web3 address.</p>
+      <hr>
+      <p class="mb-3">Recipiant Address:</p>
+      <b-form-input type="text" class="field p-2" v-model="transferRecipient" placeholder/>
+
+      <button @click="executeCardTransfer" class="transferButton mt-3">Transfer</button>
+      <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
     </figure>
 
     <figure
@@ -96,11 +101,15 @@ export default {
   data() {
     return {
       transfer: false,
+      transferRecipient: "",
       isFlipped: false
     };
   },
 
   methods: {
+    executeCardTransfer() {
+      console.log("Transfer card");
+    },
     cancelTransfer() {
       this.transfer = false;
       this.flip;
