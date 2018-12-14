@@ -15,8 +15,8 @@
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
-              My cards
-              <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>
+              Your cards
+              <span class="ml-2 badge badge-primary" v-if="accountCards.length > 0">{{accountCards.length}}</span>
             </router-link>
           </li>
           <!-- <li class="nav-item">
@@ -45,10 +45,8 @@
     <footer class="footer container-fluid mt-5">
       <div class="row">
         <div class="col text-right small">
-          <current-network></current-network>
-          [
+          <current-network></current-network> 
           <clickable-address :eth-address="contractAddress"></clickable-address>
-          ]
         </div>
       </div>
     </footer>
@@ -203,16 +201,27 @@
       display: flex;
       align-items: center;
 
-      li + li {
-        margin-left: 1rem;
+      @include tabletAndUp() {
+        li + li {
+          margin-left: 1rem;
+        }
+      }
+
+      a.is-active {
+        font-weight: bold;
       }
     }
+    &.navbar-expand-md .nav-link {
+      // display: none;
+      padding-left: 0;
+      padding-right: 0;
 
-    .nav-link {
-      display: none;
+      .nav-link {
+        display: none;
 
-      @include tabletAndUp() {
-        display: inherit;
+        @include tabletAndUp() {
+          display: inherit;
+        }
       }
     }
   }
@@ -258,6 +267,24 @@
       background: $white;
       border-color: $gray;
     }
+}
+
+
+// Badge
+.badge.badge-primary {
+  background: $black;
+  color: $yellow;
+  display: inline-block;
+  padding: 0;
+  width: 1.5em;
+  height: 1.5em;
+  border-radius: 50% !important;
+  line-height: 1.5em;
+}
+
+
+.section {
+  padding: 2rem 0;
 
     &:focus {
       outline: none;
