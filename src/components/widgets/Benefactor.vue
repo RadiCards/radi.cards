@@ -1,25 +1,22 @@
 <template>
   <div class="benefactor-row">
     <img class="benefactor-img" :src="benefactor.image">
-
     <div class="benefactor-text">
-      <span class="benefactor-name">{{benefactor.name}}</span>
+      <span class="benefactor-name mt-2">{{benefactor.name}}</span>
+      <div v-if="exapanded">
+        <p class="m-2">{{charityDescription}}</p>
+        <div v-if="this.$route.path.lastIndexOf('create') !== -1">
+          <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
+          <a target="__blank" :href="charityURL">Learn More about charity</a>
+        </div>
+      </div>
       <span class="benefactor-description">{{benefactor.description}}</span>
     </div>
 
     <div class="arrow-container">
-      <a :href="benefactor.website">
+      <a @click="expandDescription">
         <img class="arrow" src="/static/icons/Arrow.png">
       </a>
-    </div>
-
-    <div class v-if="mode=='send'">
-      <b-form-checkbox
-        id="checkbox1"
-        v-model="status"
-        value="accepted"
-        unchecked-value="not_accepted"
-      >Select This Charity</b-form-checkbox>
     </div>
   </div>
 </template>
@@ -28,21 +25,45 @@
 /* global web3:true */
 
 import { mapState } from "vuex";
+import router from "../../router";
 
 export default {
   name: "benefactor",
-  computed: {},
   props: {
     benefactor: {
       type: Object
+    }
+  },
+  computed: {
+    charityDescription() {
+      let allDescriptions = [
+        "The Electronic Frontier Foundation (EFF) is a non-profit organisation defending free speech online, fight illegal surveillance and support freedom-enhancing technologies. Advocating for online civil liberty, EFF supports and promotes the adoption of open source software, encryption, security research and P2P tools.",
+        "EnLAW is a non-profit organisation advocating for environmental rights in Thailand. Founded in 2001, it has set several legal precedents by carrying out successful strategic litigations against international corporates which contaminate local river, land and ocean with harmful waste and compound.",
+        "The Open Money Initiative (OMI) is working to empower those living in economically repressed societies. We build cryptocurrency products and are currently investigating large-scale cryptocurrency airdrops for humanitarian aid. Public, open-source cryptocurrencies can be public commons for safeguarding people’s economic freedom, just as the internet is for communication and information freedom."
+      ];
+      return allDescriptions[this.benefactor.id - 1];
     },
-    mode: {
-      type: String
+    charityURL() {
+      let allURLs = [
+        "https://www.eff.org/",
+        "https://enlawfoundation.org",
+        "https://www.openmoneyinitiative.org/"
+      ];
+      return allURLs[this.benefactor.id - 1];
+    }
+  },
+  methods: {
+    selectBenefactor() {
+      this.$emit("benefactorSelected");
+    },
+    expandDescription() {
+      this.exapanded = !this.exapanded;
     }
   },
   data() {
     return {
-      status: ""
+      status: "",
+      exapanded: false
     };
   }
 };
@@ -64,7 +85,6 @@ export default {
 
   .arrow {
     width: 10px;
-    height: 20px;
   }
 
   .benefactor-text {
@@ -81,6 +101,16 @@ export default {
     justify-content: center;
     border-bottom: 1px solid #c4c4c4;
     margin-right: 20px;
+  }
+
+  .selectButton {
+    background: #000000;
+    font-family: Helvetica;
+    line-height: normal;
+    text-align: center;
+    text-transform: lowercase;
+    color: #ffffff;
+    padding: 10px;
   }
 }
 </style>
