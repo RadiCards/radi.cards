@@ -35,8 +35,9 @@
       </div>
     </figure>
     <figure class="card__transfer text-center" v-if="transfer">
-      lets send the boiii
-      <button @click="cancelTransfer" class="transferButton">Cancel</button>
+      <h2>Transfer Card</h2>
+      <button @click="cancelTransfer" class="transferButton">Transfer</button>
+      <button @click="cancelTransfer" class="cancelButton">Cancel</button>
     </figure>
 
     <figure
@@ -288,6 +289,8 @@ export default {
     height: 100%;
     padding: $p_v $p_h;
     background: $greylightest;
+
+    cursor: default;
   }
 
   .transferButton {
@@ -295,9 +298,20 @@ export default {
     font-family: Helvetica;
     line-height: normal;
     text-align: center;
-    text-transform: lowercase;
     color: #ffffff;
-    padding: 10px;
+    font-size: 16px;
+    padding: 15px;
+    border: 1px solid black;
+  }
+
+  .cancelButton {
+    background: white;
+    color: black;
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 16px;
+    padding: 15px;
+    border: 1px solid black;
   }
 }
 </style>
