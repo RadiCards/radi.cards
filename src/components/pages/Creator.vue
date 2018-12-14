@@ -4,91 +4,103 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-        <div v-if="this.step > 0" @click="goToStep(step-1)">&lt; Back</div>
+        <div class="btn btn--reveal btn--narrow btn--arrow-left" style="margin-left: -0.75rem;" v-if="this.step > 0" @click="goToStep(step-1)">Back</div>
         <div v-if="this.step == 0">
           <!-- <router-link :to="{ name: 'cardshop' }">&lt; Back</router-link> -->
         </div>
 
-        <div class="summaryPreview">
-          <div
-            class="stepOnePreview"
-            v-if="this.formData.card !== null && this.step > 0"
-            @click="goToStep(0)"
-          >
-            <div class="m20">
-              <h4 class="section__title">
-                <img src="/static/icons/Check.png">STEP ONE
-              </h4>
+        <div class="preview">
+
+          <div class="preview-step" v-if="this.formData.card !== null && this.step > 0" @click="goToStep(0)">
+
+            <h4 class="section__title">
+              <img src="/static/icons/Check.svg"> STEP ONE
+            </h4>
+
+            <div class="preview-step__content">
+              <img class="preview-step__img" :src="this.formData.card.image">
+              <div class="preview-step__text" v-if="this.formData.card">
+                <span class="selCard">Selected Card</span>
+                <h5>{{this.formData.card.name}}</h5>
+                <span class="artist">by {{this.formData.card.attributes.artist}}</span>
+              </div>
+              <div class="btn btn--reveal btn--narrow">
+                <img src="/static/icons/Edit.svg">
+              </div>
             </div>
-            <img class="m20 elementImg" :src="this.formData.card.image">
-            <div v-if="this.formData.card">
-              <span class="selCard">Selected Card</span>
-              <h5>{{this.formData.card.name}}</h5>
-              <span class="artist">by {{this.formData.card.attributes.artist}}</span>
-            </div>
+
           </div>
 
-          <div
-            class="stepOnePreview"
-            @click="goToStep(1)"
-            v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
-          >
-            <div class="m20">
-              <h4 class="section__title">
-                <img src="/static/icons/Check.png">
-                STEP TWO
-              </h4>
+          <div class="preview-step" @click="goToStep(1)" v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined">
+
+            <h4 class="section__title">
+              <img src="/static/icons/Check.svg"> STEP TWO
+            </h4>
+
+            <div class="preview-step__content">  
+              <img class="preview-step__img" :src="this.formData.benefactor.image">
+              <div class="preview-step__text">
+                <span class="selCard">Selected Charity</span>
+                <h5>{{this.formData.benefactor.name}}</h5>
+              </div>
+              <div class="btn btn--reveal btn--narrow">
+                <img src="/static/icons/Edit.svg">
+              </div>
             </div>
-            <img class="m20 elementImg" :src="this.formData.benefactor.image">
-            <div>
-              <span class="selCard">Selected Charity</span>
-              <h5>{{this.formData.benefactor.name}}</h5>
-            </div>
+
           </div>
         </div>
 
-        <div v-if="this.step == 0">
-          <div class="centered">
+        <div class="section step step1" v-if="this.step == 0">
+          <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
 
-          <div class="sectionTitle">
-            <h4>Customise details</h4>
-            <p>Send this card to any ETH wallet address</p>
+          <div class="step__info">
+
+            <div class="step__title">
+              <h4>Customise details</h4>
+              <p>Send this card to any ETH wallet address</p>
+            </div>
+
+            <section class="section">
+              <span class="myWallet">Your wallet: {{account}}</span>
+              <span class="inputLabel">Add recipient wallet address</span>
+              <b-form-input
+                type="text"
+                class="field"
+                id="recipient"
+                v-model="formData.recipient"
+                placeholder
+              />
+
+              <h6 class="c-blue">Recipient doesn’t have a wallet address?</h6>
+              <p class="p--small c-blue">No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
+
+              <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
+              <b-form-textarea
+                id="textarea1"
+                class="field"
+                v-model="formData.message"
+                placeholder="max 128 characters"
+                :rows="3"
+                :max-rows="6"
+              ></b-form-textarea>
+              <br>
+            </section>
+            <input
+              type="button"
+              class="button button--fullwidth"
+              @click="goToStep(1)"
+              :disabled="this.formData.message === null || this.formData.recipient === null"
+              value="next"
+            >
           </div>
-
-          <section class="section">
-            <span class="myWallet">My wallet: {{account}}</span>
-            <span class="inputLabel">Add recipient wallet address</span>
-            <b-form-input
-              type="text"
-              class="field"
-              id="recipient"
-              v-model="formData.recipient"
-              placeholder
-            />
-
-            <span class="inputLabel">Add a message (This will be visable on the blockchain)</span>
-            <b-form-textarea
-              id="textarea1"
-              v-model="formData.message"
-              placeholder="max 128 characters"
-              :rows="3"
-              :max-rows="6"
-            ></b-form-textarea>
-            <br>
-          </section>
-          <input
-            type="button"
-            class="nextButton"
-            @click="goToStep(1)"
-            :disabled="this.formData.message === null || this.formData.recipient === null"
-            value="NEXT"
-          >
         </div>
 
-        <div v-if="this.step == 1">
-          <div class="sectionTitle">
+        <div class="section step step2" v-if="this.step == 1">
+
+          <div class="step__title">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
             <p>Your donations go directly to charities of your choice</p>
@@ -106,8 +118,9 @@
           </section>
         </div>
 
-        <div v-if="this.step == 2">
-          <div class="sectionTitle">
+        <div class="section step step2" v-if="this.step == 2">
+
+          <div class="step__title">
             <h4 class="section__title">STEP THREE</h4>
             <h4>Add your donation</h4>
             <p>I’d like to donate...</p>
@@ -116,15 +129,15 @@
           <section class="section">
             <div class="paymentPresets">
               <button
-                :class="formData.valueInETH == 0.2 ? 'donationButton clicked' : 'donationButton'"
+                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
                 @click="setDonationAmount(0.2)"
               >0.2ETH</button>
               <button
-                :class="formData.valueInETH == 0.3 ? 'donationButton clicked' : 'donationButton'"
+                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.3}]"
                 @click="setDonationAmount(0.3)"
               >0.3ETH</button>
               <button
-                :class="formData.valueInETH == 0.4 ? 'donationButton clicked' : 'donationButton'"
+                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.4}]"
                 @click="setDonationAmount(0.4)"
               >0.4ETH</button>
             </div>
@@ -142,17 +155,20 @@
               class="info"
             >Every card has a base transactional price of 0.01 ETH, that’s why there is a minimum.</span>
           </section>
-          <input type="button" @click="goToStep(3)" class="nextButton" value="PREVIEW CARD">
+          <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
 
-        <div v-if="this.step == 3">
-          <section class="section">
+        <div class="section step step3" v-if="this.step == 3">
+
+          <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
+          </div>
 
+          <div class="step__info">
             <div class="sectionTitle">
-              <h4>Preview your radicard</h4>
+              <h6>Preview your radicard</h6>
               <p>Send this card to any ETH wallet address</p>
             </div>
 
@@ -163,12 +179,13 @@
               <br>
               <br>Message (display in the back of the card):
               <br>
-              <pre>
+              <h4>
               {{formData.message}}
-              </pre>
+              </h4>
+              <br>
             </span>
-          </section>
-          <button class="nextButton" @click="giveBirth">gift this awesome card</button>
+
+          <button class="button" @click="giveBirth">gift this awesome card</button>
           <div class="form-group row" v-if="formData.errors.length">
             <div class="col-sm-4">
               <blockquote>
@@ -179,12 +196,8 @@
               </ul>
             </div>
           </div>
-          <!-- <input
-            type="button"
-            @click="goToStep(4)"
-            :disabled="this.formData.valueInEth > 0.01"
-            value="NEXT"
-          >-->
+
+          </div>
         </div>
       </div>
     </form>
@@ -327,9 +340,10 @@ export default {
 <style lang="scss" scoped>
 
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 .card-selected {
-  margin-top: -25px;
+  margin-top: -1rem;
   transition: all 0.2s ease-in-out;
 }
 
@@ -338,7 +352,6 @@ export default {
 }
 
 .info {
-  font-family: Helvetica;
   line-height: normal;
   font-size: 12px;
 
@@ -346,7 +359,6 @@ export default {
 }
 
 .inputLabel {
-  font-family: Helvetica;
   line-height: normal;
   font-size: 15px;
   margin-bottom: 10px;
@@ -370,29 +382,9 @@ textarea {
 }
 
 .sectionTitle {
-  h4 {
-    font-weight: bold;
-  }
-  margin-top: 40px;
-  font-size: 22px;
+  // margin-top: 40px;
+  // font-size: 22px;
   // margin-bottom: 40px;
-}
-
-.nextButton {
-  background: $black;
-  width: 100%;
-  font-family: Helvetica;
-  line-height: normal;
-  font-size: 20px;
-  text-align: center;
-  text-transform: lowercase;
-  color: #ffffff;
-  padding-top: 10px;
-  padding-bottom: 10px;
-}
-
-.m20 {
-  margin-right: 20px;
 }
 
 .paymentPresets {
@@ -402,45 +394,95 @@ textarea {
 }
 
 .myWallet {
-  padding: 10px;
-  border-radius: 50px;
+  padding: 0.75rem 1rem;
+  border-radius: 1.5rem !important;
   font-size: 12px;
   display: block;
   background: #f3f3f3;
 }
 
-.stepOnePreview {
+// Steps preview (top)
+.preview-step {
   display: flex;
-  border-bottom: 2px solid #c4c4c4;
-  padding-bottom: 20px;
-  margin-bottom: 20px;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-start;
+  margin: 0 -2rem;
+  padding: 0.75rem 0.5rem 0.75rem 2rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  cursor: pointer;
 
-  h4 {
-    white-space: nowrap;
-    font-weight: bold;
+  @include tabletAndUp() {
+    flex-direction: row;
+    align-items: center;
+    margin: 0;
+    padding: 0.5rem 0;
+  }
+
+  .section__title { margin-right: 1rem; }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__text {
+    margin-left: 1rem;
+    margin-right: auto;
   }
   .selCard {
-    font-family: Helvetica;
+
     line-height: normal;
     font-size: 14px;
   }
   .artist {
-    font-family: Helvetica;
+
     line-height: normal;
     font-size: 14px;
   }
 
   h5 {
-    font-family: Helvetica;
+
     line-height: normal;
     font-size: 14px;
     font-weight: bold;
   }
 
-  .elementImg {
+  .preview-step__img {
     width: 50px;
     height: 50px;
+  }
+}
+
+
+// Step Content
+.step1, .step3 {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  .step__card {
+    padding-left: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  @include tabletAndUp () {
+    flex-direction: row;
+    justify-content: stretch;
+    align-items: flex-start;
+
+    .step__card {
+      margin-right: 1rem;
+    }
+    .step__info {
+      margin-left: 1rem;
+    }
+    .step__title {
+      margin-top: 0;
+    }
   }
 }
 
@@ -453,7 +495,6 @@ textarea {
 .donationButton {
   background: white;
   color: black;
-  font-family: Helvetica;
   line-height: normal;
   font-size: 16px;
   padding: 15px;

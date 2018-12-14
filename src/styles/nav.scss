@@ -1,0 +1,48 @@
+// Nav
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  &-brand {
+    img {
+      max-width: 10rem;
+
+      @include tabletAndUp() {
+        max-width: auto;
+      }
+    }
+
+    &:hover {
+      border-bottom: none;
+    }
+  }
+
+  &-nav {
+    display: flex;
+    align-items: center;
+
+    @include tabletAndUp() {
+      li + li {
+        margin-left: 1rem;
+      }
+    }
+
+    a.is-active {
+      font-weight: bold;
+    }
+  }
+  &.navbar-expand-md .nav-link {
+    // display: none;
+    padding-left: 0;
+    padding-right: 0;
+
+    .nav-link {
+      display: none;
+
+      @include tabletAndUp() {
+        display: inherit;
+      }
+    }
+  }
+}

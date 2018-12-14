@@ -46,9 +46,9 @@
       @click="flip"
       v-if="cdata.message"
     >
-      <h3>
-        <strong>{{cdata.message}}</strong>
-      </h3>
+      <h4>
+        {{cdata.message}}
+      </h4>
       <hr>
       <p class="descr">
         Your donation goes to
@@ -228,7 +228,6 @@ export default {
   // Content
   .title {
     font-size: 1.2rem;
-    font-weight: bolder;
   }
   .creator {
     font-size: 0.9rem;

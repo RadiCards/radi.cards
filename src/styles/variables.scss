@@ -8,15 +8,15 @@ $gray: #979797;
 $black: #000;
 
 $yellow: #FFFF53;
+$blue: #4321EA;
 $primary: $black;
 
+.c-blue {
+	color: $blue;
+}
 
 // Layout
 $maxWidth: 56rem;
 
 //bootstrap overides
 $enable-rounded: false;
-
-* {
-  border-radius: 0 !important;
-}

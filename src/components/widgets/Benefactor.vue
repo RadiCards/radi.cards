@@ -8,7 +8,7 @@
 
       <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
 
-      <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="Select">
+      <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="select">
     </div>
 
     <div class="benefactor__detail">
@@ -75,10 +75,10 @@ export default {
 @import "../../styles/mixins.scss";
 
 .benefactor {
-  margin: 0 -1rem;
+  margin: 0 -2rem;
   transition: all 0.2s ease-in-out;
 
-  @include tabletAndUp() +{
+  @include tabletAndUp() {
     margin: 0;
   }
 

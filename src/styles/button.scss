@@ -1,0 +1,81 @@
+// Button
+.btn, .button {
+  appearance: none;
+  display: inline-block;
+  padding: 0.5rem 1.5rem;
+  border: none;
+  border-radius: 0;
+  background: rgba($black, 0.8);
+
+  font: inherit;
+  line-height: 1.5rem;
+  color: $white;
+
+  cursor: pointer;
+
+  // States
+  &:visited {
+    color: $white;
+  }
+  &:hover {
+    background: $black;
+    border-bottom: 0;
+  }
+  &:focus {
+    outline: none;
+  }
+  &.isSelected {
+    background: $black;
+    color: $white;
+  }
+
+  // Appearance
+  &--reveal {
+    background: transparent;
+    border: 2px solid transparent;
+    color: $black;
+
+    &:hover {
+      border: 2px solid currentColor;
+      background: none;
+    }
+  }
+  &--outline {
+    background: transparent;
+    border: 2px solid $black;
+    color: $black;
+
+    &:hover {
+      background: $black;
+      color: $white;
+    }
+  }
+
+  // Size
+  &--narrow {
+    padding: 0.5rem 0.75rem;
+  }
+  &--fullwidth {
+    display: block;
+    width: 100%;
+  }
+
+  // Additions
+  &--arrow-left:before {
+    content: "";
+    display: inline-block;
+    width: 0.675rem;
+    height: 0.675rem;
+    margin-left: 0.25rem;
+    margin-right: 0.5rem;
+    border-bottom: 2px solid $black;
+    border-left: 2px solid currentColor;
+    transform: rotate(45deg);
+    opacity: 0.5;
+  }
+  &[disabled] {
+    background: rgba(0, 0, 0, 0.25);
+    border-color: transparent;
+    color: rgba(0, 0, 0, 0.25);
+  }
+}

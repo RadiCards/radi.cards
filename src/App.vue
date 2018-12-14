@@ -129,10 +129,17 @@
 </script>
 
 <style lang="scss">
+  // SCSS includes
   @import "styles/variables.scss";
   @import "styles/mixins.scss";
+
+  // Base
   @import "styles/reset.scss";
   @import "styles/typography.scss";
+
+  // Elements
+  @import "styles/button.scss";
+  @import "styles/nav.scss";
 
   body {
     margin: 0;
@@ -187,90 +194,13 @@
     border-top: 1px solid rgba($black, 0.1);
   }
 
-  // Nav
-  .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-
-    &-brand {
-      img {
-        max-width: 10rem;
-
-        @include tabletAndUp() {
-          max-width: auto;
-        }
-      }
-
-      &:hover {
-        border-bottom: none;
-      }
-    }
-
-    &-nav {
-      display: flex;
-      align-items: center;
-
-      @include tabletAndUp() {
-        li + li {
-          margin-left: 1rem;
-        }
-      }
-
-      a.is-active {
-        font-weight: bold;
-      }
-    }
-    &.navbar-expand-md .nav-link {
-      // display: none;
-      padding-left: 0;
-      padding-right: 0;
-
-      .nav-link {
-        display: none;
-
-        @include tabletAndUp() {
-          display: inherit;
-        }
-      }
-    }
-  }
-
-  // Button
-  .btn, .button {
-    appearance: none;
-    display: inline-block;
-    padding: 0.5rem 1.5rem;
-    border: none;
-    background: rgba($black, 0.8);
-
-    font: inherit;
-    line-height: 1.5rem;
-    color: $white;
-
-    cursor: pointer;
-
-    &:visited {
-      color: $white;
-    }
-
-    &:hover {
-      background: $black;
-      border-bottom: 0;
-    }
-
-    &--narrow {
-      padding: 0.5rem 0.75rem;
-    }
-  }
-
   // Input field
   .field {
     appearance: none;
     display: inline-block;
     min-width: 15rem;
     padding: 0.5rem;
-    border-radius: 0;
+    border-radius: 0 !important;
     border: 1px solid $greylight;
     background: rgba($white, 0.9);
     color: $black;
@@ -300,92 +230,93 @@
 .section {
   padding: 2rem 0;
 
-    &:focus {
-      outline: none;
-      background: $white;
-      border-color: $black;
-    }
-
-    &--textarea {
-      resize: none;
-    }
-
-    &::-webkit-input-placeholder {
-      color: rgba($gray, 0.5);
-    }
-
-    &:-moz-placeholder {
-      color: rgba($gray, 0.5);
-    }
-
-    &::-moz-placeholder {
-      color: rgba($gray, 0.5);
-    }
-
-    &:-ms-input-placeholder {
-      color: rgba($gray, 0.5);
-    }
+  &:focus {
+    outline: none;
+    background: $white;
+    border-color: $black;
   }
 
-  .section {
-    padding: 2rem 0;
-
-    &__title {
-      display: inline-block;
-      margin-bottom: 0.5rem;
-      padding: 0.125rem 0.75rem;
-      font-size: 0.75rem;
-      border: 2px solid $black;
-    }
+  &--textarea {
+    resize: none;
   }
 
-  .card-slider {
-    display: flex;
-    margin: 0 -1.25rem;
-    padding: 2rem 1.25rem;
-    overflow-x: auto;
-
-    perspective: 1000px;
-    scroll-snap-type: x mandatory;
-    scroll-padding: 1.25rem;
-
-    &::after {
-      content: "";
-      flex: 0 0 0.25rem;
-    }
-
-    & > * {
-      scroll-snap-align: start;
-    }
+  &::-webkit-input-placeholder {
+    color: rgba($gray, 0.5);
   }
 
-  footer {
+  &:-moz-placeholder {
+    color: rgba($gray, 0.5);
+  }
+
+  &::-moz-placeholder {
+    color: rgba($gray, 0.5);
+  }
+
+  &:-ms-input-placeholder {
+    color: rgba($gray, 0.5);
+  }
+}
+
+.section {
+  padding: 2rem 0;
+
+  &__title {
+    display: inline-block;
+    margin-bottom: 0.5rem;
+    padding: 0.125rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border: 2px solid $black;
+  }
+}
+
+.card-slider {
+  display: flex;
+  margin: 0 -1.25rem;
+  padding: 2rem 1.25rem;
+  overflow-x: auto;
+
+  perspective: 1000px;
+  scroll-snap-type: x mandatory;
+  scroll-padding: 1.25rem;
+
+  &::after {
+    content: "";
+    flex: 0 0 0.25rem;
+  }
+
+  & > * {
+    scroll-snap-align: start;
+  }
+}
+
+footer {
+  color: $gray;
+
+  a {
     color: $gray;
-
-    a {
-      color: $gray;
-    }
-
-    a:visited {
-      color: $gray;
-    }
-
-    a:hover {
-      color: $gray;
-    }
-
-    margin-bottom: 30px;
   }
 
-  code {
-    color: $primary;
+  a:visited {
+    color: $gray;
   }
 
-  .no-metamask {
-    background-color: $primary;
-
-    a {
-      color: $white;
-    }
+  a:hover {
+    color: $gray;
   }
+
+  margin-bottom: 30px;
+}
+
+code {
+  color: $primary;
+}
+
+.no-metamask {
+  background-color: $primary;
+
+  a {
+    color: $white;
+  }
+}
 </style>
