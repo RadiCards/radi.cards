@@ -4,10 +4,11 @@
     <div class="benefactor-text">
       <span class="benefactor-name mt-2">{{benefactor.name}}</span>
       <div v-if="exapanded">
-        <p class="mt-2">{{charityDescription}}</p>
-        <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
-        
-        <a target="__blank" :href="charityURL">Learn More about charity</a>
+        <p class="m-2">{{charityDescription}}</p>
+        <div v-if="this.$route.path.lastIndexOf('create') !== -1">
+          <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
+          <a target="__blank" :href="charityURL">Learn More about charity</a>
+        </div>
       </div>
       <span class="benefactor-description">{{benefactor.description}}</span>
     </div>
@@ -24,6 +25,7 @@
 /* global web3:true */
 
 import { mapState } from "vuex";
+import router from "../../router";
 
 export default {
   name: "benefactor",
