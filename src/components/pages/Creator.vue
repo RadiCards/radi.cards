@@ -185,9 +185,10 @@
               <br>
             </span>
 
-          <button class="button" @click="giveBirth">gift this awesome card</button>
-          <div class="form-group row" v-if="formData.errors.length">
-            <div class="col-sm-4">
+          <button v-if="status != 'GIVING BIRTH'" class="button" @click="giveBirth">gift this awesome card</button>
+
+          <div class="form-group row" v-if="formData.errors.length && status != 'GIVING BIRTH'">
+            <div class="col-sm-12">
               <blockquote>
                 <b>Please correct the following error(s):</b>
               </blockquote>
@@ -195,6 +196,11 @@
                 <li v-for="error in formData.errors">{{ error }}</li>
               </ul>
             </div>
+          </div>
+
+          <div v-if="status == 'GIVING BIRTH'" class="transaction-in-progress">
+            <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
+            <p>Please <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) if you haven't already confirmed this action.</p>
           </div>
 
           </div>
@@ -235,7 +241,7 @@ export default {
         message: null
       },
       step: 0,
-      status: "",
+      status: "IDLE",
       response: {
         ipfsHash: null
       }
@@ -296,6 +302,8 @@ export default {
     },
     giveBirth: function() {
       event.preventDefault();
+
+      this.status = "GIVING BIRTH";
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
@@ -505,5 +513,12 @@ textarea {
     color: white;
     border: 0;
   }
+}
+
+.transaction-in-progress {
+  width: 100%;
+
+  background: $yellow;
+  padding: 1rem;
 }
 </style>
