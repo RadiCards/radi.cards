@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-      <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
-      <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p> -->
+    <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
+    <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
         <div v-if="this.step > 0" @click="goToStep(step-1)">&lt; Back</div>
         <div v-if="this.step == 0">
-          <router-link :to="{ name: 'home' }">&lt; Back</router-link>
+          <!-- <router-link :to="{ name: 'cardshop' }">&lt; Back</router-link> -->
         </div>
 
         <div class="summaryPreview">
@@ -91,13 +91,17 @@
           <div class="sectionTitle">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
-            <p> Your donations go directly to charities of your choice</p>
+            <p>Your donations go directly to charities of your choice</p>
           </div>
+
           <section class="section">
             <div class="charities" v-if="benefactors && benefactors.length > 0">
               <div v-for="item in benefactors" :key="item.address">
-                <div @click="setBenefactor(item)">
-                  <benefactor :benefactor="item"/>
+                <div>
+                  <benefactor
+                    :benefactor="item"
+                    @benefactorSelected="handelBenefactorSelected(item)"
+                  />
                 </div>
               </div>
             </div>
@@ -254,6 +258,9 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    handelBenefactorSelected(item) {
+      this.setBenefactor(item);
+    },
     goToStep(pageNumber) {
       this.step = pageNumber;
     },

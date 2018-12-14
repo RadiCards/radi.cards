@@ -1,25 +1,23 @@
 <template>
   <div class="benefactor-row">
     <img class="benefactor-img" :src="benefactor.image">
-
     <div class="benefactor-text">
-      <span class="benefactor-name">{{benefactor.name}}</span>
+      <span class="benefactor-name mt-2">{{benefactor.name}}</span>
+      <div v-if="exapanded">
+        <p
+          class="mt-2"
+        >The Electronic Frontier Foundation (EFF) is a non-profit organisation defending free speech online, fight illegal surveillance and support freedom-enhancing technologies. Advocating for online civil liberty, EFF supports and promotes the adoption of open source software, encryption, security research and P2P tools.</p>
+        <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
+        
+        <a href="https://www.w3schools.com">Learn More about charity</a>
+      </div>
       <span class="benefactor-description">{{benefactor.description}}</span>
     </div>
 
     <div class="arrow-container">
-      <a :href="benefactor.website">
+      <a @click="expandDescription">
         <img class="arrow" src="/static/icons/Arrow.png">
       </a>
-    </div>
-
-    <div class v-if="mode=='send'">
-      <b-form-checkbox
-        id="checkbox1"
-        v-model="status"
-        value="accepted"
-        unchecked-value="not_accepted"
-      >Select This Charity</b-form-checkbox>
     </div>
   </div>
 </template>
@@ -35,14 +33,21 @@ export default {
   props: {
     benefactor: {
       type: Object
+    }
+  },
+  methods: {
+    selectBenefactor() {
+      console.log("button clicked");
+      this.$emit("benefactorSelected");
     },
-    mode: {
-      type: String
+    expandDescription() {
+      this.exapanded = !this.exapanded;
     }
   },
   data() {
     return {
-      status: ""
+      status: "",
+      exapanded: false
     };
   }
 };
@@ -64,7 +69,6 @@ export default {
 
   .arrow {
     width: 10px;
-    height: 20px;
   }
 
   .benefactor-text {
@@ -81,6 +85,16 @@ export default {
     justify-content: center;
     border-bottom: 1px solid #c4c4c4;
     margin-right: 20px;
+  }
+
+  .selectButton {
+    background: #000000;
+    font-family: Helvetica;
+    line-height: normal;
+    text-align: center;
+    text-transform: lowercase;
+    color: #ffffff;
+    padding: 10px;
   }
 }
 </style>
