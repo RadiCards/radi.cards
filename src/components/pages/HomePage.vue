@@ -4,9 +4,7 @@
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
         <p>
-          We want to fight against
-          <s>internet surveillance</s> and
-          <s>censorship</s> and so do you
+          We can change the world & fight for good, now so can you
         </p>
         <span
           class="cheeky-comment"
