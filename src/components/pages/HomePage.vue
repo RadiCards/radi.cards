@@ -4,18 +4,15 @@
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
         <p>
-          We want to fight against
-          <s>internet surveillance</s> and
-          <s>censorship</s> and so do you
+          We can change the world & fight for good & spread the fun, now so can you
         </p>
         <span
           class="cheeky-comment"
         >with the power of laughter, memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p>Need new text here</p>
-      <p>Need new text here
-        <br>Need new text here
+      <p>Share NFT eCards with friends and family for Free and donate to the charities you wish to support</p>
+      <p>(well almost, you just pay the gas)
       </p>
     </section>
 
