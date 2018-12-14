@@ -1,12 +1,12 @@
 <template>
   <div class="container">
-    <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
-    <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
+      <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
+      <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p> -->
     <form>
       <div role="tablist">
         <div v-if="this.step > 0" @click="goToStep(step-1)">&lt; Back</div>
         <div v-if="this.step == 0">
-          <a href="/">&lt; Back</a>
+          <router-link :to="{ name: 'home' }">Back</router-link>
         </div>
 
         <div class="summaryPreview">
@@ -21,7 +21,7 @@
               </h4>
             </div>
             <img class="m20 elementImg" :src="this.formData.card.image">
-            <div>
+            <div v-if="this.formData.card">
               <span class="selCard">Selected Card</span>
               <h5>{{this.formData.card.name}}</h5>
               <span class="artist">by {{this.formData.card.attributes.artist}}</span>
@@ -258,8 +258,6 @@ export default {
       this.step = pageNumber;
     },
     setDonationAmount(amount) {
-      console.log("setting amount");
-      console.log(amount);
       event.preventDefault();
       this.formData.valueInETH = amount;
     },
