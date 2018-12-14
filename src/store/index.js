@@ -35,6 +35,7 @@ const store = new Vuex.Store({
     notFound: null,
     benefactors: null,
     cards: null,
+    deepUrlCardNumber: null,
     deepUrlCard: null,
     transfers: []
   },
@@ -45,6 +46,9 @@ const store = new Vuex.Store({
     },
     [mutations.SET_DEEP_URL_CARD](state, card) {
       state.deepUrlCard = card;
+    },
+    [mutations.SET_DEEP_URL_CARD_NUMBER](state, cardNo) {
+      state.deepUrlCardNumber = cardNo;
     },
     [mutations.SET_ACCOUNT](state, account) {
       state.account = account;
@@ -253,41 +257,52 @@ const store = new Vuex.Store({
     }, {
       tokenId
     }) {
-      console.log("IN DEEP", tokenId)
-      if (state.contract) {
-        const contract = await state.contract.deployed();
-        console.log("ALLIVE")
-        console.log(parseInt(tokenId))
-        let accountToken = await contract.tokenDetails(tokenId);
-        console.log(accountToken)
-        let gifter = accountToken[0]
-        let giftAmount = accountToken[1].toNumber()
-        let message = accountToken[2]
-        let extra = accountToken[3]
-        let cardIndex = accountToken[4]
-        let benefactorIndex = accountToken[5].toNumber()
-        if (state.cards) {
-          let cardInformation = state.cards.filter(card => {
-            return card.cardIndex === cardIndex.toNumber();
-          });
-          let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
-          let allCardInformation = {
-            ...{
-              extra: extra,
-              giftAmount: giftAmount / 1000000000000000000,
-              message: message,
-              BenefactorIndex: benefactorIndex,
-              accountCreatedCard: accountCreatedCard,
-              tokenId: tokenId
-            },
-            ...cardInformation[0]
-          };
-          console.log("SINGLE CARD LOADED!!!")
-          console.log(allCardInformation)
-          commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
+      if (state.deepUrlCardNumber === null) {
+        console.log("SET DEEP", tokenId)
+        commit(mutations.SET_DEEP_URL_CARD_NUMBER, tokenId)
+
+      } else {
+        console.log("IN DEEP", tokenId)
+        if (state.contract) {
+          const contract = await state.contract.deployed();
+          console.log("ALLIVE")
+          console.log(parseInt(tokenId))
+          let accountToken = await contract.tokenDetails(tokenId);
+          console.log(accountToken)
+          let gifter = accountToken[0]
+          let giftAmount = accountToken[1].toNumber()
+          let message = accountToken[2]
+          let extra = accountToken[3]
+          let cardIndex = accountToken[4]
+          let benefactorIndex = accountToken[5].toNumber()
+          console.log("JUST BEFORE CARD INFOOOO")
+          if (state.cards) {
+            console.log("INSISISIS")
+            let cardInformation = state.cards.filter(card => {
+              return card.cardIndex === cardIndex.toNumber();
+            });
+            let accountCreatedCard = false
+            if (state.account) {
+              accountCreatedCard = (state.account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card
+            }
+
+            let allCardInformation = {
+              ...{
+                extra: extra,
+                giftAmount: giftAmount / 1000000000000000000,
+                message: message,
+                BenefactorIndex: benefactorIndex,
+                accountCreatedCard: accountCreatedCard,
+                tokenId: tokenId
+              },
+              ...cardInformation[0]
+            };
+            console.log("SINGLE CARD LOADED!!!")
+            console.log(allCardInformation)
+            commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
+          }
         }
       }
-
 
 
     },
@@ -312,23 +327,30 @@ const store = new Vuex.Store({
       dispatch,
       state
     }) {
-      const contract = await state.contract.deployed();
-      let cardIds = await contract.cardsKeys();
-      console.log(cardIds);
-      let ipfsPrefix = await contract.tokenBaseURI();
+      if (state.contract) {
+        const contract = await state.contract.deployed();
+        let cardIds = await contract.cardsKeys();
+        console.log(cardIds);
+        let ipfsPrefix = await contract.tokenBaseURI();
 
-      let cardPromises = await _.map(cardIds, async id => {
-        let results = await contract.cards.call(id);
-        let result = mapTokenDetails(results, ipfsPrefix, id);
-        return result;
-      });
-      const cards = await Promise.all(cardPromises);
-
-      commit(mutations.SET_CARDS, cards);
-      if (this.state.account) {
-        dispatch(actions.LOAD_ACCOUNT_CARDS, {
-          account: this.state.account
+        let cardPromises = await _.map(cardIds, async id => {
+          let results = await contract.cards.call(id);
+          let result = mapTokenDetails(results, ipfsPrefix, id);
+          return result;
         });
+        const cards = await Promise.all(cardPromises);
+
+        commit(mutations.SET_CARDS, cards);
+        if (this.state.account) {
+          dispatch(actions.LOAD_ACCOUNT_CARDS, {
+            account: this.state.account
+          });
+          console.log("DISPATCH HERE")
+          console.log(state)
+          dispatch(actions.LOAD_DEEP_URL_CARD, {
+            tokenId: this.state.deepUrlCardNumber
+          });
+        }
       }
     },
     [actions.WATCH_TRANSFERS]: async function ({

@@ -22,7 +22,7 @@
       </div>
 
       <div v-if="!cdata.description">
-        <p class="descr"> </p>
+        <p class="descr"></p>
       </div>
 
       <div class="help" v-if="isFlippable">
@@ -118,9 +118,12 @@ export default {
       this.transfer = true;
     },
     redirect: function() {
+      console.log("DETECTING PATH");
+      console.log(this.$route.path);
       if (
         this.$route.path.lastIndexOf("create") === -1 &&
-        this.$route.path.lastIndexOf("account") === -1
+        this.$route.path.lastIndexOf("account") === -1 &&
+        this.$route.path.lastIndexOf("viewcard") === -1
       ) {
         var index = this.cdata.cardIndex;
         router.push({

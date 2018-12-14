@@ -1,16 +1,6 @@
 <template>
   <div class="container">
-    <!-- <h1 style=" margin-bottom:10px;">Artwork Gallery</h1> -->
-    <!-- <p>Creative, unique art pieces from from all around the interwebs.</p> -->
-    <!-- <b-row class="text-center">
-      <div v-for="card in cards" :key="card.tokenId">
-        <b-col cols="6">
-          <card :cdata="card"/>
-        </b-col>
-      </div>
-    </b-row>-->
-    <!-- <card :cdata="card"/> -->
-    {{loadCard}}
+        <card :cdata="deepUrlCard"/>
   </div>
 </template>
 
@@ -24,30 +14,57 @@ export default {
   name: "creator",
   components: { Card },
   data() {
-    return {};
+    return {
+      dispatchCardCount: 0,
+      dispatchCardDeep: 0
+    };
   },
   computed: {
-    ...mapState(["cards"]),
-    loadCard() {
-      try {
-        let currentPath = this.$route.path;
-        let tokenId = currentPath.substring(
-          currentPath.lastIndexOf(":") + 1,
-          currentPath.length
-        );
-        console.log(tokenId);
-        this.$store.dispatch(actions.LOAD_CARDS);
-        this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
-        return 1;
-      } catch (e) {}
-      return null;
-    }
+    ...mapState(["deepUrlCard"])
+    // loadCard() {
+    //   try {
+    //     let value = this.loadIntoStoreCard();
+    //     return 1;
+    //   } catch (e) {
+    //     console.log(e);
+    //   }
+    //   return null;
+    // }
   },
   mounted() {
-    this.$nextTick(function() {});
+    
+    console.log("loading Started");
+    let currentPath = this.$route.path;
+    let tokenId = currentPath.substring(
+      currentPath.lastIndexOf(":") + 1,
+      currentPath.length
+    );
+    this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
     console.log("mounted");
   },
-  methods: {}
+  methods: {
+    loadIntoStoreCard() {
+      console.log("loading Started");
+      let currentPath = this.$route.path;
+      let tokenId = currentPath.substring(
+        currentPath.lastIndexOf(":") + 1,
+        currentPath.length
+      );
+      console.log(tokenId);
+      this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
+      //   if (this.dispatchCardCount === 0) {
+      //     console.log("LOADING CARD");
+      //     this.$store.dispatch(actions.LOAD_CARDS);
+      //     this.dispatchCardCount = 1;
+      //   }
+      //   if (this.$store.state.cards && this.dispatchCountDeep === 0) {
+      //     console.log("LOADING DEEP");
+      //     this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
+      //     this.dispatchCount = 1;
+      //   }
+      //   return 1;
+    }
+  }
 };
 </script>
 
