@@ -97,8 +97,8 @@
           </ul>
         </div>
       </div>
-      <!-- <h2>Choose and personalise your RadiCards</h2>
-      <p>Send your card & message to any ETH address</p>
+      <!-- <h2>Choose and personalise your RadiCard</h2>
+      <p>Send to any ETH addresses and emails</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
@@ -107,8 +107,8 @@
 
     <section class="section">
       <h4 class="section__title">STEP ONE</h4>
-      <h2>Choose your favourite radicard</h2>
-      <p>All unique designs</p>
+      <h2>Choose and personalise your RadiCards</h2>
+      <p>Send to any ETH addresses and emails</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
@@ -118,7 +118,7 @@
     <section class="section">
       <h4 class="section__title">STEP TWO</h4>
       <h2>Choose a project you wish to support</h2>
-      <p>All profit goes sdirectly to the charity (excludes GAS cost)</p>
+      <p>All profit goes directly to the charity (excludes GAS cost)</p>
 
       <div class="charities" v-if="benefactors && benefactors.length > 0">
         <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
