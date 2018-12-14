@@ -4,6 +4,8 @@ export const GET_USD_PRICE = 'GET_USD_PRICE';
 
 export const BIRTH = 'BIRTH';
 
+export const TRANSFER_CARD = 'TRANSFER_CARD';
+
 export const LOAD_ACCOUNT_CARDS = 'LOAD_ACCOUNT_CARDS';
 export const LOAD_CARDS = 'LOAD_CARDS';
 
