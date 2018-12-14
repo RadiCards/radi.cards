@@ -211,8 +211,6 @@ const store = new Vuex.Store({
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));
       let tokenDetailsArray = await Promise.all(tokenDetails);
       let tokenDetailsArrayProcessed = []
-      console.log("IN STORE")
-      console.log(tokenDetails)
       let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
         let gifter = accountToken[0]

@@ -1,21 +1,22 @@
 <template>
   <div class="container">
-    <h1 style=" margin-bottom:10px;">Artwork Gallery</h1>
-    <p>Creative, unique art pieces from from all around the interwebs.</p>
-    <b-row class="text-center">
+    <!-- <h1 style=" margin-bottom:10px;">Artwork Gallery</h1> -->
+    <!-- <p>Creative, unique art pieces from from all around the interwebs.</p> -->
+    <!-- <b-row class="text-center">
       <div v-for="card in cards" :key="card.tokenId">
         <b-col cols="6">
           <card :cdata="card"/>
         </b-col>
       </div>
-    </b-row>
+    </b-row>-->
+    <!-- <card :cdata="card"/> -->
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import Card from "../../components/widgets/Card";
-
+import router from "../../router";
 export default {
   name: "creator",
   components: { Card },
@@ -27,6 +28,14 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {});
+    console.log("mounted");
+
+    let currentPath = this.$route.path;
+    let cardId = currentPath.substring(
+      currentPath.lastIndexOf(":") + 1,
+      currentPath.length
+    );
+    console.log(cardId)
   },
   methods: {}
 };
