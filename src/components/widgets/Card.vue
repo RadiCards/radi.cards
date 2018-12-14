@@ -2,9 +2,8 @@
   <div
     v-if="cdata != undefined"
     :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
-    @click="flip"
   >
-    <figure class="card__front" @click="redirect()">
+    <figure class="card__front" @click="flip" v-if="!transfer">
       <div class="card__image">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
@@ -35,36 +34,40 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
+    <figure class="card__transfer text-center" v-if="transfer">
+      lets send the boiii
+      <button @click="cancelTransfer" class="transferButton">Cancel</button>
+    </figure>
 
-    <div v-if="cdata.message">
-      <div class="card__back text-center" style="padding-top:120px">
-        <h3>
-          <strong>{{cdata.message}}</strong>
-        </h3>
-        <hr>
-        <p class="descr">
-          Benefactor:
-          <strong>
-            <a
-              v-if="cdata.BenefactorIndex"
-              :href="benefactors[cdata.BenefactorIndex-1].website"
-              target="_blank"
-            >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-          </strong>
-        </p>
-        <div
-          class="descr"
-          v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
-        >Your web3 account created this card!</div>
-        <div
-          class="descr pt-2"
-          v-if="this.$route.path.lastIndexOf('account') !== -1"
-        >
-          <button class="transferButton">Transfer Card</button>
-        </div>
-        <!-- </p> -->
+    <figure
+      class="card__back text-center"
+      style="padding-top:120px"
+      @click="flip"
+      v-if="cdata.message"
+    >
+      <h3>
+        <strong>{{cdata.message}}</strong>
+      </h3>
+      <hr>
+      <p class="descr">
+        Benefactor:
+        <strong>
+          <a
+            v-if="cdata.BenefactorIndex"
+            :href="benefactors[cdata.BenefactorIndex-1].website"
+            target="_blank"
+          >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+        </strong>
+      </p>
+      <div
+        class="descr"
+        v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
+      >Your web3 account created this card!</div>
+      <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
+        <button @click="transferCard" class="transferButton">Transfer Card</button>
       </div>
-    </div>
+      <!-- </p> -->
+    </figure>
   </div>
 </template>
 
@@ -91,12 +94,20 @@ export default {
 
   data() {
     return {
-      message: "This is the personal message! Go NFT!<br><br>&mdash; Vitalik",
+      transfer: false,
       isFlipped: false
     };
   },
 
   methods: {
+    cancelTransfer() {
+      this.transfer = false;
+      this.flip;
+    },
+    transferCard() {
+      console.log("transfer clicked");
+      this.transfer = true;
+    },
     redirect: function() {
       if (
         this.$route.path.lastIndexOf("create") === -1 &&
@@ -266,6 +277,17 @@ export default {
     transform: rotateY(180deg);
 
     cursor: w-resize;
+  }
+
+  // Card transfer side
+  &__transfer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    padding: $p_v $p_h;
+    background: $greylightest;
   }
 
   .transferButton {
