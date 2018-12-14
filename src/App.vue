@@ -11,6 +11,9 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
+            <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+          </li>
+          <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
               My cards
               <span class="ml-2 badge badge-primary">{{accountCards.length}}</span>

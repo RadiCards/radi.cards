@@ -13,3 +13,10 @@ $primary: $black;
 
 // Layout
 $maxWidth: 52rem;
+
+//bootstrap overides
+$enable-rounded: false;
+
+* {
+  border-radius: 0 !important;
+}

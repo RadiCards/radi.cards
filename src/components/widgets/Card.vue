@@ -92,7 +92,7 @@ export default {
 
   methods: {
     redirect: function() {
-      if (this.$route.path.lastIndexOf("create") === -1) {
+      if (this.$route.path.lastIndexOf("create") === -1 && this.$route.path.lastIndexOf("account") === -1) {
         var index = this.cdata.cardIndex;
         router.push({
           path: "create/" + index
