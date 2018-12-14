@@ -10,6 +10,7 @@
       </div>
     </b-row>-->
     <!-- <card :cdata="card"/> -->
+    {{loadCard}}
   </div>
 </template>
 
@@ -26,19 +27,25 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["cards"])
+    ...mapState(["cards"]),
+    loadCard() {
+      try {
+        let currentPath = this.$route.path;
+        let tokenId = currentPath.substring(
+          currentPath.lastIndexOf(":") + 1,
+          currentPath.length
+        );
+        console.log(tokenId);
+        this.$store.dispatch(actions.LOAD_CARDS);
+        this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
+        return 1;
+      } catch (e) {}
+      return null;
+    }
   },
   mounted() {
     this.$nextTick(function() {});
     console.log("mounted");
-
-    let currentPath = this.$route.path;
-    let cardId = currentPath.substring(
-      currentPath.lastIndexOf(":") + 1,
-      currentPath.length
-    );
-    console.log(cardId)
-    this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { cardId });
   },
   methods: {}
 };

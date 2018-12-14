@@ -253,34 +253,43 @@ const store = new Vuex.Store({
     }, {
       tokenId
     }) {
-      const contract = await state.contract.deployed();
       console.log("IN DEEP", tokenId)
-      cardDetails = await contract.tokenDetails(tokenId);
-      let gifter = accountToken[0]
-      let giftAmount = accountToken[1].toNumber()
-      let message = accountToken[2]
-      let extra = accountToken[3]
-      let cardIndex = accountToken[4]
-      let benefactorIndex = accountToken[5].toNumber()
-      if (state.cards) {
-        let cardInformation = state.cards.filter(card => {
-          return card.cardIndex === cardIndex.toNumber();
-        });
-        let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
-        let allCardInformation = {
-          ...{
-            extra: extra,
-            giftAmount: giftAmount / 1000000000000000000,
-            message: message,
-            BenefactorIndex: benefactorIndex,
-            accountCreatedCard: accountCreatedCard,
-            tokenId: tokenId
-          },
-          ...cardInformation[0]
-        };
+      if (state.contract) {
+        const contract = await state.contract.deployed();
+        console.log("ALLIVE")
+        console.log(parseInt(tokenId))
+        let accountToken = await contract.tokenDetails(tokenId);
+        console.log(accountToken)
+        let gifter = accountToken[0]
+        let giftAmount = accountToken[1].toNumber()
+        let message = accountToken[2]
+        let extra = accountToken[3]
+        let cardIndex = accountToken[4]
+        let benefactorIndex = accountToken[5].toNumber()
+        if (state.cards) {
+          let cardInformation = state.cards.filter(card => {
+            return card.cardIndex === cardIndex.toNumber();
+          });
+          let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
+          let allCardInformation = {
+            ...{
+              extra: extra,
+              giftAmount: giftAmount / 1000000000000000000,
+              message: message,
+              BenefactorIndex: benefactorIndex,
+              accountCreatedCard: accountCreatedCard,
+              tokenId: tokenId
+            },
+            ...cardInformation[0]
+          };
+          console.log("SINGLE CARD LOADED!!!")
+          console.log(allCardInformation)
+          commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
+        }
       }
 
-      commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
+
+
     },
     [actions.LOAD_BENEFACTORS]: async function ({
       commit,
