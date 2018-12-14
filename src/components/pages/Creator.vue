@@ -343,7 +343,7 @@ export default {
   line-height: normal;
   font-size: 12px;
 
-  color: #000000;
+  color: $black;
 }
 
 .inputLabel {
@@ -353,15 +353,15 @@ export default {
   margin-bottom: 10px;
   margin-top: 10px;
   display: inline-block;
-  color: #000000;
+  color: $black;
 }
 
 input {
-  border: 1px solid #000000;
+  border: 1px solid $black;
   margin-bottom: 20px;
 }
 textarea {
-  border: 1px solid #000000;
+  border: 1px solid $black;
 
   &::placeholder {
     text-align: right;
@@ -380,7 +380,7 @@ textarea {
 }
 
 .nextButton {
-  background: #000000;
+  background: $black;
   width: 100%;
   font-family: Helvetica;
   line-height: normal;

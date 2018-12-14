@@ -125,6 +125,7 @@ export default {
 
   box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   background: $white;
+  border-bottom-color: transparent;
   cursor: pointer;
 
   transition: all 0.2s ease-in-out;
