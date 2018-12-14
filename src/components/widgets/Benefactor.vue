@@ -8,13 +8,13 @@
 
       <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
 
-      <input type="button" @click="selectBenefactor" class="btn btn--narrow" value="Select">
+      <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="Select">
     </div>
 
     <div class="benefactor__detail">
       <div class="benefactor__text">  <!-- v-if="expanded" -->
         <p>{{charityDescription}}</p>
-        <a  v-if="this.$route.path.lastIndexOf('create') !== -1" target="__blank" :href="charityURL" class="a--external">Learn more about charity</a>
+        <a v-if="this.$route.path.lastIndexOf('create') !== -1" target="__blank" :href="charityURL" class="a--external">Learn more about charity</a>
       </div>
     </div>
 
