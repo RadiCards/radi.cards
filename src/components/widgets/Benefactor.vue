@@ -4,12 +4,10 @@
     <div class="benefactor-text">
       <span class="benefactor-name mt-2">{{benefactor.name}}</span>
       <div v-if="exapanded">
-        <p
-          class="mt-2"
-        >The Electronic Frontier Foundation (EFF) is a non-profit organisation defending free speech online, fight illegal surveillance and support freedom-enhancing technologies. Advocating for online civil liberty, EFF supports and promotes the adoption of open source software, encryption, security research and P2P tools.</p>
+        <p class="mt-2">{{charityDescription}}</p>
         <input type="button" @click="selectBenefactor" class="m-3 selectButton" value="Select">
         
-        <a href="https://www.w3schools.com">Learn More about charity</a>
+        <a target="__blank" :href="charityURL">Learn More about charity</a>
       </div>
       <span class="benefactor-description">{{benefactor.description}}</span>
     </div>
@@ -29,15 +27,31 @@ import { mapState } from "vuex";
 
 export default {
   name: "benefactor",
-  computed: {},
   props: {
     benefactor: {
       type: Object
     }
   },
+  computed: {
+    charityDescription() {
+      let allDescriptions = [
+        "The Electronic Frontier Foundation (EFF) is a non-profit organisation defending free speech online, fight illegal surveillance and support freedom-enhancing technologies. Advocating for online civil liberty, EFF supports and promotes the adoption of open source software, encryption, security research and P2P tools.",
+        "EnLAW is a non-profit organisation advocating for environmental rights in Thailand. Founded in 2001, it has set several legal precedents by carrying out successful strategic litigations against international corporates which contaminate local river, land and ocean with harmful waste and compound.",
+        "The Open Money Initiative (OMI) is working to empower those living in economically repressed societies. We build cryptocurrency products and are currently investigating large-scale cryptocurrency airdrops for humanitarian aid. Public, open-source cryptocurrencies can be public commons for safeguarding people’s economic freedom, just as the internet is for communication and information freedom."
+      ];
+      return allDescriptions[this.benefactor.id - 1];
+    },
+    charityURL() {
+      let allURLs = [
+        "https://www.eff.org/",
+        "https://enlawfoundation.org",
+        "https://www.openmoneyinitiative.org/"
+      ];
+      return allURLs[this.benefactor.id - 1];
+    }
+  },
   methods: {
     selectBenefactor() {
-      console.log("button clicked");
       this.$emit("benefactorSelected");
     },
     expandDescription() {
