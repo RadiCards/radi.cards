@@ -6,7 +6,7 @@
       <div role="tablist">
         <div v-if="this.step > 0" @click="goToStep(step-1)">&lt; Back</div>
         <div v-if="this.step == 0">
-          <router-link :to="{ name: 'home' }">Back</router-link>
+          <router-link :to="{ name: 'home' }">&lt; Back</router-link>
         </div>
 
         <div class="summaryPreview">
