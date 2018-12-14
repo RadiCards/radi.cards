@@ -35,12 +35,16 @@ const store = new Vuex.Store({
     notFound: null,
     benefactors: null,
     cards: null,
+    deepUrlCard: null,
     transfers: []
   },
   getters: {},
   mutations: {
     [mutations.SET_BENEFACTORS](state, benefactors) {
       state.benefactors = benefactors;
+    },
+    [mutations.SET_DEEP_URL_CARD](state, card) {
+      state.deepUrlCard = card;
     },
     [mutations.SET_ACCOUNT](state, account) {
       state.account = account;
@@ -241,6 +245,41 @@ const store = new Vuex.Store({
         loopIndex++;
       })
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
+    },
+    [actions.LOAD_DEEPURL_CARD]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      tokenId
+    }) {
+      const contract = await state.contract.deployed();
+      cardDetails = await contract.tokenDetails(tokenId);
+      let gifter = accountToken[0]
+      let giftAmount = accountToken[1].toNumber()
+      let message = accountToken[2]
+      let extra = accountToken[3]
+      let cardIndex = accountToken[4]
+      let benefactorIndex = accountToken[5].toNumber()
+      if (state.cards) {
+        let cardInformation = state.cards.filter(card => {
+          return card.cardIndex === cardIndex.toNumber();
+        });
+        let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
+        let allCardInformation = {
+          ...{
+            extra: extra,
+            giftAmount: giftAmount / 1000000000000000000,
+            message: message,
+            BenefactorIndex: benefactorIndex,
+            accountCreatedCard: accountCreatedCard,
+            tokenId: tokenId
+          },
+          ...cardInformation[0]
+        };
+      }
+
+      commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
     },
     [actions.LOAD_BENEFACTORS]: async function ({
       commit,
