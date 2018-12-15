@@ -23,27 +23,10 @@ export default {
     ...mapState(["deepUrlCard"])
   },
   mounted() {
-    console.log("loading Started");
-    let currentPath = this.$route.path;
-    let tokenId = currentPath.substring(
-      currentPath.lastIndexOf(":") + 1,
-      currentPath.length
-    );
+    let tokenId = this.$route.params.id;
     this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
-    console.log("mounted");
   },
-  methods: {
-    loadIntoStoreCard() {
-      console.log("loading Started");
-      let currentPath = this.$route.path;
-      let tokenId = currentPath.substring(
-        currentPath.lastIndexOf(":") + 1,
-        currentPath.length
-      );
-      console.log(tokenId);
-      this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
-    }
-  }
+  methods: {}
 };
 </script>
 
