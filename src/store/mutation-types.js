@@ -8,6 +8,10 @@ export const SET_UPLOAD_HASH = 'SET_UPLOAD_HASH';
 export const SET_ACCOUNT_CARDS = 'SET_ACCOUNT_CARDS';
 export const SET_CARDS = 'SET_CARDS';
 
+export const SET_DEEP_URL_CARD = 'SET_DEEP_URL_CARD';
+
+export const SET_DEEP_URL_CARD_NUMBER = 'SET_DEEP_URL_CARD_NUMBER'
+
 export const SET_TOTAL_SUPPLY = 'SET_TOTAL_SUPPLY';
 
 export const SET_TRANSFER = 'SET_TRANSFER';

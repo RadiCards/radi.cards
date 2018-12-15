@@ -22,7 +22,7 @@
       </div>
 
       <div v-if="!cdata.description">
-        <p class="descr"> </p>
+        <p class="descr"></p>
       </div>
 
       <div class="help" v-if="isFlippable">
@@ -60,9 +60,10 @@
           >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
         </strong>
       </p>
+      {{cdata.accountCreatedCard}}
       <div
         class="descr"
-        v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
+        v-if="cdata.accountCreatedCard"
       >Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer Card</button>
@@ -118,9 +119,12 @@ export default {
       this.transfer = true;
     },
     redirect: function() {
+      console.log("DETECTING PATH");
+      console.log(this.$route.path);
       if (
         this.$route.path.lastIndexOf("create") === -1 &&
-        this.$route.path.lastIndexOf("account") === -1
+        this.$route.path.lastIndexOf("account") === -1 &&
+        this.$route.path.lastIndexOf("viewcard") === -1
       ) {
         var index = this.cdata.cardIndex;
         router.push({

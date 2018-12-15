@@ -1,32 +1,30 @@
 <template>
   <div class="container">
-    <h1 style=" margin-bottom:10px;">Artwork Gallery</h1>
-    <p>Creative, unique art pieces from from all around the interwebs.</p>
-    <b-row class="text-center">
-      <div v-for="card in cards" :key="card.tokenId">
-        <b-col cols="6">
-          <card :cdata="card"/>
-        </b-col>
-      </div>
-    </b-row>
+    <card :cdata="deepUrlCard"/>
   </div>
 </template>
 
 <script>
 import { mapState } from "vuex";
 import Card from "../../components/widgets/Card";
+import router from "../../router";
+import * as actions from "../../store/actions";
 
 export default {
   name: "creator",
   components: { Card },
   data() {
-    return {};
+    return {
+      dispatchCardCount: 0,
+      dispatchCardDeep: 0
+    };
   },
   computed: {
-    ...mapState(["cards"])
+    ...mapState(["deepUrlCard"])
   },
   mounted() {
-    this.$nextTick(function() {});
+    let tokenId = this.$route.params.id;
+    this.$store.dispatch(actions.LOAD_DEEP_URL_CARD, { tokenId });
   },
   methods: {}
 };
