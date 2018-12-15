@@ -46,9 +46,7 @@
       @click="flip"
       v-if="cdata.message"
     >
-      <h4>
-        {{cdata.message}}
-      </h4>
+      <h4 v-html="cardMessageFormatted"></h4>
       <hr>
       <p class="descr">
         Your donation goes to
@@ -61,10 +59,7 @@
         </strong>
       </p>
       {{cdata.accountCreatedCard}}
-      <div
-        class="descr"
-        v-if="cdata.accountCreatedCard"
-      >Your web3 account created this card!</div>
+      <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer Card</button>
       </div>
@@ -84,6 +79,13 @@ export default {
   name: "card",
 
   computed: {
+    cardMessageFormatted() {
+      if (this.cdata.message) {
+        return this.cdata.message.replace(/\r?\n/g, "<br />");
+      } else {
+        return null;
+      }
+    },
     ...mapState(["card", "benefactors"]),
     isFlippable: function() {
       return this.cdata.message && this.cdata.message.length > 0;

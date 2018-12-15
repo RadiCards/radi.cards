@@ -4,15 +4,22 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-        <div class="btn btn--reveal btn--narrow btn--arrow-left" style="margin-left: -0.75rem;" v-if="this.step > 0" @click="goToStep(step-1)">Back</div>
+        <div
+          class="btn btn--reveal btn--narrow btn--arrow-left"
+          style="margin-left: -0.75rem;"
+          v-if="this.step > 0"
+          @click="goToStep(step-1)"
+        >Back</div>
         <div v-if="this.step == 0">
           <!-- <router-link :to="{ name: 'cardshop' }">&lt; Back</router-link> -->
         </div>
 
         <div class="preview">
-
-          <div class="preview-step" v-if="this.formData.card !== null && this.step > 0" @click="goToStep(0)">
-
+          <div
+            class="preview-step"
+            v-if="this.formData.card !== null && this.step > 0"
+            @click="goToStep(0)"
+          >
             <h4 class="section__title">
               <img src="/static/icons/Check.svg"> STEP ONE
             </h4>
@@ -28,16 +35,18 @@
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
-
           </div>
 
-          <div class="preview-step" @click="goToStep(1)" v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined">
-
+          <div
+            class="preview-step"
+            @click="goToStep(1)"
+            v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
+          >
             <h4 class="section__title">
               <img src="/static/icons/Check.svg"> STEP TWO
             </h4>
 
-            <div class="preview-step__content">  
+            <div class="preview-step__content">
               <img class="preview-step__img" :src="this.formData.benefactor.image">
               <div class="preview-step__text">
                 <span class="selCard">Selected Charity</span>
@@ -47,7 +56,6 @@
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
-
           </div>
         </div>
 
@@ -57,7 +65,6 @@
           </div>
 
           <div class="step__info">
-
             <div class="step__title">
               <h4>Customise details</h4>
               <p>Send this card to any ETH wallet address</p>
@@ -75,11 +82,13 @@
               />
 
               <h6 class="c-blue">Recipient doesn’t have a wallet address?</h6>
-              <p class="p--small c-blue">No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
+              <p
+                class="p--small c-blue"
+              >No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
 
               <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
               <b-form-textarea
-                id="textarea1"
+                id="textarea"
                 class="field"
                 v-model="formData.message"
                 placeholder="max 128 characters"
@@ -99,7 +108,6 @@
         </div>
 
         <div class="section step step2" v-if="this.step == 1">
-
           <div class="step__title">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
@@ -108,7 +116,7 @@
 
           <section class="section">
             <div class="charities" v-if="benefactors && benefactors.length > 0">
-              <benefactor 
+              <benefactor
                 v-for="item in benefactors"
                 :key="item.address"
                 :benefactor="item"
@@ -119,7 +127,6 @@
         </div>
 
         <div class="section step step2" v-if="this.step == 2">
-
           <div class="step__title">
             <h4 class="section__title">STEP THREE</h4>
             <h4>Add your donation</h4>
@@ -159,7 +166,6 @@
         </div>
 
         <div class="section step step3" v-if="this.step == 3">
-
           <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
@@ -179,30 +185,34 @@
               <br>
               <br>Message (display in the back of the card):
               <br>
-              <h4>
-              {{formData.message}}
-              </h4>
+              <h4 v-html="cardMessageFormatted"></h4>
               <br>
             </span>
+            
+            <button
+              v-if="status != 'GIVING BIRTH'"
+              class="button"
+              @click="giveBirth"
+            >gift this awesome card</button>
 
-          <button v-if="status != 'GIVING BIRTH'" class="button" @click="giveBirth">gift this awesome card</button>
-
-          <div class="form-group row" v-if="formData.errors.length && status != 'GIVING BIRTH'">
-            <div class="col-sm-12">
-              <blockquote>
-                <b>Please correct the following error(s):</b>
-              </blockquote>
-              <ul>
-                <li v-for="error in formData.errors">{{ error }}</li>
-              </ul>
+            <div class="form-group row" v-if="formData.errors.length && status != 'GIVING BIRTH'">
+              <div class="col-sm-12">
+                <blockquote>
+                  <b>Please correct the following error(s):</b>
+                </blockquote>
+                <ul>
+                  <li v-for="error in formData.errors">{{ error }}</li>
+                </ul>
+              </div>
             </div>
-          </div>
 
-          <div v-if="status == 'GIVING BIRTH'" class="transaction-in-progress">
-            <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
-            <p>Please <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) if you haven't already confirmed this action.</p>
-          </div>
-
+            <div v-if="status == 'GIVING BIRTH'" class="transaction-in-progress">
+              <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
+              <p>
+                Please
+                <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) if you haven't already confirmed this action.
+              </p>
+            </div>
           </div>
         </div>
       </div>
@@ -248,12 +258,15 @@ export default {
     };
   },
   computed: {
+    cardMessageFormatted() {
+      return this.formData.message.replace(/\r?\n/g, "<br />");
+    },
     ...mapState(["account", "uploadedHashs", "cards", "benefactors"]),
     previewCardObject() {
       return {
         ...this.formData.card,
         ...{
-          message: this.formData.message,
+          message: this.cardMessageFormatted,
           BenefactorIndex: this.formData.benefactor.id,
           giftAmount: this.formData.valueInETH
         }
@@ -346,7 +359,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
@@ -426,7 +438,9 @@ textarea {
     padding: 0.5rem 0;
   }
 
-  .section__title { margin-right: 1rem; }
+  .section__title {
+    margin-right: 1rem;
+  }
 
   &__content {
     display: flex;
@@ -441,18 +455,15 @@ textarea {
     margin-right: auto;
   }
   .selCard {
-
     line-height: normal;
     font-size: 14px;
   }
   .artist {
-
     line-height: normal;
     font-size: 14px;
   }
 
   h5 {
-
     line-height: normal;
     font-size: 14px;
     font-weight: bold;
@@ -464,9 +475,9 @@ textarea {
   }
 }
 
-
 // Step Content
-.step1, .step3 {
+.step1,
+.step3 {
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -477,7 +488,7 @@ textarea {
     margin-bottom: 2rem;
   }
 
-  @include tabletAndUp () {
+  @include tabletAndUp() {
     flex-direction: row;
     justify-content: stretch;
     align-items: flex-start;
