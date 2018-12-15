@@ -232,7 +232,7 @@ const store = new Vuex.Store({
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
-          let accountCreatedCard = (account.toLowerCase() === gifter.toLowerCase()) //if the current account created the card 
+          let accountCreatedCard = (web3.utils.toChecksumAddress(account) === web3.utils.toChecksumAddress(gifter)) //if the current account created the card
           let allCardInformation = {
             ...{
               extra: extra,

@@ -33,8 +33,8 @@ export default new Router({
       component: Account
     },
     {
-      path: '/viewcard/:id',
-      name: 'viewCard',
+      path: '/card/:id',
+      name: 'card',
       component: ViewCard
     }
   ]

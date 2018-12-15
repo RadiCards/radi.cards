@@ -60,9 +60,10 @@
           >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
         </strong>
       </p>
+      {{cdata.accountCreatedCard}}
       <div
         class="descr"
-        v-if="cdata.accountCreatedCard && cdata.accountCreatedCard"
+        v-if="cdata.accountCreatedCard"
       >Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer Card</button>
