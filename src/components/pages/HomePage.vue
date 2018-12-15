@@ -43,6 +43,9 @@
             <li>
               <a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a>
             </li>
+            <li>
+              <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
+            </li>
           </ul>
         </div>
 
