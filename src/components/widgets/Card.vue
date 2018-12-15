@@ -29,7 +29,7 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
-    <figure class="card__front text-center" style="padding-top:100px" v-if="transfer">
+    <figure class="card__front text-center" style="padding-top:50px" v-if="transfer">
       <h2 class="pb-2">Transfer Card</h2>
       <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
       <hr>
@@ -42,7 +42,7 @@
 
     <figure
       class="card__back text-center"
-      style="padding-top:120px"
+      style="padding-top:50px"
       @click="flip"
       v-if="cdata.message"
     >
@@ -58,7 +58,6 @@
           >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
         </strong>
       </p>
-      {{cdata.accountCreatedCard}}
       <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer Card</button>
