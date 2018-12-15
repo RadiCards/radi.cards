@@ -29,11 +29,11 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
-    <figure class="card__front text-center" v-if="transfer">
+    <figure class="card__front text-center" style="padding-top:100px" v-if="transfer">
       <h2 class="pb-2">Transfer Card</h2>
-      <p>Send your Radi card to any web3 address.</p>
+      <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
       <hr>
-      <p class="mb-3">Recipiant Address:</p>
+      <p class="mb-2">Recipient wallet address:</p>
       <b-form-input type="text" class="field p-2" v-model="transferRecipient" placeholder/>
 
       <button @click="executeCardTransfer" class="transferButton mt-3">Transfer</button>
