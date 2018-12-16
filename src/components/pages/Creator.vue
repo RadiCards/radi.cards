@@ -4,15 +4,6 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-        <div
-          class="btn btn--reveal btn--narrow btn--arrow-left"
-          style="margin-left: -0.75rem;"
-          v-if="this.step > 0"
-          @click="goToStep(step-1)"
-        >Back</div>
-        <div v-if="this.step == 0">
-          <!-- <router-link :to="{ name: 'cardshop' }">&lt; Back</router-link> -->
-        </div>
 
         <div class="preview">
           <div
@@ -52,11 +43,15 @@
                 <span class="selCard">Selected Charity</span>
                 <h5>{{this.formData.benefactor.name}}</h5>
               </div>
+              <div v-if="this.step > 2 && formData.valueInETH !== null && formData.valueInETH != undefined">
+                Donation: <strong>{{formData.valueInETH}}</strong> ETH
+              </div>
               <div class="btn btn--reveal btn--narrow">
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
           </div>
+
         </div>
 
         <div class="section step step1" v-if="this.step == 0">
@@ -180,16 +175,13 @@
 
           <div class="step__info">
             <div class="sectionTitle">
-              <h6>Preview your radicard</h6>
-              <p>Send this card to any ETH wallet address</p>
+              <h4>Preview your radicard</h4>
             </div>
 
             <span class="detailsText">
-              Donation: {{formData.valueInETH}} ETH
-              <br>
               Recipient: {{formData.recipient}}
               <br>
-              <br>Message (display in the back of the card):
+              <br>Message (displayed on the back of the card):
               <br>
               <h4 v-html="cardMessageFormatted"></h4>
               <br>
