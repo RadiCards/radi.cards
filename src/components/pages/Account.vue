@@ -1,7 +1,7 @@
 <template>
-  <div class="container">
+  <section class="section">
     <h2 style="margin-bottom: 0.5rem;">
-      My cards
+      Your cards
       <span class="badge badge-primary">{{accountCards.length}}</span>
     </h2>
     <clickable-address :eth-address="account"></clickable-address>
@@ -19,12 +19,14 @@
 
     <div class="row mt-2" v-else>
       <div class="col">
-        <div class="card-slider" v-if="accountCards && accountCards.length > 0">
-          <card v-for="item in accountCards" :key="item.tokenId" :cdata="item">{{item}}</card>
-        </div>
+        <b-row>
+          <b-col cols="4" v-if="accountCards && accountCards.length > 0" v-for="card in accountCards" :key="card.tokenId" class="pt-3">
+            <card :cdata="card"/>
+          </b-col>
+        </b-row>
       </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>

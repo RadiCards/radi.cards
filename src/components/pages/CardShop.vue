@@ -1,15 +1,14 @@
 <template>
-  <div class="container">
-    <h1 style=" margin-bottom:10px;">Card Shop</h1>
+  <section class="section">
+    <h2>Card Shop</h2>
+    <br>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
     <b-row>
-      <div v-for="card in cards" :key="card.tokenId" class="pt-3">
-        <b-col cols="4">
-          <card :cdata="card"/>
-        </b-col>
-      </div>
+      <b-col cols="12" sm="6" lg="4" v-for="card in cards" :key="card.tokenId" class="pt-3">
+        <card :cdata="card"/>
+      </b-col>
     </b-row>
-  </div>
+  </section>
 </template>
 
 <script>

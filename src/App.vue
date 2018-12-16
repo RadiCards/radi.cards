@@ -16,7 +16,7 @@
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
               Your cards
-              <span class="ml-2 badge badge-primary" v-if="accountCards.length > 0">{{accountCards.length}}</span>
+              <span class="ml-1 badge badge-primary" v-if="accountCards.length > 0">{{accountCards.length}}</span>
             </router-link>
           </li>
           <!-- <li class="nav-item">
@@ -38,7 +38,7 @@
       </div>
     </div>
 
-    <main role="main" class="container-fluid">
+    <main role="main">
       <router-view></router-view>
     </main>
 
@@ -219,10 +219,10 @@
   background: $black;
   color: $yellow;
   display: inline-block;
-  padding: 0;
-  width: 1.5em;
+  padding: 0 5px 0 0.25rem;
+  min-width: 1.5em;
   height: 1.5em;
-  border-radius: 50% !important;
+  border-radius: 0.75em !important;
   line-height: 1.5em;
 }
 
