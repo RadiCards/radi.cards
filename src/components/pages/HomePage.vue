@@ -14,7 +14,7 @@
         >with the power of memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p style="max-width: 24rem; margin-bottom: 1rem;">Share NFT eCards with friends and family for Free and donate to the charities you wish to support (well almost, you just pay the gas)</p>
+      <p style="max-width: 24rem; margin-bottom: 1rem;">Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
 
       <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
 
@@ -85,6 +85,9 @@
             <li>
               <a href="https://colony.io/" target="_blank">colony.io</a>
             </li>
+            <li>
+              <a href="https://www.astroledger.org" target="_blank">astroledger.org</a>
+            </li>
           </ul>
         </div>
 
@@ -132,6 +135,7 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Share radiCards with friends and donate to good causes</h2>
       <p>Help spread hope and joy with eCards</p>
+      
       <samplequote></samplequote>
     </section>
 
