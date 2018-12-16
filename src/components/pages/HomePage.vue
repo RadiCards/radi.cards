@@ -105,7 +105,6 @@
       </div>
       <!-- <h2>Choose and personalise your RadiCard</h2>
       <p>Send to any ETH addresses and emails</p>
-
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
       </div>-->
@@ -135,8 +134,8 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Share radiCards with friends and donate to good causes</h2>
       <p>Help spread hope and joy with eCards</p>
-      
-      <samplequote></samplequote>
+      <img src="/static/images/step3.png" alt class="img--placeholder">
+      <!-- <samplequote></samplequote> -->
     </section>
 
     <div class="row">
