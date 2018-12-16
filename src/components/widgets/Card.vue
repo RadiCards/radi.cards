@@ -159,6 +159,8 @@ export default {
 
   box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   background: $white;
+  border-radius: 0;
+  border: 0;
   border-bottom-color: transparent;
   cursor: pointer;
 
