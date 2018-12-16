@@ -134,7 +134,7 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Share radiCards with friends and donate to good causes</h2>
       <p>Help spread hope and joy with eCards</p>
-      <img src="/static/images/step3.png" alt class="img--placeholder">
+      <img src="/static/images/step3.png" alt class="img--placeholder" height="450">
       <!-- <samplequote></samplequote> -->
     </section>
 
