@@ -140,7 +140,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     context('should have two benefactors initially', function () {
       it('returns indexes', async function () {
         const indexes = await this.token.benefactorsKeys();
-        indexes.length.should.be.bignumber.equal(3);
+        indexes.length.should.be.bignumber.equal(2);
       });
     });
 
@@ -220,10 +220,10 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       });
     });
 
-    context('should tally up all rasied eth', function () {
+    context('should tally up all gifted wei', function () {
       it('correctly keeps a record', async function () {
-        const totalEthRaised = await this.token.totalEthRaised();
-        totalEthRaised.should.be.bignumber.equal(
+        const totalGiftedInWei = await this.token.totalGiftedInWei();
+        totalGiftedInWei.should.be.bignumber.equal(
           // two cards bought at minContribution
           this.minContribution.add(this.minContribution)
         );

@@ -2,6 +2,6 @@
 
 npm run build;
 
-echo "Deploying radi-cards"
-firebase use radicards;
+echo "Deploying radi.cards"
+firebase use radi-cards;
 firebase deploy;

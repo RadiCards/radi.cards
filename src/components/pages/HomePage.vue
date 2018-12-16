@@ -38,7 +38,7 @@
               <a href="https://d1labs.com" target="_blank">d1labs.com</a>
             </li>
             <li>
-              <a href="https://blockrocket.tech" target="_blank">blockrocket.tech</a>
+              <a href="http://blockrocket.tech" target="_blank">blockrocket.tech</a>
             </li>
             <li>
               <a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a>

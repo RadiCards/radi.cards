@@ -75,40 +75,11 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
     describe('burn', function () {
       const tokenId = firstTokenId;
-      let logs = null;
 
       describe('when successful', function () {
-        beforeEach(async function () {
-          const result = await this.token.burn(tokenId, {from: creator});
-          logs = result.logs;
-        });
-
-        it('burns the given token ID and adjusts the balance of the owner', async function () {
-          await assertRevert(this.token.ownerOf(tokenId));
+        it('burns should revert as not allowed', async function () {
+          await assertRevert(this.token.burn(tokenId, {from: creator}));
           (await this.token.balanceOf(owner)).should.be.bignumber.equal(1);
-        });
-
-        it('emits a burn event', async function () {
-          logs.length.should.be.equal(1);
-          logs[0].event.should.be.equal('Transfer');
-          logs[0].args._from.should.be.equal(owner);
-          logs[0].args._to.should.be.equal(ZERO_ADDRESS);
-          logs[0].args._tokenId.should.be.bignumber.equal(tokenId);
-        });
-      });
-
-      describe('when the given token ID was not tracked by this contract', function () {
-        it('reverts', async function () {
-          await assertRevert(
-            this.token.burn(unknownTokenId, {from: creator})
-          );
-        });
-      });
-      describe('when not the owner', function () {
-        it('reverts', async function () {
-          await assertRevert(
-            this.token.burn(firstTokenId, {from: newOwner})
-          );
         });
       });
     });

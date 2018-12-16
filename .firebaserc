@@ -1,5 +1,6 @@
 {
   "projects": {
-    "radi-cards": "radi-cards"
+    "radi-cards": "radi-cards",
+    "default": "radi-cards"
   }
 }
