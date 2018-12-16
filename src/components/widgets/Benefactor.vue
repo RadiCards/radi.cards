@@ -101,7 +101,7 @@ export default {
       height: 0.75rem;
       margin-left: 0.75rem;
       border-bottom: 2px solid $black;
-      border-right: 2px solid currentColor;
+      border-right: 2px solid $black;
       transform: rotate(45deg);
       transition: all 0.4s ease-in-out;
       opacity: 0.5;

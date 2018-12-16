@@ -70,38 +70,44 @@
               <p>Send this card to any ETH wallet address</p>
             </div>
 
-            <section class="section">
-              <span class="myWallet">Your wallet: {{account}}</span>
-              <span class="inputLabel">Add recipient wallet address</span>
-              <b-form-input
-                type="text"
-                class="field"
-                id="recipient"
-                v-model="formData.recipient"
-                placeholder
-              />
+            <br>
 
-              <h6 class="c-blue">Recipient doesn’t have a wallet address?</h6>
-              <p
-                class="p--small c-blue"
-              >No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
+            <span class="inputLabel">Add recipient wallet address</span>
+            <b-form-input
+              type="text"
+              class="field"
+              id="recipient"
+              v-model="formData.recipient"
+              placeholder
+            />
 
-              <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
-              <b-form-textarea
-                id="textarea"
-                class="field"
-                v-model="formData.message"
-                placeholder="max 128 characters"
-                :rows="3"
-                :max-rows="6"
-              ></b-form-textarea>
-              <br>
-            </section>
+            <div v-if="!walletVisible" class="btn btn--subtle btn--small btn--arrow-down" @click="walletVisible = true">Recipient doesn’t have a wallet address?</div>
+            <div :class="['wallet', {'isVisible' : walletVisible}]" v-if="account">
+              <h6>Recipient doesn’t have a wallet address?</h6>
+              <div class="wallet__collapse btn--arrow-up" @click="walletVisible = false"></div>
+              <p class="p--small ">No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
+              <div class="wallet__actions">
+                <span class="text">Your wallet: {{account}}</span>
+                <div @click="formData.recipient = account" class="btn btn--small btn--outline">Use my wallet</div>
+              </div>
+            </div>
+
+            <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
+            <b-form-textarea
+              id="textarea"
+              class="field"
+              v-model="formData.message"
+              placeholder="max 128 characters"
+              :rows="3"
+              :max-rows="6"
+            ></b-form-textarea>
+            <br>
+
             <input
               type="button"
               class="button button--fullwidth"
               @click="goToStep(1)"
-              :disabled="this.formData.message === null || this.formData.recipient === null"
+              :disabled="hasStep1Data"
               value="next"
             >
           </div>
@@ -252,6 +258,7 @@ export default {
       },
       step: 0,
       status: "IDLE",
+      walletVisible: false,
       response: {
         ipfsHash: null
       }
@@ -281,6 +288,15 @@ export default {
           this.formData.card = this.cards[c];
           return this.cards[c];
         }
+      }
+    },
+    hasStep1Data() {
+      if (this.formData.message === null || this.formData.recipient === null) {
+        return true;
+      } else if (this.formData.message.length < 1 || this.formData.recipient.length < 1) {
+        return true;
+      } else {
+        return false;
       }
     }
   },
@@ -401,24 +417,46 @@ textarea {
   }
 }
 
-.sectionTitle {
-  // margin-top: 40px;
-  // font-size: 22px;
-  // margin-bottom: 40px;
-}
-
 .paymentPresets {
   display: flex;
   margin-top: 20px;
   justify-content: space-between;
 }
 
-.myWallet {
+.wallet {
+  position: relative;
+  display: none;
   padding: 0.75rem 1rem;
-  border-radius: 1.5rem !important;
+  border-radius: 0;
   font-size: 12px;
-  display: block;
-  background: #f3f3f3;
+  background: rgba(0, 0, 0, 0.05);
+
+  &.isVisible {
+    display: block;
+  }
+
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-direction: column;
+
+    @include tabletAndUp() {
+      flex-direction: row;
+    }
+  }
+
+  &__collapse {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0.75rem;
+    cursor: pointer;
+  }
+
+  .btn {
+    align-self: flex-end;
+  }
 }
 
 // Steps preview (top)

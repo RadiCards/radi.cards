@@ -19,7 +19,6 @@
   }
   &:hover {
     background: $black;
-    border-bottom: 0;
   }
   &:focus {
     outline: none;
@@ -30,6 +29,15 @@
   }
 
   // Appearance
+  &--subtle {
+    background-color: rgba($black, 0.05);
+    border: 0;
+    color: $black;
+
+    &:hover {
+      background: rgba($black, 0.1);
+    }
+  }
   &--reveal {
     background: transparent;
     border: 2px solid transparent;
@@ -55,23 +63,46 @@
   &--narrow {
     padding: 0.5rem 0.75rem;
   }
+  &--small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+
+    &.btn--outline, &.button--outline {
+      border-width: 1px;
+    }
+  }
   &--fullwidth {
     display: block;
     width: 100%;
   }
 
   // Additions
-  &--arrow-left:before {
+  &--arrow-left:before,
+  &--arrow-down:after,
+  &--arrow-up:after {
     content: "";
     display: inline-block;
-    width: 0.675rem;
-    height: 0.675rem;
-    margin-left: 0.25rem;
-    margin-right: 0.5rem;
+    width: 0.675em;
+    height: 0.675em;
+    margin: 0 0.5rem 0 0.25rem;
+    opacity: 0.5;
+  }
+  &--arrow-left:before {
     border-bottom: 2px solid $black;
     border-left: 2px solid currentColor;
     transform: rotate(45deg);
-    opacity: 0.5;
+  }
+  &--arrow-down:after,
+  &--arrow-up:after {
+    margin: 0 0 0 0.5rem;
+    border-bottom: 2px solid $black;
+    border-right: 2px solid $black;
+    transform: translateY(-2px) rotate(45deg);
+  }
+  &--arrow-up:after {
+    border-right: 0;
+    border-left: 2px solid $black;
+    transform: translateY(-2px) rotate(135deg);
   }
   &[disabled] {
     background: rgba(0, 0, 0, 0.25);
