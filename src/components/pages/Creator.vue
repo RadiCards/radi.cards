@@ -229,7 +229,7 @@
         >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card"/>
+              <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
           </div>
 
@@ -254,7 +254,7 @@
         >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card"/>
+              <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
           </div>
 
