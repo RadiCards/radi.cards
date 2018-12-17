@@ -195,11 +195,8 @@
               <h4 v-html="cardMessageFormatted"></h4>
               <br>
             </span>
-
-            <button
-              class="button"
-              @click="giveBirth"
-            >gift this awesome card</button>
+            
+            <button class="button" @click="giveBirth">gift this awesome card</button>
 
             <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
@@ -212,7 +209,10 @@
               </div>
             </div>
 
-            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'" class="transaction-in-progress">
+            <div
+              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
+              class="transaction-in-progress"
+            >
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -242,7 +242,10 @@
             <br>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
           </div>
         </div>
@@ -271,7 +274,10 @@
 
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
 
             <a
@@ -313,14 +319,15 @@
 
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
-
           </div>
         </div>
       </div>
     </form>
-
   </div>
 </template>
 
@@ -355,12 +362,8 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'etherscanBase',
-    ]),
-    ...mapGetters([
-      'getGiftingStatus',
-    ]),
+    ...mapState(["etherscanBase"]),
+    ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
