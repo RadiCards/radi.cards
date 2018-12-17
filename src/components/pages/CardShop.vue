@@ -4,7 +4,7 @@
     <br>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
     <b-row>
-      <b-col cols="12" sm="6" lg="4" v-for="card in cards" :key="card.tokenId" class="pt-3">
+      <b-col cols="12" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
         <card :cdata="card"/>
       </b-col>
     </b-row>
@@ -22,7 +22,12 @@ export default {
     return {};
   },
   computed: {
-    ...mapState(["cards"])
+    ...mapState(["cards"]),
+    shuffledCards() {
+      return this.cards.sort(function() {
+        return 0.5 - Math.random()
+      });
+    }
   },
   mounted() {
     this.$nextTick(function() {});

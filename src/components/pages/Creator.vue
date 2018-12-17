@@ -5,7 +5,7 @@
     <form>
       <div role="tablist">
 
-        <div class="preview">
+        <div class="preview" v-if="this.status == 'IDLE'">
           <div
             class="preview-step"
             v-if="this.formData.card !== null && this.step > 0"
@@ -54,15 +54,15 @@
 
         </div>
 
-        <div class="section step step1" v-if="this.step == 0">
+        <div class="section step step--twocol step1" v-if="this.step == 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
 
           <div class="step__info">
             <div class="step__title">
-              <h4>Customise details</h4>
-              <p>Send this card to any ETH wallet address</p>
+              <h4>Customise card</h4>
+              <p>Choose recipient & message</p>
             </div>
 
             <br>
@@ -157,6 +157,7 @@
                 id="valueInETH"
                 v-model="formData.valueInETH"
                 placeholder="0.01ETH"
+                min="0"
               >
             </div>
             <span
@@ -166,7 +167,7 @@
           <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
 
-        <div class="section step step3" v-if="this.step == 3">
+        <div class="section step step--twocol step3" v-if="this.step == 3">
           <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
@@ -174,9 +175,7 @@
           </div>
 
           <div class="step__info">
-            <div class="sectionTitle">
-              <h4>Preview your radicard</h4>
-            </div>
+            <h4>Preview your radicard</h4>
 
             <span class="detailsText">
               Recipient: {{formData.recipient}}
@@ -213,6 +212,71 @@
             </div>
           </div>
         </div>
+
+        <!-- STATUS: PENDING -->
+        <div class="section step step--twocol step4" v-if="this.step == 4 && this.status == 'PENDING'">
+
+          <div class="step__card">
+            <div class="centered">
+              <card v-if="formData.card" :cdata="this.formData.card" />
+            </div>
+          </div>
+
+          <div class="step__info">
+            <h4>Card is being created...</h4>
+
+            <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
+            <br>
+            <p>Best to not close this tab and go make some tea. Good things will happen.</p>
+          </div>
+
+        </div>
+
+        <!-- STATUS: SUCCESS -->
+        <div class="section step step--twocol step5" v-if="this.step == 5 && this.status == 'SUCCESS'">
+
+          <div class="step__card">
+            <div class="centered">
+              <card v-if="formData.card" :cdata="this.formData.card" />
+            </div>
+          </div>
+
+          <div class="step__info">
+            <img src="/static/icons/success.png" alt="" style="width: 5rem;" />
+            <br><br>
+
+            <h4>Thank you!</h4>
+
+            <p>We’ve successfully sent an awesome radicard to {{account}}</p>
+            <br>
+            <p>Directly share this card via this link:</p>
+
+            <a href="https://radi.cards/c/501" target="_blank" class="btn btn--narrow btn--subtle" style="margin: 0.5rem 0.25rem 0 0;"><strong>radi.cards/c/501</strong></a><a @click="/*copyToClipboard*/" target="_blank" class="btn btn--narrow btn--subtle" style="margin-top: 0.5rem;">Copy</a>
+          </div>
+
+        </div>
+
+        <!-- STATUS: FAILED -->
+        <div class="section step step--twocol step6" v-if="this.step == 6 && this.status == 'FAILED'">
+
+          <div class="step__card">
+            <div class="centered">
+              <card v-if="formData.card" :cdata="this.formData.card" />
+            </div>
+          </div>
+
+          <div class="step__info">
+
+            <h4>Oops...!</h4>
+
+            <p>Something seems to have gone wrong and your card could not be created.</p>
+            <br>
+            <p><strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.</p>
+
+          </div>
+
+        </div>
+
       </div>
     </form>
   </div>
@@ -506,8 +570,7 @@ textarea {
 }
 
 // Step Content
-.step1,
-.step3 {
+.step--twocol {
   display: flex;
   flex-direction: column;
   justify-content: center;

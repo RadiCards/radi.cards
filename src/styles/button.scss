@@ -37,6 +37,7 @@
     &:hover {
       background: rgba($black, 0.1);
     }
+    &:visited { color: $black; }
   }
   &--reveal {
     background: transparent;
