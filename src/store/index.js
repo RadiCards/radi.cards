@@ -161,8 +161,6 @@ const store = new Vuex.Store({
       if (account) {
         commit(mutations.SET_ACCOUNT, account);
       }
-
-      // dispatch(actions.WATCH_TRANSFERS);
     },
     async [actions.BIRTH]({commit, dispatch, state}, {recipient, benefactorIndex, cardIndex, message, extra, valueInETH}) {
       const contract = await state.contract.deployed();
@@ -404,28 +402,6 @@ const store = new Vuex.Store({
         }
       }
     },
-    [actions.WATCH_TRANSFERS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
-      const contract = await state.contract.deployed();
-
-      let transferEvent = contract.Transfer({}, {
-        fromBlock: 0,
-        toBlock: "latest" // wait until event comes through
-      });
-
-      transferEvent.watch(function (error, anEvent) {
-        if (!error) {
-          console.log(`Transfer event`, anEvent);
-          commit(mutations.SET_TRANSFER, anEvent);
-        } else {
-          console.log("Failure", error);
-          transferEvent.stopWatching();
-        }
-      });
-    }
   }
 });
 

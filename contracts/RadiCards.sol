@@ -48,11 +48,11 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
   event CardGifted(
-    address indexed _from,
     address indexed _to,
-    uint256 indexed _tokenId,
-    uint256 _benefactorIndex,
-    uint256 _cardIndex
+    uint256 indexed _benefactorIndex,
+    uint256 indexed _cardIndex,
+    address _from,
+    uint256 _tokenId
   );
 
   event BenefactorAdded(
@@ -102,7 +102,7 @@ contract RadiCards is ERC721Token, Whitelist {
     totalGiftedInWei = totalGiftedInWei.add(msg.value);
 
     // Fire an event with all the import information in
-    emit CardGifted(msg.sender, to, _tokenId, _benefactorIndex, _cardIndex);
+    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId);
 
     return true;
   }

@@ -79,7 +79,7 @@ function shouldBehaveLikeMintAndBurnERC721 (
       describe('when successful', function () {
         it('burns should revert as not allowed', async function () {
           await assertRevert(this.token.burn(tokenId, {from: creator}));
-          (await this.token.balanceOf(owner)).should.be.bignumber.equal(1);
+          (await this.token.balanceOf(owner)).should.be.bignumber.equal(2);
         });
       });
     });
