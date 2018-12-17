@@ -42,7 +42,7 @@ const store = new Vuex.Store({
   },
   getters: {
     getGiftingStatus: (state) => (to, cardIndex) => {
-      return _.get(state.giftingStatus, `${to}_${cardIndex}`, {});
+      return state.giftingStatus[`${to}_${cardIndex}`] || {};
     },
   },
   mutations: {
@@ -89,10 +89,11 @@ const store = new Vuex.Store({
     },
     [mutations.SET_GIFT_STATUS](state, data) {
       const {cardIndex, to} = data;
-      state.giftingStatus[`${to}_${cardIndex}`] = {
-        ...state.giftingStatus[`${to}_${cardIndex}`],
+      state.giftingStatus[`${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`] = {
+        ...state.giftingStatus[`${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`],
         ...data
       };
+      Vue.set(state, "giftingStatus", state.giftingStatus);
     }
   },
   actions: {

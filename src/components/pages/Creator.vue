@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="section step step--twocol step1" v-if="this.step == 0">
+        <div class="section step step--twocol step1" v-if="this.step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <div class="section step step2" v-if="this.step == 1">
+        <div class="section step step2" v-if="this.step === 1">
           <div class="step__title">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
@@ -137,7 +137,7 @@
           </section>
         </div>
 
-        <div class="section step step2" v-if="this.step == 2">
+        <div class="section step step2" v-if="this.step === 2">
           <div class="step__title">
             <h4 class="section__title">STEP THREE</h4>
             <h4>Add your donation</h4>
@@ -212,7 +212,7 @@
               </div>
             </div>
 
-            <div v-if="getGiftingStatus(formData.recipient, params.card).status === 'SUBMITTED'" class="transaction-in-progress">
+            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'" class="transaction-in-progress">
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -225,7 +225,7 @@
         <!-- STATUS: PENDING -->
         <div
           class="section step step--twocol step4"
-          v-if="getGiftingStatus(formData.recipient, params.card).status === 'TRIGGERED'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -241,7 +241,7 @@
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
             <br>
             <p>You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, params.card).tx" target="_blank">here</a>
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
             </p>
           </div>
         </div>
@@ -249,7 +249,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="getGiftingStatus(formData.recipient, params.card).status === 'SUCCESS'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
         >
           <div class="step__card">
             <div class="centered">
@@ -269,12 +269,12 @@
             <p>Directly share this card via this link:</p>
 
             <a
-              href="https://radi.cards/c/501"
+              :href="'https://radi.cards/c/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
               target="_blank"
               class="btn btn--narrow btn--subtle"
               style="margin: 0.5rem 0.25rem 0 0;"
             >
-              <strong>radi.cards/c/{{getGiftingStatus(formData.recipient, params.card).tokenId}}</strong>
+              <strong>{{'radi.cards/c/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
             </a>
             <a
               @click="/*copyToClipboard*/"
@@ -288,11 +288,11 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="getGiftingStatus(formData.recipient, params.card).status === 'FAILED'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
         >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card"/>
+              <card v-if="formData.card" :cdata="formData.card"/>
             </div>
           </div>
 
@@ -308,6 +308,12 @@
         </div>
       </div>
     </form>
+
+    {{step}}
+    {{formData.recipient}}
+    {{formData.card.cardIndex}}
+    {{getGiftingStatus(formData.recipient, formData.card.cardIndex)}}
+
   </div>
 </template>
 
@@ -326,9 +332,6 @@ export default {
   components: { ClickableTransaction, Card, Benefactor, Samplequote },
   data() {
     return {
-      params: {
-        cardIndex: undefined
-      },
       formData: {
         errors: [],
         card: {},
@@ -418,6 +421,7 @@ export default {
     },
     giveBirth: function() {
       event.preventDefault();
+      this.step = 4;
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
