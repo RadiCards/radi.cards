@@ -126,7 +126,7 @@ export default {
         this.$route.path.lastIndexOf("create") === -1 &&
         this.$route.path.lastIndexOf("account") === -1 &&
         this.$route.path.lastIndexOf("viewcard") === -1 &&
-        this.$route.path.lastIndexOf("card") === -1
+        this.$route.path.lastIndexOf("/card/") === -1
       ) {
         var index = this.cdata.cardIndex;
         router.push({
