@@ -44,6 +44,11 @@
 
     <footer class="footer container-fluid mt-5">
       <div class="row">
+        <div class="col text-left">
+
+          <router-link :to="{ name: 'about' }">About</router-link>
+
+        </div>
         <div class="col text-right small">
           <current-network></current-network> 
           <clickable-address :eth-address="contractAddress"></clickable-address>

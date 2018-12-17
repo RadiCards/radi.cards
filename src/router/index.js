@@ -5,6 +5,7 @@ import Creator from '@/components/pages/Creator'
 import Account from '@/components/pages/Account'
 import CardShop from '@/components/pages/CardShop'
 import ViewCard from '@/components/pages/ViewCard'
+import About from '@/components/pages/About'
 
 Vue.use(Router);
 
@@ -36,6 +37,11 @@ export default new Router({
       path: '/card/:id',
       name: 'card',
       component: ViewCard
+    },
+    {
+      path: '/about',
+      name: 'about',
+      component: About
     }
   ]
 });
