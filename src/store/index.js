@@ -30,7 +30,7 @@ const store = new Vuex.Store({
     currentNetwork: null,
     etherscanBase: null,
     totalSupply: null,
-    uploadedHashs: null,
+    uploadedHash: null,
     searchResult: null,
     notFound: null,
     benefactors: null,
@@ -71,7 +71,7 @@ const store = new Vuex.Store({
       state.contractAddress = (await RadiCards.deployed()).address;
     },
     [mutations.SET_UPLOAD_HASH](state, hash) {
-      state.uploadedHashs = hash;
+      state.uploadedHash = hash;
     },
     [mutations.SET_TOTAL_SUPPLY](state, totalSupply) {
       state.totalSupply = totalSupply;
@@ -177,7 +177,7 @@ const store = new Vuex.Store({
 
       console.log(tx);
 
-      // commit(mutations.SET_UPLOAD_HASH, tx);
+      commit(mutations.SET_UPLOAD_HASH, tx);
     },
 
     [actions.TRANSFER_CARD]: async function ({

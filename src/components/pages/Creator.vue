@@ -4,7 +4,6 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-
         <div class="preview" v-if="this.status == 'IDLE'">
           <div
             class="preview-step"
@@ -43,15 +42,17 @@
                 <span class="selCard">Selected Charity</span>
                 <h5>{{this.formData.benefactor.name}}</h5>
               </div>
-              <div v-if="this.step > 2 && formData.valueInETH !== null && formData.valueInETH != undefined">
-                Donation: <strong>{{formData.valueInETH}}</strong> ETH
+              <div
+                v-if="this.step > 2 && formData.valueInETH !== null && formData.valueInETH != undefined"
+              >
+                Donation:
+                <strong>{{formData.valueInETH}}</strong> ETH
               </div>
               <div class="btn btn--reveal btn--narrow">
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
           </div>
-
         </div>
 
         <div class="section step step--twocol step1" v-if="this.step == 0">
@@ -76,14 +77,23 @@
               placeholder
             />
 
-            <div v-if="!walletVisible" class="btn btn--subtle btn--small btn--arrow-down" @click="walletVisible = true">Recipient doesn’t have a wallet address?</div>
+            <div
+              v-if="!walletVisible"
+              class="btn btn--subtle btn--small btn--arrow-down"
+              @click="walletVisible = true"
+            >Recipient doesn’t have a wallet address?</div>
             <div :class="['wallet', {'isVisible' : walletVisible}]" v-if="account">
               <h6>Recipient doesn’t have a wallet address?</h6>
               <div class="wallet__collapse btn--arrow-up" @click="walletVisible = false"></div>
-              <p class="p--small ">No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
+              <p
+                class="p--small"
+              >No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
               <div class="wallet__actions">
                 <span class="text">Your wallet: {{account}}</span>
-                <div @click="formData.recipient = account" class="btn btn--small btn--outline">Use my wallet</div>
+                <div
+                  @click="formData.recipient = account"
+                  class="btn btn--small btn--outline"
+                >Use my wallet</div>
               </div>
             </div>
 
@@ -214,11 +224,13 @@
         </div>
 
         <!-- STATUS: PENDING -->
-        <div class="section step step--twocol step4" v-if="this.step == 4 && this.status == 'PENDING'">
-
+        <div
+          class="section step step--twocol step4"
+          v-if="this.step == 4 && this.status == 'PENDING'"
+        >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card" />
+              <card v-if="formData.card" :cdata="this.formData.card"/>
             </div>
           </div>
 
@@ -228,22 +240,28 @@
             <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
+            <br>
+            <p>You can view the transaction of Etherscan
+              <a :href="txURL" target="_blank">here</a>
+            </p>
           </div>
-
         </div>
 
         <!-- STATUS: SUCCESS -->
-        <div class="section step step--twocol step5" v-if="this.step == 5 && this.status == 'SUCCESS'">
-
+        <div
+          class="section step step--twocol step5"
+          v-if="this.step == 5 && this.status == 'SUCCESS'"
+        >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card" />
+              <card v-if="formData.card" :cdata="this.formData.card"/>
             </div>
           </div>
 
           <div class="step__info">
-            <img src="/static/icons/success.png" alt="" style="width: 5rem;" />
-            <br><br>
+            <img src="/static/icons/success.png" alt style="width: 5rem;">
+            <br>
+            <br>
 
             <h4>Thank you!</h4>
 
@@ -251,32 +269,45 @@
             <br>
             <p>Directly share this card via this link:</p>
 
-            <a href="https://radi.cards/c/501" target="_blank" class="btn btn--narrow btn--subtle" style="margin: 0.5rem 0.25rem 0 0;"><strong>radi.cards/c/501</strong></a><a @click="/*copyToClipboard*/" target="_blank" class="btn btn--narrow btn--subtle" style="margin-top: 0.5rem;">Copy</a>
+            <a
+              href="https://radi.cards/c/501"
+              target="_blank"
+              class="btn btn--narrow btn--subtle"
+              style="margin: 0.5rem 0.25rem 0 0;"
+            >
+              <strong>radi.cards/c/501</strong>
+            </a>
+            <a
+              @click="/*copyToClipboard*/"
+              target="_blank"
+              class="btn btn--narrow btn--subtle"
+              style="margin-top: 0.5rem;"
+            >Copy</a>
           </div>
-
         </div>
 
         <!-- STATUS: FAILED -->
-        <div class="section step step--twocol step6" v-if="this.step == 6 && this.status == 'FAILED'">
-
+        <div
+          class="section step step--twocol step6"
+          v-if="this.step == 6 && this.status == 'FAILED'"
+        >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card" />
+              <card v-if="formData.card" :cdata="this.formData.card"/>
             </div>
           </div>
 
           <div class="step__info">
-
             <h4>Oops...!</h4>
 
             <p>Something seems to have gone wrong and your card could not be created.</p>
             <br>
-            <p><strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.</p>
-
+            <p>
+              <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
+            </p>
           </div>
-
         </div>
-
+        {{transactionStatus}}
       </div>
     </form>
   </div>
@@ -321,6 +352,15 @@ export default {
     };
   },
   computed: {
+    transactionStatus() {
+      if (this.$store.state.uploadedHash) {
+        console.log("hash!");
+        this.step = 4;
+        this.status = "PENDING";
+        this.txURL =
+          "https://ropsten.etherscan.io/tx/" + this.$store.state.uploadedHash;
+      }
+    },
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
@@ -349,7 +389,10 @@ export default {
     hasStep1Data() {
       if (this.formData.message === null || this.formData.recipient === null) {
         return true;
-      } else if (this.formData.message.length < 1 || this.formData.recipient.length < 1) {
+      } else if (
+        this.formData.message.length < 1 ||
+        this.formData.recipient.length < 1
+      ) {
         return true;
       } else {
         return false;
