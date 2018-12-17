@@ -240,7 +240,8 @@
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
             <br>
-            <p>You can view the transaction of Etherscan
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
               <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
             </p>
           </div>
@@ -267,6 +268,11 @@
             <p>We’ve successfully sent an awesome radicard to {{account}}</p>
             <br>
             <p>Directly share this card via this link:</p>
+
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+            </p>
 
             <a
               :href="'https://radi.cards/c/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
@@ -304,15 +310,16 @@
             <p>
               <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
             </p>
+
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+            </p>
+
           </div>
         </div>
       </div>
     </form>
-
-    {{step}}
-    {{formData.recipient}}
-    {{formData.card.cardIndex}}
-    {{getGiftingStatus(formData.recipient, formData.card.cardIndex)}}
 
   </div>
 </template>
