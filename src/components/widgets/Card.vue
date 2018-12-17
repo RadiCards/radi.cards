@@ -24,6 +24,9 @@
       <div v-if="!cdata.description">
         <p class="descr"></p>
       </div>
+      <div v-if="company">
+        <b-badge class="mt-2">{{company}}</b-badge>
+      </div>
 
       <div class="help" v-if="isFlippable">
         <img src="/static/icons/flip.svg" alt>Flip
@@ -90,6 +93,21 @@ export default {
   name: "card",
 
   computed: {
+    company() {
+      let allCompanies = {
+        QmQTexvhmvrWzfwrPkKeB7Nahpvgiv68Ciy5zE8Cr4Afp8:
+          "Electronic Frontier Foundation",
+        QmNRUjkackbZcnkxhjDcF81dAHDdNK9yuZShHPGCi4Eih4: "ETH Berlin"
+      };
+      let imageIPFSHash = this.cdata.image.substring(
+        this.cdata.image.lastIndexOf("/") + 1,
+        this.cdata.image.length
+      );
+      if (this.cdata.image.includes(imageIPFSHash)) {
+        return allCompanies[imageIPFSHash];
+      }
+      return null;
+    },
     cardMessageFormatted() {
       if (this.cdata.message) {
         return this.cdata.message.replace(/\r?\n/g, "<br />");
@@ -259,21 +277,21 @@ export default {
     color: $gray;
   }
 
-  .badge {
-    display: flex;
-    align-items: center;
-    margin-right: -$p_h;
-    padding: 0.5rem;
-    background: $black;
-    color: $white;
-    white-space: nowrap;
-    font-weight: bold;
+  // .badge {
+  //   display: flex;
+  //   align-items: center;
+  //   margin-right: -$p_h;
+  //   padding: 0.5rem;
+  //   background: $black;
+  //   color: $white;
+  //   white-space: nowrap;
+  //   font-weight: bold;
 
-    img {
-      width: 0.875rem;
-      margin-right: 0.25rem;
-    }
-  }
+  //   img {
+  //     width: 0.875rem;
+  //     margin-right: 0.25rem;
+  //   }
+  // }
 
   .help {
     position: absolute;

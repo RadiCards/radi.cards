@@ -3,21 +3,16 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>
-          We want to change the world & fight for good.
-        </p>
-        <p> 
-          Want to help?
-        </p>
-        <span
-          class="cheeky-comment"
-        >with the power of memes, cats, hackers and crypto (jokes)</span>
+        <p>We want to change the world & fight for good.</p>
+        <p>Want to help?</p>
+        <span class="cheeky-comment">with the power of memes, cats, hackers and crypto (jokes)</span>
       </blockquote>
       <br>
-      <p style="max-width: 24rem; margin-bottom: 1rem;">Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
+      <p
+        style="max-width: 24rem; margin-bottom: 1rem;"
+      >Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
 
       <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
-
     </section>
 
     <section class="section section--credits">
@@ -141,8 +136,11 @@
     <div class="row">
       <div class="col">
         <span class="mt-5" v-if="totalSupply">
-          There <span v-if="totalSupply.length !== 1">are</span><span v-else>is</span> currently
-          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span> card<span v-if="totalSupply.length !== 1">s</span> in existence
+          There
+          <span v-if="totalSupply.length !== 1">are</span>
+          <span v-else>is</span> currently
+          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span> card
+          <span v-if="totalSupply.length !== 1">s</span> in existence
         </span>
       </div>
     </div>
