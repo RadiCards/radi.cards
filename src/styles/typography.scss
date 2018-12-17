@@ -1,3 +1,18 @@
+// Font face
+@font-face {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: normal;
+  src: url('/static/fonts/HelveticaNeue.woff2') format('woff2'), local('Helvetica');
+}
+
+@font-face {
+  font-family: 'Helvetica';
+  font-style: normal;
+  font-weight: bold;
+  src: url('/static/fonts/HelveticaNeue-Bold.woff2') format('woff2'), local('Helvetica');
+}
+
 // Headings
 h1, h2, h3, h4, h5, h6 {
   font-weight: bold;

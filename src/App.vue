@@ -224,7 +224,7 @@
   background: $black;
   color: $yellow;
   display: inline-block;
-  padding: 0 5px 0 0.25rem;
+  padding: 0 0.25rem;
   min-width: 1.5em;
   height: 1.5em;
   border-radius: 0.75em !important;
