@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="section step step--twocol step1" v-if="this.step === 0">
+        <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <div class="section step step2" v-if="this.step === 1">
+        <div class="section step step2" v-if="step === 1">
           <div class="step__title">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
@@ -137,7 +137,7 @@
           </section>
         </div>
 
-        <div class="section step step2" v-if="this.step === 2">
+        <div class="section step step2" v-if="step === 2">
           <div class="step__title">
             <h4 class="section__title">STEP THREE</h4>
             <h4>Add your donation</h4>
@@ -177,7 +177,7 @@
           <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
 
-        <div class="section step step--twocol step3" v-if="this.step == 3">
+        <div class="section step step--twocol step3" v-if="step == 3">
           <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
@@ -275,12 +275,12 @@
             </p>
 
             <a
-              :href="'https://radi.cards/c/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
+              :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
               target="_blank"
               class="btn btn--narrow btn--subtle"
               style="margin: 0.5rem 0.25rem 0 0;"
             >
-              <strong>{{'radi.cards/c/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
+              <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
             </a>
             <a
               @click="/*copyToClipboard*/"

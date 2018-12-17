@@ -94,6 +94,9 @@ const store = new Vuex.Store({
         ...data
       };
       Vue.set(state.giftingStatus, `${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`, newState);
+    },
+    [mutations.CLEAR_GIFT_STATUS](state) {
+      Vue.set(state, `giftingStatus`, {});
     }
   },
   actions: {
@@ -164,6 +167,8 @@ const store = new Vuex.Store({
     async [actions.BIRTH]({commit, dispatch, state}, {recipient, benefactorIndex, cardIndex, message, extra, valueInETH}) {
       const contract = await state.contract.deployed();
 
+      commit(mutations.CLEAR_GIFT_STATUS);
+
       const blockNumber = await state.web3.eth.getBlockNumber();
 
       commit(mutations.SET_GIFT_STATUS, {
@@ -200,6 +205,8 @@ const store = new Vuex.Store({
             cardIndex: cardIndex,
             tokenId: _tokenId
           });
+
+          dispatch(actions.LOAD_ACCOUNT_CARDS, {account: state.account});
         } else {
           console.log('failure', error);
           commit(mutations.SET_GIFT_STATUS, {
