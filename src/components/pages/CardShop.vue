@@ -24,9 +24,11 @@ export default {
   computed: {
     ...mapState(["cards"]),
     shuffledCards() {
-      return this.cards.sort(function() {
-        return 0.5 - Math.random()
-      });
+      if (this.cards) {
+        return this.cards.sort(function() {
+          return 0.5 - Math.random();
+        });
+      }
     }
   },
   mounted() {
