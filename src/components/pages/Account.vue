@@ -20,7 +20,7 @@
     <div class="row mt-2" v-else>
       <div class="col">
         <b-row>
-          <b-col cols="4" v-if="accountCards && accountCards.length > 0" v-for="card in accountCards" :key="card.tokenId" class="pt-3">
+          <b-col cols="12" sm="6" lg="4" v-if="accountCards && accountCards.length > 0" v-for="card in accountCards" :key="card.tokenId" class="pt-3">
             <card :cdata="card"/>
           </b-col>
         </b-row>
