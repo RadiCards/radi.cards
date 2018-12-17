@@ -37,9 +37,14 @@ const store = new Vuex.Store({
     cards: null,
     deepUrlCardNumber: null,
     deepUrlCard: null,
-    transfers: []
+    transfers: [],
+    giftingStatus: {}
   },
-  getters: {},
+  getters: {
+    getGiftingStatus: (state) => (to, cardIndex) => {
+      return state.giftingStatus[`${to}_${cardIndex}`] || {};
+    },
+  },
   mutations: {
     [mutations.SET_BENEFACTORS](state, benefactors) {
       state.benefactors = benefactors;
@@ -81,6 +86,17 @@ const store = new Vuex.Store({
     },
     [mutations.SET_TRANSFER](state, transfer) {
       Vue.set(state, "transfers", state.transfers.concat(transfer));
+    },
+    [mutations.SET_GIFT_STATUS](state, data) {
+      const {cardIndex, to} = data;
+      const newState = {
+        ...state.giftingStatus[`${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`],
+        ...data
+      };
+      Vue.set(state.giftingStatus, `${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`, newState);
+    },
+    [mutations.CLEAR_GIFT_STATUS](state) {
+      Vue.set(state, `giftingStatus`, {});
     }
   },
   actions: {
@@ -145,41 +161,83 @@ const store = new Vuex.Store({
       if (account) {
         commit(mutations.SET_ACCOUNT, account);
       }
-
-      // dispatch(actions.WATCH_TRANSFERS);
     },
-    [actions.BIRTH]: async function ({
-      commit,
-      dispatch,
-      state
-    }, {
-      recipient,
-      benefactorIndex,
-      cardIndex,
-      message,
-      extra,
-      valueInETH
-    }) {
+    async [actions.BIRTH]({commit, dispatch, state}, {recipient, benefactorIndex, cardIndex, message, extra, valueInETH}) {
       const contract = await state.contract.deployed();
 
-      const {
-        tx
-      } = await contract.gift(
+      commit(mutations.CLEAR_GIFT_STATUS);
+
+      const blockNumber = await state.web3.eth.getBlockNumber();
+
+      commit(mutations.SET_GIFT_STATUS, {
+        status: 'TRIGGERED',
+        to: recipient,
+        cardIndex: cardIndex
+      });
+
+      const transaction = contract.gift(
         recipient,
         benefactorIndex,
         cardIndex,
         message,
         extra, {
           from: state.account,
-          value: web3.utils.toWei(valueInETH, "ether")
+          value: state.web3.utils.toWei(valueInETH, "ether")
         }
       );
 
-      console.log(tx);
+      // Watch for the transfer event from ZERO address to the recipient immediately after the
+      const transferEvent = contract.Transfer({_from: `0x0`, _to: recipient}, {
+        fromBlock: blockNumber,
+        toBlock: 'latest' // wait until event comes through
+      });
 
-      commit(mutations.SET_UPLOAD_HASH, tx);
+      transferEvent.watch(function (error, event) {
+        if (!error) {
+          console.log('Transfer event found', event);
+          const {args} = event;
+          const {_from, _to, _tokenId} = args;
+          commit(mutations.SET_GIFT_STATUS, {
+            status: 'SUCCESS',
+            to: recipient,
+            cardIndex: cardIndex,
+            tokenId: _tokenId
+          });
+
+          dispatch(actions.LOAD_ACCOUNT_CARDS, {account: state.account});
+        } else {
+          console.log('failure', error);
+          commit(mutations.SET_GIFT_STATUS, {
+            status: 'FAILURE',
+            to: recipient,
+            cardIndex: cardIndex,
+          });
+          transferEvent.stopWatching();
+        }
+      });
+
+      transaction
+        .then((data) => {
+          console.log('transaction submitted', data);
+          const tx = data.tx;
+          console.log(tx);
+
+          commit(mutations.SET_GIFT_STATUS, {
+            status: 'SUBMITTED',
+            to: recipient,
+            cardIndex: cardIndex,
+            tx
+          });
+        })
+        .catch((error) => {
+          console.log('rejection/error', error);
+          commit(mutations.SET_GIFT_STATUS, {
+            status: 'FAILURE',
+            to: recipient,
+            cardIndex: cardIndex,
+          });
+        });
     },
-
     [actions.TRANSFER_CARD]: async function ({
       commit,
       dispatch,
@@ -344,28 +402,6 @@ const store = new Vuex.Store({
         }
       }
     },
-    [actions.WATCH_TRANSFERS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
-      const contract = await state.contract.deployed();
-
-      let transferEvent = contract.Transfer({}, {
-        fromBlock: 0,
-        toBlock: "latest" // wait until event comes through
-      });
-
-      transferEvent.watch(function (error, anEvent) {
-        if (!error) {
-          console.log(`Transfer event`, anEvent);
-          commit(mutations.SET_TRANSFER, anEvent);
-        } else {
-          console.log("Failure", error);
-          transferEvent.stopWatching();
-        }
-      });
-    }
   }
 });
 

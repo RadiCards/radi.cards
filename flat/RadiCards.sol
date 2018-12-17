@@ -1158,7 +1158,12 @@ library Strings {
 /**
 * @title Radi.Cards
 *
-* @author Andy Gray & James Morgan - KnownOrigin.io
+* @author blockrocket.tech (smart contracts)
+* @author cryptodecks.co
+* @author knownorigin.io
+* @author pheme.app
+* @author d1labs.com
+* @author mbdoesthings.com
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -1166,7 +1171,7 @@ contract RadiCards is ERC721Token, Whitelist {
   string public tokenBaseURI = "https://ipfs.infura.io/ipfs/";
 
   uint256 public tokenIdPointer = 0;
-  uint256 public minContribution = 0.01 ether; // under $1..now
+  uint256 public minContribution = 0.01 ether;
 
   struct Benefactor {
     address ethAddress;
@@ -1191,12 +1196,20 @@ contract RadiCards is ERC721Token, Whitelist {
     uint256 benefactorIndex;
   }
 
+  event CardGifted(
+    address indexed _to,
+    uint256 indexed _benefactorIndex,
+    uint256 indexed _cardIndex,
+    address _from,
+    uint256 _tokenId
+  );
+
   event BenefactorAdded(
     uint256 indexed _benefactorIndex
   );
 
   event CardAdded(
-    uint256 indexed _benefactorIndex
+    uint256 indexed _cardIndex
   );
 
   mapping(uint256 => Benefactor) public benefactors;
@@ -1207,7 +1220,7 @@ contract RadiCards is ERC721Token, Whitelist {
 
   mapping(uint256 => RadiCard) public tokenIdToRadiCardIndex;
 
-  uint256 public totalEthRaised;
+  uint256 public totalGiftedInWei;
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
@@ -1229,32 +1242,33 @@ contract RadiCards is ERC721Token, Whitelist {
       cardIndex : _cardIndex
     });
 
-    _mint(to, cards[_cardIndex].tokenURI);
+    uint256 _tokenId = _mint(to, cards[_cardIndex].tokenURI);
 
     // transfer the ETH to the benefactor
     benefactors[_benefactorIndex].ethAddress.transfer(msg.value);
 
-    // Tally up the total eth raised
-    totalEthRaised = totalEthRaised.add(msg.value);
+    // tally up the total eth gifted
+    totalGiftedInWei = totalGiftedInWei.add(msg.value);
+
+    // Fire an event with all the import information in
+    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId);
 
     return true;
   }
 
-  function _mint(address to, string tokenURI) internal {
+  function _mint(address to, string tokenURI) internal returns (uint256 _tokenId) {
     uint256 tokenId = tokenIdPointer;
 
-    _mint(to, tokenId);
+    super._mint(to, tokenId);
     _setTokenURI(tokenId, tokenURI);
 
     tokenIdPointer = tokenIdPointer.add(1);
+
+    return tokenId;
   }
 
-  function burn(uint256 _tokenId) public onlyIfWhitelisted(msg.sender) {
-    // custom fields
-    delete tokenIdToRadiCardIndex[tokenIdPointer];
-
-    // Super burn
-    _burn(ownerOf(_tokenId), _tokenId);
+  function burn(uint256 _tokenId) public  {
+    revert("Radi.Cards are censorship resistant!");
   }
 
   function tokenURI(uint256 _tokenId) public view returns (string) {

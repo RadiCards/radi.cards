@@ -19,7 +19,7 @@ module.exports = async (deployer, network, accounts) => {
   console.log(`Running within network = ${network}`);
   console.log(`Account = ${account}`);
 
-  const contract = await RadiCards.deployed();
-  await contract.addCard(1, "Qmd16ovvFnvarp4fvXrWpLgPNsMEUJ3tMTMyhsmfbsNbMr", true, {from: account});
-  await contract.addCard(2, "QmQjkpEFWEWQz4KxUmG8U3hrJe5KmCTyWCVVXAjcQJST2N", true, {from: account});
+  // const contract = await RadiCards.deployed();
+  // await contract.addCard(1, "Qmd16ovvFnvarp4fvXrWpLgPNsMEUJ3tMTMyhsmfbsNbMr", true, {from: account});
+  // await contract.addCard(2, "QmQjkpEFWEWQz4KxUmG8U3hrJe5KmCTyWCVVXAjcQJST2N", true, {from: account});
 };

@@ -4,7 +4,7 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-        <div class="preview" v-if="this.status == 'IDLE'">
+        <div class="preview">
           <div
             class="preview-step"
             v-if="this.formData.card !== null && this.step > 0"
@@ -55,7 +55,7 @@
           </div>
         </div>
 
-        <div class="section step step--twocol step1" v-if="this.step == 0">
+        <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
@@ -118,7 +118,7 @@
           </div>
         </div>
 
-        <div class="section step step2" v-if="this.step == 1">
+        <div class="section step step2" v-if="step === 1">
           <div class="step__title">
             <h4 class="section__title">STEP TWO</h4>
             <h4>Choose a project you wish to support</h4>
@@ -137,7 +137,7 @@
           </section>
         </div>
 
-        <div class="section step step2" v-if="this.step == 2">
+        <div class="section step step2" v-if="step === 2">
           <div class="step__title">
             <h4 class="section__title">STEP THREE</h4>
             <h4>Add your donation</h4>
@@ -177,7 +177,7 @@
           <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
 
-        <div class="section step step--twocol step3" v-if="this.step == 3">
+        <div class="section step step--twocol step3" v-if="step == 3">
           <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
@@ -195,14 +195,13 @@
               <h4 v-html="cardMessageFormatted"></h4>
               <br>
             </span>
-            
+
             <button
-              v-if="status != 'GIVING BIRTH'"
               class="button"
               @click="giveBirth"
             >gift this awesome card</button>
 
-            <div class="form-group row" v-if="formData.errors.length && status != 'GIVING BIRTH'">
+            <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
                 <blockquote>
                   <b>Please correct the following error(s):</b>
@@ -213,7 +212,7 @@
               </div>
             </div>
 
-            <div v-if="status == 'GIVING BIRTH'" class="transaction-in-progress">
+            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'" class="transaction-in-progress">
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -226,7 +225,7 @@
         <!-- STATUS: PENDING -->
         <div
           class="section step step--twocol step4"
-          v-if="this.step == 4 && this.status == 'PENDING'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -241,8 +240,9 @@
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
             <br>
-            <p>You can view the transaction of Etherscan
-              <a :href="txURL" target="_blank">here</a>
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
             </p>
           </div>
         </div>
@@ -250,7 +250,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="this.step == 5 && this.status == 'SUCCESS'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
         >
           <div class="step__card">
             <div class="centered">
@@ -269,13 +269,18 @@
             <br>
             <p>Directly share this card via this link:</p>
 
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+            </p>
+
             <a
-              href="https://radi.cards/c/501"
+              :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
               target="_blank"
               class="btn btn--narrow btn--subtle"
               style="margin: 0.5rem 0.25rem 0 0;"
             >
-              <strong>radi.cards/c/501</strong>
+              <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
             </a>
             <a
               @click="/*copyToClipboard*/"
@@ -289,11 +294,11 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="this.step == 6 && this.status == 'FAILED'"
+          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
         >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="this.formData.card"/>
+              <card v-if="formData.card" :cdata="formData.card"/>
             </div>
           </div>
 
@@ -305,36 +310,35 @@
             <p>
               <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
             </p>
+
+            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+              You can view the transaction of Etherscan
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+            </p>
+
           </div>
         </div>
-        {{transactionStatus}}
       </div>
     </form>
+
   </div>
 </template>
 
 <script>
 import { mapGetters, mapState } from "vuex";
 import * as _ from "lodash";
-import IPFS from "ipfs-api";
 import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
-import router from "../../router";
-
-const ipfs = IPFS("ipfs.infura.io", "5001", { protocol: "https" });
 
 export default {
   name: "creator",
   components: { ClickableTransaction, Card, Benefactor, Samplequote },
   data() {
     return {
-      params: {
-        cardIndex: undefined
-      },
       formData: {
         errors: [],
         card: {},
@@ -344,7 +348,6 @@ export default {
         message: null
       },
       step: 0,
-      status: "IDLE",
       walletVisible: false,
       response: {
         ipfsHash: null
@@ -352,15 +355,12 @@ export default {
     };
   },
   computed: {
-    transactionStatus() {
-      if (this.$store.state.uploadedHash) {
-        console.log("hash!");
-        this.step = 4;
-        this.status = "PENDING";
-        this.txURL =
-          "https://ropsten.etherscan.io/tx/" + this.$store.state.uploadedHash;
-      }
-    },
+    ...mapState([
+      'etherscanBase',
+    ]),
+    ...mapGetters([
+      'getGiftingStatus',
+    ]),
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
@@ -422,16 +422,13 @@ export default {
       console.log(card);
       if (this.formData.card === card) {
         this.formData.card = null;
-        return;
       } else {
         this.formData.card = card;
-        return;
       }
     },
     giveBirth: function() {
       event.preventDefault();
-
-      this.status = "GIVING BIRTH";
+      this.step = 4;
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
