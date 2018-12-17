@@ -4,7 +4,7 @@
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <form>
       <div role="tablist">
-        <div class="preview" v-if="this.status == 'IDLE'">
+        <div class="preview">
           <div
             class="preview-step"
             v-if="this.formData.card !== null && this.step > 0"
@@ -195,14 +195,13 @@
               <h4 v-html="cardMessageFormatted"></h4>
               <br>
             </span>
-            
+
             <button
-              v-if="status != 'GIVING BIRTH'"
               class="button"
               @click="giveBirth"
             >gift this awesome card</button>
 
-            <div class="form-group row" v-if="formData.errors.length && status != 'GIVING BIRTH'">
+            <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
                 <blockquote>
                   <b>Please correct the following error(s):</b>
@@ -213,7 +212,7 @@
               </div>
             </div>
 
-            <div v-if="status == 'GIVING BIRTH'" class="transaction-in-progress">
+            <div v-if="getGiftingStatus(formData.recipient, params.card).status === 'SUBMITTED'" class="transaction-in-progress">
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -226,7 +225,7 @@
         <!-- STATUS: PENDING -->
         <div
           class="section step step--twocol step4"
-          v-if="this.step == 4 && this.status == 'PENDING'"
+          v-if="getGiftingStatus(formData.recipient, params.card).status === 'TRIGGERED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -242,7 +241,7 @@
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
             <br>
             <p>You can view the transaction of Etherscan
-              <a :href="txURL" target="_blank">here</a>
+              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, params.card).tx" target="_blank">here</a>
             </p>
           </div>
         </div>
@@ -250,7 +249,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="this.step == 5 && this.status == 'SUCCESS'"
+          v-if="getGiftingStatus(formData.recipient, params.card).status === 'SUCCESS'"
         >
           <div class="step__card">
             <div class="centered">
@@ -275,7 +274,7 @@
               class="btn btn--narrow btn--subtle"
               style="margin: 0.5rem 0.25rem 0 0;"
             >
-              <strong>radi.cards/c/501</strong>
+              <strong>radi.cards/c/{{getGiftingStatus(formData.recipient, params.card).tokenId}}</strong>
             </a>
             <a
               @click="/*copyToClipboard*/"
@@ -289,7 +288,7 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="this.step == 6 && this.status == 'FAILED'"
+          v-if="getGiftingStatus(formData.recipient, params.card).status === 'FAILED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -307,7 +306,6 @@
             </p>
           </div>
         </div>
-        {{transactionStatus}}
       </div>
     </form>
   </div>
@@ -316,16 +314,12 @@
 <script>
 import { mapGetters, mapState } from "vuex";
 import * as _ from "lodash";
-import IPFS from "ipfs-api";
 import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
-import router from "../../router";
-
-const ipfs = IPFS("ipfs.infura.io", "5001", { protocol: "https" });
 
 export default {
   name: "creator",
@@ -344,7 +338,6 @@ export default {
         message: null
       },
       step: 0,
-      status: "IDLE",
       walletVisible: false,
       response: {
         ipfsHash: null
@@ -352,15 +345,12 @@ export default {
     };
   },
   computed: {
-    transactionStatus() {
-      if (this.$store.state.uploadedHash) {
-        console.log("hash!");
-        this.step = 4;
-        this.status = "PENDING";
-        this.txURL =
-          "https://ropsten.etherscan.io/tx/" + this.$store.state.uploadedHash;
-      }
-    },
+    ...mapState([
+      'etherscanBase',
+    ]),
+    ...mapGetters([
+      'getGiftingStatus',
+    ]),
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
@@ -422,16 +412,12 @@ export default {
       console.log(card);
       if (this.formData.card === card) {
         this.formData.card = null;
-        return;
       } else {
         this.formData.card = card;
-        return;
       }
     },
     giveBirth: function() {
       event.preventDefault();
-
-      this.status = "GIVING BIRTH";
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
