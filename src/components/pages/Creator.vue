@@ -199,11 +199,15 @@
               <br>
             </span>
             
+<<<<<<< HEAD
             <button
               class="button"
               @click="giveBirth"
               v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'"
             >gift this awesome card</button>
+=======
+            <button class="button" @click="giveBirth">gift this awesome card</button>
+>>>>>>> Test on transfer event UX
 
             <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
@@ -217,7 +221,11 @@
             </div>
 
             <div
+<<<<<<< HEAD
               v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
+=======
+              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
+>>>>>>> Test on transfer event UX
               class="transaction-in-progress"
             >
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
