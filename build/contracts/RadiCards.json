@@ -678,8 +678,7 @@
       "inputs": [],
       "payable": false,
       "stateMutability": "nonpayable",
-      "type": "constructor",
-      "signature": "constructor"
+      "type": "constructor"
     },
     {
       "anonymous": false,
@@ -17862,6 +17861,208 @@
     "version": "0.4.24+commit.e67f0147.Emscripten.clang"
   },
   "networks": {
+    "1": {
+      "events": {
+        "0x124b55414cfccfb944398950a61aa7eebe0c5ff470bca91354cf83ade92cfc72": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_benefactorIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": true,
+              "name": "_cardIndex",
+              "type": "uint256"
+            },
+            {
+              "indexed": false,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "name": "CardGifted",
+          "type": "event",
+          "signature": "0x124b55414cfccfb944398950a61aa7eebe0c5ff470bca91354cf83ade92cfc72"
+        },
+        "0x5f4aa3ef0a4bf82c0f10f704eb578f57422b27f40709f8a4aca4694b6bda8ab3": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_benefactorIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "BenefactorAdded",
+          "type": "event",
+          "signature": "0x5f4aa3ef0a4bf82c0f10f704eb578f57422b27f40709f8a4aca4694b6bda8ab3"
+        },
+        "0xee4df2a71cd5144f989eafc284d855a4cc517ca03f21c5270ed8e2e9dcc3d29c": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_cardIndex",
+              "type": "uint256"
+            }
+          ],
+          "name": "CardAdded",
+          "type": "event",
+          "signature": "0xee4df2a71cd5144f989eafc284d855a4cc517ca03f21c5270ed8e2e9dcc3d29c"
+        },
+        "0xbfec83d64eaa953f2708271a023ab9ee82057f8f3578d548c1a4ba0b5b700489": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "role",
+              "type": "string"
+            }
+          ],
+          "name": "RoleAdded",
+          "type": "event",
+          "signature": "0xbfec83d64eaa953f2708271a023ab9ee82057f8f3578d548c1a4ba0b5b700489"
+        },
+        "0xd211483f91fc6eff862467f8de606587a30c8fc9981056f051b897a418df803a": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "operator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "role",
+              "type": "string"
+            }
+          ],
+          "name": "RoleRemoved",
+          "type": "event",
+          "signature": "0xd211483f91fc6eff862467f8de606587a30c8fc9981056f051b897a418df803a"
+        },
+        "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipRenounced",
+          "type": "event",
+          "signature": "0xf8df31144d9c2f0f6b59d69b8b98abd5459d07f2742c4df920b25aae33c64820"
+        },
+        "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "previousOwner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "newOwner",
+              "type": "address"
+            }
+          ],
+          "name": "OwnershipTransferred",
+          "type": "event",
+          "signature": "0x8be0079c531659141344cd1fd0a4f28419497f9722a3daafe3b4186f6b6457e0"
+        },
+        "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_from",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Transfer",
+          "type": "event",
+          "signature": "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
+        },
+        "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_approved",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_tokenId",
+              "type": "uint256"
+            }
+          ],
+          "name": "Approval",
+          "type": "event",
+          "signature": "0x8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"
+        },
+        "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31": {
+          "anonymous": false,
+          "inputs": [
+            {
+              "indexed": true,
+              "name": "_owner",
+              "type": "address"
+            },
+            {
+              "indexed": true,
+              "name": "_operator",
+              "type": "address"
+            },
+            {
+              "indexed": false,
+              "name": "_approved",
+              "type": "bool"
+            }
+          ],
+          "name": "ApprovalForAll",
+          "type": "event",
+          "signature": "0x17307eab39ab6107e8899845ad3d59bd9653f200f220920489ca2b5937696c31"
+        }
+      },
+      "links": {},
+      "address": "0xa29939f74c3e527c83011fab972b09ac68e71a47",
+      "transactionHash": "0x983d24c09d973c17e79e740d67f028d88ac83dc0dfa11ce90272f0d5c9621646"
+    },
     "3": {
       "events": {
         "0x124b55414cfccfb944398950a61aa7eebe0c5ff470bca91354cf83ade92cfc72": {
@@ -18066,7 +18267,7 @@
     }
   },
   "schemaVersion": "3.0.0-beta.2",
-  "updatedAt": "2018-12-17T11:56:28.000Z",
+  "updatedAt": "2018-12-18T15:17:47.452Z",
   "devdoc": {
     "author": "blockrocket.tech (smart contracts)cryptodecks.coknownorigin.iopheme.appd1labs.commbdoesthings.com",
     "methods": {
