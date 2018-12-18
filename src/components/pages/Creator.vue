@@ -114,7 +114,12 @@
             ></b-form-textarea>
             <br>
 
-            <input type="button" class="button button--fullwidth" @click="goToStep(1)" value="next">
+            <input
+              type="button"
+              class="button button--fullwidth"
+              @click="goToStep(1); this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              value="next"
+            >
           </div>
         </div>
 

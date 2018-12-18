@@ -368,20 +368,10 @@ const store = new Vuex.Store({
       commit(mutations.SET_TRANSFER_STATUS, {});
     },
 
-<<<<<<< HEAD
     [actions.LOAD_ACCOUNT_CARDS]: async function(
       { commit, dispatch, state },
       { account }
     ) {
-=======
-    [actions.LOAD_ACCOUNT_CARDS]: async function ({
-      commit,
-      dispatch,
-      state
-    }, {
-      account
-    }) {
->>>>>>> Implemented notification for transfer event
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));
