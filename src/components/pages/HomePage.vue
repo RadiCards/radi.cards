@@ -17,9 +17,9 @@
     </section>
 
     <section class="section section--credits">
-      <div class="container">
+      <div class="container" style="margin: 0 -2rem;">
         <div class="col-md-4 col-xs-12">
-          <h4>Buidl-t on Ethereum and IPFS by the crypto collectible community</h4>
+          <h5>Buidl-t on Ethereum and IPFS by the crypto collectible community</h5>
           <ul>
             <li>
               <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
@@ -46,7 +46,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h4>Community buidl-ing and creative partnership</h4>
+          <h5>Community buidl-ing and creative partnership</h5>
           <ul>
             <li>
               <a href="https://superrare.co" target="_blank">superrare.co</a>
@@ -88,7 +88,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h4>All donations go to</h4>
+          <h5>All donations go to</h5>
           <ul>
             <li>
               <a href="https://eff.org" target="_blank">eff.org</a>
@@ -183,15 +183,15 @@ export default {
 // Page-specific style
 .section--hero .cheeky-comment {
   position: absolute;
-  top: 110%;
-  left: 50%;
+  top: 140%;
+  left: 40%;
   width: 14rem;
   transform: rotate(6deg);
 
   font-weight: bold;
 
   @include tabletAndUp() {
-    top: 95%;
+    top: 110%;
     left: 70%;
     width: 20rem;
     font-size: 1.5rem;
@@ -216,10 +216,10 @@ export default {
   }
 }
 .section--credits {
-  h4 {
+  h5 {
     margin-bottom: 1rem;
     padding: 0 1rem;
-    border-left: 2px solid $black;
+    border-left: 2px solid $gray;
     color: $gray;
   }
   .container {
