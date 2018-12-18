@@ -289,7 +289,7 @@
               <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
             </a>
             <a
-              @click="/*copyToClipboard*/"
+              @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
               target="_blank"
               class="btn btn--narrow btn--subtle"
               style="margin-top: 0.5rem;"
@@ -406,6 +406,9 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    copyToClipboard(text) {
+      this.$copyText(text);
+    },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);
     },
