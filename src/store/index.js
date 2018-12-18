@@ -231,7 +231,7 @@ const store = new Vuex.Store({
         _to: recipient
       }, {
         fromBlock: blockNumber,
-        toBlock: 'latest' // wait until event comes through
+        toBlock: "latest" // wait until event comes through
       });
 
       transferEvent.watch(function (error, event) {
@@ -358,6 +358,14 @@ const store = new Vuex.Store({
             status: "FAILURE"
           });
         });
+    },
+
+    [actions.RESET_TRANSFER_STATUS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
+      commit(mutations.SET_TRANSFER_STATUS, {});
     },
 
     [actions.RESET_TRANSFER_STATUS]: async function ({
