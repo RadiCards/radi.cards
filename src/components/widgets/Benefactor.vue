@@ -1,6 +1,5 @@
 <template>
   <div :class="['benefactor', {'isExpanded': expanded}]">
-
     <div class="benefactor__heading" @click="expandDescription">
       <figure class="benefactor__img">
         <img :src="benefactor.image">
@@ -8,16 +7,27 @@
 
       <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
 
-      <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="select">
+      <input
+        v-if="this.$route.path.lastIndexOf('create') !== -1"
+        type="button"
+        @click="selectBenefactor"
+        class="btn btn--narrow"
+        value="select"
+      >
     </div>
 
     <div class="benefactor__detail">
-      <div class="benefactor__text">  <!-- v-if="expanded" -->
+      <div class="benefactor__text">
+        <!-- v-if="expanded" -->
         <p>{{charityDescription}}</p>
-        <a v-if="this.$route.path.lastIndexOf('create') !== -1" target="__blank" :href="charityURL" class="a--external">Learn more about charity</a>
+        <a
+          v-if="this.$route.path.lastIndexOf('create') !== -1"
+          target="__blank"
+          :href="charityURL"
+          class="a--external"
+        >Learn more about charity</a>
       </div>
     </div>
-
   </div>
 </template>
 
@@ -70,7 +80,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
@@ -82,7 +91,8 @@ export default {
     margin: 0;
   }
 
-  &:hover, &.isExpanded {
+  &:hover,
+  &.isExpanded {
     background: $white;
     box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
   }
