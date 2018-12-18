@@ -54,7 +54,11 @@
       <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
     </figure>
 
-    <figure class="card__front text-center" style="padding-top:20px" v-if="transferPending && getTransferStatus()!=='FAILURE'">
+    <figure
+      class="card__front text-center"
+      style="padding-top:20px"
+      v-if="transferPending && getTransferStatus()!=='FAILURE'"
+    >
       <h4 class="pb-2">Transaction has been submitted...</h4>
       <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
       <br>
@@ -74,6 +78,27 @@
       <p>
         <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
       </p>
+    </figure>
+
+    <figure class="card__front text-center" style="padding-top:20px" v-if="share">
+      <h4 class="pb-2">Share your card</h4>
+      <p>Generate a shareable link and send it to your friends and family so they can see your awesome card!</p>
+      <hr>
+      <a
+        :href="'https://radi.cards/card/' + cdata.tokenId"
+        target="_blank"
+        class="btn btn--narrow btn--subtle"
+        style="margin: 0.5rem 0.25rem 0 0;"
+      >
+        <strong>{{'radi.cards/card/' + cdata.tokenId}}</strong>
+      </a>
+      <a
+        @click="/*copyToClipboard*/"
+        target="_blank"
+        class="btn btn--narrow btn--subtle"
+        style="margin-top: 0.5rem;"
+      >Copy</a>
+      <button @click="cancelShare" class="cancelButton mt-3">Cancel</button>
     </figure>
 
     <figure
