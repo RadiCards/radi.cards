@@ -4,7 +4,7 @@
     :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
     @click="redirect"
   >
-    <figure class="card__front" @click="flip" v-if="!transfer">
+    <figure class="card__front" @click="flip" v-if="!transfer && !share">
       <div class="card__image">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
@@ -54,7 +54,11 @@
       <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
     </figure>
 
-    <figure class="card__front text-center" style="padding-top:20px" v-if="transferPending && getTransferStatus()!=='FAILURE'">
+    <figure
+      class="card__front text-center"
+      style="padding-top:20px"
+      v-if="transferPending && getTransferStatus()!=='FAILURE'"
+    >
       <h4 class="pb-2">Transaction has been submitted...</h4>
       <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
       <br>
@@ -74,6 +78,27 @@
       <p>
         <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
       </p>
+    </figure>
+
+    <figure class="card__front text-center" style="padding-top:20px" v-if="share">
+      <h4 class="pb-2">Share your card</h4>
+      <p>Generate a shareable link and send it to your friends and family so they can see your awesome card!</p>
+      <hr>
+      <a
+        :href="'https://radi.cards/card/' + cdata.tokenId"
+        target="_blank"
+        class="btn btn--narrow btn--subtle"
+        style="margin: 0.5rem 0.25rem 0 0;"
+      >
+        <strong>{{'radi.cards/card/' + cdata.tokenId}}</strong>
+      </a>
+      <a
+        @click="/*copyToClipboard*/"
+        target="_blank"
+        class="btn btn--narrow btn--subtle"
+        style="margin-top: 0.5rem;"
+      >Copy</a>
+      <button @click="cancelShare" class="cancelButton mt-3">Cancel</button>
     </figure>
 
     <figure
@@ -96,7 +121,8 @@
       </p>
       <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
-        <button @click="transferCard" class="transferButton">Transfer Card</button>
+        <button @click="transferCard" class="transferButton">Transfer</button>
+        <button @click="shareCard" class="cancelButton">Share</button>
       </div>
       {{transferedCardNotification}}
     </figure>
@@ -156,6 +182,7 @@ export default {
   data() {
     return {
       transfer: false,
+      share: false,
       transferRecipient: "",
       isFlipped: false,
       transfered: false,
@@ -170,12 +197,19 @@ export default {
       this.$store.dispatch(actions.TRANSFER_CARD, { recipient, tokenId });
       this.transferPending = true;
     },
+    cancelShare() {
+      this.share = false;
+      this.flip;
+    },
     cancelTransfer() {
       this.transfer = false;
       this.flip;
     },
     transferCard() {
       this.transfer = true;
+    },
+    shareCard() {
+      this.share = true;
     },
     redirect: function() {
       console.log(this.$route.path);
