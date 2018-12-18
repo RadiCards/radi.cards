@@ -93,7 +93,7 @@
         <strong>{{'radi.cards/card/' + cdata.tokenId}}</strong>
       </a>
       <a
-        @click="/*copyToClipboard*/"
+        @click="copyToClipboard('https://radi.cards/card/' + cdata.tokenId)"
         target="_blank"
         class="btn btn--narrow btn--subtle"
         style="margin-top: 0.5rem;"
