@@ -1,12 +1,14 @@
 <template>
   <div :class="['benefactor', {'isExpanded': expanded}]">
 
-    <div class="benefactor__heading" @click="expandDescription">
+    <div class="benefactor__heading" @click="toggleDetail">
       <figure class="benefactor__img">
         <img :src="benefactor.image">
       </figure>
 
       <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
+
+      <div :class="['btn btn--narrow btn--reveal btn--subtle', {'btn--arrow-down': !expanded, 'btn--arrow-up': expanded}]">{{(expanded) ? 'Less info' : 'More info'}}</div>
 
       <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="select">
     </div>
@@ -56,7 +58,7 @@ export default {
     selectBenefactor() {
       this.$emit("benefactorSelected");
     },
-    expandDescription() {
+    toggleDetail() {
       this.expanded = !this.expanded;
     }
   },
@@ -93,23 +95,6 @@ export default {
     align-items: center;
     padding: 0 1rem;
     cursor: pointer;
-
-    &:after {
-      content: "";
-      display: inline-block;
-      width: 0.75rem;
-      height: 0.75rem;
-      margin-left: 0.75rem;
-      border-bottom: 2px solid $black;
-      border-right: 2px solid $black;
-      transform: rotate(45deg);
-      transition: all 0.4s ease-in-out;
-      opacity: 0.5;
-    }
-  }
-  &.isExpanded .benefactor__heading:after {
-    transform: rotate(-135deg);
-    opacity: 1;
   }
   &__img {
     width: 4rem;

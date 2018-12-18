@@ -15,7 +15,9 @@
             </h4>
 
             <div class="preview-step__content">
-              <img class="preview-step__img" :src="this.formData.card.image">
+              <figure class="preview-step__img">
+                <img :src="this.formData.card.image" alt="this.formData.card.name" />
+              </figure>
               <div class="preview-step__text" v-if="this.formData.card">
                 <span class="selCard">Selected Card</span>
                 <h5>{{this.formData.card.name}}</h5>
@@ -40,7 +42,9 @@
             </h4>
 
             <div class="preview-step__content">
-              <img class="preview-step__img" :src="this.formData.benefactor.image">
+              <figure class="preview-step__img">
+                <img :src="this.formData.benefactor.image" alt="this.formData.benefactor.name" />
+              </figure>
               <div class="preview-step__text">
                 <span class="selCard">Selected Charity</span>
                 <h5>{{this.formData.benefactor.name}}</h5>
@@ -114,7 +118,7 @@
             ></b-form-textarea>
             <br>
 
-            <input type="button" class="button button--fullwidth" @click="goToStep(1)" value="next">
+            <input type="button" :disabled="!formData.message || !formData.recipient" class="button button--fullwidth" @click="goToStep(1)" value="next">
           </div>
         </div>
 
@@ -241,7 +245,6 @@
           </div>
 
           <div class="step__info">
-            <h4>Card is being created...</h4>
 
             <div class="loading-spinner">
               <div class="loading-spinner-inner">
@@ -257,6 +260,9 @@
               </div>
             </div>
 
+            <br>
+
+            <h4>Card is being created...</h4>
             <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
@@ -313,7 +319,7 @@
                 <a
                   @click="/*copyToClipboard*/"
                   target="_blank"
-                  class="btn btn--narrow btn--subtle"
+                  class="btn btn--narrow"
                   style="margin-top: 0.5rem;"
                 >Copy</a>
               </div>
@@ -323,10 +329,8 @@
                 <router-link
                   @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
                   :to="{ name: 'cardshop' }"
-                  class="btn"
-                >
-                  <p>Send another card</p>
-                </router-link>
+                  class="btn btn--outline"
+                >Send another card</router-link>
               </div>
             </div>
           </div>
@@ -654,8 +658,10 @@ textarea {
   }
 
   .preview-step__img {
-    width: 50px;
-    height: 50px;
+    width: 3rem;
+    height: 3rem;
+
+    img { max-width: 100%; max-height: 100%; }
   }
 }
 
