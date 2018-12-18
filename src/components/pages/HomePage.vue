@@ -137,8 +137,16 @@
       <h4 class="section__title">STEP THREE</h4>
       <h2>Share radiCards with friends and donate to good causes</h2>
       <p>Help spread hope and joy with eCards</p>
-      <img src="/static/images/step3.png" alt class="img--placeholder" height="450">
+      <!-- <img src="/static/images/step3.png" alt class="img--placeholder" height="450"> -->
       <!-- <samplequote></samplequote> -->
+      <div class="row text-center pt-3">
+        <div class="col"/>
+        <div class="col">
+          <card :cdata="cardData"/>
+        </div>
+        <div class="col"/>
+      </div>
+      
     </section>
 
     <div class="row">
@@ -175,7 +183,24 @@ export default {
   name: "home",
   components: { Card, Benefactor, Samplequote, Buidlers },
   data() {
-    return {};
+    return {
+      cardData: {
+        extra: "",
+        giftAmount: 0.1,
+        message:
+          "We don't need more fiat, but love for this holiday!\n\n Enjoy the festive season.",
+        BenefactorIndex: 1,
+        accountCreatedCard: false,
+        tokenId: 28,
+        name: "Privacy Forever",
+        description: "Forever be with me my privacy.",
+        image:
+          "https://ipfs.infura.io/ipfs/QmPKEmXwK4kUJTP6r9wczJGUPDwipTUxmziRkVWSxmbBVr",
+        attributes: { artist: "Hernan Wave" },
+        external_uri: "https://radi.cards",
+        cardIndex: 11
+      }
+    };
   },
   computed: {
     ...mapState(["totalSupply", "cards", "benefactors"])

@@ -9,7 +9,9 @@ import router from './router'
 import store from './store'
 import logging from './logging'
 import Web3 from 'web3'
+import VueClipboard from 'vue-clipboard2'
 
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false;
 

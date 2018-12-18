@@ -117,8 +117,12 @@
               :max-rows="6"
             ></b-form-textarea>
             <br>
-
-            <input type="button" :disabled="!formData.message || !formData.recipient" class="button button--fullwidth" @click="goToStep(1)" value="next">
+            <input
+              type="button"
+              class="button button--fullwidth"
+              @click="goToStep(1); this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              value="next"
+            >
           </div>
         </div>
 
@@ -317,7 +321,7 @@
                   <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
                 </a>
                 <a
-                  @click="/*copyToClipboard*/"
+                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
                   target="_blank"
                   class="btn btn--narrow"
                   style="margin-top: 0.5rem;"
@@ -451,6 +455,9 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    copyToClipboard(text) {
+      this.$copyText(text);
+    },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);
     },
