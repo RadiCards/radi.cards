@@ -267,12 +267,12 @@
 
             <p>We’ve successfully sent an awesome radicard to {{account}}</p>
             <br>
-            <p>Directly share this card via this link:</p>
 
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
               <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
             </p>
+             <p>Directly share this card via this link:</p>
 
             <a
               :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
