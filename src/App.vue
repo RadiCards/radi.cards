@@ -11,6 +11,9 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
+            <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+          </li>
+          <li class="nav-item">
             <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
           </li>
           <li class="nav-item">
@@ -45,12 +48,12 @@
     <footer class="footer container-fluid mt-5">
       <div class="row">
         <div class="col text-left">
-
-          <router-link :to="{ name: 'about' }">About</router-link>
-
+          <router-link :to="{ name: 'terms-of-service' }">Terms of Service</router-link>
+          &nbsp;&nbsp;
+          <router-link :to="{ name: 'privacy-policy' }">Privacy Policy</router-link>
         </div>
         <div class="col text-right small">
-          <current-network></current-network> 
+          <current-network></current-network> &nbsp;
           <clickable-address :eth-address="contractAddress"></clickable-address>
         </div>
       </div>

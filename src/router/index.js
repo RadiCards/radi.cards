@@ -6,6 +6,8 @@ import Account from '@/components/pages/Account'
 import CardShop from '@/components/pages/CardShop'
 import ViewCard from '@/components/pages/ViewCard'
 import About from '@/components/pages/About'
+import TermsOfService from '@/components/pages/TermsOfService'
+import PrivacyPolicy from '@/components/pages/PrivacyPolicy'
 
 Vue.use(Router);
 
@@ -42,7 +44,17 @@ export default new Router({
       path: '/about',
       name: 'about',
       component: About
-    }
+    },
+    {
+      path: '/terms-of-service',
+      name: 'terms-of-service',
+      component: TermsOfService
+    },
+    {
+      path: '/privacy-policy',
+      name: 'privacy-policy',
+      component: PrivacyPolicy
+    },
   ],
   scrollBehavior (to, from, savedPosition) {
     if (savedPosition) {
