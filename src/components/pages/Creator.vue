@@ -120,7 +120,7 @@
             <input
               type="button"
               class="button button--fullwidth"
-              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);goToStep(1)"
+              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS); goToStep(1)"
               value="next"
             >
           </div>
