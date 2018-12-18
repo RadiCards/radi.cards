@@ -9,7 +9,9 @@ import BootstrapVue from 'bootstrap-vue'
 import Web3 from 'web3'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import VueClipboard from 'vue-clipboard2'
 
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false;
 
