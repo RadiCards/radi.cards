@@ -236,6 +236,14 @@
           <div class="step__info">
             <h4>Card is being created...</h4>
 
+            <div class="loading-spinner">
+              <div class="loading-spinner-inner">
+                <div class="holder"><div class="box"></div></div>
+                <div class="holder"><div class="box"></div></div>
+                <div class="holder"><div class="box"></div></div>
+              </div>
+            </div>
+
             <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
