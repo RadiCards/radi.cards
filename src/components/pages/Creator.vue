@@ -199,7 +199,7 @@
             <button
               class="button"
               @click="giveBirth"
-            >gift this awesome card</button>
+             v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'">gift this awesome card</button>
 
             <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
@@ -212,7 +212,7 @@
               </div>
             </div>
 
-            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'" class="transaction-in-progress">
+            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'" class="transaction-in-progress">
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -225,7 +225,7 @@
         <!-- STATUS: PENDING -->
         <div
           class="section step step--twocol step4"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -258,7 +258,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
         >
           <div class="step__card">
             <div class="centered">
@@ -302,7 +302,7 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -436,7 +436,6 @@ export default {
     },
     giveBirth: function() {
       event.preventDefault();
-      this.step = 4;
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
