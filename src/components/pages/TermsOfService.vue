@@ -411,7 +411,7 @@
       </li>
     </ol>
     <p>
-      <span>Our Privacy Policy [hyperlink to privacy policy] describes the ways we collect, use, store and disclose your personal information, and is hereby incorporated by this reference into these Terms. You agree to the collection, use, storage, and disclosure of your data in accordance with our Privacy Policy</span>
+      <span>We don't store or track any user data.</span>
     </p>
     <p>
       <span>&nbsp;</span>
