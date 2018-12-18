@@ -32,8 +32,13 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
-    <figure class="card__front text-center" style="padding-top:50px" v-if="transfer">
+    <figure
+      class="card__front text-center"
+      style="padding-top:50px"
+      v-if="transfer && !getTransferStatus().length > 0"
+    >
       <h2 class="pb-2">Transfer Card</h2>
+      {{getTransferStatus()}}
       <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
       <hr>
       <p class="mb-2">Recipient wallet address:</p>
@@ -41,6 +46,13 @@
 
       <button @click="executeCardTransfer" class="transferButton mt-3">Transfer</button>
       <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
+    </figure>
+    <figure
+      class="card__front text-center"
+      style="padding-top:50px"
+      v-if="transfer && getTransferStatus().length > 0"
+    >
+      <h2 class="pb-2">Transfer Completed with status: {{getTransferStatus()}}</h2>
     </figure>
 
     <figure
@@ -73,7 +85,7 @@
 <script>
 /* global web3:true */
 
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
 import router from "../../router";
 import * as actions from "../../store/actions";
 
@@ -104,6 +116,7 @@ export default {
       }
     },
     ...mapState(["card", "benefactors"]),
+    ...mapGetters(["getTransferStatus"]),
     isFlippable: function() {
       return this.cdata.message && this.cdata.message.length > 0;
     }
