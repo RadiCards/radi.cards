@@ -143,12 +143,20 @@
 
     <div class="row">
       <div class="col">
-        <span class="mt-5" v-if="totalSupply">
+        <span v-if="totalSupply">
           There
-          <span v-if="totalSupply.length !== 1">are</span>
+          <span v-if="totalSupply !== 1">are</span>
           <span v-else>is</span> currently
-          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span> card
-          <span v-if="totalSupply.length !== 1">s</span> in existence
+          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span>
+          card<span v-if="totalSupply !== 1">s</span> in existence
+        </span>
+      </div>
+    </div>
+
+    <div class="row mt-5">
+      <div class="col">
+        <span v-if="totalSupply">
+          Want to help buidl-ing? <a href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA">Join our Telegram group!</a>
         </span>
       </div>
     </div>
