@@ -1,16 +1,15 @@
 <template>
   <div class="container">
-    <div class="row">
-      <div class="col">
+    <b-row>
+      <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
         <card :cdata="deepUrlCard"/>
-      </div>
-      <div class="col text-center">
+      </b-col>
+      <b-col cols="12" md="6" class="text-center">
         <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;">
-        <p class="pt-4">RadiCards lets you send e-cards to your friends and family using crypto! 100% of the purchase goes to charities fighting for freedom around the world.</p>
-      <hr class="pb-4">
-      <router-link :to="{ name: 'cardshop' }" class="transferButton mt-2">Gift another card like this</router-link>
-      </div>
-    </div>
+        <p class="pt-4 pb-4">RadiCards lets you send e-cards to your friends and family using crypto! 100% of the purchase goes to charities fighting for freedom around the world.</p>
+      <router-link :to="{ name: 'cardshop' }" class="btn mt-2">Gift another card like this</router-link>
+      </b-col>
+    </b-row>
   </div>
 </template>
 
