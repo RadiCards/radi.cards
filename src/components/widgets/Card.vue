@@ -53,11 +53,8 @@
       <button @click="executeCardTransfer" class="transferButton mt-3">Transfer</button>
       <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
     </figure>
-    <figure
-      class="card__front text-center"
-      style="padding-top:50px"
-      v-if="transfer && getTransferStatus()==='SUBMITTED'"
-    >
+
+    <figure class="card__front text-center" style="padding-top:20px" v-if="transferPending && getTransferStatus()!=='FAILURE'">
       <h4 class="pb-2">Transaction has been submitted...</h4>
       <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
       <br>
@@ -70,7 +67,13 @@
       style="padding-top:50px"
       v-if="transfer && getTransferStatus()==='FAILURE'"
     >
-      <h3 class="pt-2">Transfer Failed...</h3>
+      <h4>Oops...!</h4>
+
+      <p>Something seems to have gone wrong and your card could not be transfered.</p>
+      <br>
+      <p>
+        <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
+      </p>
     </figure>
 
     <figure
@@ -161,15 +164,7 @@ export default {
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {
-<<<<<<< HEAD
-<<<<<<< HEAD
         this.$emit("cardTransfered", this.transferRecipient);
-=======
-        this.$emit("cardTransfered");
->>>>>>> Implemented notification for transfer event
-=======
-        this.$emit("cardTransfered", this.transferRecipient);
->>>>>>> styling changes and store reset after card transfer
       }
     },
     company() {
