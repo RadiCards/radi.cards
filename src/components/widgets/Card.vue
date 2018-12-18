@@ -216,12 +216,7 @@ export default {
     },
     redirect: function() {
       console.log(this.$route.path);
-      if (
-        this.$route.path.lastIndexOf("create") === -1 &&
-        this.$route.path.lastIndexOf("account") === -1 &&
-        this.$route.path.lastIndexOf("viewcard") === -1 &&
-        this.$route.path.lastIndexOf("/card/") === -1
-      ) {
+      if (!this.cdata.message) {
         var index = this.cdata.cardIndex;
         router.push({
           path: "create/" + index
