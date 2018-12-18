@@ -191,7 +191,11 @@
   main {
     max-width: $maxWidth;
     margin: 0 auto;
-    padding: 1.25rem;
+    padding: 0.25rem;
+
+    @include tabletAndUp() {
+      padding: 1.25rem;
+    }
   }
 
   // Header
