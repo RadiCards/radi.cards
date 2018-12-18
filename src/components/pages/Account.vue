@@ -6,12 +6,26 @@
     </h2>
     <clickable-address :eth-address="account"></clickable-address>
 
+    <div class="row mt-5 mb-5 transferedCard" v-if="cardTransferOccured">
+      <div class="col-2">
+        <img src="/static/icons/success.png" alt style="width: 5rem;">
+      </div>
+      <div class="col-10">
+        <h2>Successfully Transfered!</h2>
+        <p>Card was transfered to address: 0xxxx</p>
+      </div>
+    </div>
+
     <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
       <div class="col text-center">
         <img src="/static/icons/radi-cards.svg" alt class="img--placeholder">
-        <br><br>
-        <h4>Aww...</h4><br>
-        <p style="max-width: 24rem; margin: 0 auto;">You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!</p>
+        <br>
+        <br>
+        <h4>Aww...</h4>
+        <br>
+        <p
+          style="max-width: 24rem; margin: 0 auto;"
+        >You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!</p>
         <br>
         <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
       </div>
@@ -20,8 +34,16 @@
     <div class="row mt-2" v-else>
       <div class="col">
         <b-row>
-          <b-col cols="12" sm="6" lg="4" v-if="accountCards && accountCards.length > 0" v-for="card in accountCards" :key="card.tokenId" class="pt-3">
-            <card :cdata="card"/>
+          <b-col
+            cols="12"
+            sm="6"
+            lg="4"
+            v-if="accountCards && accountCards.length > 0"
+            v-for="card in accountCards"
+            :key="card.tokenId"
+            class="pt-3"
+          >
+            <card @cardTransfered="handelCardTransfered" :cdata="card"/>
           </b-col>
         </b-row>
       </div>
@@ -39,9 +61,20 @@ import Card from "../../components/widgets/Card";
 export default {
   name: "account",
   components: { ClickableTransaction, ClickableAddress, Card },
+  data() {
+    return {
+      cardTransferOccured: false
+    };
+  },
   computed: {
     ...mapState(["account", "accountCards", "transfers", "cards"]),
     ...mapGetters(["findTx"])
+  },
+  methods: {
+    handelCardTransfered(cardTransfered) {
+      this.cardTransferOccured = true;
+      this.$store.dispatch(actions.RESET_TRANSFER_STATUS);
+    }
   },
   created() {
     //FIXME in App.vue so prob not needed
@@ -61,9 +94,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.card-body {
-}
-
-.card-img-top {
+@import "../../styles/variables.scss";
+.transferedCard {
+  top: 10;
+  left: 100;
+  width: 100%;
+  height: 100%;
+  background: $greylightest;
 }
 </style>
