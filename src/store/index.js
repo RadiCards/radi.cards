@@ -231,7 +231,7 @@ const store = new Vuex.Store({
         _to: recipient
       }, {
         fromBlock: blockNumber,
-        toBlock: 'latest' // wait until event comes through
+        toBlock: "latest" // wait until event comes through
       });
 
       transferEvent.watch(function (error, event) {
