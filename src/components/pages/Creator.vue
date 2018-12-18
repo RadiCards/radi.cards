@@ -199,15 +199,11 @@
               <br>
             </span>
             
-<<<<<<< HEAD
             <button
               class="button"
               @click="giveBirth"
               v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'"
             >gift this awesome card</button>
-=======
-            <button class="button" @click="giveBirth">gift this awesome card</button>
->>>>>>> Test on transfer event UX
 
             <div class="form-group row" v-if="formData.errors.length">
               <div class="col-sm-12">
@@ -221,11 +217,7 @@
             </div>
 
             <div
-<<<<<<< HEAD
               v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
-=======
-              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
->>>>>>> Test on transfer event UX
               class="transaction-in-progress"
             >
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
@@ -319,7 +311,7 @@
                   <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
                 </a>
                 <a
-                  @click="/*copyToClipboard*/"
+                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
                   target="_blank"
                   class="btn btn--narrow btn--subtle"
                   style="margin-top: 0.5rem;"
@@ -455,6 +447,9 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    copyToClipboard(text) {
+      this.$copyText(text);
+    },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);
     },
