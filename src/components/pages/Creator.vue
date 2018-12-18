@@ -307,7 +307,7 @@
                 <a
                   @click="/*copyToClipboard*/"
                   target="_blank"
-                  class="btn btn--narrow btn--subtle"
+                  class="btn btn--primary"
                   style="margin-top: 0.5rem;"
                 >Copy</a>
               </div>
@@ -317,8 +317,8 @@
                 <router-link
                   @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
                   :to="{ name: 'cardshop' }"
-                  class="btn"
-                >Start over</router-link>
+                  class="btn button--outline"
+                >Send another card</router-link>
               </div>
             </div>
           </div>
