@@ -364,7 +364,6 @@
         </div>
       </div>
     </form>
-    {{getGiftingStatus(formData.recipient, formData.card.cardIndex).status}}
   </div>
 </template>
 
