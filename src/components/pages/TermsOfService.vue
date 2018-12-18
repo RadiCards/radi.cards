@@ -422,7 +422,7 @@
     <p>
       <span>&copy; 2018 Radi.Cards</span>
     </p>
-    <p>
+    <!-- <p>
       <span>|Terms of Service (https://Radicals@radi.cards/terms)</span>
     </p>
     <p>
@@ -442,7 +442,7 @@
         <br>|hello@Radicals@radi.cards
         <br>Made with ETH &amp; IPFS
       </span>
-    </p>
+    </p>-->
     <p>&nbsp;</p>
   </section>
 </template>
