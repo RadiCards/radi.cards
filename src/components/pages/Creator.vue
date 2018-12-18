@@ -88,7 +88,7 @@
             />
 
             <div
-              v-if="!walletVisible"
+              v-if="!walletVisible && account"
               class="btn btn--subtle btn--small btn--arrow-down"
               @click="walletVisible = true"
             >Recipient doesn’t have a wallet address?</div>
