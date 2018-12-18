@@ -21,7 +21,10 @@
                 <h5>{{this.formData.card.name}}</h5>
                 <span class="artist">by {{this.formData.card.attributes.artist}}</span>
               </div>
-              <div class="btn btn--reveal btn--narrow">
+              <div
+                class="btn btn--reveal btn--narrow"
+                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
+              >
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
@@ -48,7 +51,10 @@
                 Donation:
                 <strong>{{formData.valueInETH}}</strong> ETH
               </div>
-              <div class="btn btn--reveal btn--narrow">
+              <div
+                class="btn btn--reveal btn--narrow"
+                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
+              >
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
@@ -307,7 +313,7 @@
                 <a
                   @click="/*copyToClipboard*/"
                   target="_blank"
-                  class="btn btn--primary"
+                  class="btn btn--narrow btn--subtle"
                   style="margin-top: 0.5rem;"
                 >Copy</a>
               </div>
@@ -317,8 +323,10 @@
                 <router-link
                   @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
                   :to="{ name: 'cardshop' }"
-                  class="btn button--outline"
-                >Send another card</router-link>
+                  class="btn"
+                >
+                  <p>Send another card</p>
+                </router-link>
               </div>
             </div>
           </div>
@@ -349,10 +357,7 @@
               :to="{ name: 'cardshop' }"
               class="btn"
             >Start over</router-link>
-            <button
-              class="btn"
-              @click="giveBirth"
-            >Retry Transaction</button>
+            <button class="btn" @click="giveBirth">Retry Transaction</button>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
               <a
