@@ -7,12 +7,11 @@ import store from './store'
 import logging from './logging'
 import BootstrapVue from 'bootstrap-vue'
 import Web3 from 'web3'
-import VueFormWizard from 'vue-form-wizard'
-import 'vue-form-wizard/dist/vue-form-wizard.min.css'
 import "bootstrap/dist/css/bootstrap.css";
 import "bootstrap-vue/dist/bootstrap-vue.css";
+import VueClipboard from 'vue-clipboard2'
 
-Vue.use(VueFormWizard)
+Vue.use(VueClipboard)
 
 Vue.config.productionTip = false;
 
