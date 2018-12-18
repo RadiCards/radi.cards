@@ -64,6 +64,13 @@
       background: $black;
       color: $white;
     }
+    &:visited {
+      color: $black;
+
+      &:hover {
+        color: $white;
+      }
+    }
   }
 
   // Size

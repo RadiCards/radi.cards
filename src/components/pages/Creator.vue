@@ -120,7 +120,8 @@
             <input
               type="button"
               class="button button--fullwidth"
-              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS); goToStep(1)"
+              :disabled="!formData.message || !formData.recipient"
+              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);goToStep(1)"
               value="next"
             >
           </div>
@@ -319,12 +320,12 @@
                 >
                   <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
                 </a>
-                <a
+                <span
                   @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
                   target="_blank"
                   class="btn btn--narrow btn--subtle"
                   style="margin-top: 0.5rem;"
-                >Copy</a>
+                >Copy</span>
               </div>
             </div>
             <div class="row pt-3">
