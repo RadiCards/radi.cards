@@ -195,7 +195,7 @@ export default {
         name: "Privacy Forever",
         description: "Forever be with me my privacy.",
         image:
-          "https://ipfs.infura.io/ipfs/QmPKEmXwK4kUJTP6r9wczJGUPDwipTUxmziRkVWSxmbBVr",
+          "https://ipfs.infura.io/ipfs/QmNRUjkackbZcnkxhjDcF81dAHDdNK9yuZShHPGCi4Eih4",
         attributes: { artist: "Hernan Wave" },
         external_uri: "https://radi.cards",
         cardIndex: 11

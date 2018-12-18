@@ -16,7 +16,7 @@
 
             <div class="preview-step__content">
               <figure class="preview-step__img">
-                <img :src="this.formData.card.image" alt="this.formData.card.name" />
+                <img :src="this.formData.card.image" alt="this.formData.card.name">
               </figure>
               <div class="preview-step__text" v-if="this.formData.card">
                 <span class="selCard">Selected Card</span>
@@ -43,7 +43,7 @@
 
             <div class="preview-step__content">
               <figure class="preview-step__img">
-                <img :src="this.formData.benefactor.image" alt="this.formData.benefactor.name" />
+                <img :src="this.formData.benefactor.image" alt="this.formData.benefactor.name">
               </figure>
               <div class="preview-step__text">
                 <span class="selCard">Selected Charity</span>
@@ -120,7 +120,7 @@
             <input
               type="button"
               class="button button--fullwidth"
-              @click="goToStep(1); this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);goToStep(1)"
               value="next"
             >
           </div>
@@ -249,7 +249,6 @@
           </div>
 
           <div class="step__info">
-
             <div class="loading-spinner">
               <div class="loading-spinner-inner">
                 <div class="holder">
@@ -323,7 +322,7 @@
                 <a
                   @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
                   target="_blank"
-                  class="btn btn--narrow"
+                  class="btn btn--narrow btn--subtle"
                   style="margin-top: 0.5rem;"
                 >Copy</a>
               </div>
@@ -333,7 +332,7 @@
                 <router-link
                   @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
                   :to="{ name: 'cardshop' }"
-                  class="btn btn--outline"
+                  class="btn"
                 >Send another card</router-link>
               </div>
             </div>
@@ -361,7 +360,7 @@
             </p>
 
             <router-link
-              @click="$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
               :to="{ name: 'cardshop' }"
               class="btn"
             >Start over</router-link>
@@ -668,7 +667,10 @@ textarea {
     width: 3rem;
     height: 3rem;
 
-    img { max-width: 100%; max-height: 100%; }
+    img {
+      max-width: 100%;
+      max-height: 100%;
+    }
   }
 }
 
