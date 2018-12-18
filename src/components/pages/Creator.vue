@@ -108,13 +108,7 @@
             ></b-form-textarea>
             <br>
 
-            <input
-              type="button"
-              class="button button--fullwidth"
-              @click="goToStep(1)"
-              :disabled="hasStep1Data"
-              value="next"
-            >
+            <input type="button" class="button button--fullwidth" @click="goToStep(1)" value="next">
           </div>
         </div>
 
@@ -300,28 +294,40 @@
               >here</a>
             </p>
             <p>Directly share this card via this link:</p>
-
-            <a
-              :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
-              target="_blank"
-              class="btn btn--narrow btn--subtle"
-              style="margin: 0.5rem 0.25rem 0 0;"
-            >
-              <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
-            </a>
-            <a
-              @click="/*copyToClipboard*/"
-              target="_blank"
-              class="btn btn--narrow btn--subtle"
-              style="margin-top: 0.5rem;"
-            >Copy</a>
+            <div class="row">
+              <div class="col">
+                <a
+                  :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
+                  target="_blank"
+                  class="btn btn--narrow btn--subtle"
+                  style="margin: 0.5rem 0.25rem 0 0;"
+                >
+                  <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
+                </a>
+                <a
+                  @click="/*copyToClipboard*/"
+                  target="_blank"
+                  class="btn btn--narrow btn--subtle"
+                  style="margin-top: 0.5rem;"
+                >Copy</a>
+              </div>
+            </div>
+            <div class="row pt-3">
+              <div class="col">
+                <router-link
+                  @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+                  :to="{ name: 'cardshop' }"
+                  class="btn"
+                >Start over</router-link>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILURE'"
         >
           <div class="step__card">
             <div class="centered">
@@ -334,10 +340,19 @@
 
             <p>Something seems to have gone wrong and your card could not be created.</p>
             <br>
-            <p>
+            <p class="pb-3">
               <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
             </p>
 
+            <router-link
+              @click="$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              :to="{ name: 'cardshop' }"
+              class="btn"
+            >Start over</router-link>
+            <button
+              class="btn"
+              @click="giveBirth"
+            >Retry Transaction</button>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
               <a
@@ -349,6 +364,7 @@
         </div>
       </div>
     </form>
+    {{getGiftingStatus(formData.recipient, formData.card.cardIndex).status}}
   </div>
 </template>
 
@@ -431,7 +447,14 @@ export default {
       this.setBenefactor(item);
     },
     goToStep(pageNumber) {
-      this.step = pageNumber;
+      if (
+        !this.getGiftingStatus(
+          this.formData.recipient,
+          this.formData.card.cardIndex
+        ).status
+      ) {
+        this.step = pageNumber;
+      }
     },
     setDonationAmount(amount) {
       event.preventDefault();

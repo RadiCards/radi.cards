@@ -88,7 +88,10 @@ const store = new Vuex.Store({
       Vue.set(state, "transfers", state.transfers.concat(transfer));
     },
     [mutations.SET_GIFT_STATUS](state, data) {
-      const {cardIndex, to} = data;
+      const {
+        cardIndex,
+        to
+      } = data;
       const newState = {
         ...state.giftingStatus[`${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`],
         ...data
@@ -162,7 +165,27 @@ const store = new Vuex.Store({
         commit(mutations.SET_ACCOUNT, account);
       }
     },
-    async [actions.BIRTH]({commit, dispatch, state}, {recipient, benefactorIndex, cardIndex, message, extra, valueInETH}) {
+
+    [actions.RESET_GIFT_STATUS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
+      commit(mutations.SET_GIFT_STATUS, {});
+    },
+
+    async [actions.BIRTH]({
+      commit,
+      dispatch,
+      state
+    }, {
+      recipient,
+      benefactorIndex,
+      cardIndex,
+      message,
+      extra,
+      valueInETH
+    }) {
       const contract = await state.contract.deployed();
 
       commit(mutations.CLEAR_GIFT_STATUS);
@@ -187,7 +210,10 @@ const store = new Vuex.Store({
       );
 
       // Watch for the transfer event from ZERO address to the recipient immediately after the
-      const transferEvent = contract.Transfer({_from: `0x0`, _to: recipient}, {
+      const transferEvent = contract.Transfer({
+        _from: `0x0`,
+        _to: recipient
+      }, {
         fromBlock: blockNumber,
         toBlock: 'latest' // wait until event comes through
       });
@@ -195,8 +221,14 @@ const store = new Vuex.Store({
       transferEvent.watch(function (error, event) {
         if (!error) {
           console.log('Transfer event found', event);
-          const {args} = event;
-          const {_from, _to, _tokenId} = args;
+          const {
+            args
+          } = event;
+          const {
+            _from,
+            _to,
+            _tokenId
+          } = args;
           commit(mutations.SET_GIFT_STATUS, {
             status: 'SUCCESS',
             to: recipient,
@@ -204,7 +236,9 @@ const store = new Vuex.Store({
             tokenId: _tokenId
           });
 
-          dispatch(actions.LOAD_ACCOUNT_CARDS, {account: state.account});
+          dispatch(actions.LOAD_ACCOUNT_CARDS, {
+            account: state.account
+          });
         } else {
           console.log('failure', error);
           commit(mutations.SET_GIFT_STATUS, {
