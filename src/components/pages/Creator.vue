@@ -121,7 +121,7 @@
               type="button"
               class="button button--fullwidth"
               :disabled="!formData.message || !formData.recipient"
-              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);goToStep(1)"
+              @click="goToStep(1)"
               value="next"
             >
           </div>
@@ -465,7 +465,7 @@ export default {
       if (
         !this.getGiftingStatus(
           this.formData.recipient,
-          this.formData.card.cardIndex
+          this.formData.card.cardIndex || this.step < 3
         ).status
       ) {
         this.step = pageNumber;
