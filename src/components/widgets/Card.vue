@@ -45,7 +45,6 @@
       v-if="transfer && !getTransferStatus().length > 0 && !transferPending"
     >
       <h2 class="pb-2">Transfer Card</h2>
-      {{getTransferStatus()}}
       <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
       <hr>
       <p class="mb-2">Recipient wallet address:</p>
@@ -59,7 +58,7 @@
       style="padding-top:50px"
       v-if="transfer && getTransferStatus().length > 0"
     >
-      <h2 class="pb-2">Transfer Completed with status: {{getTransferStatus()}}</h2>
+      <h2 class="pb-2">Transaction has been submitted...</h2>
     </figure>
 
     <figure
@@ -150,7 +149,11 @@ export default {
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {
+<<<<<<< HEAD
         this.$emit("cardTransfered", this.transferRecipient);
+=======
+        this.$emit("cardTransfered");
+>>>>>>> Implemented notification for transfer event
       }
     },
     company() {
@@ -193,8 +196,12 @@ export default {
       share: false,
       transferRecipient: "",
       isFlipped: false,
+<<<<<<< HEAD
       transfered: false,
       transferPending: false
+=======
+      transfered: false
+>>>>>>> Implemented notification for transfer event
     };
   },
 
