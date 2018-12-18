@@ -38,7 +38,6 @@
       v-if="transfer && !getTransferStatus().length > 0"
     >
       <h2 class="pb-2">Transfer Card</h2>
-      {{getTransferStatus()}}
       <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
       <hr>
       <p class="mb-2">Recipient wallet address:</p>
@@ -52,7 +51,7 @@
       style="padding-top:50px"
       v-if="transfer && getTransferStatus().length > 0"
     >
-      <h2 class="pb-2">Transfer Completed with status: {{getTransferStatus()}}</h2>
+      <h2 class="pb-2">Transaction has been submitted...</h2>
     </figure>
 
     <figure
@@ -77,7 +76,7 @@
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer Card</button>
       </div>
-      <!-- </p> -->
+      {{transferedCardNotification}}
     </figure>
   </div>
 </template>
@@ -93,6 +92,11 @@ export default {
   name: "card",
 
   computed: {
+    transferedCardNotification() {
+      if (this.getTransferStatus() === "SUCCESS") {
+        this.$emit("cardTransfered");
+      }
+    },
     company() {
       let allCompanies = {
         QmQTexvhmvrWzfwrPkKeB7Nahpvgiv68Ciy5zE8Cr4Afp8:
@@ -131,7 +135,8 @@ export default {
     return {
       transfer: false,
       transferRecipient: "",
-      isFlipped: false
+      isFlipped: false,
+      transfered: false
     };
   },
 
