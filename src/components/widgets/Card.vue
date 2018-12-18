@@ -42,7 +42,7 @@
     <figure
       class="card__front text-center"
       style="padding-top:50px"
-      v-if="transfer && !getTransferStatus().length > 0"
+      v-if="transfer && !getTransferStatus().length > 0 && !transferPending"
     >
       <h2 class="pb-2">Transfer Card</h2>
       <p class="descr">card ownership can be transferred to any ETH wallet address.</p>
@@ -53,11 +53,8 @@
       <button @click="executeCardTransfer" class="transferButton mt-3">Transfer</button>
       <button @click="cancelTransfer" class="cancelButton mt-3">Cancel</button>
     </figure>
-    <figure
-      class="card__front text-center"
-      style="padding-top:50px"
-      v-if="transfer && getTransferStatus()==='SUBMITTED'"
-    >
+
+    <figure class="card__front text-center" style="padding-top:20px" v-if="transferPending && getTransferStatus()!=='FAILURE'">
       <h4 class="pb-2">Transaction has been submitted...</h4>
       <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
       <br>
@@ -70,7 +67,13 @@
       style="padding-top:50px"
       v-if="transfer && getTransferStatus()==='FAILURE'"
     >
-      <h3 class="pt-2">Transfer Failed...</h3>
+      <h4>Oops...!</h4>
+
+      <p>Something seems to have gone wrong and your card could not be transfered.</p>
+      <br>
+      <p>
+        <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
+      </p>
     </figure>
 
     <figure
@@ -155,7 +158,8 @@ export default {
       transfer: false,
       transferRecipient: "",
       isFlipped: false,
-      transfered: false
+      transfered: false,
+      transferPending: false
     };
   },
 
@@ -163,19 +167,17 @@ export default {
     executeCardTransfer() {
       let recipient = this.transferRecipient;
       let tokenId = this.cdata.tokenId;
-      console.log("Transfer card", recipient);
       this.$store.dispatch(actions.TRANSFER_CARD, { recipient, tokenId });
+      this.transferPending = true;
     },
     cancelTransfer() {
       this.transfer = false;
       this.flip;
     },
     transferCard() {
-      console.log("transfer clicked");
       this.transfer = true;
     },
     redirect: function() {
-      console.log("DETECTING PATH");
       console.log(this.$route.path);
       if (
         this.$route.path.lastIndexOf("create") === -1 &&
