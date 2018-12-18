@@ -15,6 +15,12 @@
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
         </div>
+        <!-- <div class="card__value" v-if="cdata.giftAmount">
+          <div class="badge">
+            <img src="/static/icons/shopping-cart.svg">
+            {{cdata.giftAmount}} ETH
+          </div>
+        </div>-->
       </figcaption>
 
       <div v-if="cdata.description">
@@ -32,6 +38,7 @@
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
+
     <figure
       class="card__front text-center"
       style="padding-top:50px"
@@ -49,9 +56,21 @@
     <figure
       class="card__front text-center"
       style="padding-top:50px"
-      v-if="transfer && getTransferStatus().length > 0"
+      v-if="transfer && getTransferStatus()==='SUBMITTED'"
     >
-      <h2 class="pb-2">Transaction has been submitted...</h2>
+      <h4 class="pb-2">Transaction has been submitted...</h4>
+      <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
+      <br>
+      <p>Best to not close this tab and go make some tea. Good things will happen.</p>
+      <br>
+    </figure>
+
+    <figure
+      class="card__front text-center"
+      style="padding-top:50px"
+      v-if="transfer && getTransferStatus()==='FAILURE'"
+    >
+      <h3 class="pt-2">Transfer Failed...</h3>
     </figure>
 
     <figure
@@ -94,7 +113,7 @@ export default {
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {
-        this.$emit("cardTransfered");
+        this.$emit("cardTransfered", this.transferRecipient);
       }
     },
     company() {

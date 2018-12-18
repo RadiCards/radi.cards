@@ -12,7 +12,7 @@
       </div>
       <div class="col-10">
         <h2>Successfully Transfered!</h2>
-        <p>Card was transfered to address: 0xxxx</p>
+        <p>Card was transfered to address {{transferedAddress}}</p>
       </div>
     </div>
 
@@ -63,16 +63,21 @@ export default {
   components: { ClickableTransaction, ClickableAddress, Card },
   data() {
     return {
-      cardTransferOccured: false
+      cardTransferOccured: false,
+      transferedAddress: null
     };
   },
   computed: {
     ...mapState(["account", "accountCards", "transfers", "cards"]),
     ...mapGetters(["findTx"])
   },
+  mounted() {
+    this.$store.dispatch(actions.RESET_TRANSFER_STATUS);
+  },
   methods: {
     handelCardTransfered(cardTransfered) {
       this.cardTransferOccured = true;
+      this.transferedAddress = cardTransfered
       this.$store.dispatch(actions.RESET_TRANSFER_STATUS);
     }
   },
