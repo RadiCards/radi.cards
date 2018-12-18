@@ -2,6 +2,7 @@
 <template>
   <div class="container">
     <section class="section section--hero">
+        
       <blockquote class="blockquote--hero">
         <p>We want to change the world & fight for good.</p>
         <p>Want to help?</p>
@@ -98,11 +99,6 @@
           </ul>
         </div>
       </div>
-      <!-- <h2>Choose and personalise your RadiCard</h2>
-      <p>Send to any ETH addresses and emails</p>
-      <div class="card-slider" v-if="cards && cards.length > 0">
-        <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
-      </div>-->
     </section>
 
     <section class="section">
@@ -113,6 +109,18 @@
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
       </div>
+
+      <div v-else class="loading-container">
+        <div class="loading-spinner">
+          <div class="loading-spinner-inner">
+            <div class="holder"><div class="box"></div></div>
+            <div class="holder"><div class="box"></div></div>
+            <div class="holder"><div class="box"></div></div>
+          </div>
+        </div>
+        <span class="text">Getting cards...</span>
+      </div>
+      
     </section>
 
     <section class="section">

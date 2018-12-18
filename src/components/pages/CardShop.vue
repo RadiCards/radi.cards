@@ -3,11 +3,24 @@
     <h2>Card Shop</h2>
     <br>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
-    <b-row>
+
+    <b-row v-if="shuffledCards && shuffledCards.length > 0">
       <b-col cols="12" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
         <card :cdata="card"/>
       </b-col>
     </b-row>
+
+    <div v-else class="loading-container">
+      <div class="loading-spinner">
+        <div class="loading-spinner-inner">
+          <div class="holder"><div class="box"></div></div>
+          <div class="holder"><div class="box"></div></div>
+          <div class="holder"><div class="box"></div></div>
+        </div>
+      </div>
+      <span class="text">Getting cards...</span>
+    </div>
+
   </section>
 </template>
 

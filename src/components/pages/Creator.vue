@@ -21,7 +21,10 @@
                 <h5>{{this.formData.card.name}}</h5>
                 <span class="artist">by {{this.formData.card.attributes.artist}}</span>
               </div>
-              <div class="btn btn--reveal btn--narrow">
+              <div
+                class="btn btn--reveal btn--narrow"
+                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
+              >
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
@@ -48,7 +51,10 @@
                 Donation:
                 <strong>{{formData.valueInETH}}</strong> ETH
               </div>
-              <div class="btn btn--reveal btn--narrow">
+              <div
+                class="btn btn--reveal btn--narrow"
+                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
+              >
                 <img src="/static/icons/Edit.svg">
               </div>
             </div>
@@ -108,13 +114,7 @@
             ></b-form-textarea>
             <br>
 
-            <input
-              type="button"
-              class="button button--fullwidth"
-              @click="goToStep(1)"
-              :disabled="hasStep1Data"
-              value="next"
-            >
+            <input type="button" class="button button--fullwidth" @click="goToStep(1)" value="next">
           </div>
         </div>
 
@@ -177,7 +177,10 @@
           <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
 
-        <div class="section step step--twocol step3" v-if="step == 3">
+        <div
+          class="section step step--twocol step3"
+          v-if="step == 3 && (!getGiftingStatus(formData.recipient, formData.card.cardIndex).status || getGiftingStatus(formData.recipient, formData.card.cardIndex).status==='TRIGGERED')"
+        >
           <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
@@ -195,10 +198,11 @@
               <h4 v-html="cardMessageFormatted"></h4>
               <br>
             </span>
-
+            
             <button
               class="button"
               @click="giveBirth"
+              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'"
             >gift this awesome card</button>
 
             <div class="form-group row" v-if="formData.errors.length">
@@ -212,7 +216,10 @@
               </div>
             </div>
 
-            <div v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'" class="transaction-in-progress">
+            <div
+              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
+              class="transaction-in-progress"
+            >
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
@@ -225,7 +232,7 @@
         <!-- STATUS: PENDING -->
         <div
           class="section step step--twocol step4"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -236,13 +243,30 @@
           <div class="step__info">
             <h4>Card is being created...</h4>
 
+            <div class="loading-spinner">
+              <div class="loading-spinner-inner">
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+              </div>
+            </div>
+
             <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
             <br>
             <p>Best to not close this tab and go make some tea. Good things will happen.</p>
             <br>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
           </div>
         </div>
@@ -250,7 +274,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
         >
           <div class="step__card">
             <div class="centered">
@@ -270,31 +294,48 @@
 
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
-             <p>Directly share this card via this link:</p>
-
-            <a
-              :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
-              target="_blank"
-              class="btn btn--narrow btn--subtle"
-              style="margin: 0.5rem 0.25rem 0 0;"
-            >
-              <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
-            </a>
-            <a
-              @click="/*copyToClipboard*/"
-              target="_blank"
-              class="btn btn--narrow btn--subtle"
-              style="margin-top: 0.5rem;"
-            >Copy</a>
+            <p>Directly share this card via this link:</p>
+            <div class="row">
+              <div class="col">
+                <a
+                  :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
+                  target="_blank"
+                  class="btn btn--narrow btn--subtle"
+                  style="margin: 0.5rem 0.25rem 0 0;"
+                >
+                  <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
+                </a>
+                <a
+                  @click="/*copyToClipboard*/"
+                  target="_blank"
+                  class="btn btn--narrow btn--subtle"
+                  style="margin-top: 0.5rem;"
+                >Copy</a>
+              </div>
+            </div>
+            <div class="row pt-3">
+              <div class="col">
+                <router-link
+                  @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+                  :to="{ name: 'cardshop' }"
+                  class="btn"
+                >
+                  <p>Send another card</p>
+                </router-link>
+              </div>
+            </div>
           </div>
         </div>
 
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="step === 4 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILED'"
+          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILURE'"
         >
           <div class="step__card">
             <div class="centered">
@@ -307,20 +348,27 @@
 
             <p>Something seems to have gone wrong and your card could not be created.</p>
             <br>
-            <p>
+            <p class="pb-3">
               <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
             </p>
 
+            <router-link
+              @click="$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              :to="{ name: 'cardshop' }"
+              class="btn"
+            >Start over</router-link>
+            <button class="btn" @click="giveBirth">Retry Transaction</button>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx" target="_blank">here</a>
+              <a
+                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                target="_blank"
+              >here</a>
             </p>
-
           </div>
         </div>
       </div>
     </form>
-
   </div>
 </template>
 
@@ -355,12 +403,8 @@ export default {
     };
   },
   computed: {
-    ...mapState([
-      'etherscanBase',
-    ]),
-    ...mapGetters([
-      'getGiftingStatus',
-    ]),
+    ...mapState(["etherscanBase"]),
+    ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
@@ -407,7 +451,14 @@ export default {
       this.setBenefactor(item);
     },
     goToStep(pageNumber) {
-      this.step = pageNumber;
+      if (
+        !this.getGiftingStatus(
+          this.formData.recipient,
+          this.formData.card.cardIndex
+        ).status
+      ) {
+        this.step = pageNumber;
+      }
     },
     setDonationAmount(amount) {
       event.preventDefault();
@@ -428,7 +479,6 @@ export default {
     },
     giveBirth: function() {
       event.preventDefault();
-      this.step = 4;
 
       this.checkForm();
       if (this.formData.errors.length === 0) {

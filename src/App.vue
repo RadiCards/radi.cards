@@ -324,4 +324,17 @@ code {
     color: $white;
   }
 }
+
+.loading-container {
+  width: 100%;
+  padding: 2rem 0;
+  text-align: center;
+
+  .loading-spinner {
+    margin: 0 auto;
+  }
+}
+.loading-spinner {
+  @include loadingSpinner();
+}
 </style>
