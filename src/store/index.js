@@ -214,16 +214,33 @@ const store = new Vuex.Store({
         cardIndex: cardIndex
       });
 
-      const transaction = contract.gift(
-        recipient,
-        benefactorIndex,
-        cardIndex,
-        message,
-        extra, {
-          from: state.account,
-          value: state.web3.utils.toWei(valueInETH, "ether")
-        }
-      );
+      try {
+        const transaction = await contract.gift.sendTransaction(
+          recipient,
+          benefactorIndex,
+          cardIndex,
+          message,
+          extra, {
+            from: state.account,
+            value: state.web3.utils.toWei(valueInETH, "ether")
+          }
+        );
+        console.log("transaction submitted");
+        commit(mutations.SET_GIFT_STATUS, {
+          status: "SUBMITTED",
+          to: recipient,
+          cardIndex: cardIndex,
+          tx: transaction
+        });
+      } catch (e) {
+        console.log("rejection/error");
+        commit(mutations.SET_GIFT_STATUS, {
+          status: "FAILURE",
+          to: recipient,
+          cardIndex: cardIndex
+        });
+
+      }
 
       // Watch for the transfer event from ZERO address to the recipient immediately after the
       const transferEvent = contract.Transfer({
@@ -265,28 +282,6 @@ const store = new Vuex.Store({
           transferEvent.stopWatching();
         }
       });
-
-      transaction
-        .then(data => {
-          console.log("transaction submitted", data);
-          const tx = data.tx;
-          console.log(tx);
-
-          commit(mutations.SET_GIFT_STATUS, {
-            status: "SUBMITTED",
-            to: recipient,
-            cardIndex: cardIndex,
-            tx
-          });
-        })
-        .catch(error => {
-          console.log("rejection/error", error);
-          commit(mutations.SET_GIFT_STATUS, {
-            status: "FAILURE",
-            to: recipient,
-            cardIndex: cardIndex
-          });
-        });
     },
     [actions.TRANSFER_CARD]: async function ({
       commit,
@@ -376,10 +371,13 @@ const store = new Vuex.Store({
       commit(mutations.SET_TRANSFER_STATUS, {});
     },
 
-    [actions.LOAD_ACCOUNT_CARDS]: async function(
-      { commit, dispatch, state },
-      { account }
-    ) {
+    [actions.LOAD_ACCOUNT_CARDS]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      account
+    }) {
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));

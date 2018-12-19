@@ -6,7 +6,10 @@
       <h4>No web3 wallet could be detected! 🧐</h4>
       <p class="pt-2">
         In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try
-        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
+        <a
+          target="__blank"
+          href="https://metamask.io"
+        >Meta Mask</a>,
         <a target="__blank" href="https://status.im">Status</a>,
         <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a> or
         <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a>! You can still view all other functionality within the website without one.
@@ -357,7 +360,7 @@
         >
           <div class="step__card">
             <div class="centered">
-              <card v-if="formData.card" :cdata="formData.card"/>
+              <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
           </div>
 
@@ -477,14 +480,14 @@ export default {
       this.setBenefactor(item);
     },
     goToStep(pageNumber) {
-      if (
-        !this.getGiftingStatus(
-          this.formData.recipient,
-          this.formData.card.cardIndex || this.step < 3
-        ).status
-      ) {
-        this.step = pageNumber;
-      }
+      // if (
+      //   !this.getGiftingStatus(
+      //     this.formData.recipient,
+      //     this.formData.card.cardIndex || this.step < 3
+      //   ).status
+      // ) {
+      this.step = pageNumber;
+      // }
     },
     setDonationAmount(amount) {
       event.preventDefault();
