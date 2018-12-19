@@ -191,6 +191,7 @@
                 placeholder="0.02ETH"
                 min="0.02"
               >
+              <div v-if="formData.valueInETH">$ {{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
             </div>
             <span
               class="info"
@@ -430,7 +431,8 @@ export default {
       "account",
       "uploadedHashs",
       "cards",
-      "benefactors"
+      "benefactors",
+      "usdPrice"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
