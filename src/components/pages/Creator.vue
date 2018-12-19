@@ -2,7 +2,17 @@
   <div class="container">
     <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
-    <form>
+    <div v-if="account==null">
+      <h4>No web3 wallet could be detected! 🧐</h4>
+      <p class="pt-2">
+        In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try
+        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
+        <a target="__blank" href="https://status.im">Status</a>,
+        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a> or
+        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a>! You can still view all other functionality within the website without one.
+      </p>
+    </div>
+    <form v-if="account!=null && account != undefined">
       <div role="tablist">
         <div class="preview">
           <div
@@ -411,12 +421,17 @@ export default {
     };
   },
   computed: {
-    ...mapState(["etherscanBase"]),
+    ...mapState([
+      "etherscanBase",
+      "account",
+      "uploadedHashs",
+      "cards",
+      "benefactors"
+    ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
       return this.formData.message.replace(/\r?\n/g, "<br />");
     },
-    ...mapState(["account", "uploadedHashs", "cards", "benefactors"]),
     previewCardObject() {
       return {
         ...this.formData.card,

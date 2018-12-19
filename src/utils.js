@@ -24,13 +24,13 @@ const getEtherscanAddress = () => {
     .then((id) => {
       switch (id) {
         case 1:
-          return 'http://etherscan.io';
+          return 'https://etherscan.io';
         case 3:
-          return 'http://ropsten.etherscan.io';
+          return 'https://ropsten.etherscan.io';
         case 4:
-          return 'http://rinkeby.etherscan.io';
+          return 'https://rinkeby.etherscan.io';
         case 42:
-          return 'http://kovan.etherscan.io';
+          return 'https://kovan.etherscan.io';
         default:
           return 'http://localhost';
       }
