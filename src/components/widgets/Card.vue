@@ -113,7 +113,7 @@
         Your donation goes to
         <strong>
           <a
-            v-if="cdata.BenefactorIndex"
+            v-if="cdata.BenefactorIndex && benefactors"
             :href="benefactors[cdata.BenefactorIndex-1].website"
             target="_blank"
           >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
