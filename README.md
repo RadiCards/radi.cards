@@ -47,6 +47,19 @@ Run Smart Contract tests:
 
 `npm run test`
 
+# Firebase Deployment
+
+* Ensure you have access to the firebase project `radi-cards`
+
+* Install firebase tools `npm install -g firebase-tools`
+
+* You may need to login and authenticate yourself if you have not done this before 
+  * Run this `firebase login` and follow the instructions
+
+* Run the script `./firebase_deploy.sh` - this will push your current working project to live so **be careful**
+
+* Firebase deployment configuration can be found in `./firebase.json`
+
 # License
 
 [MIT](https://opensource.org/licenses/MIT)
