@@ -130,8 +130,7 @@
                 placeholder="Email address"
                 autocomplete="off"
               />
-            </div> -->
-
+            </div>-->
             <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
             <b-form-textarea
               id="textarea"
@@ -203,7 +202,10 @@
                 placeholder="0.02ETH"
                 min="0.02"
               >
-              <div v-if="formData.valueInETH">$ {{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
+              <div
+                v-if="formData.valueInETH"
+                class="usdLabel"
+              >Equals to $ {{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
             </div>
             <span
               class="info"
@@ -299,7 +301,8 @@
             <br>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a class="a--external"
+              <a
+                class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
@@ -358,15 +361,12 @@
 
             <div class="row pt-3">
               <div class="col">
-
-                <mailto-link v-if="this.formData.email && this.formData.email.length > 0"
+                <mailto-link
+                  v-if="this.formData.email && this.formData.email.length > 0"
                   :email="this.formData.email"
                   subject="You've received a Radi.Card!"
                   :body-text="'Hi there!\n\nYou have received a message as a Radi.Card. To see it, go here:\n\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\nRadiCards lets you spread the joy and send crypto eCards to your friends. Your donations go directly to charities. See more at https://radi.cards.'"
-                  >
-                  Share via email
-                </mailto-link>
-
+                >Share via email</mailto-link>
               </div>
             </div>
 
@@ -410,7 +410,8 @@
             <button class="btn" @click="giveBirth">Retry Transaction</button>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a class="a--external"
+              <a
+                class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
@@ -436,7 +437,13 @@ import { AssertionError } from "assert";
 
 export default {
   name: "creator",
-  components: { ClickableTransaction, Card, Benefactor, Samplequote, MailtoLink },
+  components: {
+    ClickableTransaction,
+    Card,
+    Benefactor,
+    Samplequote,
+    MailtoLink
+  },
   data() {
     return {
       formData: {
@@ -446,7 +453,7 @@ export default {
         recipient: null,
         benefactor: null,
         message: null,
-        email: null,
+        email: null
       },
       step: 0,
       walletVisible: false,
@@ -784,5 +791,15 @@ textarea {
 
   background: $yellow;
   padding: 1rem;
+}
+
+.usdLabel {
+  background: rgba(196, 196, 196, 0.3);
+  padding: 10px;
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 15px;
+  display: inline-block;
+  color: #000000;
 }
 </style>
