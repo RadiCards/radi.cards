@@ -82,7 +82,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["contractAddress", "accountCards", "account"])
+    ...mapState(["contractAddress", "accountCards", "account", "usdPrice"])
   },
   async mounted() {
     if (window.ethereum) {
@@ -129,6 +129,7 @@ export default {
     const loadData = function() {
       this.$store.dispatch(actions.LOAD_BENEFACTORS);
       this.$store.dispatch(actions.LOAD_CARDS);
+      this.$store.dispatch(actions.GET_USD_PRICE);
     }.bind(this);
 
     this.$store.watch(

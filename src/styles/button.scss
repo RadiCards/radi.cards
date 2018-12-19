@@ -19,6 +19,7 @@
   }
   &:hover {
     background: $black;
+    color: $white;
   }
   &:focus {
     outline: none;
@@ -62,6 +63,7 @@
 
     &:hover {
       background: $black;
+      border-bottom: 2px solid $black;
       color: $white;
     }
     &:visited {
