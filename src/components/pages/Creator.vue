@@ -359,7 +359,7 @@
             <div class="row pt-3">
               <div class="col">
 
-                <mailto-link v-if="this.formData.email.length > 0"
+                <mailto-link v-if="this.formData.email && this.formData.email.length > 0"
                   :email="this.formData.email"
                   subject="You've received a Radi.Card!"
                   :body-text="'Hi there!\n\nYou have received a message as a Radi.Card. To see it, go here:\n\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\nRadiCards lets you spread the joy and send crypto eCards to your friends. Your donations go directly to charities. See more at https://radi.cards.'"
