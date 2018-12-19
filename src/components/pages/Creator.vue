@@ -6,7 +6,10 @@
       <h4>No web3 wallet could be detected! 🧐</h4>
       <p class="pt-2">
         In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try
-        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
+        <a
+          target="__blank"
+          href="https://metamask.io"
+        >Meta Mask</a>,
         <a target="__blank" href="https://status.im">Status</a>,
         <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a> or
         <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a>! You can still view all other functionality within the website without one.
@@ -185,13 +188,13 @@
                 class="field full"
                 id="valueInETH"
                 v-model="formData.valueInETH"
-                placeholder="0.01ETH"
-                min="0"
+                placeholder="0.02ETH"
+                min="0.02"
               >
             </div>
             <span
               class="info"
-            >Every card has a base transactional price of 0.01 ETH, that’s why there is a minimum.</span>
+            >Every card has a base transactional price of 0.02 ETH, that’s why there is a minimum.</span>
           </section>
           <input type="button" @click="goToStep(3)" class="button" value="preview card">
         </div>
@@ -399,6 +402,7 @@ import ClickableTransaction from "../widgets/ClickableTransaction";
 import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
+import { AssertionError } from "assert";
 
 export default {
   name: "creator",
@@ -531,6 +535,9 @@ export default {
         this.formData.errors.push("Recipient is required.");
       } else if (!Web3.utils.isAddress(this.formData.recipient)) {
         this.formData.errors.push("Recipient not valid address.");
+      }
+      if (this.formData.valueInETH < 0.02) {
+        this.formData.errors.push("Value must be at least 0.02ETH");
       }
       if (!this.formData.message) {
         this.formData.errors.push("Message is required.");
