@@ -6,7 +6,7 @@
       </figure>
 
       <h6 class="benefactor__name mt-2">{{benefactor.name}}</h6>
-      <div :class="['btn btn--narrow btn--reveal btn--subtle', {'btn--arrow-down': !expanded, 'btn--arrow-up': expanded}]">{{(expanded) ? 'Less info' : 'More info'}}</div>
+      <div :class="['btn btn--narrow btn--reveal btn--subtle', {'btn--arrow-down': !expanded, 'btn--arrow-up': expanded}]">{{(expanded) ? 'less info' : 'more info'}}</div>
 
       <input v-if="this.$route.path.lastIndexOf('create') !== -1" type="button" @click="selectBenefactor" class="btn btn--narrow" value="select">
     </div>

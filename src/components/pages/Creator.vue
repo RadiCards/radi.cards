@@ -97,7 +97,7 @@
               class="field"
               id="recipient"
               v-model="formData.recipient"
-              placeholder
+              placeholder="0x..."
             />
 
             <div
@@ -119,6 +119,18 @@
                 >Use my wallet</div>
               </div>
             </div>
+
+            <!-- <div>
+              <span class="inputLabel">Add recipient email</span>
+              <b-form-input
+                type="text"
+                class="field"
+                id="recipient"
+                v-model="formData.email"
+                placeholder="Email address"
+                autocomplete="off"
+              />
+            </div> -->
 
             <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
             <b-form-textarea
@@ -287,7 +299,7 @@
             <br>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a
+              <a class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
@@ -324,6 +336,7 @@
               >here</a>
             </p>
             <p>Directly share this card via this link:</p>
+
             <div class="row">
               <div class="col">
                 <a
@@ -342,6 +355,21 @@
                 >Copy</span>
               </div>
             </div>
+
+            <div class="row pt-3">
+              <div class="col">
+
+                <mailto-link v-if="this.formData.email.length > 0"
+                  :email="this.formData.email"
+                  subject="You've received a Radi.Card!"
+                  :body-text="'Hi there!\n\nYou have received a message as a Radi.Card. To see it, go here:\n\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\nRadiCards lets you spread the joy and send crypto eCards to your friends. Your donations go directly to charities. See more at https://radi.cards.'"
+                  >
+                  Share via email
+                </mailto-link>
+
+              </div>
+            </div>
+
             <div class="row pt-3">
               <div class="col">
                 <router-link
@@ -382,7 +410,7 @@
             <button class="btn" @click="giveBirth">Retry Transaction</button>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
-              <a
+              <a class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
@@ -403,11 +431,12 @@ import ClickableTransaction from "../widgets/ClickableTransaction";
 import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
+import MailtoLink from "../../components/widgets/MailtoLink";
 import { AssertionError } from "assert";
 
 export default {
   name: "creator",
-  components: { ClickableTransaction, Card, Benefactor, Samplequote },
+  components: { ClickableTransaction, Card, Benefactor, Samplequote, MailtoLink },
   data() {
     return {
       formData: {
@@ -416,7 +445,8 @@ export default {
         valueInETH: null,
         recipient: null,
         benefactor: null,
-        message: null
+        message: null,
+        email: null,
       },
       step: 0,
       walletVisible: false,
