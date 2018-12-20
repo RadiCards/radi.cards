@@ -162,7 +162,7 @@
                 >
                 <label for="sendToPersonal">Send to own wallet</label>
                 <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                  <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
+                  <span>This will create the card in your own wallet, create a link to it and lets you share it however you want.</span>
                   <br>
                   <span>Your wallet:</span>
                   <br>
