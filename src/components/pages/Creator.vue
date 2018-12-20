@@ -89,48 +89,6 @@
               <p>Choose recipient & message</p>
             </div>
 
-            <br>
-
-            <span class="inputLabel">Add recipient wallet address</span>
-            <b-form-input
-              type="text"
-              class="field"
-              id="recipient"
-              v-model="formData.recipient"
-              placeholder="0x..."
-            />
-
-            <div
-              v-if="!walletVisible && account"
-              class="btn btn--subtle btn--small btn--arrow-down"
-              @click="walletVisible = true"
-            >Recipient doesn’t have a wallet address?</div>
-            <div :class="['wallet', {'isVisible' : walletVisible}]" v-if="account">
-              <h6>Recipient doesn’t have a wallet address?</h6>
-              <div class="wallet__collapse btn--arrow-up" @click="walletVisible = false"></div>
-              <p
-                class="p--small"
-              >No problem! Send the card to yourself and give them the preview link. You can also transfer it later!</p>
-              <div class="wallet__actions">
-                <span class="text">Your wallet: {{account}}</span>
-                <div
-                  @click="formData.recipient = account"
-                  class="btn btn--small btn--outline"
-                >Use my wallet</div>
-              </div>
-            </div>
-
-            <!-- <div>
-              <span class="inputLabel">Add recipient email</span>
-              <b-form-input
-                type="text"
-                class="field"
-                id="recipient"
-                v-model="formData.email"
-                placeholder="Email address"
-                autocomplete="off"
-              />
-            </div>-->
             <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
             <b-form-textarea
               id="textarea"
@@ -140,11 +98,84 @@
               :rows="3"
               :max-rows="6"
             ></b-form-textarea>
+
+            <br>
+
+            <p>Choose one of the sending options</p>
+            <div class="sendOptions">
+              <div
+                :class="formData.sendOptions === 'wallet' ? 'sendOption selected' : 'sendOption'"
+              >
+                <span
+                  v-if="formData.sendOptions !== 'wallet'"
+                  class="preOption"
+                >Want to transfer the NFT?</span>
+                <input type="radio" id="sendToWallet" value="wallet" v-model="formData.sendOptions">
+                <label for="sendToWallet">Send to another ETH wallet address</label>
+                <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
+                  <input
+                    type="text"
+                    placeholder="0x..."
+                    class="field form-control"
+                    v-model="formData.recipient"
+                  >
+                  <br>
+                  <span>Transfer the card directly; the web3 way</span>
+                </div>
+              </div>
+
+              <div :class="formData.sendOptions === 'email' ? 'sendOption selected' : 'sendOption'">
+                <span
+                  v-if="formData.sendOptions !== 'email'"
+                  class="preOption"
+                >Don’t have a receipient wallet?</span>
+                <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
+                <label for="sendToEmail">Send to email address</label>
+                <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
+                  <input
+                    type="email"
+                    placeholder="Email address"
+                    class="field form-control"
+                    v-model="formData.recipient"
+                  >
+                  <br>
+                  <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
+                  <br>
+                  <span>Your wallet:</span>
+                  <br>
+                  <div class="myAddress">{{account}}</div>
+                </div>
+              </div>
+
+              <div
+                :class="formData.sendOptions === 'personal' ? 'sendOption selected' : 'sendOption'"
+              >
+                <span
+                  v-if="formData.sendOptions !== 'personal'"
+                  class="preOption"
+                >Want to share the link manually?</span>
+                <input
+                  type="radio"
+                  id="sendToPersonal"
+                  value="personal"
+                  v-model="formData.sendOptions"
+                >
+                <label for="sendToPersonal">Send to own wallet</label>
+                <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
+                  <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
+                  <br>
+                  <span>Your wallet:</span>
+                  <br>
+                  <div class="myAddress">{{account}}</div>
+                </div>
+              </div>
+            </div>
+
             <br>
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="!formData.message || !formData.recipient"
+              :disabled="!formData.message || (!formData.recipient && formData.sendOptions != 'personal') "
               @click="goToStep(1)"
               value="next"
             >
@@ -538,8 +569,6 @@ export default {
       this.step = 2;
     },
     selectCard(card) {
-      console.log("CARD SELECTED");
-      console.log(card);
       if (this.formData.card === card) {
         this.formData.card = null;
       } else {
@@ -551,7 +580,11 @@ export default {
 
       this.checkForm();
       if (this.formData.errors.length === 0) {
-        let recipient = this.formData.recipient;
+        var recipient = this.account;
+        if (this.formData.sendOptions === "wallet") {
+          recipient = this.formData.recipient;
+        }
+
         let valueInETH = this.formData.valueInETH + "";
         let benefactorIndex = this.formData.benefactor.id;
         let cardIndex = this.formData.card.cardIndex;
@@ -572,7 +605,10 @@ export default {
       this.formData.errors = [];
       if (!this.formData.recipient) {
         this.formData.errors.push("Recipient is required.");
-      } else if (!Web3.utils.isAddress(this.formData.recipient)) {
+      } else if (
+        this.formData.sendOptions === "wallet" &&
+        !Web3.utils.isAddress(this.formData.recipient)
+      ) {
         this.formData.errors.push("Recipient not valid address.");
       }
       if (this.formData.valueInETH < 0.02) {
@@ -595,6 +631,46 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
+
+.sendOptions {
+  border: 1px solid #cccccc;
+  display: flex;
+  flex-direction: column;
+
+  .sendOptionSelectedContent {
+    margin-left: 20px;
+    padding-right: 10px;
+  }
+
+  .myAddress {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 11px;
+    padding: 10px;
+    margin: 10px 0px;
+    text-align: center;
+    background: rgba(0, 0, 0, 0.1);
+    color: #979797;
+  }
+
+  .preOption {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 14px;
+    color: #979797;
+    display: block;
+    margin-left: 17px;
+  }
+
+  .sendOption {
+    padding: 5px;
+    border: 1px solid #cccccc;
+
+    &.selected {
+      border: 1px solid #000000;
+    }
+  }
+}
 
 .card-selected {
   margin-top: -1rem;
