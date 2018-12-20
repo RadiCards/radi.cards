@@ -2,7 +2,6 @@
 <template>
   <div class="container">
     <section class="section section--hero">
-        
       <blockquote class="blockquote--hero">
         <p>We want to change the world & fight for good.</p>
         <p>Want to help?</p>
@@ -107,20 +106,30 @@
       <p>Send to any ETH addresses and emails</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
-        <card v-for="item in cards" :key="item.tokenId" :cdata="item">{{item}}</card>
+        <card
+          style="margin-right: 1rem;"
+          v-for="item in cards"
+          :key="item.tokenId"
+          :cdata="item"
+        >{{item}}</card>
       </div>
 
       <div v-else class="loading-container">
         <div class="loading-spinner">
           <div class="loading-spinner-inner">
-            <div class="holder"><div class="box"></div></div>
-            <div class="holder"><div class="box"></div></div>
-            <div class="holder"><div class="box"></div></div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
           </div>
         </div>
         <span class="text">Getting cards...</span>
       </div>
-      
     </section>
 
     <section class="section">
@@ -146,7 +155,6 @@
         </div>
         <div class="col"/>
       </div>
-      
     </section>
 
     <div class="row">
@@ -156,15 +164,16 @@
           <span v-if="totalSupply !== 1">are</span>
           <span v-else>is</span> currently
           <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span>
-          card<span v-if="totalSupply !== 1">s</span> in existence
+          card
+          <span v-if="totalSupply !== 1">s</span> in existence
         </span>
       </div>
     </div>
 
     <div class="row mt-5">
       <div class="col">
-        <span v-if="totalSupply">
-          Want to help buidl-ing? <a href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA">Join our Telegram group!</a>
+        <span v-if="totalSupply">Want to help buidl-ing?
+          <a href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA">Join our Telegram group!</a>
         </span>
       </div>
     </div>
