@@ -592,7 +592,7 @@ export default {
         this.formData.card = card;
       }
     },
-    giveBirth: function() {
+    giveBirth: function(event) {
       event.preventDefault();
 
       this.checkForm();
