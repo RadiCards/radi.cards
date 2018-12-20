@@ -305,16 +305,19 @@ footer {
   overflow-x: auto;
 
   perspective: 1000px;
-  scroll-snap-type: x mandatory;
-  scroll-padding: 1.25rem;
 
   &::after {
     content: "";
     flex: 0 0 0.25rem;
   }
 
-  & > * {
-    scroll-snap-align: start;
+  @supports (scroll-snap-type: x mandatory) {
+    scroll-snap-type: x mandatory;
+    scroll-padding: 1.25rem;
+
+    & > * {
+      scroll-snap-align: start;
+    }
   }
 }
 
