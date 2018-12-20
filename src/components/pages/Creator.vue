@@ -405,7 +405,7 @@
                 @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
                 :to="{ name: 'cardshop' }"
                 style="width:100%; margin-top:20px;"
-                class="btn"
+                class="btn pick"
               >Pick another card and keep rocking</router-link>
             </div>
           </div>
@@ -647,6 +647,15 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
+
+.pick {
+  background: rgba(196, 196, 196, 0.2);
+  color: black;
+  font-family: Helvetica;
+  line-height: normal;
+  font-size: 18px;
+  font-weight: bold;
+}
 
 .share-box {
   background: white;
