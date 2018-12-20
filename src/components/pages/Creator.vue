@@ -176,7 +176,7 @@
               type="button"
               class="button button--fullwidth"
               :disabled="checkMessageAndReceiver()"
-              @click="goToStep(1)"
+              @click="handleMessageAndReceiver()"
               value="next"
             >
           </div>
@@ -516,6 +516,7 @@ export default {
         }
       };
     },
+
     card() {
       var cIndex = this.$route.params.cardIndex;
       console.log(cIndex);
@@ -552,6 +553,18 @@ export default {
         (!this.formData.recipient && this.formData.sendOptions !== "personal")
       );
     },
+    handleMessageAndReceiver() {
+      if (this.checkMessageAndReceiver()) {
+        return;
+      }
+
+      if (this.formData.sendOptions !== "wallet") {
+        this.formData.recipient = this.account;
+      }
+
+      console.log(this.formData.recipient);
+      this.goToStep(1);
+    },
     copyToClipboard(text) {
       this.$copyText(text);
     },
@@ -585,7 +598,6 @@ export default {
         if (this.formData.sendOptions === "wallet") {
           recipient = this.formData.recipient;
         }
-
         let valueInETH = this.formData.valueInETH + "";
         let benefactorIndex = this.formData.benefactor.id;
         let cardIndex = this.formData.card.cardIndex;

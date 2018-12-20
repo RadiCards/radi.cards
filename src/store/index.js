@@ -180,7 +180,6 @@ const store = new Vuex.Store({
       { recipient, benefactorIndex, cardIndex, message, extra, valueInETH }
     ) {
       const contract = await state.contract.deployed();
-
       commit(mutations.CLEAR_GIFT_STATUS);
 
       const blockNumber = await state.web3.eth.getBlockNumber();
@@ -191,7 +190,7 @@ const store = new Vuex.Store({
         cardIndex: cardIndex
       });
 
-      //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted. 
+      //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted.
       // if rejected, catch in fail
       try {
         const transaction = await contract.gift.sendTransaction(
@@ -199,7 +198,8 @@ const store = new Vuex.Store({
           benefactorIndex,
           cardIndex,
           message,
-          extra, {
+          extra,
+          {
             from: state.account,
             value: state.web3.utils.toWei(valueInETH, "ether")
           }
@@ -339,13 +339,10 @@ const store = new Vuex.Store({
       commit(mutations.SET_TRANSFER_STATUS, {});
     },
 
-    [actions.LOAD_ACCOUNT_CARDS]: async function ({
-      commit,
-      dispatch,
-      state
-    }, {
-      account
-    }) {
+    [actions.LOAD_ACCOUNT_CARDS]: async function(
+      { commit, dispatch, state },
+      { account }
+    ) {
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
       const tokenDetails = tokenIds.map(id => contract.tokenDetails(id));
