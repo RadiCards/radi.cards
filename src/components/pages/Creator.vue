@@ -604,7 +604,7 @@ export default {
     },
     checkForm: function() {
       this.formData.errors = [];
-      if (!this.formData.recipient) {
+      if (this.formData.sendOptions === "wallet" && !this.formData.recipient) {
         this.formData.errors.push("Recipient is required.");
       } else if (
         this.formData.sendOptions === "wallet" &&
