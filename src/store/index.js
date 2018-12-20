@@ -6,11 +6,14 @@ import * as actions from "./actions";
 import * as mutations from "./mutation-types";
 import createLogger from "vuex/dist/logger";
 import moment from "moment";
-import { getEtherscanAddress, getNetIdString } from "../utils";
+import {
+  getEtherscanAddress,
+  getNetIdString
+} from "../utils";
 import _ from "lodash";
 
-import truffleContract from "truffle-contract";
-import RadiCardsABI from "../../build/contracts/RadiCards.json";
+import truffleContract from 'truffle-contract';
+import RadiCardsABI from '../../build/contracts/RadiCards.json';
 
 const RadiCards = truffleContract(RadiCardsABI);
 
@@ -36,7 +39,7 @@ const store = new Vuex.Store({
     deepUrlCard: null,
     transfers: [],
     giftingStatus: {},
-    transferStatus: "",
+    transferStatus: '',
     usdPrice: 0
   },
   getters: {
@@ -45,61 +48,67 @@ const store = new Vuex.Store({
     },
     getTransferStatus: state => () => {
       console.log(state.transferStatus);
-      return state.transferStatus || "";
+      return state.transferStatus || '';
     }
   },
   mutations: {
-    [mutations.SET_BENEFACTORS](state, benefactors) {
+    [mutations.SET_BENEFACTORS] (state, benefactors) {
       state.benefactors = benefactors;
     },
-    [mutations.SET_DEEP_URL_CARD](state, card) {
+    [mutations.SET_DEEP_URL_CARD] (state, card) {
       state.deepUrlCard = card;
     },
-    [mutations.SET_DEEP_URL_CARD_NUMBER](state, cardNo) {
+    [mutations.SET_DEEP_URL_CARD_NUMBER] (state, cardNo) {
       state.deepUrlCardNumber = cardNo;
     },
-    [mutations.SET_ACCOUNT](state, account) {
+    [mutations.SET_ACCOUNT] (state, account) {
       state.account = account;
     },
-    [mutations.SET_CARDS](state, cards) {
+    [mutations.SET_CARDS] (state, cards) {
       state.cards = cards;
     },
-    [mutations.SET_USD_PRICE](state, price) {
+    [mutations.SET_USD_PRICE] (state, price) {
       console.log(price);
       console.log(state);
       state.usdPrice = price;
     },
-    [mutations.SET_CURRENT_NETWORK](state, currentNetwork) {
+    [mutations.SET_CURRENT_NETWORK] (state, currentNetwork) {
       state.currentNetwork = currentNetwork;
     },
-    [mutations.SET_ETHERSCAN_NETWORK](state, etherscanBase) {
+    [mutations.SET_ETHERSCAN_NETWORK] (state, etherscanBase) {
       state.etherscanBase = etherscanBase;
     },
-    [mutations.SET_WEB3]: async function(state, { web3, contract }) {
+    [mutations.SET_WEB3]: async function (state, {
+      web3,
+      contract
+    }) {
       state.web3 = web3;
       state.contract = contract;
       state.contractAddress = (await RadiCards.deployed()).address;
     },
-    [mutations.SET_UPLOAD_HASH](state, hash) {
+    [mutations.SET_UPLOAD_HASH] (state, hash) {
       state.uploadedHash = hash;
     },
-    [mutations.SET_TOTAL_SUPPLY](state, totalSupply) {
+    [mutations.SET_TOTAL_SUPPLY] (state, totalSupply) {
       state.totalSupply = totalSupply;
     },
-    [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
+    [mutations.SET_ACCOUNT_CARDS] (state, accountCards) {
       state.accountCards = accountCards;
     },
-    [mutations.SET_TRANSFER](state, transfer) {
-      Vue.set(state, "transfers", state.transfers.concat(transfer));
+    [mutations.SET_TRANSFER] (state, transfer) {
+      Vue.set(state, 'transfers', state.transfers.concat(transfer));
     },
-    [mutations.SET_TRANSFER_STATUS](state, data) {
+    [mutations.SET_TRANSFER_STATUS] (state, data) {
       state.transferStatus = data.status;
     },
-    [mutations.CLEAR_TRANSFER_STATUS](state) {
-      Vue.set(state, `transferStatus`, "");
+    [mutations.CLEAR_TRANSFER_STATUS] (state) {
+      Vue.set(state, `transferStatus`, '');
     },
     [mutations.SET_GIFT_STATUS](state, data) {
-      const { cardIndex, to } = data;
+      const {
+        cardIndex,
+        to
+      } = data;
       var arrayIndex = `${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`;
       const newState = {
         ...state.giftingStatus[arrayIndex],
@@ -111,12 +120,16 @@ const store = new Vuex.Store({
         newState
       );
     },
-    [mutations.CLEAR_GIFT_STATUS](state) {
+    [mutations.CLEAR_GIFT_STATUS] (state) {
       Vue.set(state, `giftingStatus`, {});
     }
   },
   actions: {
-    [actions.GET_CURRENT_NETWORK]: function({ commit, dispatch, state }) {
+    [actions.GET_CURRENT_NETWORK]: function ({
+      commit,
+      dispatch,
+      state
+    }) {
       getNetIdString().then(currentNetwork => {
         commit(mutations.SET_CURRENT_NETWORK, currentNetwork);
       });
@@ -125,12 +138,16 @@ const store = new Vuex.Store({
         commit(mutations.SET_ETHERSCAN_NETWORK, etherscanBase);
       });
     },
-    [actions.INIT_APP]: async function({ commit, dispatch, state }, web3) {
+    [actions.INIT_APP]: async function ({
+      commit,
+      dispatch,
+      state
+    }, web3) {
       RadiCards.setProvider(web3.currentProvider);
 
       //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
       if (typeof RadiCards.currentProvider.sendAsync !== "function") {
-        RadiCards.currentProvider.sendAsync = function() {
+        RadiCards.currentProvider.sendAsync = function () {
           return RadiCards.currentProvider.send.apply(
             RadiCards.currentProvider,
             arguments
@@ -154,8 +171,11 @@ const store = new Vuex.Store({
         let updatedAccounts = await web3.eth.getAccounts();
         let contract = await RadiCards.deployed();
 
-        let totalSupply = (await contract.totalSupply()).toString("10");
-        commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
+        let totalSupply = (await contract.totalSupply()).toString('10');
+
+        if (state.totalSupply !== totalSupply) {
+          commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
+        }
 
         if (updatedAccounts[0] !== account) {
           account = updatedAccounts[0];
@@ -171,21 +191,33 @@ const store = new Vuex.Store({
       }
     },
 
-    [actions.RESET_GIFT_STATUS]: async function({ commit, dispatch, state }) {
+    [actions.RESET_GIFT_STATUS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
       commit(mutations.SET_GIFT_STATUS, {});
     },
 
-    async [actions.BIRTH](
-      { commit, dispatch, state },
-      { recipient, benefactorIndex, cardIndex, message, extra, valueInETH }
-    ) {
+    async [actions.BIRTH]({
+      commit,
+      dispatch,
+      state
+    }, {
+      recipient,
+      benefactorIndex,
+      cardIndex,
+      message,
+      extra,
+      valueInETH
+    }) {
       const contract = await state.contract.deployed();
       commit(mutations.CLEAR_GIFT_STATUS);
 
       const blockNumber = await state.web3.eth.getBlockNumber();
 
       commit(mutations.SET_GIFT_STATUS, {
-        status: "TRIGGERED",
+        status: 'TRIGGERED',
         to: recipient,
         cardIndex: cardIndex
       });
@@ -201,44 +233,47 @@ const store = new Vuex.Store({
           extra,
           {
             from: state.account,
-            value: state.web3.utils.toWei(valueInETH, "ether")
+            value: state.web3.utils.toWei(valueInETH, 'ether')
           }
         );
-        console.log("transaction submitted");
+        console.log('transaction submitted');
         commit(mutations.SET_GIFT_STATUS, {
-          status: "SUBMITTED",
+          status: 'SUBMITTED',
           to: recipient,
           cardIndex: cardIndex,
           tx: transaction
         });
       } catch (e) {
-        console.log("rejection/error");
+        console.log('rejection/error');
         commit(mutations.SET_GIFT_STATUS, {
-          status: "FAILURE",
+          status: 'FAILURE',
           to: recipient,
           cardIndex: cardIndex
         });
       }
 
       // Watch for the transfer event from ZERO address to the recipient immediately after the
-      const transferEvent = contract.Transfer(
-        {
-          _from: `0x0`,
-          _to: recipient
-        },
-        {
-          fromBlock: blockNumber,
-          toBlock: "latest" // wait until event comes through
-        }
-      );
+      const transferEvent = contract.Transfer({
+        _from: `0x0`,
+        _to: recipient
+      }, {
+        fromBlock: blockNumber,
+        toBlock: "latest" // wait until event comes through
+      });
 
-      transferEvent.watch(function(error, event) {
+      transferEvent.watch(function (error, event) {
         if (!error) {
           console.log("Transfer event found", event);
-          const { args } = event;
-          const { _from, _to, _tokenId } = args;
+          const {
+            args
+          } = event;
+          const {
+            _from,
+            _to,
+            _tokenId
+          } = args;
           commit(mutations.SET_GIFT_STATUS, {
-            status: "SUCCESS",
+            status: 'SUCCESS',
             to: recipient,
             cardIndex: cardIndex,
             tokenId: _tokenId
@@ -248,9 +283,9 @@ const store = new Vuex.Store({
             account: state.account
           });
         } else {
-          console.log("failure", error);
+          console.log('failure', error);
           commit(mutations.SET_GIFT_STATUS, {
-            status: "FAILURE",
+            status: 'FAILURE',
             to: recipient,
             cardIndex: cardIndex
           });
@@ -258,68 +293,72 @@ const store = new Vuex.Store({
         }
       });
     },
-    [actions.TRANSFER_CARD]: async function(
-      { commit, dispatch, state },
-      { recipient, tokenId }
-    ) {
+    [actions.TRANSFER_CARD]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      recipient,
+      tokenId
+    }) {
       const contract = await state.contract.deployed();
 
       commit(mutations.CLEAR_TRANSFER_STATUS);
       const blockNumber = await state.web3.eth.getBlockNumber();
 
       console.log(recipient);
-      console.log("transfering card...", recipient, tokenId);
+      console.log('transfering card...', recipient, tokenId);
       const transaction = contract.safeTransferFrom(
         state.account,
         recipient,
-        tokenId,
-        {
+        tokenId, {
           from: state.account
         }
       );
 
-      const transferEvent = contract.Transfer(
-        {
-          _from: state.account,
-          _to: recipient
-        },
-        {
-          fromBlock: blockNumber,
-          toBlock: "latest" // wait until event comes through
-        }
-      );
+      const transferEvent = contract.Transfer({
+        _from: state.account,
+        _to: recipient
+      }, {
+        fromBlock: blockNumber,
+        toBlock: "latest" // wait until event comes through
+      });
 
-      transferEvent.watch(function(error, event) {
+      transferEvent.watch(function (error, event) {
         if (!error) {
           console.log("Transfer event found", event);
-          const { args } = event;
+          const {
+            args
+          } = event;
           commit(mutations.SET_TRANSFER_STATUS, {
-            status: "SUCCESS"
+            status: 'SUCCESS'
           });
 
           dispatch(actions.LOAD_ACCOUNT_CARDS, {
             account: state.account
           });
         } else {
-          console.log("failure", error);
+          console.log('failure', error);
           commit(mutations.SET_TRANSFER_STATUS, {
-            status: "FAILURE"
+            status: 'FAILURE'
           });
           transferEvent.stopWatching();
         }
       });
     },
 
-    [actions.RESET_TRANSFER_STATUS]: async function({
+    [actions.RESET_TRANSFER_STATUS]: async function ({
       commit,
       dispatch,
       state
     }) {
       commit(mutations.SET_TRANSFER_STATUS, {});
     },
-    [actions.GET_USD_PRICE]: async function({ commit }) {
+    [actions.GET_USD_PRICE]: async function ({
+      commit
+    }) {
       axios
-        .get("https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD")
+        .get('https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD')
         .then(
           response => {
             let currentPriceInUSD = response.data[0].price_usd;
@@ -331,7 +370,7 @@ const store = new Vuex.Store({
           }
         );
     },
-    [actions.RESET_TRANSFER_STATUS]: async function({
+    [actions.RESET_TRANSFER_STATUS]: async function ({
       commit,
       dispatch,
       state
@@ -339,9 +378,9 @@ const store = new Vuex.Store({
       commit(mutations.SET_TRANSFER_STATUS, {});
     },
 
-    [actions.LOAD_ACCOUNT_CARDS]: async function(
-      { commit, dispatch, state },
-      { account }
+    [actions.LOAD_ACCOUNT_CARDS]: async function (
+      {commit, dispatch, state},
+      {account}
     ) {
       const contract = await state.contract.deployed();
       let tokenIds = await contract.tokensOf(account);
@@ -349,7 +388,7 @@ const store = new Vuex.Store({
       let tokenDetailsArray = await Promise.all(tokenDetails);
       let tokenDetailsArrayProcessed = [];
       let loopIndex = 0;
-      tokenDetailsArray.forEach(function(accountToken) {
+      tokenDetailsArray.forEach(function (accountToken) {
         let gifter = accountToken[0];
         let giftAmount = accountToken[1].toNumber();
         let message = accountToken[2];
@@ -381,10 +420,13 @@ const store = new Vuex.Store({
       });
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
     },
-    [actions.LOAD_DEEP_URL_CARD]: async function(
-      { commit, dispatch, state },
-      { tokenId }
-    ) {
+    [actions.LOAD_DEEP_URL_CARD]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      tokenId
+    }) {
       if (state.deepUrlCardNumber === null) {
         commit(mutations.SET_DEEP_URL_CARD_NUMBER, tokenId);
       } else {
@@ -423,7 +465,11 @@ const store = new Vuex.Store({
         }
       }
     },
-    [actions.LOAD_BENEFACTORS]: async function({ commit, dispatch, state }) {
+    [actions.LOAD_BENEFACTORS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
       const contract = await state.contract.deployed();
       let benefactorIds = await contract.benefactorsKeys();
 
@@ -435,7 +481,11 @@ const store = new Vuex.Store({
       const benefactors = await Promise.all(benefactorsPromises);
       commit(mutations.SET_BENEFACTORS, benefactors);
     },
-    [actions.LOAD_CARDS]: async function({ commit, dispatch, state }) {
+    [actions.LOAD_CARDS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
       if (state.contract) {
         const contract = await state.contract.deployed();
         let cardIds = await contract.cardsKeys();
@@ -454,24 +504,22 @@ const store = new Vuex.Store({
           dispatch(actions.LOAD_ACCOUNT_CARDS, {
             account: this.state.account
           });
-          console.log("DISPATCH HERE");
-          console.log(state);
-          dispatch(actions.LOAD_DEEP_URL_CARD, {
-            tokenId: this.state.deepUrlCardNumber
-          });
         }
+        dispatch(actions.LOAD_DEEP_URL_CARD, {
+          tokenId: this.state.deepUrlCardNumber
+        });
       }
     }
   }
 });
 
-async function mapTokenDetails(results, ipfsPrefix, id) {
+async function mapTokenDetails (results, ipfsPrefix, id) {
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
   dataResp.cardIndex = id.toNumber();
   return dataResp;
 }
 
-function mapBenefactorDetails(results, id) {
+function mapBenefactorDetails (results, id) {
   console.log(results);
   let data = {
     address: results[0],
