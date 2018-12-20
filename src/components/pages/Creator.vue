@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-        
+
         <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
@@ -347,11 +347,11 @@
           class="section step step--twocol step5"
           v-if="(step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS')"
         >
-          <!-- <div class="step__card">
+          <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
-          </div>-->
+          </div>
           <div class="step__info">
             <img src="/static/icons/success.png" alt style="width: 5rem;">
             <br>
