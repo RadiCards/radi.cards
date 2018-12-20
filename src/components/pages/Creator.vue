@@ -344,71 +344,68 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS'"
+          v-if="(step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS')"
         >
-          <div class="step__card">
+          <!-- <div class="step__card">
             <div class="centered">
               <card v-if="formData.card" :cdata="previewCardObject"/>
             </div>
-          </div>
-
+          </div>-->
           <div class="step__info">
             <img src="/static/icons/success.png" alt style="width: 5rem;">
             <br>
             <br>
 
-            <h4>Thank you!</h4>
+            <h4>You rock!</h4>
 
-            <p>We’ve successfully sent an awesome radicard to {{account}}</p>
+            <p>We've successfully sent an awesome radicard to
+              <clickable-address :eth-address="formData.recipient"></clickable-address>
+            </p>
             <br>
 
-            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
-              You can view the transaction of Etherscan
-              <a
-                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
-                target="_blank"
-              >here</a>
-            </p>
-            <p>Directly share this card via this link:</p>
-
-            <div class="row">
-              <div class="col">
+            <div class="share-box">
+              <h2>Share with others</h2>
+              <br>
+              <span class="subtext">email this radicard to your friend</span>
+              <br>
+              <div class="email-field">
+                <input
+                  type="email"
+                  class="field form-control"
+                  style="margin-bottom:0px;"
+                  v-model="formData.email"
+                >
+                <mailto-link
+                  v-if="formData.email && formData.email.length > 0"
+                  :email="formData.email"
+                  subject="You've received a Radi.Card!"
+                  :body-text="'Hi there!\n\nYou have received a message as a Radi.Card. To see it, go here:\n\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\nRadiCards lets you spread the joy and send crypto eCards to your friends. Your donations go directly to charities. See more at https://radi.cards.'"
+                >send</mailto-link>
+              </div>
+              <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
+              <div class="copy-field">
                 <a
+                  id="copyfield"
                   :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
                   target="_blank"
-                  class="btn btn--narrow btn--subtle"
-                  style="margin: 0.5rem 0.25rem 0 0;"
+                  class="field form-control"
                 >
                   <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
                 </a>
-                <span
+                <div
                   @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
                   target="_blank"
-                  class="btn btn--narrow btn--subtle"
-                  style="margin-top: 0.5rem;"
-                >Copy</span>
+                >copy</div>
               </div>
             </div>
 
-            <div class="row pt-3">
-              <div class="col">
-                <mailto-link
-                  v-if="this.formData.email && this.formData.email.length > 0"
-                  :email="this.formData.email"
-                  subject="You've received a Radi.Card!"
-                  :body-text="'Hi there!\n\nYou have received a message as a Radi.Card. To see it, go here:\n\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\nRadiCards lets you spread the joy and send crypto eCards to your friends. Your donations go directly to charities. See more at https://radi.cards.'"
-                >Share via email</mailto-link>
-              </div>
-            </div>
-
-            <div class="row pt-3">
-              <div class="col">
-                <router-link
-                  @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
-                  :to="{ name: 'cardshop' }"
-                  class="btn"
-                >Send another card</router-link>
-              </div>
+            <div>
+              <router-link
+                @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+                :to="{ name: 'cardshop' }"
+                style="width:100%; margin-top:20px;"
+                class="btn"
+              >Pick another card and keep rocking</router-link>
             </div>
           </div>
         </div>
@@ -460,6 +457,7 @@ import * as _ from "lodash";
 import Web3 from "web3";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
+import ClickableAddress from "../widgets/ClickableAddress";
 import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
@@ -473,7 +471,8 @@ export default {
     Card,
     Benefactor,
     Samplequote,
-    MailtoLink
+    MailtoLink,
+    ClickableAddress
   },
   data() {
     return {
@@ -558,11 +557,14 @@ export default {
         return;
       }
 
+      if (this.formData.sendOptions === "email") {
+        console.log(this.formData.recipient);
+        this.formData.email = this.formData.recipient;
+      }
+
       if (this.formData.sendOptions !== "wallet") {
         this.formData.recipient = this.account;
       }
-
-      console.log(this.formData.recipient);
       this.goToStep(1);
     },
     copyToClipboard(text) {
@@ -644,6 +646,61 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
+
+.share-box {
+  background: white;
+  padding: 20px;
+  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+
+  .field {
+    background: rgba(196, 196, 196, 0.15);
+    //  margin-bottom: 0;
+    //   padding-bottom: 0;
+  }
+
+  .subtext {
+    font-family: Helvetica;
+    line-height: normal;
+    font-size: 14px;
+
+    color: #000000;
+
+    opacity: 0.3;
+  }
+
+  .email-field {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 20px;
+
+    a {
+      color: white;
+      background: black;
+      padding: 0px 15px;
+      line-height: 38px;
+    }
+  }
+
+  .copy-field {
+    display: flex;
+    flex-direction: row;
+    border: 1px solid black;
+
+    #copyfield {
+      background: rgba(196, 196, 196, 0.15) !important;
+      border: 0;
+    }
+
+    div {
+      color: #a0a0a0;
+      background: rgba(196, 196, 196, 0.15);
+      padding: 9px 10px;
+      height: 100%;
+      border: 0px;
+      margin: 0px;
+    }
+  }
+}
 
 .sendOptions {
   border: 1px solid #cccccc;

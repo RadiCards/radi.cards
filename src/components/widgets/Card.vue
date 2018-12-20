@@ -256,6 +256,7 @@ export default {
   border: 0;
   border-bottom-color: transparent;
   cursor: pointer;
+  margin: 0 auto;
 
   transition: all 0.2s ease-in-out;
 
