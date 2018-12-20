@@ -77,7 +77,7 @@
             </div>
           </div>
         </div>
-
+        
         <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
@@ -85,6 +85,7 @@
 
           <div class="step__info">
             <div class="step__title">
+              <h4 class="section__title">STEP ONE</h4>
               <h4>Customise card</h4>
               <p>Choose recipient & message</p>
             </div>
