@@ -175,7 +175,7 @@
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="!formData.message || (!formData.recipient && formData.sendOptions != 'personal') "
+              :disabled="checkMessageAndReceiver()"
               @click="goToStep(1)"
               value="next"
             >
@@ -544,6 +544,14 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    checkMessageAndReceiver() {
+      return (
+        !this.formData.message ||
+        (this.formData.sendOptions === "wallet" &&
+          !Web3.utils.isAddress(this.formData.recipient)) ||
+        (!this.formData.recipient && this.formData.sendOptions !== "personal")
+      );
+    },
     copyToClipboard(text) {
       this.$copyText(text);
     },
@@ -551,14 +559,7 @@ export default {
       this.setBenefactor(item);
     },
     goToStep(pageNumber) {
-      // if (
-      //   !this.getGiftingStatus(
-      //     this.formData.recipient,
-      //     this.formData.card.cardIndex || this.step < 3
-      //   ).status
-      // ) {
       this.step = pageNumber;
-      // }
     },
     setDonationAmount(amount) {
       event.preventDefault();
