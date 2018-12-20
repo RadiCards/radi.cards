@@ -638,6 +638,15 @@ export default {
   display: flex;
   flex-direction: column;
 
+  span {
+    font-size: 12px;
+    line-height: 12px;
+  }
+
+  label {
+    font-weight: bold;
+  }
+
   .sendOptionSelectedContent {
     margin-left: 20px;
     padding-right: 10px;
@@ -658,7 +667,8 @@ export default {
     font-family: Helvetica;
     line-height: normal;
     font-size: 14px;
-    color: #979797;
+    color: #000000;
+    opacity: 0.3;
     display: block;
     margin-left: 17px;
   }
