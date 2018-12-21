@@ -311,14 +311,16 @@ footer {
     flex: 0 0 0.25rem;
   }
 
-  @supports (scroll-snap-type: x mandatory) {
-    scroll-snap-type: x mandatory;
-    scroll-padding: 1.25rem;
+  // Temporarily disabled this cool feature because some :( browsers don't seem to roll well with it
 
-    & > * {
-      scroll-snap-align: start;
-    }
-  }
+  // @supports (scroll-snap-type: x mandatory) {
+  //   scroll-snap-type: x mandatory;
+  //   scroll-padding: 1.25rem;
+
+  //   & > * {
+  //     scroll-snap-align: start;
+  //   }
+  // }
 }
 
 footer {
