@@ -57,7 +57,7 @@ module.exports = {
       },
       network_id: 1,
       gas: 6075039, // default = 4712388
-      gasPrice: 5500000000 // default = 100 gwei = 100000000000
+      gasPrice: 4000000000 // default = 100 gwei = 100000000000
     },
     ropsten: {
       provider: function () {
