@@ -453,6 +453,8 @@ const store = new Vuex.Store({
         let cards = await Promise.all(cardPromises);
         cards.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
+        console.log(cards);
+
         commit(mutations.SET_CARDS, cards);
         if (this.state.account) {
           dispatch(actions.LOAD_ACCOUNT_CARDS, {

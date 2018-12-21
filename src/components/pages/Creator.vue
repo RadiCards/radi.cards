@@ -104,70 +104,86 @@
 
             <p>Choose one of the sending options</p>
             <div class="sendOptions">
-              <div
-                :class="formData.sendOptions === 'wallet' ? 'sendOption selected' : 'sendOption'"
-              >
-                <span
-                  v-if="formData.sendOptions !== 'wallet'"
-                  class="preOption"
-                >Want to transfer the NFT?</span>
-                <input type="radio" id="sendToWallet" value="wallet" v-model="formData.sendOptions">
-                <label for="sendToWallet">Send to another ETH wallet address</label>
-                <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
+              <div>
+                <div
+                  :class="formData.sendOptions === 'wallet' ? 'sendOption selected' : 'sendOption'"
+                >
                   <input
-                    type="text"
-                    placeholder="0x..."
-                    class="field form-control"
-                    v-model="formData.recipient"
+                    type="radio"
+                    id="sendToWallet"
+                    value="wallet"
+                    v-model="formData.sendOptions"
                   >
-                  <br>
-                  <span>Transfer the card directly; the web3 way</span>
+                  <div class="rightColumn">
+                    <span
+                      v-if="formData.sendOptions !== 'wallet'"
+                      class="preOption"
+                    >Want to transfer the NFT?</span>
+                    
+                    <label for="sendToWallet">Send to another ETH wallet address</label>
+                    <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
+                      <input
+                        type="text"
+                        placeholder="0x..."
+                        class="field form-control"
+                        v-model="formData.recipient"
+                      >
+                      <br>
+                      <span>Transfer the card directly; the web3 way</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div :class="formData.sendOptions === 'email' ? 'sendOption selected' : 'sendOption'">
-                <span
-                  v-if="formData.sendOptions !== 'email'"
-                  class="preOption"
-                >Don’t have a receipient wallet?</span>
-                <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
-                <label for="sendToEmail">Send to email address</label>
-                <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
-                  <input
-                    type="email"
-                    placeholder="Email address"
-                    class="field form-control"
-                    v-model="formData.recipient"
-                  >
-                  <br>
-                  <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
-                  <br>
-                  <span>Your wallet:</span>
-                  <br>
-                  <div class="myAddress">{{account}}</div>
+                <div
+                  :class="formData.sendOptions === 'email' ? 'sendOption selected' : 'sendOption'"
+                >
+                  <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
+                  <div class="rightColumn">
+                    <span
+                      v-if="formData.sendOptions !== 'email'"
+                      class="preOption"
+                    >Don’t have a receipient wallet?</span>
+                    <label for="sendToEmail">Send to email address</label>
+                    <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
+                      <input
+                        type="email"
+                        placeholder="Email address"
+                        class="field form-control"
+                        v-model="formData.recipient"
+                      >
+                      <br>
+                      <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
+                      <br>
+                      <span>Your wallet:</span>
+                      <br>
+                      <div class="myAddress">{{account}}</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
               <div
                 :class="formData.sendOptions === 'personal' ? 'sendOption selected' : 'sendOption'"
               >
-                <span
-                  v-if="formData.sendOptions !== 'personal'"
-                  class="preOption"
-                >Want to share the link manually?</span>
                 <input
                   type="radio"
                   id="sendToPersonal"
                   value="personal"
                   v-model="formData.sendOptions"
                 >
-                <label for="sendToPersonal">Send to own wallet</label>
-                <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                  <span>This will create the card in your own wallet, create a link to it and lets you share it however you want.</span>
-                  <br>
-                  <span>Your wallet:</span>
-                  <br>
-                  <div class="myAddress">{{account}}</div>
+                <div class="rightColumn">
+                  <span
+                    v-if="formData.sendOptions !== 'personal'"
+                    class="preOption"
+                  >Want to share the link manually?</span>
+                  <label for="sendToPersonal">Send to own wallet</label>
+                  <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
+                    <span>This will create the card in your own wallet, create a link to it and lets you share it however you want.</span>
+                    <br>
+                    <span>Your wallet:</span>
+                    <br>
+                    <div class="myAddress">{{account}}</div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -715,11 +731,12 @@ export default {
 .sendOptions {
   border: 1px solid #cccccc;
   display: flex;
+  margin-top: 10px;
   flex-direction: column;
 
   span {
-    font-size: 12px;
-    line-height: 12px;
+    font-size: 14px;
+    line-height: 14px;
   }
 
   label {
@@ -727,14 +744,30 @@ export default {
   }
 
   .sendOptionSelectedContent {
-    margin-left: 20px;
     padding-right: 10px;
+    margin-top: 10px;
+  }
+
+  input[type="radio"] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    width: 16px;
+    border-radius: 16px;
+    height: 16px;
+    margin-bottom: 0px;
+    margin-right: 10px;
+    min-width: 16px;
+
+    &:checked {
+      background: black;
+    }
   }
 
   .myAddress {
     font-family: Helvetica;
     line-height: normal;
-    font-size: 11px;
+    font-size: 14px;
     padding: 10px;
     margin: 10px 0px;
     text-align: center;
@@ -749,15 +782,22 @@ export default {
     color: #000000;
     opacity: 0.3;
     display: block;
-    margin-left: 17px;
+    font-style: italic;
   }
 
   .sendOption {
-    padding: 5px;
+    padding: 10px;
     border: 1px solid #cccccc;
+    display: flex;
+    align-items: center;
 
     &.selected {
       border: 1px solid #000000;
+    }
+
+    .rightColumn {
+      display: flex;
+      flex-direction: column;
     }
   }
 }
