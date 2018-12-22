@@ -149,7 +149,12 @@ export default {
       let allCompanies = {
         QmQTexvhmvrWzfwrPkKeB7Nahpvgiv68Ciy5zE8Cr4Afp8:
           "Electronic Frontier Foundation",
-        QmNRUjkackbZcnkxhjDcF81dAHDdNK9yuZShHPGCi4Eih4: "ETH Berlin"
+        QmNRUjkackbZcnkxhjDcF81dAHDdNK9yuZShHPGCi4Eih4: "ETH Berlin",
+        QmR2ydKGbXeLSeuNrXbKjoBvZLrb9BD9tnPD1ReqCPDES3: "ETH Berlin",
+        QmcWtZHiCQNjZzoxVXpish8muQC9bi86RB7w2nAABNXKp8: "Centrifuge",
+        QmNNSEZXNRXnDjVp2iz8e7B9Ufk2D7ikZwzrGHTUBWs1mf: "Astroledger",
+        QmXLpmzS8myBfH8xh2e9Rfvn79PR8dGetpQzSFdaMWVik2: "Colony",
+        QmPF7eAtGoaEgSAt9XCP2DuWfc8sbtQfraffDsx3svu4Ph: "Colony"
       };
       let imageIPFSHash = this.cdata.image.substring(
         this.cdata.image.lastIndexOf("/") + 1,
