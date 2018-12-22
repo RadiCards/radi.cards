@@ -562,14 +562,26 @@ export default {
   },
   methods: {
     checkMessageAndReceiver() {
-      return (
-        !this.formData.message ||
-        (this.formData.sendOptions === "wallet" &&
-          !Web3.utils.isAddress(this.formData.recipient)) ||
-        (!this.formData.recipient &&
-          this.formData.sendOptions !== "personal") ||
-        (!this.formData.sendOptions === "email" && !this.formData.email)
-      );
+      if (!this.formData.message) {
+        return true;
+      }
+
+      if (
+        this.formData.sendOptions === "wallet" &&
+        Web3.utils.isAddress(this.formData.recipient)
+      ) {
+        return false;
+      }
+
+      if (this.formData.sendOptions === "personal") {
+        return false;
+      }
+
+      if (this.formData.sendOptions === "email" && this.formData.email) {
+        return false;
+      }
+
+      return true;
     },
     handleMessageAndReceiver() {
       if (this.checkMessageAndReceiver()) {
