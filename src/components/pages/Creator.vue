@@ -149,7 +149,7 @@
                         type="email"
                         placeholder="Email address"
                         class="field form-control"
-                        v-model="formData.recipient"
+                        v-model="formData.email"
                       >
                       <br>
                       <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
@@ -566,17 +566,14 @@ export default {
         !this.formData.message ||
         (this.formData.sendOptions === "wallet" &&
           !Web3.utils.isAddress(this.formData.recipient)) ||
-        (!this.formData.recipient && this.formData.sendOptions !== "personal")
+        (!this.formData.recipient &&
+          this.formData.sendOptions !== "personal") ||
+        (!this.formData.sendOptions === "email" && !this.formData.email)
       );
     },
     handleMessageAndReceiver() {
       if (this.checkMessageAndReceiver()) {
         return;
-      }
-
-      if (this.formData.sendOptions === "email") {
-        console.log(this.formData.recipient);
-        this.formData.email = this.formData.recipient;
       }
 
       if (this.formData.sendOptions !== "wallet") {
