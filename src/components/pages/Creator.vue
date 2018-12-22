@@ -278,9 +278,13 @@
             <span class="detailsText">
               Recipient: {{formData.recipient}}
               <br>
+              <br>
               <br>Message (displayed on the back of the card):
               <br>
-              <h4 v-html="cardMessageFormatted"></h4>
+              <br>
+              <h5 v-html="cardMessageFormatted"></h5>
+              <br>
+              <br>
               <br>
             </span>
             
@@ -345,7 +349,8 @@
             <h4>Card is being created...</h4>
             <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
             <br>
-            <p>Best to not close this tab and go make some tea. Good things will happen.</p>
+            <p>Best to not close this tab and go make some tea.</p>
+            <p>Good things will happen.</p>
             <br>
             <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
@@ -396,7 +401,8 @@
                   v-if="formData.email && formData.email.length > 0"
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
-                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n----------------------------------\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.'"
+                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
+                
                 >send</mailto-link>
               </div>
               <span class="subtext">send this radicard via a chat app by copy and paste this link</span>

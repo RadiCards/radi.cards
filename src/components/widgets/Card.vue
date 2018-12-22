@@ -107,7 +107,7 @@
       @click="flip"
       v-if="cdata.message"
     >
-      <h4 v-html="cardMessageFormatted"></h4>
+      <h7 v-html="cardMessageFormatted"></h7>
       <hr>
       <p class="descr">
         Your donation goes to
