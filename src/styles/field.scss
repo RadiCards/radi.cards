@@ -1,0 +1,95 @@
+// Input field
+.field {
+  appearance: none;
+  display: inline-block;
+  min-width: 15rem;
+  padding: 0.5rem;
+  border-radius: 0 !important;
+  border: 1px solid $greylight;
+  background: rgba($white, 0.9);
+  color: $black;
+
+  font: inherit;
+
+  &:hover {
+    background: $white;
+    border-color: $gray;
+  }
+  &--full {
+    width: 100%;
+  }
+  &--disabled {
+    background: rgba(0, 0, 0, 0.1);
+    color: $gray;
+    border: transparent;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+  }
+}
+
+// Radio select fieldgroup
+.fieldgroup--radio {
+  display: flex;
+  margin-top: 10px;
+  flex-direction: column;
+
+  .field--radio {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem;
+
+    &:not(.isSelected) .field--radio__content {
+      cursor: pointer;
+    }
+    &.isSelected {
+      border: 1px solid $black;
+    }
+
+    input[type="radio"] {
+      appearance: none;
+      width: 1rem;
+      min-width: 1rem;
+      height: 1rem;
+      margin-right: 10px;
+      margin-bottom: 0;
+      border-radius: 1rem;
+      border: 1px solid $black;
+
+      &:checked {
+        background: black;
+      }
+      &:focus {
+        outline: none;
+      }
+    }
+
+    .pretext {
+      display: block;
+      font-size: 0.875rem;
+      font-style: italic;
+      color: rgba($black, 0.3);
+    }
+
+    h6 {
+      margin-bottom: 0.5rem;
+    }
+
+    &__content {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      padding-right: 0.5rem;
+
+      .field {
+        max-width: calc(100vw - 5.75rem);
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    &__selectedcontent {
+      margin-top: 0.5rem;
+    }
+  }
+}

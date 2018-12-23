@@ -90,7 +90,7 @@
               <p>Choose recipient & message</p>
             </div>
 
-            <span class="inputLabel">Add a message (This will be visible on the blockchain)</span>
+            <span class="input-label">Add a message (This will be visible on the blockchain)</span>
             <b-form-textarea
               id="textarea"
               class="field"
@@ -103,89 +103,84 @@
             <br>
 
             <p>Choose one of the sending options</p>
-            <div class="sendOptions">
-              <div>
-                <div
-                  :class="formData.sendOptions === 'wallet' ? 'sendOption selected' : 'sendOption'"
-                >
-                  <input
-                    type="radio"
-                    id="sendToWallet"
-                    value="wallet"
-                    v-model="formData.sendOptions"
-                  >
-                  <div class="rightColumn">
-                    <span
-                      v-if="formData.sendOptions !== 'wallet'"
-                      class="preOption"
-                    >Want to transfer the NFT?</span>
-                    
-                    <label for="sendToWallet">Send to another ETH wallet address</label>
-                    <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
-                      <input
-                        type="text"
-                        placeholder="0x..."
-                        class="field form-control"
-                        v-model="formData.recipient"
-                      >
-                      <br>
-                      <span>Transfer the card directly; the web3 way</span>
-                    </div>
-                  </div>
-                </div>
+            <div class="fieldgroup--radio">
 
-                <div
-                  :class="formData.sendOptions === 'email' ? 'sendOption selected' : 'sendOption'"
+              <!-- Option 1 -->
+              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'wallet'}]">
+                <input
+                  type="radio"
+                  id="sendToWallet"
+                  value="wallet"
+                  v-model="formData.sendOptions"
                 >
-                  <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
-                  <div class="rightColumn">
-                    <span
-                      v-if="formData.sendOptions !== 'email'"
-                      class="preOption"
-                    >Don’t have a receipient wallet?</span>
-                    <label for="sendToEmail">Send to email address</label>
-                    <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
-                      <input
-                        type="email"
-                        placeholder="Email address"
-                        class="field form-control"
-                        v-model="formData.email"
-                      >
-                      <br>
-                      <span>This will create the card in your own wallet, create a link to it and send it via email.</span>
-                      <br>
-                      <span>Your wallet:</span>
-                      <br>
-                      <div class="myAddress">{{account}}</div>
-                    </div>
+                <label for="sendToWallet" class="field--radio__content">
+                  <span v-if="formData.sendOptions !== 'wallet'" class="pretext">
+                    Want to transfer the NFT?
+                  </span>
+                  <h6>Send to another ETH wallet address</h6>
+
+                  <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
+                    <input
+                      type="text"
+                      placeholder="0x..."
+                      class="field form-control"
+                      v-model="formData.recipient"
+                    >
+                    <br>
+                    <p class="p--small">Transfer the card directly; the web3 way</p>
                   </div>
-                </div>
+
+                </label>
               </div>
 
-              <div
-                :class="formData.sendOptions === 'personal' ? 'sendOption selected' : 'sendOption'"
-              >
+              <!-- Option 2 -->
+              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'email'}]">
+
+                <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
+
+                <label for="sendToEmail" class="field--radio__content">
+                  <span v-if="formData.sendOptions !== 'email'" class="pretext">
+                    Don’t have a recipient wallet?
+                  </span>
+                  <h6>Send to email address</h6>
+                  <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
+                    <input
+                      type="email"
+                      placeholder="Email address"
+                      class="field form-control"
+                      v-model="formData.email"
+                    >
+                    <p class="p--small">This will create the card in your own wallet, create a link to it and send it via email.</p>
+                    <span class="input-label">Your wallet:</span>
+                    <br>
+                    <div class="field field--disabled">{{account}}</div>
+                  </div>
+                </label>
+
+              </div>
+
+              <!-- Option 3 -->
+              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'personal'}]">
                 <input
                   type="radio"
                   id="sendToPersonal"
                   value="personal"
                   v-model="formData.sendOptions"
                 >
-                <div class="rightColumn">
-                  <span
-                    v-if="formData.sendOptions !== 'personal'"
-                    class="preOption"
-                  >Want to share the link manually?</span>
-                  <label for="sendToPersonal">Send to own wallet</label>
+                <label for="sendToPersonal" class="field--radio__content">
+                  <span v-if="formData.sendOptions !== 'personal'" class="pretext">
+                    Want to share the link manually?
+                  </span>
+                  <h6>Send to own wallet</h6>
                   <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                    <span>This will create the card in your own wallet, create a link to it and lets you share it however you want.</span>
+                    <p class="p--small">This will create the card in your own wallet, create a link to it and lets you share it however you want.</p>
+                    <span class="input-label">Your wallet:</span>
                     <br>
-                    <span>Your wallet:</span>
-                    <br>
-                    <div class="myAddress">{{account}}</div>
+                    <div class="field field--disabled">{{account}}</div>
                   </div>
-                </div>
+                </label>
               </div>
+
             </div>
 
             <br>
@@ -241,10 +236,10 @@
               >0.4ETH</button>
             </div>
             <div>
-              <span class="inputLabel">Or enter a custom amount</span>
+              <span class="input-label">Or enter a custom amount</span>
               <input
                 type="number"
-                class="field full"
+                class="field field--full"
                 id="valueInETH"
                 v-model="formData.valueInETH"
                 placeholder="0.02ETH"
@@ -682,7 +677,6 @@ export default {
 .pick {
   background: rgba(196, 196, 196, 0.2);
   color: black;
-  font-family: Helvetica;
   line-height: normal;
   font-size: 18px;
   font-weight: bold;
@@ -695,16 +689,13 @@ export default {
 
   .field {
     background: rgba(196, 196, 196, 0.15);
-    //  margin-bottom: 0;
-    //   padding-bottom: 0;
   }
 
   .subtext {
-    font-family: Helvetica;
     line-height: normal;
     font-size: 14px;
 
-    color: #000000;
+    color: $black;
 
     opacity: 0.3;
   }
@@ -733,7 +724,7 @@ export default {
     }
 
     div {
-      color: #a0a0a0;
+      color: $gray;
       background: rgba(196, 196, 196, 0.15);
       padding: 9px 10px;
       height: 100%;
@@ -743,87 +734,9 @@ export default {
   }
 }
 
-.sendOptions {
-  border: 1px solid #cccccc;
-  display: flex;
-  margin-top: 10px;
-  flex-direction: column;
-
-  span {
-    font-size: 14px;
-    line-height: 14px;
-  }
-
-  label {
-    font-weight: bold;
-  }
-
-  .sendOptionSelectedContent {
-    padding-right: 10px;
-    margin-top: 10px;
-  }
-
-  input[type="radio"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    width: 16px;
-    border-radius: 16px;
-    height: 16px;
-    margin-bottom: 0px;
-    margin-right: 10px;
-    min-width: 16px;
-
-    &:checked {
-      background: black;
-    }
-  }
-
-  .myAddress {
-    font-family: Helvetica;
-    line-height: normal;
-    font-size: 14px;
-    padding: 10px;
-    margin: 10px 0px;
-    text-align: center;
-    background: rgba(0, 0, 0, 0.1);
-    color: #979797;
-  }
-
-  .preOption {
-    font-family: Helvetica;
-    line-height: normal;
-    font-size: 14px;
-    color: #000000;
-    opacity: 0.3;
-    display: block;
-    font-style: italic;
-  }
-
-  .sendOption {
-    padding: 10px;
-    border: 1px solid #cccccc;
-    display: flex;
-    align-items: center;
-
-    &.selected {
-      border: 1px solid #000000;
-    }
-
-    .rightColumn {
-      display: flex;
-      flex-direction: column;
-    }
-  }
-}
-
 .card-selected {
   margin-top: -1rem;
   transition: all 0.2s ease-in-out;
-}
-
-.full {
-  width: 100%;
 }
 
 .info {
@@ -833,28 +746,25 @@ export default {
   color: $black;
 }
 
-.inputLabel {
-  line-height: normal;
-  font-size: 15px;
-  margin-bottom: 10px;
-  margin-top: 10px;
+.input-label {
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+  margin-top: 0.675rem;
   display: inline-block;
   color: $black;
 }
-
-input {
-  border: 1px solid $black;
-  margin-bottom: 20px;
+input, textarea {
+  margin-bottom: 1rem;
 }
-textarea {
-  border: 1px solid $black;
+// textarea {
+//   border: 1px solid $black;
 
-  &::placeholder {
-    text-align: right;
-    text-align-last: right;
-    vertical-align: bottom;
-  }
-}
+//   &::placeholder {
+//     text-align: right;
+//     text-align-last: right;
+//     vertical-align: bottom;
+//   }
+// }
 
 .paymentPresets {
   display: flex;
@@ -1017,10 +927,9 @@ textarea {
 .usdLabel {
   background: rgba(196, 196, 196, 0.3);
   padding: 10px;
-  font-family: Helvetica;
   line-height: normal;
   font-size: 15px;
   display: inline-block;
-  color: #000000;
+  color: $black;
 }
 </style>

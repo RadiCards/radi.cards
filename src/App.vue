@@ -165,6 +165,7 @@ export default {
 
 // Elements
 @import "styles/button.scss";
+@import "styles/field.scss";
 @import "styles/nav.scss";
 
 body {
@@ -222,25 +223,6 @@ footer {
   margin: 0 auto;
   padding: 1.25rem;
   border-top: 1px solid rgba($black, 0.1);
-}
-
-// Input field
-.field {
-  appearance: none;
-  display: inline-block;
-  min-width: 15rem;
-  padding: 0.5rem;
-  border-radius: 0 !important;
-  border: 1px solid $greylight;
-  background: rgba($white, 0.9);
-  color: $black;
-
-  font: inherit;
-
-  &:hover {
-    background: $white;
-    border-color: $gray;
-  }
 }
 
 // Badge
