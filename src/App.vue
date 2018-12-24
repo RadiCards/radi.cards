@@ -226,15 +226,34 @@ footer {
 }
 
 // Badge
-.badge.badge-primary {
-  background: $black;
-  color: $yellow;
+.badge {
   display: inline-block;
-  padding: 0 0.25rem;
+  padding: 0 0.5rem;
   min-width: 1.5em;
   height: 1.5em;
   border-radius: 0.75em !important;
   line-height: 1.5em;
+
+  &-primary {
+    background: $black;
+    color: $yellow;
+    padding: 0 0.25rem;
+  }
+  &-yellow {
+    background: $yellow;
+    color: $black;
+  }
+  &-huge {
+    margin-bottom: 0.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 2.5rem;
+  }
+  &-large {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    font-size: 2rem;
+  }
 }
 
 .section {

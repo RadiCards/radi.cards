@@ -135,7 +135,8 @@
     <section class="section">
       <h4 class="section__title">STEP TWO</h4>
       <h2>Choose a project you wish to support</h2>
-      <p>All profit goes directly to the charity (excludes GAS cost)</p>
+      <p>All profit goes directly to the charity (excludes gas cost)</p>
+      <br>
 
       <div class="charities" v-if="benefactors && benefactors.length > 0">
         <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
@@ -149,34 +150,60 @@
       <!-- <img src="/static/images/step3.png" alt class="img--placeholder" height="450"> -->
       <!-- <samplequote></samplequote> -->
       <div class="row text-center pt-3">
-        <div class="col"/>
         <div class="col">
           <card :cdata="cardData"/>
         </div>
-        <div class="col"/>
       </div>
     </section>
 
-    <div class="row">
-      <div class="col">
-        <span v-if="totalSupply">
-          There
-          <span v-if="totalSupply !== 1">are</span>
-          <span v-else>is</span> currently
-          <span class="badge badge-primary ml-1 mr-1">{{ totalSupply }}</span>
-          card
-          <span v-if="totalSupply !== 1">s</span> in existence
-        </span>
-      </div>
-    </div>
+    <hr/>
 
-    <div class="row mt-5">
-      <div class="col">
-        <span v-if="totalSupply">Want to help buidl-ing?
-          <a href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA">Join our Telegram group!</a>
-        </span>
-      </div>
-    </div>
+    <section class="section">
+      <b-row>
+        <b-col cols="12" md="6" class="pt-3 text-center">
+          <span v-if="totalSupply">
+            <p class="p--large">Total cards minted:</p>
+            <br>
+            <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
+            <br>
+            radiCard<span v-if="totalSupply !== 1">s</span>
+            <br><br>
+          </span>
+          <span v-else>
+            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
+          </span>
+        </b-col>
+        <b-col cols="12" md="6" class="pt-3 text-center">
+          <span v-if="true">
+            <p class="p--large">Donated so far:</p>
+            <br>
+            <span class="badge badge-yellow badge-huge">3.489 <span style="font-weight: normal; opacity: 0.3;">ETH</span></span>
+            <br>
+            Equals to $<strong>452</strong>
+            <br><br>
+          </span>
+          <span v-else>
+            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
+          </span>
+        </b-col>
+        <b-col cols="12" class="pt-3 text-center">
+          <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+        </b-col>
+      </b-row>
+    </section>
+
+    <hr/>
+
+    <section class="section">
+      <b-row>
+        <b-col cols="12" class="pt-3 text-center">
+          <p class="p--large">Want to help buidl-ing?</p>
+          <br>
+          <a class="btn btn--outline btn--small a--external" href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA" target="_blank">Join our Telegram group!</a>
+        </b-col>
+      </b-row>
+    </section>
+
   </div>
 </template>
 
