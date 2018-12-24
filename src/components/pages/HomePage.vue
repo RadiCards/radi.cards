@@ -165,8 +165,7 @@
             <p class="p--large">Total cards minted:</p>
             <br>
             <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
-            <br>radiCard
-            <span v-if="totalSupply !== 1">s</span>
+            <br>radiCard<span v-if="totalSupply !== 1">s</span>
             <br>
             <br>
           </span>
