@@ -33,9 +33,9 @@
 
     <div class="row mt-2" v-else>
       <div class="col">
-        <b-row>
+        <b-row no-gutters>
           <b-col
-            cols="12"
+            cols="6"
             sm="6"
             lg="4"
             v-if="accountCards && accountCards.length > 0"
@@ -43,7 +43,7 @@
             :key="card.tokenId"
             class="pt-3"
           >
-            <card @cardTransfered="handelCardTransfered" :cdata="card"/>
+            <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
           </b-col>
         </b-row>
       </div>

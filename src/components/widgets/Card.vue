@@ -1,7 +1,7 @@
 <template>
   <div
     v-if="cdata != undefined"
-    :class="['card', {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
+    :class="['card', this.classes, {'card--flippable': isFlippable}, {'card--flipped': isFlipped}]"
     @click="redirect"
   >
     <figure class="card__front" @click="flip" v-if="!transfer && !share">
@@ -14,25 +14,11 @@
         <div class="card__meta">
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
+          <p class="descr" v-if="cdata.description">{{ cdata.description }}</p>
+          <b-badge variant="light" class="mt-2" v-if="company">{{company}}</b-badge>
         </div>
-        <!-- <div class="card__value" v-if="cdata.giftAmount">
-          <div class="badge">
-            <img src="/static/icons/shopping-cart.svg">
-            {{cdata.giftAmount}} ETH
-          </div>
-        </div>-->
+
       </figcaption>
-
-      <div v-if="cdata.description">
-        <p class="descr">{{ cdata.description }}</p>
-      </div>
-
-      <div v-if="!cdata.description">
-        <p class="descr"></p>
-      </div>
-      <div v-if="company">
-        <b-badge class="mt-2">{{company}}</b-badge>
-      </div>
 
       <div class="help" v-if="isFlippable">
         <img src="/static/icons/flip.svg" alt>Flip
@@ -181,6 +167,9 @@ export default {
   props: {
     cdata: {
       type: Object
+    },
+    classes: {
+      type: String
     }
   },
 
@@ -240,6 +229,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 
 // Card
 .card {
@@ -283,6 +273,32 @@ export default {
     &.card--flipped {
       transform: rotateY(-180deg);
       transform-style: preserve-3d;
+    }
+  }
+
+  &.card--gallery {
+    @include tabletAndDown() {
+      width: calc(50vw - 1rem);
+      padding: $p_v/1.5 $p_h/2;
+
+      figcaption {
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .card__image {
+        margin: -#{$p_v/1.5} -#{$p_h/2} #{$p_v/1.5};
+      }
+      .title {
+        font-size: 1rem;
+      }
+      .creator {
+        font-size: 0.75rem;
+      }
+      .descr {
+        font-size: 0.75rem;
+        line-height: 1rem;
+      }
     }
   }
 
@@ -343,22 +359,6 @@ export default {
     font-size: 0.875rem;
     color: $gray;
   }
-
-  // .badge {
-  //   display: flex;
-  //   align-items: center;
-  //   margin-right: -$p_h;
-  //   padding: 0.5rem;
-  //   background: $black;
-  //   color: $white;
-  //   white-space: nowrap;
-  //   font-weight: bold;
-
-  //   img {
-  //     width: 0.875rem;
-  //     margin-right: 0.25rem;
-  //   }
-  // }
 
   .help {
     position: absolute;
