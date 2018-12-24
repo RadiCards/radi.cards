@@ -248,7 +248,7 @@
               <div
                 v-if="formData.valueInETH"
                 class="usdLabel"
-              >Equals to $ {{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
+              >Equals to ${{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
             </div>
             <span
               class="info"
