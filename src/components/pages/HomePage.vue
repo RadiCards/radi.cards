@@ -156,7 +156,7 @@
       </div>
     </section>
 
-    <hr/>
+    <hr>
 
     <section class="section">
       <b-row>
@@ -165,22 +165,27 @@
             <p class="p--large">Total cards minted:</p>
             <br>
             <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
+            <br>radiCard
+            <span v-if="totalSupply !== 1">s</span>
             <br>
-            radiCard<span v-if="totalSupply !== 1">s</span>
-            <br><br>
+            <br>
           </span>
           <span v-else>
             <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
           </span>
         </b-col>
         <b-col cols="12" md="6" class="pt-3 text-center">
-          <span v-if="true">
+          <span v-if="totalGifted">
             <p class="p--large">Donated so far:</p>
             <br>
-            <span class="badge badge-yellow badge-huge">3.489 <span style="font-weight: normal; opacity: 0.3;">ETH</span></span>
+            <span class="badge badge-yellow badge-huge">
+              {{totalGifted}}
+              <span style="font-weight: normal; opacity: 0.3;">ETH</span>
+            </span>
+            <br>Equals to $
+            <strong>{{Math.round(totalGifted * usdPrice)}}</strong>
             <br>
-            Equals to $<strong>452</strong>
-            <br><br>
+            <br>
           </span>
           <span v-else>
             <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
@@ -192,18 +197,21 @@
       </b-row>
     </section>
 
-    <hr/>
+    <hr>
 
     <section class="section">
       <b-row>
         <b-col cols="12" class="pt-3 text-center">
           <p class="p--large">Want to help buidl-ing?</p>
           <br>
-          <a class="btn btn--outline btn--small a--external" href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA" target="_blank">Join our Telegram group!</a>
+          <a
+            class="btn btn--outline btn--small a--external"
+            href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA"
+            target="_blank"
+          >Join our Telegram group!</a>
         </b-col>
       </b-row>
     </section>
-
   </div>
 </template>
 
@@ -239,7 +247,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["totalSupply", "cards", "benefactors"])
+    ...mapState([
+      "totalSupply",
+      "totalGifted",
+      "usdPrice",
+      "cards",
+      "benefactors"
+    ])
   },
   methods: {}
 };
