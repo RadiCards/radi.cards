@@ -6,6 +6,11 @@
     @content;
   }
 }
+@mixin tabletAndDown() {
+  @media screen and (max-width: 767px) {
+    @content;
+  }
+}
 
 // Loading spinner
 @mixin cbox {

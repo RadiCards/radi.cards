@@ -4,9 +4,9 @@
     <br>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
 
-    <b-row v-if="shuffledCards && shuffledCards.length > 0">
-      <b-col cols="12" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
-        <card :cdata="card"/>
+    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+      <b-col cols="6" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
+        <card :cdata="card" classes="card--gallery" />
       </b-col>
     </b-row>
 
