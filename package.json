@@ -6,10 +6,10 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/blockrockettech/radi-cards.git"
+    "url": "git+https://github.com/RadiCards/radi-cards.git"
   },
   "bugs": {
-    "url": "https://github.com/blockrockettech/radi-cards/issues"
+    "url": "https://github.com/RadiCards/radi-cards/issues"
   },
   "scripts": {
     "dev": "node scripts/dev-server.js",
@@ -21,7 +21,7 @@
     "test/contracts": "test/test_truffle.sh",
     "test": "npm run test/contracts"
   },
-  "homepage": "https://github.com/blockrockettech/radi-cards#readme",
+  "homepage": "https://github.com/RadiCards/radi-cards#readme",
   "dependencies": {
     "axios": "^0.18.0",
     "bootstrap-vue": "^2.0.0-rc.11",
