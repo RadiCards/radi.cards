@@ -444,6 +444,11 @@
       </span>
     </p>-->
     <p>&nbsp;</p>
+    <hr />
+    <h5>Artwork Notes</h5>
+    <p>
+      <span>Variant by tda of a variant by Andrew Dalby of the work of Cplakidas - Own work based on <a href="https://en.wikipedia.org/wiki/File:Byzantine_Constantinople-en.png#/media/File:Byzantine_Constantinople_regiones.svg" target="_blank">original</a> wikipedia artwork - "CC" as license</span>
+    </p>
   </section>
 </template>
 
