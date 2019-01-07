@@ -62,7 +62,7 @@
       <p>Something seems to have gone wrong and your card could not be transfered.</p>
       <br>
       <p>
-        <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
+        <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.
       </p>
     </figure>
 

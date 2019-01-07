@@ -11,8 +11,9 @@
           href="https://metamask.io"
         >Meta Mask</a>,
         <a target="__blank" href="https://status.im">Status</a>,
-        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a> or
-        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a>! You can still view all other functionality within the website without one.
+        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
+        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
+        <a target="__blank" href="https://app.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
       </p>
     </div>
     <form v-if="account!=null && account != undefined">
@@ -102,7 +103,7 @@
 
             <br>
 
-            <p>Choose one of the sending options</p>
+           <p>Choose one of the sending options</p>
             <div class="fieldgroup--radio">
 
               <!-- Option 1 -->
@@ -282,7 +283,7 @@
               <br>
               <br>
             </span>
-            
+
             <button
               class="button"
               @click="giveBirth"
@@ -307,7 +308,7 @@
               <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
               <p>
                 Please
-                <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) if you haven't already confirmed this action.
+                <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) if you haven't already confirmed this action.
               </p>
             </div>
           </div>
@@ -397,7 +398,7 @@
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
                   :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
-                
+
                 >send</mailto-link>
               </div>
               <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
@@ -445,7 +446,7 @@
             <p>Something seems to have gone wrong and your card could not be created.</p>
             <br>
             <p class="pb-3">
-              <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status) to see the status of the transaction, or try again.
+              <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.
             </p>
 
             <router-link
