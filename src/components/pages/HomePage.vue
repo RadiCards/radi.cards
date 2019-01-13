@@ -165,7 +165,8 @@
             <p class="p--large">Total cards minted:</p>
             <br>
             <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
-            <br>radiCard<span v-if="totalSupply !== 1">s</span>
+            <br>radiCard
+            <span v-if="totalSupply !== 1">s</span>
             <br>
             <br>
           </span>
@@ -211,6 +212,8 @@
         </b-col>
       </b-row>
     </section>
+
+    <cookiebanner></cookiebanner>
   </div>
 </template>
 
@@ -221,10 +224,11 @@ import Buidlers from "../../components/widgets/Buidlers";
 import Card from "../../components/widgets/Card";
 import Samplequote from "../../components/widgets/SampleQuote";
 import Benefactor from "../../components/widgets/Benefactor";
+import Cookiebanner from "../../components/widgets/CookieBanner";
 
 export default {
   name: "home",
-  components: { Card, Benefactor, Samplequote, Buidlers },
+  components: { Card, Benefactor, Samplequote, Buidlers, Cookiebanner },
   data() {
     return {
       cardData: {
