@@ -5,7 +5,7 @@
         <b>We use cookies to help us improve user experience</b>
         <span>
           Click
-          <a href="#">here</a> to learn more about how do we collect and use your data
+          <a href="https://www.iubenda.com/privacy-policy/69357887">here</a> to learn more about how do we collect and use your data
         </span>
       </div>
 
