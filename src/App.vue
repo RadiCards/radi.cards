@@ -72,6 +72,7 @@ import * as actions from "./store/actions";
 import * as mutations from "./store/mutation-types";
 import CurrentNetwork from "./components/widgets/CurrentNetwork";
 import ClickableAddress from "./components/widgets/ClickableAddress";
+import { PortisProvider } from "portis";
 
 export default {
   name: "app",
@@ -112,16 +113,9 @@ export default {
       window.web3 = new Web3(web3.currentProvider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     } else {
-      console.log("Running without a web3 provider - falling back to infura");
-
-      window.web3 = new Web3(
-        new Web3.providers.HttpProvider(
-          "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
-        )
-      );
-      console.log(
-        "Non-Ethereum browser detected. You should consider trying MetaMask!"
-      );
+      console.log("Bootstrapping web app - provider acknowedgled");
+      const provider = new PortisProvider({});
+      window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     }
   },
