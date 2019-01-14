@@ -114,7 +114,9 @@ export default {
       this.$store.dispatch(actions.INIT_APP, window.web3);
     } else {
       console.log("Bootstrapping web app - provider acknowedgled");
-      const provider = new PortisProvider({});
+      const provider = new PortisProvider({
+        apiKey: "4416d7928834f658ba93945eac36b71d"
+      });
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     }
