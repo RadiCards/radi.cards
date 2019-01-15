@@ -41,6 +41,15 @@
             <li>
               <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
             </li>
+            <li>
+              <a href="https://volca.tech" target="_blank">Volca</a>
+            </li>
+            <li>
+              <a href="https://www.gustav.tech" target="_blank">Gustav Tech</a>
+            </li>
+            <li>
+              <a href="https://www.chris.seifert.space" target="_blank">Chris Seifert</a>
+            </li>
           </ul>
         </div>
 
