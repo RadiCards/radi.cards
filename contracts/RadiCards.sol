@@ -40,7 +40,7 @@ contract RadiCards is ERC721Token, Whitelist {
     bool active;
     uint minted;
     uint maxQnty; //set to zero for unlimited
-    //minimum price per card set in atto (SI prefix for 1x10-18 dai)
+    //minimum price per card set in Atto (SI prefix for 1x10-18 dai)
     uint256 minPrice; //set to zero to default to the minimumContribution
   }
 
@@ -69,7 +69,7 @@ contract RadiCards is ERC721Token, Whitelist {
   uint256 public totalDonatedInWei;
 
   //total gifted/donated in DAI
-  uint256 public totalGiftedInAtto; //SI prefix for 1x10-18 dai is atto.
+  uint256 public totalGiftedInAtto; //SI prefix for 1x10-18 dai is Atto.
   uint256 public totalDonatedInAtto;
 
   event CardGifted(
@@ -151,7 +151,7 @@ contract RadiCards is ERC721Token, Whitelist {
     }
 
     if(cards[_cardIndex].minPrice > 0){ //if the card has a minimum price check that enough has been sent
-      require((_donationAmount + _giftAmount) >= cards[_cardIndex].minPrice);
+      require((_donationAmount + _giftAmount) >= cards[_cardIndex].minPrice, "The total dai sent with the transaction is less than the min price of the token");
     }
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
@@ -170,12 +170,12 @@ contract RadiCards is ERC721Token, Whitelist {
 
     // transfer the DAI to the benefactor and recipaint
     if(_donationAmount > 0){
-      daiContract.transferFrom(msg.sender, benefactors[_benefactorIndex].ethAddress, _donationAmount);
+        address _benefactorAddress = benefactors[_benefactorIndex].ethAddress;
+        require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to charity failed");
     }
     
     if(_giftAmount > 0){
-        to.transfer(_giftAmount);
-        daiContract.transferFrom(msg.sender, to, _giftAmount);
+        require(daiContract.transferFrom(msg.sender, to, _giftAmount),"Sending to recipaint failed");
     }
     
     // tally up the total eth gifted and donated
