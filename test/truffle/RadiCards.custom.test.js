@@ -12,6 +12,7 @@ const _ = require('lodash');
 
 const BigNumber = web3.BigNumber;
 const RadiCards = artifacts.require('RadiCards');
+const DaiContract = artifacts.require('ERC20Mock.sol');
 
 require('chai')
   .use(require('chai-as-promised'))
@@ -21,6 +22,7 @@ require('chai')
 contract('RadiCards ERC721 Custom', function (accounts) {
   const owner = accounts[0];
   const account1 = accounts[1];
+  const account2 = accounts[2];
 
   const firstTokenId = 0;
   const secondTokenId = 1;
@@ -35,7 +37,6 @@ contract('RadiCards ERC721 Custom', function (accounts) {
   const cardTwo = 2;
 
   const message = 'Happy Xmas';
-  const extra = 'FFFFFF';
 
   const cardOneUri = 'QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy';
 
@@ -72,24 +73,28 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     );
 
     // 0 as the max quantity sets the cards to unlimited minting
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, {
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0, {
       from: owner
     });
-    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, 0, {
+    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, 0, 0,{
       from: owner
     });
+    
+    //create the sample ERC20 contract to represent dai functionality.
+    this.daiContract = await DaiContract.new(account1, 10000000000000000000, {from: owner});
+    this.token.setDaiContractAddress(this.daiContract.address)
   });
 
   describe('custom radi.cards logic', function () {
     beforeEach(async function () {
       //create one card where all funds go the the charity (msg.value = _donationAmount)
-      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+      await this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution, {
         from: owner,
         value: this.minContribution
       });
 
       //create another card where half the funds go to the charity and half go the the recipient (account1)
-      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, this.minContribution, {
+      await this.token.gift(account1, benefactorFPF, cardTwo, message, this.minContribution, {
         from: owner,
         value: this.minContribution * 2
       });
@@ -97,7 +102,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
     context('valid gift', function () {
       it('can send minimum contribution', async function () {
-        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+        await this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         });
@@ -196,7 +201,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         //set the donation amount to the msg.value. In this case all funds should go to the charity
         //and the balance of the benefactor should be the the sum of the balance before and the new
         //donation amount.
-        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+        await this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         });
@@ -218,7 +223,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         
         //set the donation amount to the 0. In this case all funds should go to the recipient
         //and the balance of the benefactor the same as before the card creation
-        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, 0, {
+        await this.token.gift(account1, benefactorEFF, cardOne, message, 0, {
           from: owner,
           value: this.minContribution
         });
@@ -246,19 +251,18 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     });
 
     context('should set data', function () {
-      it('returns message and extra', async function () {
+      it('returns message and data', async function () {
         const [
           _gifter,
+          _daiDonation,
           _giftingAmount,
           _donatingAmount,
           _message,
-          _extra,
           _cardIndex,
           _benefactorIndex,
         ] = await this.token.tokenDetails(firstTokenId);
-
+        _daiDonation.should.be.equal(false);
         _message.should.be.equal(message);
-        _extra.should.be.equal('FFFFFF');
         _gifter.should.be.equal(owner);
         _giftingAmount.should.be.bignumber.equal(0);
         _donatingAmount.should.be.bignumber.equal(this.minContribution);
@@ -275,33 +279,33 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     context('should not allow invalid gift', function () {
 
       it('reverts if invalid recipient', async function () {
-        await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorFPF, cardOne, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorFPF, cardOne, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if no benefactor', async function () {
-        await assertRevert(this.token.gift(account1, 999, cardOne, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, 999, cardOne, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if no card', async function () {
-        await assertRevert(this.token.gift(account1, benefactorEFF, 999, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, 999, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if below minimum amount', async function () {
-        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution, {
           from: owner,
           value: 0
         }));
 
-        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution, {
           from: owner,
           value: this.minContribution.sub(1)
         }));
@@ -309,17 +313,17 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
       it('reverts if not active', async function () {
         // add a new card but set the activity to false such that no new cards can be gifted
-        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, 0, {
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, 0, 0,{
           from: owner
         });
-        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if invalid donation amount', async function () {
-        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution * 2, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, this.minContribution * 2, {
           from: owner,
           value: this.minContribution
         }));
@@ -328,18 +332,18 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       it('reverts if maximum number of cards minted', async function () {
         // add a new card and set the maximum number of minted to 1. can then create one card but should not be able
         // to create the second card as at the maximum.
-        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 1, {
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 1, 0, {
           from: owner
         });
 
         //should be able to create the first card as less than max of 1
-        await this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
+        await this.token.gift(account1, benefactorEFF, 3, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         });
 
         // the second card should fail as the max is set to 1 and 1 card has already been minted
-        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
@@ -360,7 +364,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         // send another card but this time we set the donation amount to 0. In this way 
         // all the funds should be sent to the recipient and the total gifted should be 
         // one unit minContribution
-        // this.token.gift(account1, benefactorEFF, 3, message, extra, 0, {
+        // this.token.gift(account1, benefactorEFF, 3, message, 0, {
         //   from: owner,
         //   value: this.minContribution
         // });

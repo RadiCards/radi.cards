@@ -88,9 +88,8 @@ contract RadiCards is ERC721Token, Whitelist {
     uint256 indexed _cardIndex
   );
 
-  constructor (address _daiContractAddress) public ERC721Token("RadiCards", "RADI") {
+  constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
-    daiContract = StandardToken(_daiContractAddress);  
   }
   
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount) payable public returns (bool) {
@@ -325,5 +324,10 @@ contract RadiCards is ERC721Token, Whitelist {
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].minted<=_maxQnty, "Cant set the max quantity less than the current total minted");
     cards[_cardIndex].maxQnty = _maxQnty;
+  }
+
+  function setDaiContractAddress(address _daiERC20ContractAddress) external onlyIfWhitelisted(msg.sender){
+    require(_daiERC20ContractAddress != address(0));
+    daiContract = StandardToken(_daiERC20ContractAddress);
   }
 }
