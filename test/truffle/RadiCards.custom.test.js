@@ -1,5 +1,9 @@
-const { assertRevert } = require('../helpers/assertRevert');
-const { sendTransaction } = require('../helpers/sendTransaction');
+const {
+  assertRevert
+} = require('../helpers/assertRevert');
+const {
+  sendTransaction
+} = require('../helpers/sendTransaction');
 const etherToWei = require('../helpers/etherToWei');
 
 const advanceBlock = require('../helpers/advanceToBlock');
@@ -46,7 +50,9 @@ contract('RadiCards ERC721 Custom', function (accounts) {
   });
 
   beforeEach(async function () {
-    this.token = await RadiCards.new({ from: owner });
+    this.token = await RadiCards.new({
+      from: owner
+    });
     this.minContribution = await this.token.minContribution();
 
     await this.token.addBenefactor(
@@ -65,54 +71,56 @@ contract('RadiCards ERC721 Custom', function (accounts) {
       "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
     );
 
-    // await this.token.addBenefactor(
-    //   3,
-    //   "0x59459B87c29167733818f1263665064Cadf10eE4",
-    //   "Open Money Initiative",
-    //   "https://www.openmoneyinitiative.org/",
-    //   "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-    // );
-
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, { from: owner });
-    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, { from: owner });
+    // 0 as the max quantity sets the cards to unlimited minting
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, {
+      from: owner
+    });
+    await this.token.addCard(cardTwo, "QmP8USgWUrihWfyhy7CNakcDbtkVPfJYKuZd9hcikP26QD", true, 0, {
+      from: owner
+    });
   });
 
   describe('custom radi.cards logic', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
+      //create one card where all funds go the the charity (msg.value = _donationAmount)
+      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
         from: owner,
         value: this.minContribution
       });
-      await this.token.gift(account1, benefactorFPF, cardTwo, 'Happy Holiday - God', '000000', {
+
+      //create another card where half the funds go to the charity and half go the the recipient (account1)
+      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, this.minContribution, {
         from: owner,
-        value: this.minContribution
+        value: this.minContribution * 2
       });
     });
 
     context('valid gift', function () {
       it('can send minimum contribution', async function () {
-        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
+        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution
-        });
-        await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, {
-          from: owner,
-          value: this.minContribution.plus(1)
         });
       });
     });
 
     context('should allow whitelisted to change min contribution', function () {
       it('reverts if not whitelisted', async function () {
-        await assertRevert(this.token.setMinContribution(1, { from: account1 }));
+        await assertRevert(this.token.setMinContribution(1, {
+          from: account1
+        }));
       });
 
-      it('reverts if zero value', async function () {
-        await assertRevert(this.token.setMinContribution(0, { from: account1 }));
+      it('reverts if zero value set for min contribution', async function () {
+        await assertRevert(this.token.setMinContribution(0, {
+          from: account1
+        }));
       });
 
-      it('can send minimum contribution', async function () {
-        await this.token.setMinContribution(1, { from: owner });
+      it('can set minimum contribution', async function () {
+        await this.token.setMinContribution(1, {
+          from: owner
+        });
         const newMin = await this.token.minContribution();
         newMin.should.be.bignumber.equal('1');
       });
@@ -120,20 +128,106 @@ contract('RadiCards ERC721 Custom', function (accounts) {
 
     context('should allow card to be set to active and inactive', function () {
       it('reverts if not whitelisted', async function () {
-        await assertRevert(this.token.setActive(cardOne, true, { from: account1 }));
+        await assertRevert(this.token.setActive(cardOne, true, {
+          from: account1
+        }));
       });
 
       it('reverts if no card', async function () {
-        await assertRevert(this.token.setActive(999, true, { from: owner }));
+        await assertRevert(this.token.setActive(999, true, {
+          from: owner
+        }));
       });
 
       it('can deactivate card', async function () {
-        let card = await this.token.cards(cardOne, { from: owner });
+        let card = await this.token.cards(cardOne, {
+          from: owner
+        });
         card[1].should.be.equal(true);
 
-        await this.token.setActive(cardOne, false, { from: owner });
-        card = await this.token.cards(cardOne, { from: owner });
+        await this.token.setActive(cardOne, false, {
+          from: owner
+        });
+        card = await this.token.cards(cardOne, {
+          from: owner
+        });
         card[1].should.be.equal(false);
+      });
+    });
+
+    context('should allow card max Quantity to be changed later', function () {
+      it('reverts if not whitelisted', async function () {
+        await assertRevert(this.token.setMaxQuantity(cardOne, 10, {
+          from: account1
+        }));
+      });
+
+      it('reverts if no card', async function () {
+        await assertRevert(this.token.setMaxQuantity(999, 10, {
+          from: owner
+        }));
+      });
+
+      it('can change max quantity', async function () {
+        let card = await this.token.cards(cardOne, {
+          from: owner
+        });
+        card[3].should.be.bignumber.equal(0);
+
+        await this.token.setMaxQuantity(cardOne, 100, {
+          from: owner
+        });
+        card = await this.token.cards(cardOne, {
+          from: owner
+        });
+        card[3].should.be.bignumber.equal(100);
+      });
+    });
+
+    context('should correctly split funds between recipient and charity', function () {
+      it('allow all funds to go to charity', async function () {
+        let benefactor = await this.token.benefactors(benefactorEFF, {
+          from: owner
+        });
+        let benefactorAddress = benefactor[0]
+        let benefactorBalanceBefore = await web3.eth.getBalance(benefactorAddress)
+
+        let recipientBalanceBefore = await web3.eth.getBalance(account1)
+        //set the donation amount to the msg.value. In this case all funds should go to the charity
+        //and the balance of the benefactor should be the the sum of the balance before and the new
+        //donation amount.
+        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+          from: owner,
+          value: this.minContribution
+        });
+
+        let benefactorBalanceAfter = await web3.eth.getBalance(benefactorAddress)
+        benefactorBalanceAfter.should.be.bignumber.equal(benefactorBalanceBefore.add(this.minContribution))
+
+        let recipientBalanceAfter = await web3.eth.getBalance(account1)
+        recipientBalanceAfter.should.be.bignumber.equal(recipientBalanceBefore)
+      });
+      it('allow all funds to go to recipient', async function () {
+        let benefactor = await this.token.benefactors(benefactorEFF, {
+          from: owner
+        });
+        let benefactorAddress = benefactor[0]
+        let benefactorBalanceBefore = await web3.eth.getBalance(benefactorAddress)
+
+        let recipientBalanceBefore = await web3.eth.getBalance(account1)
+        
+        //set the donation amount to the 0. In this case all funds should go to the recipient
+        //and the balance of the benefactor the same as before the card creation
+        await this.token.gift(account1, benefactorEFF, cardOne, message, extra, 0, {
+          from: owner,
+          value: this.minContribution
+        });
+
+        let benefactorBalanceAfter = await web3.eth.getBalance(benefactorAddress)
+        benefactorBalanceAfter.should.be.bignumber.equal(benefactorBalanceBefore)
+
+        let recipientBalanceAfter= await web3.eth.getBalance(account1)
+        recipientBalanceAfter.should.be.bignumber.equal(recipientBalanceBefore.add(this.minContribution))
       });
     });
 
@@ -156,6 +250,7 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         const [
           _gifter,
           _giftingAmount,
+          _donatingAmount,
           _message,
           _extra,
           _cardIndex,
@@ -165,7 +260,8 @@ contract('RadiCards ERC721 Custom', function (accounts) {
         _message.should.be.equal(message);
         _extra.should.be.equal('FFFFFF');
         _gifter.should.be.equal(owner);
-        _giftingAmount.should.be.bignumber.equal(this.minContribution);
+        _giftingAmount.should.be.bignumber.equal(0);
+        _donatingAmount.should.be.bignumber.equal(this.minContribution);
         _cardIndex.should.be.bignumber.equal(cardOne);
         _benefactorIndex.should.be.bignumber.equal(benefactorEFF);
       });
@@ -179,53 +275,98 @@ contract('RadiCards ERC721 Custom', function (accounts) {
     context('should not allow invalid gift', function () {
 
       it('reverts if invalid recipient', async function () {
-        await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorFPF, cardOne, message, extra, {
+        await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorFPF, cardOne, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if no benefactor', async function () {
-        await assertRevert(this.token.gift(account1, 999, cardOne, message, extra, {
+        await assertRevert(this.token.gift(account1, 999, cardOne, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if no card', async function () {
-        await assertRevert(this.token.gift(account1, benefactorEFF, 999, message, extra, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, 999, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
 
       it('reverts if below minimum amount', async function () {
-        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
           from: owner,
           value: 0
         }));
 
-        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution.sub(1)
         }));
       });
 
       it('reverts if not active', async function () {
-        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, { from: owner });
-        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, {
+        // add a new card but set the activity to false such that no new cards can be gifted
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", false, 0, {
+          from: owner
+        });
+        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
           from: owner,
           value: this.minContribution
         }));
       });
+
+      it('reverts if invalid donation amount', async function () {
+        await assertRevert(this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution * 2, {
+          from: owner,
+          value: this.minContribution
+        }));
+      })
+
+      it('reverts if maximum number of cards minted', async function () {
+        // add a new card and set the maximum number of minted to 1. can then create one card but should not be able
+        // to create the second card as at the maximum.
+        await this.token.addCard(3, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 1, {
+          from: owner
+        });
+
+        //should be able to create the first card as less than max of 1
+        await this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
+          from: owner,
+          value: this.minContribution
+        });
+
+        // the second card should fail as the max is set to 1 and 1 card has already been minted
+        await assertRevert(this.token.gift(account1, benefactorEFF, 3, message, extra, this.minContribution, {
+          from: owner,
+          value: this.minContribution
+        }));
+      });
+
     });
 
-    context('should tally up all gifted wei', function () {
-      it('correctly keeps a record', async function () {
+    context('should tally up all gifted and donations wei', function () {
+      it('correctly keeps a record of donations', async function () {
+        const totalDonatedInWei = await this.token.totalDonatedInWei();
+        totalDonatedInWei.should.be.bignumber.equal(
+          // two cards bought at minContribution
+          this.minContribution * 2
+        );
+      });
+
+      it('correctly keeps a record of gifts', async function () {
+        // send another card but this time we set the donation amount to 0. In this way 
+        // all the funds should be sent to the recipient and the total gifted should be 
+        // one unit minContribution
+        // this.token.gift(account1, benefactorEFF, 3, message, extra, 0, {
+        //   from: owner,
+        //   value: this.minContribution
+        // });
         const totalGiftedInWei = await this.token.totalGiftedInWei();
         totalGiftedInWei.should.be.bignumber.equal(
-          // two cards bought at minContribution
-          this.minContribution.add(this.minContribution)
+          this.minContribution
         );
       });
     });

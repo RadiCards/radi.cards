@@ -15,6 +15,7 @@ import "./Strings.sol";
 * @author pheme.app
 * @author d1labs.com
 * @author mbdoesthings.com
+* @author chrismaree.io
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
@@ -34,12 +35,15 @@ contract RadiCards is ERC721Token, Whitelist {
   struct CardDesign {
     string tokenURI;
     bool active;
+    uint minted;
+    uint maxQnty; //set to zero for unlimited
   }
 
   struct RadiCard {
     // Metadata
-    address gifter;
+    address creator;
     uint256 giftingAmount;
+    uint256 donatingAmount;
     string message;
     string extra;
     // Lookups
@@ -73,35 +77,54 @@ contract RadiCards is ERC721Token, Whitelist {
 
   uint256 public totalGiftedInWei;
 
+  uint256 public totalDonatedInWei;
+
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
   }
-
-  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra) payable public returns (bool) {
+  /**
+    * @dev Creates a new NFT based off card information. 
+    * Sends funds to charity and to recipiant. 
+    * The msg.value - donationAmount defines the value sent to the recipiant
+    */
+  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, string _extra, uint256 _donationAmount) payable public returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].active, "Must be an active card");
+    require(_donationAmount <= msg.value,"Can't request to donate more than total value sent");
     require(msg.value >= minContribution, "Must send at least the minimum amount");
+    
+    if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
+      require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
+    }
+
+    uint256 _giftAmount = msg.value - _donationAmount;
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
-      gifter : msg.sender,
-      giftingAmount : msg.value,
-      message : _message,
-      extra : _extra,
-      benefactorIndex : _benefactorIndex,
-      cardIndex : _cardIndex
+        creator : msg.sender,
+        giftingAmount : _giftAmount,
+        donatingAmount: _donationAmount,
+        message : _message,
+        extra : _extra,
+        benefactorIndex : _benefactorIndex,
+        cardIndex : _cardIndex
     });
 
     uint256 _tokenId = _mint(to, cards[_cardIndex].tokenURI);
 
-    // transfer the ETH to the benefactor
-    benefactors[_benefactorIndex].ethAddress.transfer(msg.value);
+    cards[_cardIndex].minted++;
 
-    // tally up the total eth gifted
-    totalGiftedInWei = totalGiftedInWei.add(msg.value);
+    // transfer the ETH to the benefactor and recipaint
+    benefactors[_benefactorIndex].ethAddress.transfer(_donationAmount);
+    if(_giftAmount > 0){
+        to.transfer(_giftAmount);
+    }
+    
+    // tally up the total eth gifted and donated
+    totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
+    totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
 
-    // Fire an event with all the import information in
     emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId);
 
     return true;
@@ -118,7 +141,7 @@ contract RadiCards is ERC721Token, Whitelist {
     return tokenId;
   }
 
-  function burn(uint256 _tokenId) public  {
+  function burn(uint256 _tokenId) public pure  {
     revert("Radi.Cards are censorship resistant!");
   }
 
@@ -131,8 +154,9 @@ contract RadiCards is ERC721Token, Whitelist {
   function tokenDetails(uint256 _tokenId)
   public view
   returns (
-    address _gifter,
+    address _creator,
     uint256 _giftingAmount,
+    uint256 _donatingAmount,
     string _message,
     string _extra,
     uint256 _cardIndex,
@@ -141,8 +165,9 @@ contract RadiCards is ERC721Token, Whitelist {
     require(exists(_tokenId));
     RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
     return (
-      _radiCard.gifter,
+      _radiCard.creator,
       _radiCard.giftingAmount,
+      _radiCard.donatingAmount,
       _radiCard.message,
       _radiCard.extra,
       _radiCard.cardIndex,
@@ -201,14 +226,16 @@ contract RadiCards is ERC721Token, Whitelist {
     return true;
   }
 
-  function addCard(uint256 _cardIndex, string _tokenURI, bool _active)
+  function addCard(uint256 _cardIndex, string _tokenURI, bool _active, uint256 _maxQnty)
   public onlyIfWhitelisted(msg.sender)
   returns (bool) {
     require(bytes(_tokenURI).length != 0, "Invalid token URI");
 
     cards[_cardIndex] = CardDesign(
       _tokenURI,
-      _active
+      _active,
+      0,
+      _maxQnty
     );
     cardsIndex.push(_cardIndex);
 
@@ -230,7 +257,12 @@ contract RadiCards is ERC721Token, Whitelist {
 
   function setActive(uint256 _cardIndex, bool _active) external onlyIfWhitelisted(msg.sender) {
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
-
     cards[_cardIndex].active = _active;
+  }
+
+  function setMaxQuantity(uint256 _cardIndex, uint256 _maxQnty) external onlyIfWhitelisted(msg.sender) {
+    require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
+    require(cards[_cardIndex].minted<=_maxQnty, "Cant set the max quantity less than the current total minted");
+    cards[_cardIndex].maxQnty = _maxQnty;
   }
 }
