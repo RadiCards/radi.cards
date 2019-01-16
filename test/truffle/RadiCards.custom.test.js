@@ -240,38 +240,77 @@ contract("RadiCards ERC721 Custom", function(accounts) {
       });
     });
 
-    context("should allow card max quantity to be changed later", function() {
-      it("reverts if not whitelisted", async function() {
-        await assertRevert(
-          this.token.setMaxQuantity(cardOne, 10, {
-            from: account1
-          })
-        );
-      });
+    context(
+      "should allow change of max quantity of each card after creation",
+      function() {
+        it("reverts if not whitelisted", async function() {
+          await assertRevert(
+            this.token.setMaxQuantity(cardOne, 10, {
+              from: account1
+            })
+          );
+        });
 
-      it("reverts if no card", async function() {
-        await assertRevert(
-          this.token.setMaxQuantity(999, 10, {
+        it("reverts if no card", async function() {
+          await assertRevert(
+            this.token.setMaxQuantity(999, 10, {
+              from: owner
+            })
+          );
+        });
+
+        it("can change max quantity", async function() {
+          let card = await this.token.cards(cardOne, {
             from: owner
-          })
-        );
-      });
+          });
+          card[3].should.be.bignumber.equal(0);
 
-      it("can change max quantity", async function() {
-        let card = await this.token.cards(cardOne, {
-          from: owner
+          await this.token.setMaxQuantity(cardOne, 100, {
+            from: owner
+          });
+          card = await this.token.cards(cardOne, {
+            from: owner
+          });
+          card[3].should.be.bignumber.equal(100);
         });
-        card[3].should.be.bignumber.equal(0);
+      }
+    );
 
-        await this.token.setMaxQuantity(cardOne, 100, {
-          from: owner
+    context(
+      "should allow change of min price of each card after creation",
+      function() {
+        it("reverts if not whitelisted", async function() {
+          await assertRevert(
+            this.token.setMinPrice(cardOne, 10, {
+              from: account1
+            })
+          );
         });
-        card = await this.token.cards(cardOne, {
-          from: owner
+
+        it("reverts if no card", async function() {
+          await assertRevert(
+            this.token.setMinPrice(999, 10, {
+              from: owner
+            })
+          );
         });
-        card[3].should.be.bignumber.equal(100);
-      });
-    });
+
+        it("can change min price", async function() {
+          let card = await this.token.cards(cardOne, {
+            from: owner
+          });
+          card[4].should.be.bignumber.equal(0);
+
+          await this.token.setMinPrice(cardOne, etherToWei(10), {
+            from: owner
+          });
+          card = await this.token.cards(cardOne, {
+            from: owner
+          });
+          card[4].should.be.bignumber.equal(etherToWei(10));
+        });
+      }
+    );
 
     context(
       "should correctly split funds sent between recipient and charity",

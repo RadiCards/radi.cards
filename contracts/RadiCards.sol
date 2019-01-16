@@ -91,7 +91,7 @@ contract RadiCards is ERC721Token, Whitelist {
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
   }
-  
+
   function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount) payable public returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
@@ -99,7 +99,7 @@ contract RadiCards is ERC721Token, Whitelist {
     require(cards[_cardIndex].active, "Must be an active card");
     require(_donationAmount <= msg.value,"Can't request to donate more than total value sent");
     require(msg.value >= minContribution, "Must send at least the minimum amount");
-    
+
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
       require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
     }
@@ -124,11 +124,11 @@ contract RadiCards is ERC721Token, Whitelist {
     if(_donationAmount > 0){
       benefactors[_benefactorIndex].ethAddress.transfer(_donationAmount);
     }
-    
+
     if(_giftAmount > 0){
         to.transfer(_giftAmount);
     }
-    
+
     // tally up the total eth gifted and donated
     totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
     totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
@@ -145,7 +145,7 @@ contract RadiCards is ERC721Token, Whitelist {
     require(cards[_cardIndex].active, "Must be an active card");
     require((_donationAmount + _giftAmount)<= daiContract.allowance(msg.sender, this), "Must have provided high enough alowance to Radicard contract");
     require((_donationAmount + _giftAmount)<= daiContract.balanceOf(msg.sender), "Must have enough token balance of dai to pay for donation and gift amount");
-    
+
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
       require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
     }
@@ -173,11 +173,11 @@ contract RadiCards is ERC721Token, Whitelist {
         address _benefactorAddress = benefactors[_benefactorIndex].ethAddress;
         require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to charity failed");
     }
-    
+
     if(_giftAmount > 0){
         require(daiContract.transferFrom(msg.sender, to, _giftAmount),"Sending to recipaint failed");
     }
-    
+
     // tally up the total eth gifted and donated
     totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
     totalDonatedInAtto = totalDonatedInAtto.add(_donationAmount);
@@ -324,6 +324,11 @@ contract RadiCards is ERC721Token, Whitelist {
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].minted<=_maxQnty, "Cant set the max quantity less than the current total minted");
     cards[_cardIndex].maxQnty = _maxQnty;
+  }
+
+  function setMinPrice(uint256 _cardIndex, uint256 _minPrice) external onlyIfWhitelisted(msg.sender) {
+    require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
+    cards[_cardIndex].minPrice = _minPrice;
   }
 
   function setDaiContractAddress(address _daiERC20ContractAddress) external onlyIfWhitelisted(msg.sender){
