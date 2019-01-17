@@ -93,12 +93,12 @@ contract RadiCards is ERC721Token, Whitelist {
     addAddressToWhitelist(msg.sender);
   }
 
-  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount) payable public returns (bool) {
+  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount) payable public returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].active, "Must be an active card");
-    require(_donationAmount <= msg.value,"Can't request to donate more than total value sent");
+    require(_donationAmount + _giftAmount == msg.value,"Can only request to donate and gift the amount of ether sent");
 
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
       require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
@@ -109,8 +109,6 @@ contract RadiCards is ERC721Token, Whitelist {
       // require(getEthUsdValue(msg.value) >= (cards[_cardIndex].minPrice), "Must send at least the minimum amount");
       require (getMinCardPriceInWei(_cardIndex)<=msg.value,"Must send at least the minimum amount to buy card");
     }
-
-    uint256 _giftAmount = msg.value - _donationAmount;
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
         gifter : msg.sender,
