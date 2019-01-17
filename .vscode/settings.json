@@ -1,4 +1,37 @@
 {
   "editor.formatOnSave": true,
-  "eslint.validate": ["javascript", "javascriptreact", "vue"]
+  "eslint.validate": [
+    "javascript",
+    "javascriptreact",
+    "vue"
+  ],
+  "cSpell.enabledLanguageIds": [
+    "asciidoc",
+    "c",
+    "cpp",
+    "csharp",
+    "css",
+    "go",
+    "handlebars",
+    "html",
+    "jade",
+    "javascript",
+    "javascriptreact",
+    "json",
+    "latex",
+    "less",
+    "markdown",
+    "php",
+    "plaintext",
+    "pub",
+    "python",
+    "restructuredtext",
+    "rust",
+    "scss",
+    "solidity",
+    "text",
+    "typescript",
+    "typescriptreact",
+    "yml"
+  ]
 }

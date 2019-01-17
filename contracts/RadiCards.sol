@@ -6,6 +6,7 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
 import "./Strings.sol";
+import "./Medianizer.sol";
 
 /**
 * @title Radi.Cards
@@ -16,17 +17,17 @@ import "./Strings.sol";
 * @author pheme.app
 * @author d1labs.com
 * @author mbdoesthings.com
-* @author chrismaree.io
+* @author chrismaree.io (smart contracts update)
 */
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
 
   StandardToken daiContract;
+  Medianizer medianizerContract;
 
   string public tokenBaseURI = "https://ipfs.infura.io/ipfs/";
 
   uint256 public tokenIdPointer = 0;
-  uint256 public minContribution = 0.01 ether;
 
   struct Benefactor {
     address ethAddress;
@@ -46,7 +47,7 @@ contract RadiCards is ERC721Token, Whitelist {
 
   struct RadiCard {
     // Metadata
-    address creator;
+    address gifter;
     string message;
     bool daiDonation;
     uint256 giftingAmount;
@@ -98,16 +99,21 @@ contract RadiCards is ERC721Token, Whitelist {
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].active, "Must be an active card");
     require(_donationAmount <= msg.value,"Can't request to donate more than total value sent");
-    require(msg.value >= minContribution, "Must send at least the minimum amount");
 
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
       require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
     }
 
+    if(cards[_cardIndex].minPrice > 0){ //if the card has a minimum price check that enough has been sent
+      // Convert the current value of the eth send to a USD value of atto (1 usd = 10^18 atto).
+      // require(getEthUsdValue(msg.value) >= (cards[_cardIndex].minPrice), "Must send at least the minimum amount");
+      require (getMinCardPriceInWei(_cardIndex)<=msg.value,"Must send at least the minimum amount to buy card");
+    }
+
     uint256 _giftAmount = msg.value - _donationAmount;
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
-        creator : msg.sender,
+        gifter : msg.sender,
         daiDonation: false,
         giftingAmount : _giftAmount,
         donatingAmount: _donationAmount,
@@ -155,7 +161,7 @@ contract RadiCards is ERC721Token, Whitelist {
     }
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
-        creator : msg.sender,
+        gifter : msg.sender,
         daiDonation: true,
         giftingAmount : _giftAmount,
         donatingAmount: _donationAmount,
@@ -213,7 +219,7 @@ contract RadiCards is ERC721Token, Whitelist {
   function tokenDetails(uint256 _tokenId)
   public view
   returns (
-    address _creator,
+    address _gifter,
     bool _daiDonation,
     uint256 _giftingAmount,
     uint256 _donatingAmount,
@@ -224,7 +230,7 @@ contract RadiCards is ERC721Token, Whitelist {
     require(exists(_tokenId));
     RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
     return (
-      _radiCard.creator,
+      _radiCard.gifter,
       _radiCard.daiDonation,
       _radiCard.giftingAmount,
       _radiCard.donatingAmount,
@@ -309,12 +315,6 @@ contract RadiCards is ERC721Token, Whitelist {
     tokenBaseURI = _newBaseURI;
   }
 
-  function setMinContribution(uint256 _minContribution) external onlyIfWhitelisted(msg.sender) {
-    require(_minContribution > 0, "Invalid minimum contribution");
-
-    minContribution = _minContribution;
-  }
-
   function setActive(uint256 _cardIndex, bool _active) external onlyIfWhitelisted(msg.sender) {
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     cards[_cardIndex].active = _active;
@@ -334,5 +334,25 @@ contract RadiCards is ERC721Token, Whitelist {
   function setDaiContractAddress(address _daiERC20ContractAddress) external onlyIfWhitelisted(msg.sender){
     require(_daiERC20ContractAddress != address(0));
     daiContract = StandardToken(_daiERC20ContractAddress);
+  }
+
+  function setMedianizerContractAddress(address _MedianizerContractAddress) external onlyIfWhitelisted(msg.sender){
+    require(_MedianizerContractAddress != address(0));
+    medianizerContract = Medianizer(_MedianizerContractAddress);
+  }
+
+  // returns the current ether price in usd. 18 decimal point precision used
+  function getEtherPrice() public view returns(uint256){
+    return uint256(medianizerContract.read());
+  }
+
+  //returns the value of ether in atto  (1 usd of ether = 10^18 atto)
+  function getEthUsdValue(uint256 _ether) public view returns(uint256){
+    return ((_ether*getEtherPrice())/(1 ether));
+  }
+
+  //returns the minimum required in wei for a particular card given the card min price in dai
+  function getMinCardPriceInWei(uint256 _cardIndex) public view returns(uint256){
+    return ((cards[_cardIndex].minPrice*1 ether)/getEtherPrice());
   }
 }
