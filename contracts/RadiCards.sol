@@ -22,6 +22,8 @@ import "./Medianizer.sol";
 contract RadiCards is ERC721Token, Whitelist {
   using SafeMath for uint256;
 
+
+  // dai support
   StandardToken daiContract;
   Medianizer medianizerContract;
 
@@ -45,14 +47,18 @@ contract RadiCards is ERC721Token, Whitelist {
     uint256 minPrice; //set to zero to default to the minimumContribution
   }
 
+// claimable link support
+  enum Statuses { Empty, Deposited, Claimed, Cancelled }
+  uint256 public EPHEMERAL_ADDRESS_FEE = 0.01 ether;
+  mapping(address => uint256) public ephemeralWalletCards; // ephemeral wallet => tokenId
+
   struct RadiCard {
-    // Metadata
     address gifter;
     string message;
     bool daiDonation;
-    uint256 giftingAmount;
-    uint256 donatingAmount;
-    // Lookups
+    uint256 giftAmount;
+    uint256 donationAmount;
+    Statuses status;
     uint256 cardIndex;
     uint256 benefactorIndex;
   }
@@ -78,8 +84,25 @@ contract RadiCards is ERC721Token, Whitelist {
     uint256 indexed _benefactorIndex,
     uint256 indexed _cardIndex,
     address _from,
-    uint256 _tokenId
+    uint256 _tokenId,
+    Statuses status
   );
+
+  event LogClaim(
+		 address indexed ephemeralAddress,
+		 address indexed sender,
+		 uint tokenId,
+		 address receiver,
+		 uint giftAmount,
+     bool daiDonation
+		 );
+
+  event LogCancel(
+		  address indexed ephemeralAddress,
+		  address indexed sender,
+		  uint tokenId
+		  );
+
 
   event BenefactorAdded(
     uint256 indexed _benefactorIndex
@@ -93,12 +116,23 @@ contract RadiCards is ERC721Token, Whitelist {
     addAddressToWhitelist(msg.sender);
   }
 
-  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount) payable public returns (bool) {
+  function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) payable public returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
     require(cards[_cardIndex].active, "Must be an active card");
-    require(_donationAmount + _giftAmount == msg.value,"Can only request to donate and gift the amount of ether sent");
+
+    Statuses _giftStatus;
+
+    if(_claimableLink){
+      require(_donationAmount + _giftAmount + EPHEMERAL_ADDRESS_FEE == msg.value, "Can only request to donate and gift the amount of ether sent + Ephemeral fee");
+      _giftStatus = Statuses.Deposited;
+    }
+
+    else{
+      require(_donationAmount + _giftAmount == msg.value,"Can only request to donate and gift the amount of ether sent");
+      _giftStatus = Statuses.Claimed;
+    }
 
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
       require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
@@ -113,8 +147,9 @@ contract RadiCards is ERC721Token, Whitelist {
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
         gifter : msg.sender,
         daiDonation: false,
-        giftingAmount : _giftAmount,
-        donatingAmount: _donationAmount,
+        giftAmount : _giftAmount,
+        donationAmount: _donationAmount,
+        status: _giftStatus,
         message : _message,
         benefactorIndex : _benefactorIndex,
         cardIndex : _cardIndex
@@ -125,11 +160,11 @@ contract RadiCards is ERC721Token, Whitelist {
     cards[_cardIndex].minted++;
 
     // transfer the ETH to the benefactor and recipaint
-    if(_donationAmount > 0){
+    if(_donationAmount > 0 && !_claimableLink){
       benefactors[_benefactorIndex].ethAddress.transfer(_donationAmount);
     }
 
-    if(_giftAmount > 0){
+    if(_giftAmount > 0 && !_claimableLink){
         to.transfer(_giftAmount);
     }
 
@@ -137,12 +172,12 @@ contract RadiCards is ERC721Token, Whitelist {
     totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
     totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
 
-    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId);
+    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
 
     return true;
   }
 
-  function giftInDai(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount) public returns (bool) {
+  function giftInDai(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) public payable returns (bool) {
     require(to != address(0), "Must be a valid address");
     require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
     require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
@@ -158,40 +193,58 @@ contract RadiCards is ERC721Token, Whitelist {
       require((_donationAmount + _giftAmount) >= cards[_cardIndex].minPrice, "The total dai sent with the transaction is less than the min price of the token");
     }
 
+    //parameters that change based on the if the card is setup as with a claimable link
+    Statuses _giftStatus;
+    address _sentToAddress;
+
+    if(_claimableLink){
+      require(msg.value == EPHEMERAL_ADDRESS_FEE, "A claimable link was generated but not enough ephemeral ether was sent!");
+      _giftStatus = Statuses.Deposited;
+      _sentToAddress = this;
+      // need to store the address of the ephemeral account and the card that it owns for claimable link functionality
+      ephemeralWalletCards[to] = tokenIdPointer;
+    }
+    else {
+      _giftStatus = Statuses.Claimed;
+      _sentToAddress = to;
+    }
+
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
         gifter : msg.sender,
         daiDonation: true,
-        giftingAmount : _giftAmount,
-        donatingAmount: _donationAmount,
+        giftAmount : _giftAmount,
+        donationAmount: _donationAmount,
+        status: _giftStatus,
         message : _message,
         benefactorIndex : _benefactorIndex,
         cardIndex : _cardIndex
     });
 
-    uint256 _tokenId = _mint(to, cards[_cardIndex].tokenURI);
+    // Card is minted to the _sentToAddress. This is either this radicards contract(if claimableLink==true)
+    // and the creator chose to use the escrow for a claimable link or to the recipient EOA directly
+    uint256 _tokenId = _mint(_sentToAddress, cards[_cardIndex].tokenURI);
 
     cards[_cardIndex].minted++;
 
     // transfer the DAI to the benefactor and recipaint
-    if(_donationAmount > 0){
+    if(_donationAmount > 0 && !_claimableLink){
         address _benefactorAddress = benefactors[_benefactorIndex].ethAddress;
         require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to charity failed");
     }
 
-    if(_giftAmount > 0){
-        require(daiContract.transferFrom(msg.sender, to, _giftAmount),"Sending to recipaint failed");
+    if(_giftAmount > 0 && !_claimableLink){
+        require(daiContract.transferFrom(msg.sender, _sentToAddress, _giftAmount),"Sending to recipaint failed");
     }
 
     // tally up the total eth gifted and donated
     totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
     totalDonatedInAtto = totalDonatedInAtto.add(_donationAmount);
 
-    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId);
+    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
 
     return true;
 
   }
-
 
   function _mint(address to, string tokenURI) internal returns (uint256 _tokenId) {
     uint256 tokenId = tokenIdPointer;
@@ -203,6 +256,90 @@ contract RadiCards is ERC721Token, Whitelist {
 
     return tokenId;
   }
+
+  function cancelGift(address _ephemeralAddress) public returns (bool success) {
+
+    uint256 tokenId = ephemeralWalletCards[_ephemeralAddress];
+    require(tokenId != 0, "Can only call this function on an address that was used as an ephemeral");
+    RadiCard storage card = tokenIdToRadiCardIndex[tokenId];
+
+    // is deposited and wasn't claimed or cancelled before
+    require(card.status == Statuses.Deposited, "can only cancel gifts that are unclaimed (deposited)");
+
+    // only gifter can cancel transfer;
+    require(msg.sender == card.gifter, "only the gifter of the card can cancel a gift");
+
+    // update status to cancelled
+    card.status = Statuses.Cancelled;
+
+    // transfer optional ether & dai back to creators address
+    if (card.giftAmount > 0) {
+        if(card.daiDonation){
+            require(daiContract.transfer(msg.sender, card.giftAmount),"Sending to recipient after cancel gift failed");
+      }
+        else{
+            msg.sender.transfer(card.giftAmount);
+        }
+    }
+
+    // send nft to buyer
+    super.safeTransferFrom(address(this), msg.sender, tokenId);
+
+    // log cancel event
+    emit LogCancel(_ephemeralAddress, msg.sender, tokenId);
+
+    return true;
+  }
+
+
+  /**
+   * @dev Claim gift to receiver's address if it is correctly signed
+   * with private key for verification public key assigned to gift.
+   *
+   * @param _receiver address Signed address.
+   * @return True if success.
+   */
+  function claimGift(address _receiver) public returns (bool success) {
+    // only holder of ephemeral private key can claim gift
+    address _ephemeralAddress = msg.sender;
+
+    uint256 tokenId = ephemeralWalletCards[_ephemeralAddress];
+
+    require(tokenId != 0, "The calling address does not have an ephemeral account associated with it");
+
+    RadiCard storage card = tokenIdToRadiCardIndex[tokenId];
+
+    // is deposited and wasn't claimed or cancelled before
+    require(card.status == Statuses.Deposited, "Can only claim a gift that is unclaimed");
+
+    // update gift status to claimed
+    card.status = Statuses.Claimed;
+
+    // send nft to receiver
+    super.safeTransferFrom(address(this), _receiver, tokenId);
+
+    // transfer optional ether & dai to receiver's address
+    if (card.giftAmount > 0) {
+        if(card.daiDonation){
+            require(daiContract.transfer(_receiver, card.giftAmount),"Sending to recipient after cancel gift failed");
+      }
+        else{
+            _receiver.transfer(card.giftAmount);
+        }
+    }
+
+    // log claim event
+    emit LogClaim(
+        _ephemeralAddress,
+        card.gifter,
+        tokenId,
+        _receiver,
+        card.giftAmount,
+        card.daiDonation
+    );
+    return true;
+  }
+
 
   function burn(uint256 _tokenId) public pure  {
     revert("Radi.Cards are censorship resistant!");
@@ -219,8 +356,8 @@ contract RadiCards is ERC721Token, Whitelist {
   returns (
     address _gifter,
     bool _daiDonation,
-    uint256 _giftingAmount,
-    uint256 _donatingAmount,
+    uint256 _giftAmount,
+    uint256 _donationAmount,
     string _message,
     uint256 _cardIndex,
     uint256 _benefactorIndex
@@ -230,8 +367,8 @@ contract RadiCards is ERC721Token, Whitelist {
     return (
       _radiCard.gifter,
       _radiCard.daiDonation,
-      _radiCard.giftingAmount,
-      _radiCard.donatingAmount,
+      _radiCard.giftAmount,
+      _radiCard.donationAmount,
       _radiCard.message,
       _radiCard.cardIndex,
       _radiCard.benefactorIndex
