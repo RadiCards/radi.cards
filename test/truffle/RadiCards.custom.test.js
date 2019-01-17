@@ -300,7 +300,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       function () {
         it("reverts if not whitelisted", async function () {
           await assertRevert(
-            this.token.setMinPrice(cardOne, 10, {
+            this.token.setMinPrice(cardOne, oneUSDInAtto * 5, {
               from: account1
             })
           );
@@ -308,7 +308,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
 
         it("reverts if no card", async function () {
           await assertRevert(
-            this.token.setMinPrice(999, 10, {
+            this.token.setMinPrice(999, oneUSDInAtto * 5, {
               from: owner
             })
           );
@@ -491,30 +491,17 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
 
       it("reverts if below minimum amount", async function () {
+        //the total sent with this card is less than the min cost of 1 card (1usd)
         await assertRevert(
           this.token.gift(
             account2,
             benefactorEFF,
             cardOne,
             message,
-            oneUSDInWei / 2,
-            oneUSDInWei / 2, {
+            oneUSDInWei / 4,
+            oneUSDInWei / 4, {
               from: account1,
-              value: oneUSDInWei / 4
-            }
-          )
-        );
-
-        await assertRevert(
-          this.token.gift(
-            account2,
-            benefactorEFF,
-            cardOne,
-            message,
-            oneUSDInWei / 2,
-            oneUSDInWei / 2, {
-              from: account1,
-              value: oneUSDInWei.sub(1)
+              value: oneUSDInWei / 2
             }
           )
         );
@@ -523,7 +510,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       it("reverts if not active", async function () {
         // add a new card but set the activity to false such that no new cards can be gifted
         await this.token.addCard(
-          3,
+          cardTwo,
           "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy",
           false,
           0,
@@ -535,7 +522,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.gift(
             account2,
             benefactorEFF,
-            3,
+            cardTwo,
             message,
             oneUSDInWei / 2,
             oneUSDInWei / 2, {
@@ -546,7 +533,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         );
       });
 
-      it("reverts if invalid donation& gift amount combo amount", async function () {
+      it("reverts if invalid donation & gift amount combo amount", async function () {
+        //total transferred in wei is different from requested donation & gift
         await assertRevert(
           this.token.gift(
             account2,
@@ -560,13 +548,28 @@ contract("RadiCards ERC721 Custom", function (accounts) {
             }
           )
         );
+
+        // transferer in wei is less than the gift & requested together
+        await assertRevert(
+          this.token.gift(
+            account2,
+            benefactorEFF,
+            cardOne,
+            message,
+            oneUSDInWei,
+            oneUSDInWei, {
+              from: account1,
+              value: oneUSDInWei
+            }
+          )
+        );
       });
 
       it("reverts if maximum number of cards minted", async function () {
         // add a new card and set the maximum number of minted to 1. can then create one card but should not be able
         // to create the second card as at the maximum.
         await this.token.addCard(
-          3,
+          cardTwo,
           "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy",
           true,
           1,
@@ -579,7 +582,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         await this.token.gift(
           account2,
           benefactorEFF,
-          3,
+          cardTwo,
           message,
           oneUSDInWei / 2,
           oneUSDInWei / 2, {
@@ -593,7 +596,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.gift(
             account2,
             benefactorEFF,
-            3,
+            cardTwo,
             message,
             oneUSDInWei / 2,
             oneUSDInWei / 2, {
@@ -611,7 +614,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.giftInDai(
             ZERO_ADDRESS,
             benefactorFPF,
-            cardThree,
+            cardTwo,
             message,
             oneUSDInAtto / 2,
             oneUSDInAtto / 2, {
@@ -627,7 +630,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.giftInDai(
             account1,
             999,
-            cardThree,
+            cardTwo,
             message,
             oneUSDInAtto / 2,
             oneUSDInAtto / 2, {
@@ -659,7 +662,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.giftInDai(
             account1,
             benefactorEFF,
-            cardThree,
+            cardOne,
             message,
             //the minimum amount for this card is etherToWei(1). The sum of charity
             //and gift is less than this
@@ -671,14 +674,14 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           )
         );
       });
-      it("reverts if below above approved amount", async function () {
+      it("reverts if above approved amount", async function () {
         // 50 dai has been approved for transfer by account1. should revert
         // if more than this is requested
         await assertRevert(
           this.token.giftInDai(
             account1,
             benefactorEFF,
-            cardThree,
+            cardOne,
             message,
             //the minimum amount for this card is etherToWei(1). The sum of charity
             //and gift is less than this
@@ -694,7 +697,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       it("reverts if not active", async function () {
         // add a new card but set the activity to false such that no new cards can be giftInDaied
         await this.token.addCard(
-          4,
+          cardThree,
           "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy",
           false,
           0,
@@ -706,7 +709,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.giftInDai(
             account1,
             benefactorEFF,
-            4,
+            cardThree,
             message,
             oneUSDInAtto / 2,
             oneUSDInAtto / 2, {
@@ -721,7 +724,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         // add a new card and set the maximum number of minted to 1. can then create one card but should not be able
         // to create the second card as at the maximum.
         await this.token.addCard(
-          4,
+          cardThree,
           "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy",
           true,
           1,
@@ -734,7 +737,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         await this.token.giftInDai(
           account1,
           benefactorEFF,
-          4,
+          cardThree,
           message,
           oneUSDInAtto / 2,
           oneUSDInAtto / 2, {
@@ -748,7 +751,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.giftInDai(
             account1,
             benefactorEFF,
-            4,
+            cardThree,
             message,
             oneUSDInAtto / 2,
             oneUSDInAtto / 2, {
