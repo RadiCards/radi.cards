@@ -148,9 +148,17 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         const indexes = await this.token.benefactorsKeys();
         indexes.length.should.be.bignumber.equal(2);
       });
-      it("returns indexes", async function () {
+      it("should correctly create one card", async function () {
         const indexes = await this.token.cardsKeys();
         indexes.length.should.be.bignumber.equal(1);
+      });
+      it("should have the dai contract set correctly", async function () {
+        let daiContactAddress = this.token.daiContract()
+        daiContactAddress.should.be.equal(this.daiContract.address)
+      });
+      it("should have the medianizer contract set correctly", async function () {
+        let medianizerContractAddress = this.token.medianizerContract()
+        medianizerContractAddress.should.be.equal(this.medianizerContract.address)
       });
     });
 
@@ -830,7 +838,6 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           }))
       });
       it("correctly allocates gift status to deposited", async function () {
-
         await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
@@ -852,6 +859,12 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.address
         );
 
+        let benefactor = await this.token.benefactors(benefactorEFF);
+        let benefactorAddress = benefactor[0];
+        let benefactorBalanceBefore = await web3.eth.getBalance(
+          benefactorAddress
+        );
+
         await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
@@ -863,19 +876,25 @@ contract("RadiCards ERC721 Custom", function (accounts) {
             from: account1,
             value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
           })
-        // get the tokenid's of the tokens owned by the radicards contract. this returns an array of bignum ID's
+        // get the tokenid's of the tokens owned by the radicards contract. This returns an array of bignum ID's
         let tokensOwnedByRadiContract = await this.token.tokensOf(this.token.address)
-        // the card created above should have tokenid=1 (the second card created after the before each initially)
-        // and should be owned by the contract, held in escrow. need to index the tokensOwnedByRadiContract at 0
+        // the card created above should have tokenid=1 (the second card created after the beforeEach initially)
+        // and should be owned by the contract, held in escrow. Need to index the tokensOwnedByRadiContract at 0
         // as tokensOf returns an array of all token ID's owned
         tokensOwnedByRadiContract[0].should.be.bignumber.equal(1)
 
-        // next, we must check that the eth is held by the contract. expecting the balance to have gone up by
-        // the gift amount exactly. the charity should also have been paid out at the same time
+        // next, we must check that the Eth is held by the contract. expecting the balance to have gone up by
+        // the gift amount exactly. The charity should also have been paid out at the same time
         let contractBalanceAfter = await web3.eth.getBalance(
           this.token.address
         );
         contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.add(oneUSDInWei))
+
+        let benefactorBalanceAfter = await web3.eth.getBalance(
+          benefactorAddress
+        );
+        benefactorBalanceAfter.should.be.bignumber.equal(benefactorBalanceBefore.plus(oneUSDInWei));
+
       });
       it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
         let ephemeralBalanceBefore = await web3.eth.getBalance(
@@ -948,6 +967,12 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.address
         );
 
+        let benefactor = await this.token.benefactors(benefactorEFF);
+        let benefactorAddress = benefactor[0];
+        let benefactorDAIBalanceBefore = await this.daiContract.balanceOf(
+          benefactorAddress
+        );
+
         await this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
@@ -975,16 +1000,18 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         let contractDAIBalanceAfter = await this.daiContract.balanceOf(
           this.token.address
         );
-
         contractDAIBalanceAfter.should.be.bignumber.equal(contractDAIBalanceBefore.add(oneUSDInAtto))
 
+        let benefactorDAIBalanceAfter = await this.daiContract.balanceOf(
+          benefactorAddress
+        );
+        benefactorDAIBalanceAfter.should.be.bignumber.equal(benefactorDAIBalanceBefore.plus(oneUSDInAtto))
       });
 
       it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
         let ephemeralBalanceBefore = await web3.eth.getBalance(
           ephemeralAddress
         );
-
         ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
 
         await this.token.giftInDai(ephemeralAddress,
@@ -1009,6 +1036,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       beforeEach(async function () {
         // create a new ephemeral account for each test
         ephemeralAddress = web3.personal.newAccount("password")
+        web3.personal.unlockAccount(ephemeralAddress, "password")
         // all tests that follow require a simple, standard gift
         await this.token.gift(ephemeralAddress,
           benefactorEFF,
@@ -1035,19 +1063,17 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           from: account1
         }))
       });
-      // it("reverts if gift already claimed", async function () {
+      it("reverts if gift already claimed", async function () {
+        //first, claim gift. this can only be done from the ephemeral account
+        await this.token.claimGift(account2, {
+          from: ephemeralAddress,
+          value: 0
+        })
 
-      //   web3.personal.unlockAccount(ephemeralAddress, "password")
-      //   //first, claim gift. this can only be done from the ephemeral account
-      //   await this.token.claimGift(account2, {
-      //     from: ephemeralAddress,
-      //     value: 0
-      //   })
-
-      //   await assertRevert(this.token.cancelGift(ephemeralAddress, {
-      //     from: account1
-      //   }))
-      // });
+        await assertRevert(this.token.cancelGift(ephemeralAddress, {
+          from: account1
+        }))
+      });
 
       it("can cancel gift if gifter and funds are returned (ETH)", async function () {
         let contractBalanceBefore = await web3.eth.getBalance(
@@ -1076,14 +1102,15 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         );
         //check that the gifter account is equal to the refund - the amount spent on gas
         gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInWei).minus(totalSpentOnGas))
+
+        // the last thing to check is that the gifter is now the owner of the nft
+        let ownerOfToken = await this.token.ownerOf(1) //card index 1 for the card minted in the foreach most recently
+        ownerOfToken.should.be.bignumber.equal(account1)
       })
 
+
+
       it("can cancel gift if gifter and funds are returned (DAI)", async function () {
-        // we need to create a new ephemeraladdress and gift for the dai test as the before each uses
-        // the eth donation method
-
-        ephemeralAddress = web3.personal.newAccount("password")
-
         await this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
@@ -1116,19 +1143,22 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         let gifterBalanceAfter = await this.daiContract.balanceOf(
           account1
         );
-        //check that the gifter account is equal to the refund dai amount
+        // then heck that the gifter account is equal to the refund dai amount
         gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInAtto))
+
+        // the last thing to check is that the gifter is now the owner of the nft
+        let ownerOfToken = await this.token.ownerOf(2) //card index 2 for the card minted within this it
+        ownerOfToken.should.be.bignumber.equal(account1)
+        console.log(ownerOfToken)
+        console.log(account1)
       })
     })
 
-    context("should allow for the claiming of a gift", function () {
+    context("should allow for the claiming of a gift (ETH)", function () {
       beforeEach(async function () {
         // create a new ephemeral account for each test
         ephemeralAddress = await web3.personal.newAccount("password")
-        // console.log("VAAA")
-        // console.log(web3)
-        // console.log(newaccount2)
-        // all tests that follow require a simple, standard gift with claimable link turned to true
+        await web3.personal.unlockAccount(ephemeralAddress, "password")
         await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
@@ -1154,8 +1184,6 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         }))
       });
       it("should transfer token and funds to new owner", async function () {
-        web3.personal.unlockAccount(ephemeralAddress, "password")
-
         // initially the token owns the token (before transfer)
         let ownerOfToken = await this.token.ownerOf(1)
         ownerOfToken.should.be.bignumber.equal(this.token.address)
@@ -1191,6 +1219,73 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           account2
         );
         recipientBalanceAfter.should.be.bignumber.equal(recipientBalanceBefore.plus(oneUSDInWei))
+      });
+    })
+    context("should allow for the claiming of a gift (DAI)", function () {
+      beforeEach(async function () {
+        // create a new ephemeral account for each test
+        ephemeralAddress = await web3.personal.newAccount("password")
+        web3.personal.unlockAccount(ephemeralAddress, "password")
+        await this.token.giftInDai(ephemeralAddress,
+          benefactorEFF,
+          cardOne,
+          message + " via ephemeral",
+          oneUSDInAtto,
+          oneUSDInAtto,
+          true, //this bool defines if the card should be set as claimable
+          {
+            from: account1,
+            value: ephemeralAddressFee
+          })
+      })
+      it("reverts if not ephemeral Address", async function () {
+        // account1 created the gift and it was sent to the ephemeralAddress
+        // only the ephemeral address should be able to make this call
+        await assertRevert(this.token.claimGift(account2, {
+          from: account2
+        }))
+      });
+      it("reverts if not gift is already claimed", async function () {
+        await assertRevert(this.token.claimGift(account2, {
+          from: account2
+        }))
+      });
+      it("should transfer token and funds to new owner", async function () {
+        // initially the token owns the token (before transfer)
+        let ownerOfToken = await this.token.ownerOf(1)
+        ownerOfToken.should.be.bignumber.equal(this.token.address)
+
+        // we also need to check the token balances of the contract and the recipient
+        // address to check it was transfers correctly
+
+        let contractBalanceBefore = await this.daiContract.balanceOf(
+          this.token.address
+        );
+        // we want to claim the token and eth to account2
+        let recipientBalanceBefore = await this.daiContract.balanceOf(
+          account2
+        );
+
+        await this.token.claimGift(account2, {
+          from: ephemeralAddress,
+          value: 0
+        })
+
+        // after the claim we can check that the owner is now account2
+        ownerOfToken = await this.token.ownerOf(1)
+        ownerOfToken.should.be.bignumber.equal(account2)
+
+        // check the fund transfer happened correctly
+        let contractBalanceAfter = await this.daiContract.balanceOf(
+          this.token.address
+        );
+        contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.minus(oneUSDInAtto))
+
+        // we want to claim the token and eth to account2
+        let recipientBalanceAfter = await this.daiContract.balanceOf(
+          account2
+        );
+        recipientBalanceAfter.should.be.bignumber.equal(recipientBalanceBefore.plus(oneUSDInAtto))
       });
     })
   });

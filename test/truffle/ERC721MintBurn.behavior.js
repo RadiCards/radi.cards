@@ -30,16 +30,17 @@ function shouldBehaveLikeMintAndBurnERC721(
 
   const TOKEN_URI = '123abcHash';
 
+  const oneUSDInWei = etherToWei(1).dividedToIntegerBy(130);
+
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
-      this.minContribution = await this.token.minContribution();
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', this.minContribution, {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
         from: creator,
-        value: this.minContribution
+        value: oneUSDInWei
       });
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', this.minContribution, {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
         from: creator,
-        value: this.minContribution
+        value: oneUSDInWei
       });
     });
 
@@ -48,9 +49,9 @@ function shouldBehaveLikeMintAndBurnERC721(
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', this.minContribution, {
+          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
             from: creator,
-            value: this.minContribution
+            value: oneUSDInWei
           });
           logs = result.logs;
         });
@@ -75,7 +76,7 @@ function shouldBehaveLikeMintAndBurnERC721(
 
       describe('when the given owner address is the zero address', function () {
         it('reverts', async function () {
-          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', this.minContribution, {
+          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
             from: creator
           }));
         });

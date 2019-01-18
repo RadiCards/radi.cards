@@ -47,6 +47,8 @@ contract('RadiCards ERC721 Common', function (accounts) {
   const cardOne = 1;
   const cardTwo = 2;
 
+  const oneUSDInWei = etherToWei(1).dividedToIntegerBy(130);
+
   const message = 'Happy Xmas';
   const extra = 'FFFFFF';
 
@@ -67,7 +69,7 @@ contract('RadiCards ERC721 Common', function (accounts) {
     this.token = await RadiCards.new({
       from: owner
     });
-    this.minContribution = await this.token.minContribution();
+    oneUSDInWei = await this.token.minContribution();
 
     await this.token.addBenefactor(
       1,
@@ -85,27 +87,21 @@ contract('RadiCards ERC721 Common', function (accounts) {
       "https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS"
     );
 
-    // await this.token.addBenefactor(
-    //   3,
-    //   "0x59459B87c29167733818f1263665064Cadf10eE4",
-    //   "Open Money Initiative",
-    //   "https://www.openmoneyinitiative.org/",
-    //   "https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC"
-    // );
 
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0);
-    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0);
+    // create cards with no max mint and no min price to simplify the common tests
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0);
+    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0);
   });
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, this.minContribution, {
+      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, oneUSDInWei, {
         from: owner,
-        value: this.minContribution
+        value: oneUSDInWei
       });
-      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, this.minContribution, {
+      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, oneUSDInWei, {
         from: owner,
-        value: this.minContribution * 2
+        value: oneUSDInWei * 2
       });
     });
 
