@@ -95,13 +95,13 @@ contract RadiCards is ERC721Token, Whitelist {
 		 address receiver,
 		 uint giftAmount,
      bool daiDonation
-		 );
+  );
 
   event LogCancel(
-		  address indexed ephemeralAddress,
-		  address indexed sender,
-		  uint tokenId
-		  );
+    address indexed ephemeralAddress,
+    address indexed sender,
+    uint tokenId
+  );
 
 
   event BenefactorAdded(
@@ -123,15 +123,20 @@ contract RadiCards is ERC721Token, Whitelist {
     require(cards[_cardIndex].active, "Must be an active card");
 
     Statuses _giftStatus;
+    address _sentToAddress;
 
     if(_claimableLink){
       require(_donationAmount + _giftAmount + EPHEMERAL_ADDRESS_FEE == msg.value, "Can only request to donate and gift the amount of ether sent + Ephemeral fee");
       _giftStatus = Statuses.Deposited;
+      _sentToAddress = this;
+      ephemeralWalletCards[to] = tokenIdPointer;
+      to.transfer(EPHEMERAL_ADDRESS_FEE);
     }
 
-    else{
+    else {
       require(_donationAmount + _giftAmount == msg.value,"Can only request to donate and gift the amount of ether sent");
       _giftStatus = Statuses.Claimed;
+      _sentToAddress = to;
     }
 
     if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
@@ -146,33 +151,34 @@ contract RadiCards is ERC721Token, Whitelist {
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
         gifter : msg.sender,
+        message : _message,
         daiDonation: false,
         giftAmount : _giftAmount,
         donationAmount: _donationAmount,
         status: _giftStatus,
-        message : _message,
-        benefactorIndex : _benefactorIndex,
-        cardIndex : _cardIndex
+        cardIndex : _cardIndex,
+        benefactorIndex : _benefactorIndex
     });
 
-    uint256 _tokenId = _mint(to, cards[_cardIndex].tokenURI);
+    uint256 _tokenId = _mint(_sentToAddress, cards[_cardIndex].tokenURI);
 
     cards[_cardIndex].minted++;
 
-    // transfer the ETH to the benefactor and recipaint
-    if(_donationAmount > 0 && !_claimableLink){
+    // transfer the ETH to the benefactor
+    if(_donationAmount > 0){
       benefactors[_benefactorIndex].ethAddress.transfer(_donationAmount);
     }
-
+    // transfer gift to recipient.
+    // note that we only do this if the link is not claimable as if it is the eth sits in escrow within this contract
     if(_giftAmount > 0 && !_claimableLink){
-        to.transfer(_giftAmount);
+        _sentToAddress.transfer(_giftAmount);
     }
 
     // tally up the total eth gifted and donated
     totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
     totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
 
-    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
+    emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
 
     return true;
   }
@@ -203,7 +209,9 @@ contract RadiCards is ERC721Token, Whitelist {
       _sentToAddress = this;
       // need to store the address of the ephemeral account and the card that it owns for claimable link functionality
       ephemeralWalletCards[to] = tokenIdPointer;
+      to.transfer(EPHEMERAL_ADDRESS_FEE);
     }
+
     else {
       _giftStatus = Statuses.Claimed;
       _sentToAddress = to;
@@ -211,13 +219,13 @@ contract RadiCards is ERC721Token, Whitelist {
 
     tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
         gifter : msg.sender,
+        message : _message,
         daiDonation: true,
         giftAmount : _giftAmount,
         donationAmount: _donationAmount,
         status: _giftStatus,
-        message : _message,
-        benefactorIndex : _benefactorIndex,
-        cardIndex : _cardIndex
+        cardIndex : _cardIndex,
+        benefactorIndex : _benefactorIndex
     });
 
     // Card is minted to the _sentToAddress. This is either this radicards contract(if claimableLink==true)
@@ -226,13 +234,16 @@ contract RadiCards is ERC721Token, Whitelist {
 
     cards[_cardIndex].minted++;
 
-    // transfer the DAI to the benefactor and recipaint
-    if(_donationAmount > 0 && !_claimableLink){
+    // transfer the DAI to the benefactor
+    if(_donationAmount > 0){
         address _benefactorAddress = benefactors[_benefactorIndex].ethAddress;
         require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to charity failed");
     }
 
-    if(_giftAmount > 0 && !_claimableLink){
+    // transfer gift to recipient. note that this pattern is slightly different from the eth case as irrespective of
+    // if it is a claimable link or not we preform the transaction. if it is indeed a claimable link the dai is sent
+    // to the contract and held in escrow
+    if(_giftAmount > 0){
         require(daiContract.transferFrom(msg.sender, _sentToAddress, _giftAmount),"Sending to recipaint failed");
     }
 
@@ -240,7 +251,7 @@ contract RadiCards is ERC721Token, Whitelist {
     totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
     totalDonatedInAtto = totalDonatedInAtto.add(_donationAmount);
 
-    emit CardGifted(to, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
+    emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
 
     return true;
 
@@ -355,10 +366,11 @@ contract RadiCards is ERC721Token, Whitelist {
   public view
   returns (
     address _gifter,
+    string _message,
     bool _daiDonation,
     uint256 _giftAmount,
     uint256 _donationAmount,
-    string _message,
+    Statuses status,
     uint256 _cardIndex,
     uint256 _benefactorIndex
   ) {
@@ -366,10 +378,11 @@ contract RadiCards is ERC721Token, Whitelist {
     RadiCard memory _radiCard = tokenIdToRadiCardIndex[_tokenId];
     return (
       _radiCard.gifter,
+      _radiCard.message,
       _radiCard.daiDonation,
       _radiCard.giftAmount,
       _radiCard.donationAmount,
-      _radiCard.message,
+      _radiCard.status,
       _radiCard.cardIndex,
       _radiCard.benefactorIndex
     );
