@@ -3,16 +3,15 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>We want to change the world & fight for good.</p>
-        <p>Want to help?</p>
-        <span class="cheeky-comment">with the power of memes, cats, hackers and crypto (jokes)</span>
+        <p>Send Ethereum Hongbao</p>
+        <p>via WeChat</p>
       </blockquote>
       <br>
       <p
         style="max-width: 24rem; margin-bottom: 1rem;"
-      >Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
+      >Send NFT hongbao + eCards to friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+      <router-link :to="{ name: 'cardshop' }" class="btn">Send Ether Hongbao</router-link>
     </section>
 
     <section class="section section--credits">
@@ -102,8 +101,8 @@
 
     <section class="section">
       <h4 class="section__title">STEP ONE</h4>
-      <h2>Choose and personalise your RadiCards</h2>
-      <p>Send to any ETH addresses and emails</p>
+      <h2>Choose from our collection of hongbao art</h2>
+      <p>from animated hongbao art to Deep-learning to generative art!</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card
@@ -304,9 +303,8 @@ export default {
 .section--credits {
   h5 {
     margin-bottom: 1rem;
-    padding: 0 1rem;
-    border-left: 2px solid $gray;
-    color: $gray;
+    padding: 0;
+    color: $black;
   }
   .container {
     display: flex;
