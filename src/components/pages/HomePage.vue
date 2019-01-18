@@ -87,6 +87,7 @@
     </section>
 
     <section class="section section--credits">
+      <windy-title text="Buidl-t with <3 on Ethereum and IPFS"/>
       <div class="container" style="margin: 0 -2rem;">
         <div class="col-md-4 col-xs-12">
           <h5>Buidl-t on Ethereum and IPFS by the crypto collectible community</h5>
@@ -232,6 +233,11 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+.blockquote--hero {
+  img {
+    max-width: 100%;
+  }
+}
 // Page-specific style
 .section--hero .cheeky-comment {
   position: absolute;
@@ -295,6 +301,14 @@ export default {
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  h5 {
+    font-size: 25px;
+  }
+
+  span {
+    font-size: 20px;
+  }
 
   img {
     margin-bottom: 10px;

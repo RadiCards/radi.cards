@@ -5,15 +5,15 @@
   min-width: 15rem;
   padding: 0.5rem;
   border-radius: 0 !important;
-  border: 1px solid $greylight;
-  background: rgba($white, 0.9);
+  border: 1px solid $darkgray;
+  background: $lightred;
   color: $darkgray;
 
   font: inherit;
 
   &:hover {
     background: $white;
-    border-color: $gray;
+    // border-color: $gray;
   }
   &--full {
     width: 100%;
@@ -30,16 +30,41 @@
 }
 
 // Radio select fieldgroup
+.fieldgroup--radio.column {
+  flex-direction: column;
+  width: 100%;
+}
+
 .fieldgroup--radio {
   display: flex;
   margin-top: 10px;
-  flex-direction: column;
+  flex-direction: row;
+  justify-content: space-between;
+
+  input[type="radio"] {
+    appearance: none;
+    width: 1rem;
+    min-width: 1rem;
+    height: 1rem;
+    margin-right: 10px;
+    margin-bottom: 0;
+    border-radius: 1rem;
+    border: 1px solid $darkgray;
+
+    &:checked {
+      background: black;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
 
   .field--radio {
     display: flex;
     align-items: center;
     padding: 0;
     padding-left: 0.5rem;
+    background: $darkred;
 
     &:not(.isSelected) .field--radio__content {
       cursor: pointer;
@@ -51,24 +76,6 @@
 
     & + .field--radio {
       margin-top: -1px;
-    }
-
-    input[type="radio"] {
-      appearance: none;
-      width: 1rem;
-      min-width: 1rem;
-      height: 1rem;
-      margin-right: 10px;
-      margin-bottom: 0;
-      border-radius: 1rem;
-      border: 1px solid $darkgray;
-
-      &:checked {
-        background: black;
-      }
-      &:focus {
-        outline: none;
-      }
     }
 
     .pretext {
