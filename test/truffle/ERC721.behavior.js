@@ -11,6 +11,7 @@ const _ = require('lodash');
 
 const ERC721Receiver = artifacts.require('ERC721ReceiverMock.sol');
 const BigNumber = web3.BigNumber;
+const etherToWei = require('../helpers/etherToWei');
 
 require('chai')
   .use(require('chai-bignumber')(BigNumber))
@@ -34,18 +35,19 @@ function shouldBehaveLikeERC721(
   const cardOne = 1;
   const cardTwo = 2;
 
+  const oneUSDInWei = etherToWei(1).dividedToIntegerBy(130);
+
   const TOKEN_URI = '123abcHash';
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      this.minContribution = await this.token.minContribution();
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', this.minContribution, {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
         from: minter,
-        value: this.minContribution
+        value: oneUSDInWei
       });
-      await this.token.gift(owner, benefactorEFF, cardTwo, 'Happy Hols', 'FFFFFF', this.minContribution, {
+      await this.token.gift(owner, benefactorEFF, cardTwo, 'Happy Hols', 'FFFFFF', oneUSDInWei, {
         from: minter,
-        value: this.minContribution
+        value: oneUSDInWei
       });
       this.toWhom = anyone; // default to anyone for toWhom in context-dependent tests
     });

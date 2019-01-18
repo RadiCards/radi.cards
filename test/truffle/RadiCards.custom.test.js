@@ -152,14 +152,6 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         const indexes = await this.token.cardsKeys();
         indexes.length.should.be.bignumber.equal(1);
       });
-      it("should have the dai contract set correctly", async function () {
-        let daiContactAddress = this.token.daiContract()
-        daiContactAddress.should.be.equal(this.daiContract.address)
-      });
-      it("should have the medianizer contract set correctly", async function () {
-        let medianizerContractAddress = this.token.medianizerContract()
-        medianizerContractAddress.should.be.equal(this.medianizerContract.address)
-      });
     });
 
     context("should set data", function () {
@@ -1149,8 +1141,6 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         // the last thing to check is that the gifter is now the owner of the nft
         let ownerOfToken = await this.token.ownerOf(2) //card index 2 for the card minted within this it
         ownerOfToken.should.be.bignumber.equal(account1)
-        console.log(ownerOfToken)
-        console.log(account1)
       })
     })
 

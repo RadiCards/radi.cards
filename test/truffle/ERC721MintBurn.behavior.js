@@ -10,6 +10,8 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
+const etherToWei = require("../helpers/etherToWei");
+
 function shouldBehaveLikeMintAndBurnERC721(
   creator,
   [owner, newOwner, approved, anyone]
@@ -34,13 +36,13 @@ function shouldBehaveLikeMintAndBurnERC721(
 
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
         from: creator,
-        value: oneUSDInWei
+        value: oneUSDInWei * 2
       });
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
         from: creator,
-        value: oneUSDInWei
+        value: oneUSDInWei * 2
       });
     });
 
@@ -49,9 +51,9 @@ function shouldBehaveLikeMintAndBurnERC721(
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
+          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
             from: creator,
-            value: oneUSDInWei
+            value: oneUSDInWei * 2
           });
           logs = result.logs;
         });
@@ -76,8 +78,9 @@ function shouldBehaveLikeMintAndBurnERC721(
 
       describe('when the given owner address is the zero address', function () {
         it('reverts', async function () {
-          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', oneUSDInWei, {
-            from: creator
+          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
+            from: creator,
+            value: oneUSDInWei * 2
           }));
         });
       });

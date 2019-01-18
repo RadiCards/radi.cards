@@ -50,7 +50,6 @@ contract('RadiCards ERC721 Common', function (accounts) {
   const oneUSDInWei = etherToWei(1).dividedToIntegerBy(130);
 
   const message = 'Happy Xmas';
-  const extra = 'FFFFFF';
 
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
   const RECEIVER_MAGIC_VALUE = '0x150b7a02';
@@ -69,7 +68,6 @@ contract('RadiCards ERC721 Common', function (accounts) {
     this.token = await RadiCards.new({
       from: owner
     });
-    oneUSDInWei = await this.token.minContribution();
 
     await this.token.addBenefactor(
       1,
@@ -89,17 +87,21 @@ contract('RadiCards ERC721 Common', function (accounts) {
 
 
     // create cards with no max mint and no min price to simplify the common tests
-    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0);
-    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0);
+    await this.token.addCard(cardOne, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0, {
+      from: owner
+    });
+    await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0, {
+      from: owner
+    });
   });
 
   describe('like an ERC721', function () {
     beforeEach(async function () {
-      await this.token.gift(account1, benefactorEFF, cardOne, message, extra, oneUSDInWei, {
+      await this.token.gift(account1, benefactorEFF, cardOne, message, oneUSDInWei, oneUSDInWei, false, {
         from: owner,
-        value: oneUSDInWei
+        value: oneUSDInWei * 2
       });
-      await this.token.gift(account1, benefactorFPF, cardTwo, message, extra, oneUSDInWei, {
+      await this.token.gift(account1, benefactorFPF, cardTwo, message, oneUSDInWei, oneUSDInWei, false, {
         from: owner,
         value: oneUSDInWei * 2
       });
