@@ -3,16 +3,15 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>We want to change the world & fight for good.</p>
-        <p>Want to help?</p>
-        <span class="cheeky-comment">with the power of memes, cats, hackers and crypto (jokes)</span>
+        <p>Send Ethereum Hongbao</p>
+        <p>via WeChat</p>
       </blockquote>
       <br>
       <p
         style="max-width: 24rem; margin-bottom: 1rem;"
-      >Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
+      >Send NFT hongbao + eCards to friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+      <router-link :to="{ name: 'cardshop' }" class="btn">Send Ether Hongbao</router-link>
     </section>
 
     <section class="section section--credits">
@@ -42,13 +41,13 @@
               <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
             </li>
             <li>
-              <a href="https://volca.tech" target="_blank">Volca</a>
+              <a href="https://volca.tech" target="_blank">volca</a>
             </li>
             <li>
-              <a href="https://www.gustav.tech" target="_blank">Gustav Tech</a>
+              <a href="https://www.gustav.tech" target="_blank">gustav tech</a>
             </li>
             <li>
-              <a href="https://www.chris.seifert.space" target="_blank">Chris Seifert</a>
+              <a href="https://www.chris.seifert.space" target="_blank">chris seifert</a>
             </li>
           </ul>
         </div>
@@ -313,9 +312,8 @@ export default {
 .section--credits {
   h5 {
     margin-bottom: 1rem;
-    padding: 0 1rem;
-    border-left: 2px solid $gray;
-    color: $gray;
+    padding: 0;
+    color: $black;
   }
   .container {
     display: flex;

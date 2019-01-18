@@ -168,9 +168,9 @@ body {
   margin: 0;
   padding: 0;
 
-  background-color: $white;
-  background-image: url("/static/images/background.svg");
-  background-repeat: no-repeat;
+  background-color: $red;
+  background-image: url("/static/images/pattern.svg");
+  background-repeat: repeat;
   background-attachment: static;
   background-position: top left;
 
