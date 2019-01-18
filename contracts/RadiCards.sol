@@ -3,6 +3,7 @@ pragma solidity ^0.4.24;
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/access/Whitelist.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Token.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Holder.sol";
 import "openzeppelin-solidity/contracts/token/ERC20/StandardToken.sol";
 
 import "./Strings.sol";
@@ -17,9 +18,9 @@ import "./Medianizer.sol";
 * @author pheme.app
 * @author d1labs.com
 * @author mbdoesthings.com
-* @author chrismaree.io (smart contracts update)
+* @author chrismaree.io (smart contracts v2 update)
 */
-contract RadiCards is ERC721Token, Whitelist {
+contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
   using SafeMath for uint256;
 
 
@@ -111,6 +112,8 @@ contract RadiCards is ERC721Token, Whitelist {
   event CardAdded(
     uint256 indexed _cardIndex
   );
+
+  event log(string error);
 
   constructor () public ERC721Token("RadiCards", "RADI") {
     addAddressToWhitelist(msg.sender);
@@ -268,7 +271,7 @@ contract RadiCards is ERC721Token, Whitelist {
     return tokenId;
   }
 
-  function cancelGift(address _ephemeralAddress) public returns (bool success) {
+  function cancelGift(address _ephemeralAddress) public returns (bool) {
 
     uint256 tokenId = ephemeralWalletCards[_ephemeralAddress];
     require(tokenId != 0, "Can only call this function on an address that was used as an ephemeral");
@@ -294,7 +297,7 @@ contract RadiCards is ERC721Token, Whitelist {
     }
 
     // send nft to buyer
-    // super.safeTransferFrom(address(this), msg.sender, tokenId);
+    super.transferFrom(this, msg.sender, tokenId);
 
     // log cancel event
     emit LogCancel(_ephemeralAddress, msg.sender, tokenId);
@@ -303,20 +306,13 @@ contract RadiCards is ERC721Token, Whitelist {
   }
 
 
-  /**
-   * @dev Claim gift to receiver's address if it is correctly signed
-   * with private key for verification public key assigned to gift.
-   *
-   * @param _receiver address Signed address.
-   * @return True if success.
-   */
   function claimGift(address _receiver) public returns (bool success) {
     // only holder of ephemeral private key can claim gift
     address _ephemeralAddress = msg.sender;
 
     uint256 tokenId = ephemeralWalletCards[_ephemeralAddress];
 
-    require(tokenId != 0, "The calling address does not have an ephemeral account associated with it");
+    require(tokenId != 0, "The calling address does not have an ephemeral card associated with it");
 
     RadiCard storage card = tokenIdToRadiCardIndex[tokenId];
 
@@ -327,7 +323,7 @@ contract RadiCards is ERC721Token, Whitelist {
     card.status = Statuses.Claimed;
 
     // send nft to receiver
-    super.safeTransferFrom(address(this), _receiver, tokenId);
+    super.transferFrom(this, _receiver, tokenId);
 
     // transfer optional ether & dai to receiver's address
     if (card.giftAmount > 0) {
@@ -335,7 +331,7 @@ contract RadiCards is ERC721Token, Whitelist {
             require(daiContract.transfer(_receiver, card.giftAmount),"Sending to recipient after cancel gift failed");
       }
         else{
-            // _receiver.transfer(card.giftAmount);
+            _receiver.transfer(card.giftAmount);
         }
     }
 
