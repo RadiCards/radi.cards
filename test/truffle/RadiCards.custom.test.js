@@ -1053,7 +1053,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       //   }))
       // });
 
-      it("can cancel gift if gifter and funds are returned", async function () {
+      it("can cancel gift if gifter and funds are returned (ETH)", async function () {
         let contractBalanceBefore = await web3.eth.getBalance(
           this.token.address
         );
@@ -1080,6 +1080,31 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         );
         //check that the gifter account is equal to the refund - the amount spent on gas
         gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInWei).minus(totalSpentOnGas))
+      })
+
+      it("can cancel gift if gifter and funds are returned (Dai)", async function () {
+        let contractBalanceBefore = await this.daiContract.balanceOf(
+          this.token.address
+        );
+
+        let gifterBalanceBefore = await this.daiContract.balanceOf(
+          account1
+        );
+
+        await this.token.cancelGift(ephemeralAddress, {
+          from: account1
+        })
+
+        let contractBalanceAfter = this.daiContract.balanceOf(
+          this.token.address
+        );
+        contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.minus(oneUSDInAtto))
+
+        let gifterBalanceAfter = this.daiContract.balanceOf(
+          account1
+        );
+        //check that the gifter account is equal to the refund - the amount spent on gas
+        gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInAtto))
       })
     })
   });
