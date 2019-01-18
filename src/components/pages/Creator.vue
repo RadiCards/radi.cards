@@ -67,7 +67,7 @@
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
-          <div class="flex-row">
+          <div class="flex-column">
             <div class="step__title">
               <h4>Add money</h4>
               <p>Add ether or DAI to your hongbao</p>
@@ -140,7 +140,7 @@
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="formData.valueInDAI > 0 || formData.valueInETH > 0"
+              :disabled="!formData.valueInDAI > 0 && !formData.valueInETH > 0"
               @click="goToStep(2)"
               value="GENERATE HANGOBAO"
             >
@@ -151,7 +151,7 @@
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
-          <div class="flex-row">
+          <div class="flex-colun">
             <div class="step__title">
               <h4>Your hongbao is ready!</h4>
               <p>Now send your hongbao to your friends!</p>[SHARING BUTTONS]
@@ -780,7 +780,7 @@ textarea {
   color: $darkgray;
 }
 
-.flex-row {
+.flex-column {
   display: flex;
   flex-direction: column;
   width: 100%;
