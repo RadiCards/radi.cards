@@ -25,7 +25,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
   const account1 = accounts[1];
   const account2 = accounts[2];
   //create a new blank account with no ether in it. this represents the ephemeral claimable wallet
-  let ephemeralAccount = web3.personal.newAccount()
+  let ephemeralAddress = web3.personal.newAccount()
 
   const firstTokenId = 0;
   const secondTokenId = 1;
@@ -818,10 +818,10 @@ contract("RadiCards ERC721 Custom", function (accounts) {
     context("Should allow for the creation of a ephemeral wallet and escrow (ETH)", function () {
       beforeEach(async function () {
         //create a new ephemeral account for each test
-        ephemeralAccount = web3.personal.newAccount()
+        ephemeralAddress = web3.personal.newAccount()
       })
       it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
-        await assertRevert(this.token.gift(ephemeralAccount,
+        await assertRevert(this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message,
@@ -835,7 +835,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
       it("correctly allocates gift status to deposited", async function () {
 
-        await this.token.gift(ephemeralAccount,
+        await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -856,7 +856,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.address
         );
 
-        await this.token.gift(ephemeralAccount,
+        await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -883,12 +883,12 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
       it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
         let ephemeralBalanceBefore = await web3.eth.getBalance(
-          ephemeralAccount
+          ephemeralAddress
         );
 
         ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
 
-        await this.token.gift(ephemeralAccount,
+        await this.token.gift(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -901,7 +901,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           })
 
         let ephemeralBalanceAfter = await web3.eth.getBalance(
-          ephemeralAccount
+          ephemeralAddress
         );
         ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
       });
@@ -909,10 +909,10 @@ contract("RadiCards ERC721 Custom", function (accounts) {
     context("Should allow for the creation of a ephemeral wallet and escrow (DAI)", function () {
       beforeEach(async function () {
         //create a new ephemeral account for each test
-        ephemeralAccount = web3.personal.newAccount()
+        ephemeralAddress = web3.personal.newAccount()
       })
       it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
-        await assertRevert(this.token.giftInDai(ephemeralAccount,
+        await assertRevert(this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message,
@@ -926,7 +926,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
       it("correctly allocates gift status to deposited", async function () {
 
-        await this.token.giftInDai(ephemeralAccount,
+        await this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -952,7 +952,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           this.token.address
         );
 
-        await this.token.giftInDai(ephemeralAccount,
+        await this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -983,14 +983,15 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         contractDAIBalanceAfter.should.be.bignumber.equal(contractDAIBalanceBefore.add(oneUSDInAtto))
 
       });
+
       it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
         let ephemeralBalanceBefore = await web3.eth.getBalance(
-          ephemeralAccount
+          ephemeralAddress
         );
 
         ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
 
-        await this.token.giftInDai(ephemeralAccount,
+        await this.token.giftInDai(ephemeralAddress,
           benefactorEFF,
           cardOne,
           message + "via ephemeral",
@@ -999,14 +1000,56 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           true, //this bool defines if the card should be set as claimable
           {
             from: account1,
-            value:  ephemeralAddressFee
+            value: ephemeralAddressFee
           })
 
         let ephemeralBalanceAfter = await web3.eth.getBalance(
-          ephemeralAccount
+          ephemeralAddress
         );
         ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
       });
     });
+    context("Should allow for the cancellation of a gift", function () {
+      beforeEach(async function () {
+        // create a new ephemeral account for each test
+        ephemeralAddress = web3.personal.newAccount()
+
+        // all tests that follow require a simple, standard gift
+        await this.token.gift(ephemeralAddress,
+          benefactorEFF,
+          cardOne,
+          message + "via ephemeral",
+          oneUSDInWei,
+          oneUSDInWei,
+          true, //this bool defines if the card should be set as claimable
+          {
+            from: account1,
+            value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
+          })
+      })
+      it("reverts if not owner", async function () {
+        // account1 created the gift. only this account should be able to cancel it
+        await assertRevert(this.token.cancelGift(ephemeralAddress, {
+          from: account2
+        }))
+      });
+
+      it("reverts if no card associated with ephemeral address", async function () {
+        // account1 created the gift. only this account should be able to cancel it
+        await assertRevert(this.token.cancelGift(account2, {
+          from: account1
+        }))
+      });
+      it("reverts if gift already claimed", async function () {
+        //first, claim gift. this can only be done from the ephemeral account
+        await this.token.claimGift(account2, {
+          from: ephemeralAddress
+        })
+
+        await assertRevert(this.token.cancelGift(ephemeralAddress, {
+          from: account1
+        }))
+      });
+    })
   });
 });
