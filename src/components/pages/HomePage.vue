@@ -110,8 +110,8 @@
 
     <section class="section">
       <h4 class="section__title">STEP ONE</h4>
-      <h2>Choose and personalise your RadiCards</h2>
-      <p>Send to any ETH addresses and emails</p>
+      <h2>Choose from our collection of hongbao art</h2>
+      <p>from animated hongbao art to Deep-learning to generative art!</p>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card
