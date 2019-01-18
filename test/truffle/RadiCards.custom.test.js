@@ -815,205 +815,204 @@ contract("RadiCards ERC721 Custom", function (accounts) {
     //     totalGiftedInAtto.should.be.bignumber.equal(oneUSDInAtto);
     //   });
     // });
-    context("Should allow for the creation of a ephemeral wallet and escrow (ETH)", function () {
-      beforeEach(async function () {
-        //create a new ephemeral account for each test
-        ephemeralAddress = web3.personal.newAccount()
-      })
-      it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
-        await assertRevert(this.token.gift(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message,
-          oneUSDInWei,
-          oneUSDInWei,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: oneUSDInWei * 2
-          }))
-      });
-      it("correctly allocates gift status to deposited", async function () {
+    // context("Should allow for the creation of a ephemeral wallet and escrow (ETH)", function () {
+    //   beforeEach(async function () {
+    //     //create a new ephemeral account for each test
+    //     ephemeralAddress = web3.personal.newAccount()
+    //   })
+    //   it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
+    //     await assertRevert(this.token.gift(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message,
+    //       oneUSDInWei,
+    //       oneUSDInWei,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: oneUSDInWei * 2
+    //       }))
+    //   });
+    //   it("correctly allocates gift status to deposited", async function () {
 
-        await this.token.gift(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInWei,
-          oneUSDInWei,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
-          })
+    //     await this.token.gift(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInWei,
+    //       oneUSDInWei,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
+    //       })
 
-        let token = await this.token.tokenDetails(secondTokenId); //grab information for the second token
-        let tokenStatus = token[5] //status is in array location 5 from the radicards struct
-        tokenStatus.should.be.bignumber.equal(1) //1 corresponds to the deposited state in the enum
-      });
-      it("correctly keeps the card and ether in escrow", async function () {
-        let contractBalanceBefore = await web3.eth.getBalance(
-          this.token.address
-        );
+    //     let token = await this.token.tokenDetails(secondTokenId); //grab information for the second token
+    //     let tokenStatus = token[5] //status is in array location 5 from the radicards struct
+    //     tokenStatus.should.be.bignumber.equal(1) //1 corresponds to the deposited state in the enum
+    //   });
+    //   it("correctly keeps the card and ether in escrow", async function () {
+    //     let contractBalanceBefore = await web3.eth.getBalance(
+    //       this.token.address
+    //     );
 
-        await this.token.gift(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInWei,
-          oneUSDInWei,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
-          })
-        // get the tokenid's of the tokens owned by the radicards contract. this returns an array of bignum ID's
-        let tokensOwnedByRadiContract = await this.token.tokensOf(this.token.address)
-        // the card created above should have tokenid=1 (the second card created after the before each initially)
-        // and should be owned by the contract, held in escrow. need to index the tokensOwnedByRadiContract at 0
-        // as tokensOf returns an array of all token ID's owned
-        tokensOwnedByRadiContract[0].should.be.bignumber.equal(1)
+    //     await this.token.gift(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInWei,
+    //       oneUSDInWei,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
+    //       })
+    //     // get the tokenid's of the tokens owned by the radicards contract. this returns an array of bignum ID's
+    //     let tokensOwnedByRadiContract = await this.token.tokensOf(this.token.address)
+    //     // the card created above should have tokenid=1 (the second card created after the before each initially)
+    //     // and should be owned by the contract, held in escrow. need to index the tokensOwnedByRadiContract at 0
+    //     // as tokensOf returns an array of all token ID's owned
+    //     tokensOwnedByRadiContract[0].should.be.bignumber.equal(1)
 
-        // next, we must check that the eth is held by the contract. expecting the balance to have gone up by
-        // the gift amount exactly. the charity should also have been paid out at the same time
-        let contractBalanceAfter = await web3.eth.getBalance(
-          this.token.address
-        );
-        contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.add(oneUSDInWei))
-      });
-      it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
-        let ephemeralBalanceBefore = await web3.eth.getBalance(
-          ephemeralAddress
-        );
+    //     // next, we must check that the eth is held by the contract. expecting the balance to have gone up by
+    //     // the gift amount exactly. the charity should also have been paid out at the same time
+    //     let contractBalanceAfter = await web3.eth.getBalance(
+    //       this.token.address
+    //     );
+    //     contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.add(oneUSDInWei))
+    //   });
+    //   it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
+    //     let ephemeralBalanceBefore = await web3.eth.getBalance(
+    //       ephemeralAddress
+    //     );
 
-        ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
+    //     ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
 
-        await this.token.gift(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInWei,
-          oneUSDInWei,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
-          })
+    //     await this.token.gift(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInWei,
+    //       oneUSDInWei,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
+    //       })
 
-        let ephemeralBalanceAfter = await web3.eth.getBalance(
-          ephemeralAddress
-        );
-        ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
-      });
-    });
-    context("Should allow for the creation of a ephemeral wallet and escrow (DAI)", function () {
-      beforeEach(async function () {
-        //create a new ephemeral account for each test
-        ephemeralAddress = web3.personal.newAccount()
-      })
-      it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
-        await assertRevert(this.token.giftInDai(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message,
-          oneUSDInAtto,
-          oneUSDInAtto,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: 0
-          }))
-      });
-      it("correctly allocates gift status to deposited", async function () {
+    //     let ephemeralBalanceAfter = await web3.eth.getBalance(
+    //       ephemeralAddress
+    //     );
+    //     ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
+    //   });
+    // });
+    // context("Should allow for the creation of a ephemeral wallet and escrow (DAI)", function () {
+    //   beforeEach(async function () {
+    //     //create a new ephemeral account for each test
+    //     ephemeralAddress = web3.personal.newAccount()
+    //   })
+    //   it("reverts if ephemeral fee is not added to donation and gift amounts", async function () {
+    //     await assertRevert(this.token.giftInDai(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message,
+    //       oneUSDInAtto,
+    //       oneUSDInAtto,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: 0
+    //       }))
+    //   });
+    //   it("correctly allocates gift status to deposited", async function () {
 
-        await this.token.giftInDai(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInAtto,
-          oneUSDInAtto,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: ephemeralAddressFee
-          })
+    //     await this.token.giftInDai(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInAtto,
+    //       oneUSDInAtto,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: ephemeralAddressFee
+    //       })
 
-        let token = await this.token.tokenDetails(secondTokenId); //grab information for the second token
-        let tokenStatus = token[5] //status is in array location 5 from the radicards struct
-        tokenStatus.should.be.bignumber.equal(1) //1 corresponds to the deposited state in the enum
-      });
-      it("correctly keeps the card and dai in escrow", async function () {
-        //this balance should not change between gifting as user is sending in dai
-        let contractETHBalanceBefore = await web3.eth.getBalance(
-          this.token.address
-        );
-        //this balance should increase by oneUSDInAtto as contract is holding in escrow
-        let contractDAIBalanceBefore = await this.daiContract.balanceOf(
-          this.token.address
-        );
+    //     let token = await this.token.tokenDetails(secondTokenId); //grab information for the second token
+    //     let tokenStatus = token[5] //status is in array location 5 from the radicards struct
+    //     tokenStatus.should.be.bignumber.equal(1) //1 corresponds to the deposited state in the enum
+    //   });
+    //   it("correctly keeps the card and dai in escrow", async function () {
+    //     //this balance should not change between gifting as user is sending in dai
+    //     let contractETHBalanceBefore = await web3.eth.getBalance(
+    //       this.token.address
+    //     );
+    //     //this balance should increase by oneUSDInAtto as contract is holding in escrow
+    //     let contractDAIBalanceBefore = await this.daiContract.balanceOf(
+    //       this.token.address
+    //     );
 
-        await this.token.giftInDai(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInAtto,
-          oneUSDInAtto,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: ephemeralAddressFee
-          })
-        // get the tokenid's of the tokens owned by the radicards contract. this returns an array of bignum ID's
-        let tokensOwnedByRadiContract = await this.token.tokensOf(this.token.address)
-        // the card created above should have tokenid=1 (the second card created after the before each initially)
-        // and should be owned by the contract, held in escrow. need to index the tokensOwnedByRadiContract at 0
-        // as tokensOf returns an array of all token ID's owned
-        tokensOwnedByRadiContract[0].should.be.bignumber.equal(1)
+    //     await this.token.giftInDai(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInAtto,
+    //       oneUSDInAtto,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: ephemeralAddressFee
+    //       })
+    //     // get the tokenid's of the tokens owned by the radicards contract. this returns an array of bignum ID's
+    //     let tokensOwnedByRadiContract = await this.token.tokensOf(this.token.address)
+    //     // the card created above should have tokenid=1 (the second card created after the before each initially)
+    //     // and should be owned by the contract, held in escrow. need to index the tokensOwnedByRadiContract at 0
+    //     // as tokensOf returns an array of all token ID's owned
+    //     tokensOwnedByRadiContract[0].should.be.bignumber.equal(1)
 
-        // next, we must check that the eth is held by the contract = 0 and the dai = gift amount
-        let contractETHBalanceAfter = await web3.eth.getBalance(
-          this.token.address
-        );
-        contractETHBalanceAfter.should.be.bignumber.equal(contractETHBalanceBefore)
+    //     // next, we must check that the eth is held by the contract = 0 and the dai = gift amount
+    //     let contractETHBalanceAfter = await web3.eth.getBalance(
+    //       this.token.address
+    //     );
+    //     contractETHBalanceAfter.should.be.bignumber.equal(contractETHBalanceBefore)
 
-        let contractDAIBalanceAfter = await this.daiContract.balanceOf(
-          this.token.address
-        );
+    //     let contractDAIBalanceAfter = await this.daiContract.balanceOf(
+    //       this.token.address
+    //     );
 
-        contractDAIBalanceAfter.should.be.bignumber.equal(contractDAIBalanceBefore.add(oneUSDInAtto))
+    //     contractDAIBalanceAfter.should.be.bignumber.equal(contractDAIBalanceBefore.add(oneUSDInAtto))
 
-      });
+    //   });
 
-      it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
-        let ephemeralBalanceBefore = await web3.eth.getBalance(
-          ephemeralAddress
-        );
+    //   it("correctly funds the ephemeral wallet with ephemeral address fee", async function () {
+    //     let ephemeralBalanceBefore = await web3.eth.getBalance(
+    //       ephemeralAddress
+    //     );
 
-        ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
+    //     ephemeralBalanceBefore.should.be.bignumber.equal(0) //ephemeral account is new and should be empty to start with
 
-        await this.token.giftInDai(ephemeralAddress,
-          benefactorEFF,
-          cardOne,
-          message + "via ephemeral",
-          oneUSDInAtto,
-          oneUSDInAtto,
-          true, //this bool defines if the card should be set as claimable
-          {
-            from: account1,
-            value: ephemeralAddressFee
-          })
+    //     await this.token.giftInDai(ephemeralAddress,
+    //       benefactorEFF,
+    //       cardOne,
+    //       message + "via ephemeral",
+    //       oneUSDInAtto,
+    //       oneUSDInAtto,
+    //       true, //this bool defines if the card should be set as claimable
+    //       {
+    //         from: account1,
+    //         value: ephemeralAddressFee
+    //       })
 
-        let ephemeralBalanceAfter = await web3.eth.getBalance(
-          ephemeralAddress
-        );
-        ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
-      });
-    });
-    context("Should allow for the cancellation of a gift", function () {
+    //     let ephemeralBalanceAfter = await web3.eth.getBalance(
+    //       ephemeralAddress
+    //     );
+    //     ephemeralBalanceAfter.should.be.bignumber.equal(ephemeralAddressFee)
+    //   });
+    // });
+    context("should allow for the cancellation of a gift", function () {
       beforeEach(async function () {
         // create a new ephemeral account for each test
-        ephemeralAddress = web3.personal.newAccount()
-
+        ephemeralAddress = web3.personal.newAccount("password")
         // all tests that follow require a simple, standard gift
         await this.token.gift(ephemeralAddress,
           benefactorEFF,
@@ -1027,7 +1026,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
             value: oneUSDInWei * 2 + ephemeralAddressFee.toNumber()
           })
       })
-      it("reverts if not owner", async function () {
+      it("reverts if not gifter", async function () {
         // account1 created the gift. only this account should be able to cancel it
         await assertRevert(this.token.cancelGift(ephemeralAddress, {
           from: account2
@@ -1040,16 +1039,48 @@ contract("RadiCards ERC721 Custom", function (accounts) {
           from: account1
         }))
       });
-      it("reverts if gift already claimed", async function () {
-        //first, claim gift. this can only be done from the ephemeral account
-        await this.token.claimGift(account2, {
-          from: ephemeralAddress
-        })
+      // it("reverts if gift already claimed", async function () {
 
-        await assertRevert(this.token.cancelGift(ephemeralAddress, {
+      //   web3.personal.unlockAccount(ephemeralAddress, "password")
+      //   //first, claim gift. this can only be done from the ephemeral account
+      //   await this.token.claimGift(account2, {
+      //     from: ephemeralAddress,
+      //     value: 0
+      //   })
+
+      //   await assertRevert(this.token.cancelGift(ephemeralAddress, {
+      //     from: account1
+      //   }))
+      // });
+
+      it("can cancel gift if gifter and funds are returned", async function () {
+        let contractBalanceBefore = await web3.eth.getBalance(
+          this.token.address
+        );
+
+        let gifterBalanceBefore = await web3.eth.getBalance(
+          account1
+        );
+        let txHash = await this.token.cancelGift(ephemeralAddress, {
           from: account1
-        }))
-      });
+        })
+        // as the account1 is getting a refund we need to double check that they get back all their
+        // eth. however, they spend some within their wallet on gas for the cancel call!
+        // to get the total eth spent on gas we multiply the gasUsed for the gasPrice
+        let receipt = await web3.eth.getTransaction(txHash.tx);
+        let totalSpentOnGas = receipt.gasPrice * (txHash.receipt.gasUsed)
+
+        let contractBalanceAfter = await web3.eth.getBalance(
+          this.token.address
+        );
+        contractBalanceAfter.should.be.bignumber.equal(contractBalanceBefore.minus(oneUSDInWei))
+
+        let gifterBalanceAfter = await web3.eth.getBalance(
+          account1
+        );
+        //check that the gifter account is equal to the refund - the amount spent on gas
+        gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInWei).minus(totalSpentOnGas))
+      })
     })
   });
 });

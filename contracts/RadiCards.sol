@@ -283,7 +283,7 @@ contract RadiCards is ERC721Token, Whitelist {
     // update status to cancelled
     card.status = Statuses.Cancelled;
 
-    // transfer optional ether & dai back to creators address
+    // transfer optional ether or dai back to creators address
     if (card.giftAmount > 0) {
         if(card.daiDonation){
             require(daiContract.transfer(msg.sender, card.giftAmount),"Sending to recipient after cancel gift failed");
@@ -294,7 +294,7 @@ contract RadiCards is ERC721Token, Whitelist {
     }
 
     // send nft to buyer
-    super.safeTransferFrom(address(this), msg.sender, tokenId);
+    // super.safeTransferFrom(address(this), msg.sender, tokenId);
 
     // log cancel event
     emit LogCancel(_ephemeralAddress, msg.sender, tokenId);
@@ -335,7 +335,7 @@ contract RadiCards is ERC721Token, Whitelist {
             require(daiContract.transfer(_receiver, card.giftAmount),"Sending to recipient after cancel gift failed");
       }
         else{
-            _receiver.transfer(card.giftAmount);
+            // _receiver.transfer(card.giftAmount);
         }
     }
 
