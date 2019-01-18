@@ -103,21 +103,18 @@
 
             <br>
 
-           <p>Choose one of the sending options</p>
+            <p>Choose one of the sending options</p>
             <div class="fieldgroup--radio">
-
               <!-- Option 1 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'wallet'}]">
-                <input
-                  type="radio"
-                  id="sendToWallet"
-                  value="wallet"
-                  v-model="formData.sendOptions"
-                >
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendOptions === 'wallet'}]"
+              >
+                <input type="radio" id="sendToWallet" value="wallet" v-model="formData.sendOptions">
                 <label for="sendToWallet" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'wallet'" class="pretext">
-                    Want to transfer the NFT?
-                  </span>
+                  <span
+                    v-if="formData.sendOptions !== 'wallet'"
+                    class="pretext"
+                  >Want to transfer the NFT?</span>
                   <h6>Send to another ETH wallet address</h6>
 
                   <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
@@ -130,19 +127,20 @@
                     <br>
                     <p class="p--small">Transfer the card directly; the web3 way</p>
                   </div>
-
                 </label>
               </div>
 
               <!-- Option 2 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'email'}]">
-
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendOptions === 'email'}]"
+              >
                 <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
-
+                
                 <label for="sendToEmail" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'email'" class="pretext">
-                    Don’t have a recipient wallet?
-                  </span>
+                  <span
+                    v-if="formData.sendOptions !== 'email'"
+                    class="pretext"
+                  >Don’t have a recipient wallet?</span>
                   <h6>Send to email address</h6>
                   <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
                     <input
@@ -151,17 +149,20 @@
                       class="field form-control"
                       v-model="formData.email"
                     >
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and send it via email.</p>
+                    <p
+                      class="p--small"
+                    >This will create the card in your own wallet, create a link to it and send it via email.</p>
                     <span class="input-label">Your wallet:</span>
                     <br>
                     <div class="field field--disabled">{{account}}</div>
                   </div>
                 </label>
-
               </div>
 
               <!-- Option 3 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'personal'}]">
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendOptions === 'personal'}]"
+              >
                 <input
                   type="radio"
                   id="sendToPersonal"
@@ -169,19 +170,21 @@
                   v-model="formData.sendOptions"
                 >
                 <label for="sendToPersonal" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'personal'" class="pretext">
-                    Want to share the link manually?
-                  </span>
+                  <span
+                    v-if="formData.sendOptions !== 'personal'"
+                    class="pretext"
+                  >Want to share the link manually?</span>
                   <h6>Send to own wallet</h6>
                   <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and lets you share it however you want.</p>
+                    <p
+                      class="p--small"
+                    >This will create the card in your own wallet, create a link to it and lets you share it however you want.</p>
                     <span class="input-label">Your wallet:</span>
                     <br>
                     <div class="field field--disabled">{{account}}</div>
                   </div>
                 </label>
               </div>
-
             </div>
 
             <br>
@@ -283,7 +286,7 @@
               <br>
               <br>
             </span>
-
+            
             <button
               class="button"
               @click="giveBirth"
@@ -398,7 +401,6 @@
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
                   :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
-
                 >send</mailto-link>
               </div>
               <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
@@ -696,7 +698,7 @@ export default {
     line-height: normal;
     font-size: 14px;
 
-    color: $black;
+    color: $darkgray;
 
     opacity: 0.3;
   }
@@ -744,7 +746,7 @@ export default {
   line-height: normal;
   font-size: 12px;
 
-  color: $black;
+  color: $darkgray;
 }
 
 .input-label {
@@ -752,13 +754,14 @@ export default {
   margin-bottom: 0.25rem;
   margin-top: 0.675rem;
   display: inline-block;
-  color: $black;
+  color: $darkgray;
 }
-input, textarea {
+input,
+textarea {
   margin-bottom: 1rem;
 }
 // textarea {
-//   border: 1px solid $black;
+//   border: 1px solid $darkgray;
 
 //   &::placeholder {
 //     text-align: right;
@@ -931,6 +934,6 @@ input, textarea {
   line-height: normal;
   font-size: 15px;
   display: inline-block;
-  color: $black;
+  color: $darkgray;
 }
 </style>

@@ -7,7 +7,7 @@
   border-radius: 0 !important;
   border: 1px solid $greylight;
   background: rgba($white, 0.9);
-  color: $black;
+  color: $darkgray;
 
   font: inherit;
 
@@ -45,7 +45,7 @@
       cursor: pointer;
     }
     &.isSelected {
-      border: 1px solid $black;
+      border: 1px solid $darkgray;
       z-index: 2;
     }
 
@@ -61,7 +61,7 @@
       margin-right: 10px;
       margin-bottom: 0;
       border-radius: 1rem;
-      border: 1px solid $black;
+      border: 1px solid $darkgray;
 
       &:checked {
         background: black;
@@ -75,7 +75,7 @@
       display: block;
       font-size: 0.875rem;
       font-style: italic;
-      color: rgba($black, 0.3);
+      color: rgba($darkgray, 0.3);
     }
 
     h6 {

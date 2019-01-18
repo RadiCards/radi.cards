@@ -245,7 +245,7 @@ export default {
   margin-right: 1rem;
   padding: $p_v $p_h;
 
-  box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
+  box-shadow: 0 0.25rem 1rem rgba($darkgray, 0.1);
   background: $white;
   border-radius: 0;
   border: 0;
@@ -256,7 +256,7 @@ export default {
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    box-shadow: 0 0.25rem 1.5rem rgba($black, 0.2);
+    box-shadow: 0 0.25rem 1.5rem rgba($darkgray, 0.2);
     border-bottom: none;
   }
   &:not(.card--flippable):hover {

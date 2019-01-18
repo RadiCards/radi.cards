@@ -3,15 +3,87 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <p>Send Ethereum Hongbao</p>
-        <p>via WeChat</p>
+        <img src="/static/images/title2.png">
+        <br>
+        <img src="/static/images/title1.png">
       </blockquote>
-      <br>
-      <p
-        style="max-width: 24rem; margin-bottom: 1rem;"
-      >Send NFT hongbao + eCards to friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
 
       <router-link :to="{ name: 'cardshop' }" class="btn">Send Ether Hongbao</router-link>
+
+      <div class="compatible">
+        <h5>COMPATIBLE WITH</h5>
+        <div class="icons">
+          <div>
+            <img src="/static/icons/wechat.png">
+            <span>WeChat</span>
+          </div>
+          <div>
+            <img src="/static/icons/imToken.png">
+            <span>imToken</span>
+          </div>
+          <div>
+            <img src="/static/icons/DAI.png">
+            <span>DAI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <windy-title text="Send Hongbao in 3 Easy Steps"></windy-title>
+      <div class="steps">
+        <div>
+          <img src="/static/images/sombreros.png">
+          <h5>Choose</h5>
+          <span>cool hangbao design from
+            <br>artists around the word
+          </span>
+        </div>
+        <div>
+          <img src="/static/images/sombreros.png">
+          <h5>Deposit</h5>
+          <span>ether or DAI &amp;
+            <br>generate hongbao
+          </span>
+        </div>
+        <div>
+          <img src="/static/images/sombreros.png">
+          <h5>Send</h5>
+          <span>hongbao to friends via
+            <br>WeChat &amp; Email
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <windy-title text="Choose from a collection of hongbao art"></windy-title>
+
+      <div class="card-slider" v-if="cards && cards.length > 0">
+        <card
+          style="margin-right: 1rem;"
+          v-for="item in cards"
+          :key="item.tokenId"
+          :cdata="item"
+        >{{item}}</card>
+      </div>
+
+      <div v-else class="loading-container">
+        <div class="loading-spinner">
+          <div class="loading-spinner-inner">
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+          </div>
+        </div>
+        <span class="text">Getting cards...</span>
+      </div>
     </section>
 
     <section class="section section--credits">
@@ -99,119 +171,6 @@
       </div>
     </section>
 
-    <section class="section">
-      <h4 class="section__title">STEP ONE</h4>
-      <h2>Choose from our collection of hongbao art</h2>
-      <p>from animated hongbao art to Deep-learning to generative art!</p>
-
-      <div class="card-slider" v-if="cards && cards.length > 0">
-        <card
-          style="margin-right: 1rem;"
-          v-for="item in cards"
-          :key="item.tokenId"
-          :cdata="item"
-        >{{item}}</card>
-      </div>
-
-      <div v-else class="loading-container">
-        <div class="loading-spinner">
-          <div class="loading-spinner-inner">
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-          </div>
-        </div>
-        <span class="text">Getting cards...</span>
-      </div>
-    </section>
-
-    <section class="section">
-      <h4 class="section__title">STEP TWO</h4>
-      <h2>Choose a project you wish to support</h2>
-      <p>All profit goes directly to the charity (excludes gas cost)</p>
-      <br>
-
-      <div class="charities" v-if="benefactors && benefactors.length > 0">
-        <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
-      </div>
-    </section>
-
-    <section class="section">
-      <h4 class="section__title">STEP THREE</h4>
-      <h2>Share radiCards with friends and donate to good causes</h2>
-      <p>Help spread hope and joy with eCards</p>
-      <!-- <img src="/static/images/step3.png" alt class="img--placeholder" height="450"> -->
-      <!-- <samplequote></samplequote> -->
-      <div class="row text-center pt-3">
-        <div class="col">
-          <card :cdata="cardData"/>
-        </div>
-      </div>
-    </section>
-
-    <hr>
-
-    <section class="section">
-      <b-row>
-        <b-col cols="12" md="6" class="pt-3 text-center">
-          <span v-if="totalSupply">
-            <p class="p--large">Total cards minted:</p>
-            <br>
-            <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
-            <br>radiCard
-            <span v-if="totalSupply !== 1">s</span>
-            <br>
-            <br>
-          </span>
-          <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
-          </span>
-        </b-col>
-        <b-col cols="12" md="6" class="pt-3 text-center">
-          <span v-if="totalGifted">
-            <p class="p--large">Donated so far:</p>
-            <br>
-            <span class="badge badge-yellow badge-huge">
-              {{totalGifted}}
-              <span style="font-weight: normal; opacity: 0.3;">ETH</span>
-            </span>
-            <br>Equals to $
-            <strong>{{Math.round(totalGifted * usdPrice)}}</strong>
-            <br>
-            <br>
-          </span>
-          <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
-          </span>
-        </b-col>
-        <b-col cols="12" class="pt-3 text-center">
-          <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
-        </b-col>
-      </b-row>
-    </section>
-
-    <hr>
-
-    <section class="section">
-      <b-row>
-        <b-col cols="12" class="pt-3 text-center">
-          <p class="p--large">Want to help buidl-ing?</p>
-          <br>
-          <a
-            class="btn btn--outline btn--small a--external"
-            href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA"
-            target="_blank"
-          >Join our Telegram group!</a>
-        </b-col>
-      </b-row>
-    </section>
-
     <cookiebanner></cookiebanner>
   </div>
 </template>
@@ -224,10 +183,18 @@ import Card from "../../components/widgets/Card";
 import Samplequote from "../../components/widgets/SampleQuote";
 import Benefactor from "../../components/widgets/Benefactor";
 import Cookiebanner from "../../components/widgets/CookieBanner";
+import WindyTitle from "../widgets/WindyTitle";
 
 export default {
   name: "home",
-  components: { Card, Benefactor, Samplequote, Buidlers, Cookiebanner },
+  components: {
+    Card,
+    Benefactor,
+    Samplequote,
+    Buidlers,
+    Cookiebanner,
+    WindyTitle
+  },
   data() {
     return {
       cardData: {
@@ -304,7 +271,7 @@ export default {
   h5 {
     margin-bottom: 1rem;
     padding: 0;
-    color: $black;
+    color: $darkgray;
   }
   .container {
     display: flex;
@@ -319,6 +286,51 @@ export default {
 
       .col {
         flex-basis: percentage(1/3);
+      }
+    }
+  }
+}
+
+.steps {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  img {
+    margin-bottom: 10px;
+  }
+}
+
+.compatible {
+  h5 {
+    margin-top: 30px;
+    font-size: 15px;
+  }
+
+  .icons {
+    display: flex;
+    margin-top: 30px;
+
+    div {
+      margin-right: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        margin-top: 20px;
+        height: 40px;
+        width: 40px;
+        margin-bottom: 10px;
+      }
+
+      span {
+        font-family: Helvetica;
+        line-height: 11px;
+        font-size: 12px;
+
+        color: #414141;
       }
     }
   }
