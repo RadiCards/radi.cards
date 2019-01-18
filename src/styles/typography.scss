@@ -1,38 +1,43 @@
 // Font face
 @font-face {
-  font-family: 'Helvetica';
+  font-family: "Helvetica";
   font-style: normal;
   font-weight: normal;
-  src: url('/static/fonts/HelveticaNeue.woff2') format('woff2'), local('Helvetica');
+  src: url("/static/fonts/HelveticaNeue.woff2") format("woff2"), local("Helvetica");
 }
 
 @font-face {
-  font-family: 'Helvetica';
+  font-family: "Helvetica";
   font-style: normal;
   font-weight: bold;
-  src: url('/static/fonts/HelveticaNeue-Bold.woff2') format('woff2'), local('Helvetica');
+  src: url("/static/fonts/HelveticaNeue-Bold.woff2") format("woff2"), local("Helvetica");
 }
 
 @font-face {
-  font-family: 'Libre Baskerville';
+  font-family: "Libre Baskerville";
   font-style: normal;
   font-weight: 400;
-  src: url('/static/fonts/libre-baskerville-v5-latin-regular.woff2') format('woff2'), local('Helvetica');/* IE9 Compat Modes */
+  src: url("/static/fonts/libre-baskerville-v5-latin-regular.woff2") format("woff2"), local("Helvetica"); /* IE9 Compat Modes */
 }
 
 // Headings
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-weight: bold;
 }
 h7 {
-  font-family: 'Libre Baskerville';
+  font-family: "Libre Baskerville";
   font-weight: regular;
   font-style: italic;
   font-size: 0.9rem;
 }
 // Anchor
 a {
-  color: $black;
+  color: $darkgray;
   text-decoration: none;
   border-bottom: 1px solid transparent;
 
@@ -61,11 +66,11 @@ p {
 
   &.p--small {
     font-size: 0.875rem;
-    line-height: 1rem;
+    line-height: 2rem;
   }
   &.p--large {
     font-size: 1.25rem;
-    line-height: 1.5rem;
+    line-height: 2rem;
   }
 }
 
@@ -84,7 +89,7 @@ blockquote {
     p {
       font-weight: bold;
       font-size: 2.5rem;
-      line-height: 2.5rem;
+      line-height: 3rem;
       letter-spacing: -0.1rem;
 
       @include tabletAndUp() {

@@ -18,77 +18,14 @@
     </div>
     <form v-if="account!=null && account != undefined">
       <div role="tablist">
-        <div class="preview">
-          <div
-            class="preview-step"
-            v-if="this.formData.card !== null && this.step > 0"
-            @click="goToStep(0)"
-          >
-            <h4 class="section__title">
-              <img src="/static/icons/Check.svg"> STEP ONE
-            </h4>
-
-            <div class="preview-step__content">
-              <figure class="preview-step__img">
-                <img :src="this.formData.card.image" alt="this.formData.card.name">
-              </figure>
-              <div class="preview-step__text" v-if="this.formData.card">
-                <span class="selCard">Selected Card</span>
-                <h5>{{this.formData.card.name}}</h5>
-                <span class="artist">by {{this.formData.card.attributes.artist}}</span>
-              </div>
-              <div
-                class="btn btn--reveal btn--narrow"
-                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
-              >
-                <img src="/static/icons/Edit.svg">
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="preview-step"
-            @click="goToStep(1)"
-            v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
-          >
-            <h4 class="section__title">
-              <img src="/static/icons/Check.svg"> STEP TWO
-            </h4>
-
-            <div class="preview-step__content">
-              <figure class="preview-step__img">
-                <img :src="this.formData.benefactor.image" alt="this.formData.benefactor.name">
-              </figure>
-              <div class="preview-step__text">
-                <span class="selCard">Selected Charity</span>
-                <h5>{{this.formData.benefactor.name}}</h5>
-              </div>
-              <div
-                v-if="this.step > 2 && formData.valueInETH !== null && formData.valueInETH != undefined"
-              >
-                Donation:
-                <strong>{{formData.valueInETH}}</strong> ETH
-              </div>
-              <div
-                class="btn btn--reveal btn--narrow"
-                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
-              >
-                <img src="/static/icons/Edit.svg">
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
-
           <div class="step__info">
             <div class="step__title">
-              <h4 class="section__title">STEP ONE</h4>
               <h4>Customise card</h4>
-              <p>Choose recipient & message</p>
+              <p>Add message &amp; recipient details</p>
             </div>
 
             <span class="input-label">Add a message (This will be visible on the blockchain)</span>
@@ -103,213 +40,121 @@
 
             <br>
 
-           <p>Choose one of the sending options</p>
+            <p>How would you like to send this card</p>
             <div class="fieldgroup--radio">
-
-              <!-- Option 1 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'wallet'}]">
-                <input
-                  type="radio"
-                  id="sendToWallet"
-                  value="wallet"
-                  v-model="formData.sendOptions"
-                >
-                <label for="sendToWallet" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'wallet'" class="pretext">
-                    Want to transfer the NFT?
-                  </span>
-                  <h6>Send to another ETH wallet address</h6>
-
-                  <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
-                    <input
-                      type="text"
-                      placeholder="0x..."
-                      class="field form-control"
-                      v-model="formData.recipient"
-                    >
-                    <br>
-                    <p class="p--small">Transfer the card directly; the web3 way</p>
-                  </div>
-
-                </label>
+              <div>
+                <input type="radio" id="sendToWeChat" value="wechat" v-model="formData.sendOptions">
+                <label for="sendToWeChat">on WeChat</label>
               </div>
-
-              <!-- Option 2 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'email'}]">
-
-                <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
-
-                <label for="sendToEmail" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'email'" class="pretext">
-                    Don’t have a recipient wallet?
-                  </span>
-                  <h6>Send to email address</h6>
-                  <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
-                    <input
-                      type="email"
-                      placeholder="Email address"
-                      class="field form-control"
-                      v-model="formData.email"
-                    >
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and send it via email.</p>
-                    <span class="input-label">Your wallet:</span>
-                    <br>
-                    <div class="field field--disabled">{{account}}</div>
-                  </div>
-                </label>
-
+              <div>
+                <input type="radio" id="sendToWallet" value="wallet" v-model="formData.sendOptions">
+                <label for="sendToWallet">to Ethereum address</label>
               </div>
-
-              <!-- Option 3 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'personal'}]">
-                <input
-                  type="radio"
-                  id="sendToPersonal"
-                  value="personal"
-                  v-model="formData.sendOptions"
-                >
-                <label for="sendToPersonal" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'personal'" class="pretext">
-                    Want to share the link manually?
-                  </span>
-                  <h6>Send to own wallet</h6>
-                  <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and lets you share it however you want.</p>
-                    <span class="input-label">Your wallet:</span>
-                    <br>
-                    <div class="field field--disabled">{{account}}</div>
-                  </div>
-                </label>
-              </div>
-
             </div>
 
             <br>
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="checkMessageAndReceiver()"
+              :disabled="!formData.sendOptions || !formData.message"
               @click="handleMessageAndReceiver()"
-              value="next"
+              value="NEXT"
             >
           </div>
         </div>
 
-        <div class="section step step2" v-if="step === 1">
-          <div class="step__title">
-            <h4 class="section__title">STEP TWO</h4>
-            <h4>Choose a project you wish to support</h4>
-            <p>Your donations go directly to charities of your choice</p>
-          </div>
-
-          <section class="section">
-            <div class="charities" v-if="benefactors && benefactors.length > 0">
-              <benefactor
-                v-for="item in benefactors"
-                :key="item.address"
-                :benefactor="item"
-                @benefactorSelected="handelBenefactorSelected(item)"
-              />
-            </div>
-          </section>
-        </div>
-
-        <div class="section step step2" v-if="step === 2">
-          <div class="step__title">
-            <h4 class="section__title">STEP THREE</h4>
-            <h4>Add your donation</h4>
-            <p>I’d like to donate...</p>
-          </div>
-
-          <section class="section">
-            <div class="paymentPresets">
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
-                @click="setDonationAmount(0.2)"
-              >0.2ETH</button>
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.3}]"
-                @click="setDonationAmount(0.3)"
-              >0.3ETH</button>
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.4}]"
-                @click="setDonationAmount(0.4)"
-              >0.4ETH</button>
-            </div>
-            <div>
-              <span class="input-label">Or enter a custom amount</span>
-              <input
-                type="number"
-                class="field field--full"
-                id="valueInETH"
-                v-model="formData.valueInETH"
-                placeholder="0.02ETH"
-                min="0.02"
-              >
-              <div
-                v-if="formData.valueInETH"
-                class="usdLabel"
-              >Equals to ${{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
-            </div>
-            <span
-              class="info"
-            >Every card has a base transactional price of 0.02 ETH, that’s why there is a minimum.</span>
-          </section>
-          <input type="button" @click="goToStep(3)" class="button" value="preview card">
-        </div>
-
-        <div
-          class="section step step--twocol step3"
-          v-if="step == 3 && (!getGiftingStatus(formData.recipient, formData.card.cardIndex).status || getGiftingStatus(formData.recipient, formData.card.cardIndex).status==='TRIGGERED')"
-        >
+        <div class="section step step--twocol step2" v-if="step === 1">
           <div class="step__card">
-            <div class="centered">
-              <card v-if="formData.card" :cdata="previewCardObject"/>
-            </div>
+            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
+          <div class="flex-column">
+            <div class="step__title">
+              <h4>Add money</h4>
+              <p>Add ether or DAI to your hongbao</p>
+            </div>
 
-          <div class="step__info">
-            <h4>Preview your radicard</h4>
+            <div class="fieldgroup--radio column">
+              <!-- Option 1 -->
+              <div :class="['field field--radio', {'isSelected': formData.currency === 'ETH'}]">
+                <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
+                <label for="selectETH" class="field--radio__content">
+                  <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
 
-            <span class="detailsText">
-              Recipient: {{formData.recipient}}
-              <br>
-              <br>
-              <br>Message (displayed on the back of the card):
-              <br>
-              <br>
-              <h5 v-html="cardMessageFormatted"></h5>
-              <br>
-              <br>
-              <br>
-            </span>
+                  <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
+                    <input type="number" class="field form-control" v-model="formData.valueInETH">
+                    <br>
+                    <p class="p--small">Transfer the card directly; the web3 way</p>
 
-            <button
-              class="button"
-              @click="giveBirth"
-              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'"
-            >gift this awesome card</button>
+                    <div class="paymentPresets">
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.5}]"
+                        @click="setDonationAmount(0.5)"
+                      >0.5 ETH</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 1}]"
+                        @click="setDonationAmount(1)"
+                      >1 ETH</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 2}]"
+                        @click="setDonationAmount(2)"
+                      >2 ETH</button>
+                    </div>
+                  </div>
+                </label>
+              </div>
 
-            <div class="form-group row" v-if="formData.errors.length">
-              <div class="col-sm-12">
-                <blockquote>
-                  <b>Please correct the following error(s):</b>
-                </blockquote>
-                <ul>
-                  <li v-for="error in formData.errors">{{ error }}</li>
-                </ul>
+              <div :class="['field field--radio', {'isSelected': formData.currency === 'DAI'}]">
+                <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
+                <label for="selectDAI" class="field--radio__content">
+                  <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
+
+                  <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
+                    <input type="number" class="field form-control" v-model="formData.valueInDAI">
+                    <br>
+                    <p class="p--small">Transfer the card directly; the web3 way</p>
+
+                    <div class="paymentPresets">
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 0.5}]"
+                        @click="setDonationAmount(0.5)"
+                      >0.5 DAI</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 1}]"
+                        @click="setDonationAmount(1)"
+                      >1 DAI</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 2}]"
+                        @click="setDonationAmount(2)"
+                      >2 DAI</button>
+                    </div>
+                  </div>
+                </label>
               </div>
             </div>
 
-            <div
-              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
-              class="transaction-in-progress"
+            <p>Donate to charity of your choice</p>
+            <br>[SHOW CHARITIES]
+            <br>[SHOW SLIDER]
+            <br>
+            <br>
+            <input
+              type="button"
+              class="button button--fullwidth"
+              :disabled="!formData.valueInDAI > 0 && !formData.valueInETH > 0"
+              @click="goToStep(2)"
+              value="GENERATE HANGOBAO"
             >
-              <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
-              <p>
-                Please
-                <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) if you haven't already confirmed this action.
-              </p>
+          </div>
+        </div>
+
+        <div class="section step step--twocol step2" v-if="step === 2">
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+          </div>
+          <div class="flex-column">
+            <div class="step__title">
+              <h4>Your hongbao is ready!</h4>
+              <p>Now send your hongbao to your friends!</p>[SHARING BUTTONS]
             </div>
           </div>
         </div>
@@ -398,7 +243,6 @@
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
                   :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
-
                 >send</mailto-link>
               </div>
               <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
@@ -586,13 +430,13 @@ export default {
       return true;
     },
     handleMessageAndReceiver() {
-      if (this.checkMessageAndReceiver()) {
-        return;
-      }
+      // if (this.checkMessageAndReceiver()) {
+      //   return;
+      // }
 
-      if (this.formData.sendOptions !== "wallet") {
-        this.formData.recipient = this.account;
-      }
+      // if (this.formData.sendOptions !== "wallet") {
+      //   this.formData.recipient = this.account;
+      // }
       this.goToStep(1);
     },
     copyToClipboard(text) {
@@ -696,7 +540,7 @@ export default {
     line-height: normal;
     font-size: 14px;
 
-    color: $black;
+    color: $darkgray;
 
     opacity: 0.3;
   }
@@ -744,7 +588,7 @@ export default {
   line-height: normal;
   font-size: 12px;
 
-  color: $black;
+  color: $darkgray;
 }
 
 .input-label {
@@ -752,13 +596,14 @@ export default {
   margin-bottom: 0.25rem;
   margin-top: 0.675rem;
   display: inline-block;
-  color: $black;
+  color: $darkgray;
 }
-input, textarea {
+input,
+textarea {
   margin-bottom: 1rem;
 }
 // textarea {
-//   border: 1px solid $black;
+//   border: 1px solid $darkgray;
 
 //   &::placeholder {
 //     text-align: right;
@@ -893,6 +738,7 @@ input, textarea {
     }
     .step__title {
       margin-top: 0;
+      margin-bottom: 20px;
     }
   }
 }
@@ -931,6 +777,12 @@ input, textarea {
   line-height: normal;
   font-size: 15px;
   display: inline-block;
-  color: $black;
+  color: $darkgray;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
 }
 </style>

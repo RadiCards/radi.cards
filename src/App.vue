@@ -168,9 +168,9 @@ body {
   margin: 0;
   padding: 0;
 
-  background-color: $white;
-  background-image: url("/static/images/background.svg");
-  background-repeat: no-repeat;
+  background-color: $darkred;
+  background-image: url("/static/images/pattern.svg");
+  background-repeat: repeat;
   background-attachment: static;
   background-position: top left;
 
@@ -178,7 +178,7 @@ body {
     background-position: top center;
   }
 
-  color: $black;
+  color: $darkgray;
   font-size: 100%; // 1rem = 16px
   font-family: "Helvetica", "Helvetica Neue", "Arial", sans-serif;
   letter-spacing: -0.03rem;
@@ -188,11 +188,11 @@ body {
 // Selection */
 ::-moz-selection {
   background: $yellow;
-  color: $black;
+  color: $darkgray;
 }
 ::selection {
   background: $yellow;
-  color: $black;
+  color: $darkgray;
 }
 
 // Header
@@ -218,7 +218,7 @@ footer {
   max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
-  border-top: 1px solid rgba($black, 0.1);
+  border-top: 1px solid rgba($darkgray, 0.1);
 }
 
 // Badge
@@ -231,13 +231,13 @@ footer {
   line-height: 1.5em;
 
   &-primary {
-    background: $black;
+    background: $darkgray;
     color: $yellow;
     padding: 0 0.25rem;
   }
   &-yellow {
     background: $yellow;
-    color: $black;
+    color: $darkgray;
   }
   &-huge {
     margin-bottom: 0.5rem;
@@ -258,7 +258,7 @@ footer {
   &:focus {
     outline: none;
     background: $white;
-    border-color: $black;
+    border-color: $darkgray;
   }
 
   &--textarea {
@@ -291,7 +291,7 @@ footer {
     padding: 0.125rem 0.75rem;
     font-size: 0.75rem;
     font-weight: bold;
-    border: 2px solid $black;
+    border: 2px solid $darkgray;
   }
 }
 
