@@ -151,7 +151,7 @@
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
-          <div class="flex-colun">
+          <div class="flex-column">
             <div class="step__title">
               <h4>Your hongbao is ready!</h4>
               <p>Now send your hongbao to your friends!</p>[SHARING BUTTONS]
