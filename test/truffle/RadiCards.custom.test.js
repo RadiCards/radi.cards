@@ -36,7 +36,6 @@ contract("RadiCards ERC721 Custom", function (accounts) {
 
   const cardOne = 1;
   const cardTwo = 2;
-  const cardThree = 3;
 
   // The dai ERC20 token uses the same number of basis SI units (1*10-18) as Ether
   // with the Atto representing 1*10-18 dai.
@@ -144,14 +143,11 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       );
     });
 
-    context("should have two benefactors initially", function () {
-      it("returns indexes", async function () {
+    context("Initial Setup", function () {
+      it("should have two benefactors initially", async function () {
         const indexes = await this.token.benefactorsKeys();
         indexes.length.should.be.bignumber.equal(2);
       });
-    });
-
-    context("should have one cards initially", function () {
       it("returns indexes", async function () {
         const indexes = await this.token.cardsKeys();
         indexes.length.should.be.bignumber.equal(1);

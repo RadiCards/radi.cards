@@ -796,5 +796,4 @@ contract('RadiCards ERC721 Common', function (accounts) {
     'ERC721Enumerable',
     'ERC721Metadata',
   ]);
-
 });
