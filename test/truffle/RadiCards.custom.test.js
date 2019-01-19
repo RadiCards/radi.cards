@@ -1068,6 +1068,11 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
 
       it("can cancel gift if gifter and funds are returned (ETH)", async function () {
+        // first we check that the contract is indeed the owner of the token to begin with
+        // the last thing to check is that the gifter is now the owner of the nft
+        let ownerOfToken = await this.token.ownerOf(secondTokenId) //card index 1 for the card minted in the foreach most recently
+        ownerOfToken.should.be.equal(this.token.address)
+
         let contractBalanceBefore = await web3.eth.getBalance(
           this.token.address
         );
@@ -1096,8 +1101,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         gifterBalanceAfter.should.be.bignumber.equal(gifterBalanceBefore.plus(oneUSDInWei).minus(totalSpentOnGas))
 
         // the last thing to check is that the gifter is now the owner of the nft
-        let ownerOfToken = await this.token.ownerOf(1) //card index 1 for the card minted in the foreach most recently
-        ownerOfToken.should.be.bignumber.equal(account1)
+        ownerOfToken = await this.token.ownerOf(secondTokenId) //card index 1 for the card minted in the foreach most recently
+        ownerOfToken.should.be.equal(account1)
       })
 
 
@@ -1140,7 +1145,7 @@ contract("RadiCards ERC721 Custom", function (accounts) {
 
         // the last thing to check is that the gifter is now the owner of the nft
         let ownerOfToken = await this.token.ownerOf(2) //card index 2 for the card minted within this it
-        ownerOfToken.should.be.bignumber.equal(account1)
+        ownerOfToken.should.be.equal(account1)
       })
     })
 
@@ -1175,8 +1180,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
       it("should transfer token and funds to new owner", async function () {
         // initially the token owns the token (before transfer)
-        let ownerOfToken = await this.token.ownerOf(1)
-        ownerOfToken.should.be.bignumber.equal(this.token.address)
+        let ownerOfToken = await this.token.ownerOf(secondTokenId)
+        ownerOfToken.should.be.equal(this.token.address)
 
         // we also need to check the token balances of the contract and the recipient
         // address to check it was transfers correctly
@@ -1195,8 +1200,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         })
 
         // after the claim we can check that the owner is now account2
-        ownerOfToken = await this.token.ownerOf(1)
-        ownerOfToken.should.be.bignumber.equal(account2)
+        ownerOfToken = await this.token.ownerOf(secondTokenId)
+        ownerOfToken.should.be.equal(account2)
 
         // check the fund transfer happened correctly
         let contractBalanceAfter = await web3.eth.getBalance(
@@ -1242,8 +1247,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
       });
       it("should transfer token and funds to new owner", async function () {
         // initially the token owns the token (before transfer)
-        let ownerOfToken = await this.token.ownerOf(1)
-        ownerOfToken.should.be.bignumber.equal(this.token.address)
+        let ownerOfToken = await this.token.ownerOf(secondTokenId)
+        ownerOfToken.should.be.equal(this.token.address)
 
         // we also need to check the token balances of the contract and the recipient
         // address to check it was transfers correctly
@@ -1262,8 +1267,8 @@ contract("RadiCards ERC721 Custom", function (accounts) {
         })
 
         // after the claim we can check that the owner is now account2
-        ownerOfToken = await this.token.ownerOf(1)
-        ownerOfToken.should.be.bignumber.equal(account2)
+        ownerOfToken = await this.token.ownerOf(secondTokenId)
+        ownerOfToken.should.be.equal(account2)
 
         // check the fund transfer happened correctly
         let contractBalanceAfter = await this.daiContract.balanceOf(
