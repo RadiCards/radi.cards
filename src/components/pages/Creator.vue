@@ -10,6 +10,7 @@
           target="__blank"
           href="https://metamask.io"
         >Meta Mask</a>,
+        <a target="__blank" href="https://token.im/download?locale=en-US">imToken Wallet</a>,
         <a target="__blank" href="https://status.im">Status</a>,
         <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
         <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
@@ -78,12 +79,12 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'ETH'}]">
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
                 <label for="selectETH" class="field--radio__content">
+                  <p class="p--smallitalic">Topup your hongbao with cryptocurrency</p>
                   <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
+                    <p class="p--bold">Send ETH</p>
                     <input type="number" class="field form-control" v-model="formData.valueInETH">
-                    <br>
-                    <p class="p--small">Transfer the card directly; the web3 way</p>
 
                     <div class="paymentPresets">
                       <button
@@ -106,12 +107,12 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'DAI'}]">
                 <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
                 <label for="selectDAI" class="field--radio__content">
+                  <p class="p--smallitalic">Topup your hongbao with stable cryptocurrency</p>
                   <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
 
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
+                    <p class="p--bold">Send DAI</p>
                     <input type="number" class="field form-control" v-model="formData.valueInDAI">
-                    <br>
-                    <p class="p--small">Transfer the card directly; the web3 way</p>
 
                     <div class="paymentPresets">
                       <button
@@ -154,7 +155,7 @@
           <div class="flex-column">
             <div class="step__title">
               <h4>Your hongbao is ready!</h4>
-              <p>Now send your hongbao to your friends!</p>[SHARING BUTTONS]
+              <p>Now send this hongbao to your friends!</p>[SHARING BUTTONS]
             </div>
           </div>
         </div>
@@ -533,7 +534,7 @@ export default {
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
 
   .field {
-    background: rgba(196, 196, 196, 0.15);
+    background: rgba(196, 196, 196, 0);
   }
 
   .subtext {
@@ -542,7 +543,7 @@ export default {
 
     color: $darkgray;
 
-    opacity: 0.3;
+    opacity: 0.9;
   }
 
   .email-field {
@@ -564,12 +565,12 @@ export default {
     border: 1px solid black;
 
     #copyfield {
-      background: rgba(196, 196, 196, 0.15) !important;
+      background: rgba(196, 196, 196, 0) !important;
       border: 0;
     }
 
     div {
-      color: $gray;
+      color: $darkgray;
       background: rgba(196, 196, 196, 0.15);
       padding: 9px 10px;
       height: 100%;

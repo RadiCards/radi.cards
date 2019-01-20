@@ -68,9 +68,20 @@ p {
     font-size: 0.875rem;
     line-height: 2rem;
   }
+  &.p--smallitalic {
+    font-size: 0.875rem;
+    line-height: 2rem;
+    font-style: italic;
+    opacity: 0.5;
+  }
   &.p--large {
     font-size: 1.25rem;
     line-height: 2rem;
+  }
+  &.p--bold {
+    font-size: 1rem;
+    line-height: 2rem;
+    font-weight: bold;
   }
 }
 

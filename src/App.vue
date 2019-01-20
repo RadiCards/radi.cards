@@ -266,19 +266,19 @@ footer {
   }
 
   &::-webkit-input-placeholder {
-    color: rgba($gray, 0.5);
+    color: rgba($darkgray, 0.5);
   }
 
   &:-moz-placeholder {
-    color: rgba($gray, 0.5);
+    color: rgba($darkgray, 0.5);
   }
 
   &::-moz-placeholder {
-    color: rgba($gray, 0.5);
+    color: rgba($darkgray, 0.5);
   }
 
   &:-ms-input-placeholder {
-    color: rgba($gray, 0.5);
+    color: rgba($darkgray, 0.5);
   }
 }
 
@@ -321,14 +321,14 @@ footer {
 }
 
 footer {
-  color: $gray;
+  color: $darkgray;
 
   a {
-    color: $gray;
+    color: $darkgray;
   }
 
   a:visited {
-    color: $gray;
+    color: $darkgray;
   }
 
   a:hover {
