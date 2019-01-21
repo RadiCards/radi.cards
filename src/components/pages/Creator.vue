@@ -41,24 +41,12 @@
 
             <br>
 
-            <p>How would you like to send this card</p>
-            <div class="fieldgroup--radio">
-              <div>
-                <input type="radio" id="sendToWeChat" value="wechat" v-model="formData.sendOptions">
-                <label for="sendToWeChat">on WeChat</label>
-              </div>
-              <div>
-                <input type="radio" id="sendToWallet" value="wallet" v-model="formData.sendOptions">
-                <label for="sendToWallet">to Ethereum address</label>
-              </div>
-            </div>
-
             <br>
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="!formData.sendOptions || !formData.message"
-              @click="handleMessageAndReceiver()"
+              :disabled="!formData.message"
+              @click="goToStep(1)"
               value="NEXT"
             >
           </div>
@@ -116,17 +104,17 @@
 
                     <div class="paymentPresets">
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 0.5}]"
-                        @click="setDonationAmount(0.5)"
-                      >0.5 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 10}]"
+                        @click="setDonationAmount(10)"
+                      >10 DAI</button>
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 1}]"
-                        @click="setDonationAmount(1)"
-                      >1 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 20}]"
+                        @click="setDonationAmount(20)"
+                      >20 DAI</button>
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 2}]"
-                        @click="setDonationAmount(2)"
-                      >2 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 50}]"
+                        @click="setDonationAmount(50)"
+                      >50 DAI</button>
                     </div>
                   </div>
                 </label>
@@ -134,16 +122,24 @@
             </div>
 
             <p>Donate to charity of your choice</p>
-            <br>[SHOW CHARITIES]
-            <br>[SHOW SLIDER]
+            <select v-model="formData.benefactor">
+              <option v-for="item in benefactors" :value="item" v-bind:key="item.name">{{item.name}}</option>
+            </select>
+            <br>
+            <vue-slider
+              ref="slider"
+              v-bind="donationSliderOptions"
+              v-model="formData.percentage"
+              formatter="{value}%"
+            ></vue-slider>
             <br>
             <br>
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="!formData.valueInDAI > 0 && !formData.valueInETH > 0"
+              :disabled="!validateDonationMethod()"
               @click="goToStep(2)"
-              value="GENERATE HANGOBAO"
+              value="NEXT"
             >
           </div>
         </div>
@@ -154,8 +150,87 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
+              <h4>Add money</h4>
+              <p>Add ether or DAI to your hongbao</p>
+            </div>
+
+            <div class="fieldgroup--radio column">
+              <!-- OwnWallet -->
+              <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
+                <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
+                <label for="selectQR" class="field--radio__content">
+                  <p class="p--smallitalic">Works with WeChat, Twitter, Facebook</p>
+                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">Send via QR code</span>
+                  <div v-if="formData.sendingMethod === 'QR'" class="sendOptionSelectedContent">
+                    <p class="p--bold">Send via QR code</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- ETH -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'ETH'}]"
+              >
+                <input type="radio" id="selectETH" value="ETH" v-model="formData.sendingMethod">
+                <label for="selectETH" class="field--radio__content">
+                  <p class="p--smallitalic">Send hongbao to a recipient right away</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'ETH'"
+                    class="pretext"
+                  >Send to another ETH wallet</span>
+                  <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
+                    <p class="p--bold">Send to another ETH wallet</p>
+                    <input
+                      type="text"
+                      placeholder="0x..."
+                      class="field form-control"
+                      v-model="formData.recipient"
+                    >
+                  </div>
+                </label>
+              </div>
+
+              <!-- Self -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'Self'}]"
+              >
+                <input type="radio" id="selectSelf" value="Self" v-model="formData.sendingMethod">
+                <label for="selectSelf" class="field--radio__content">
+                  <p class="p--smallitalic">Send hongbao to a recipient at a later time</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'Self'"
+                    class="pretext"
+                  >Send hongbao to a recipient at a later time</span>
+                  <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
+                    <p class="p--bold">Send to my own ETH wallet address</p>
+                    <p>Your wallet:</p>
+                    <p>{{account}}</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <input
+              type="button"
+              class="button button--fullwidth"
+              :disabled="!validateSendingMethod()"
+              @click="goToStep(3)"
+              value="GENERATE HANGOBAO"
+            >
+          </div>
+        </div>
+
+        <div class="section step step--twocol step2" v-if="step === 3">
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+          </div>
+          <div class="flex-column">
+            <div class="step__title">
               <h4>Your hongbao is ready!</h4>
-              <p>Now send this hongbao to your friends!</p>[SHARING BUTTONS]
+              <p>Now send this hongbao to your friends!</p>
+
+              <p>HERE you can find all the stored data to wire in:</p>
+              <pre>{{formData}}</pre>
             </div>
           </div>
         </div>
@@ -327,6 +402,7 @@ import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
 import MailtoLink from "../../components/widgets/MailtoLink";
 import { AssertionError } from "assert";
+import vueSlider from "vue-slider-component";
 
 export default {
   name: "creator",
@@ -336,10 +412,51 @@ export default {
     Benefactor,
     Samplequote,
     MailtoLink,
-    ClickableAddress
+    ClickableAddress,
+    vueSlider
   },
   data() {
     return {
+      donationSliderOptions: {
+        eventType: "auto",
+        width: "auto",
+        height: 4,
+        dotSize: 10,
+        dotHeight: null,
+        dotWidth: null,
+        min: 0,
+        max: 100,
+        interval: 1,
+        show: true,
+        speed: 0.5,
+        disabled: false,
+        piecewise: false,
+        usdKeyboard: false,
+        enableCross: true,
+        piecewiseStyle: false,
+        piecewiseLabel: false,
+        tooltip: "always",
+        tooltipDir: "top",
+        reverse: false,
+        clickable: true,
+        realTime: false,
+        lazy: false,
+        formatter: null,
+        bgStyle: {
+          backgroundColor: "#414141",
+          boxShadow: "inset 0.5px 0.5px 3px 1px rgba(0,0,0,.36)"
+        },
+        sliderStyle: {
+          backgroundColor: "#414141"
+        },
+        tooltipStyle: { backgroundColor: "#414141", borderColor: "#414141" },
+        processStyle: {
+          backgroundColor: "#414141"
+        },
+        piecewiseActiveStyle: null,
+        labelStyle: null,
+        labelActiveStyle: null
+      },
       formData: {
         errors: [],
         card: {},
@@ -347,7 +464,8 @@ export default {
         recipient: null,
         benefactor: null,
         message: null,
-        email: null
+        valueInDAI: null,
+        currency: null
       },
       step: 0,
       walletVisible: false,
@@ -390,55 +508,45 @@ export default {
           return this.cards[c];
         }
       }
-    },
-    hasStep1Data() {
-      if (this.formData.message === null || this.formData.recipient === null) {
-        return true;
-      } else if (
-        this.formData.message.length < 1 ||
-        this.formData.recipient.length < 1
-      ) {
-        return true;
-      } else {
-        return false;
-      }
     }
   },
   mounted() {
     this.$nextTick(function() {});
   },
   methods: {
-    checkMessageAndReceiver() {
-      if (!this.formData.message) {
-        return true;
-      }
-
-      if (
-        this.formData.sendOptions === "wallet" &&
-        Web3.utils.isAddress(this.formData.recipient)
-      ) {
+    validateDonationMethod() {
+      if (this.formData.currency === undefined) {
         return false;
       }
 
-      if (this.formData.sendOptions === "personal") {
+      if (this.formData.currency === "ETH" && this.formData.valueInETH < 0.01) {
         return false;
       }
 
-      if (this.formData.sendOptions === "email" && this.formData.email) {
+      if (this.formData.currency === "DAI" && this.formData.valueInDAI < 1) {
+        return false;
+      }
+
+      if (this.formData.percentage === undefined) {
+        return false;
+      }
+
+      if (this.formData.benefactor === undefined) {
         return false;
       }
 
       return true;
     },
-    handleMessageAndReceiver() {
-      // if (this.checkMessageAndReceiver()) {
-      //   return;
-      // }
+    validateSendingMethod() {
+      if (this.formData.sendingMethod === undefined) {
+        return false;
+      }
 
-      // if (this.formData.sendOptions !== "wallet") {
-      //   this.formData.recipient = this.account;
-      // }
-      this.goToStep(1);
+      if (this.formData.sendingMethod === "ETH") {
+        return Web3.utils.isAddress(this.formData.recipient);
+      }
+
+      return true;
     },
     copyToClipboard(text) {
       this.$copyText(text);
@@ -451,7 +559,13 @@ export default {
     },
     setDonationAmount(amount) {
       event.preventDefault();
-      this.formData.valueInETH = amount;
+      if (this.formData.currency === "ETH") {
+        console.log("saving eth " + this.formData.currency + amount);
+        this.formData.valueInETH = amount;
+      } else {
+        console.log("saving DAI " + this.formData.currency + amount);
+        this.formData.valueInDAI = amount;
+      }
     },
     setBenefactor(benefactor) {
       this.formData.benefactor = benefactor;
