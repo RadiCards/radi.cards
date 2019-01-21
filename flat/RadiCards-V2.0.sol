@@ -1762,7 +1762,7 @@ contract Medianizer is DSValue {
 * This is the main Radi Cards NFT (ERC721) contract. It allows for the minting of
 * cards(NFTs) that can be sent to either a known EOA or to a claimable link.
 * ETH or DAI can be sent along with the card and the sender can choose a ratio
-* between a participating charity and the recipient, with no restriction.
+* between a participating benefactor and the recipient, with no restriction.
 * Predefined cards can be added, with the artwork stored on IPFS.
 * The card message is stored within the smart contract. Cards can have a defined max
 * quantity that can be minted and a minimum purchase price. The claimable link sender
@@ -1846,7 +1846,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         Statuses status
     );
 
-    event LogClaim(
+    event LogClaimGift(
             address indexed ephemeralAddress,
             address indexed sender,
             uint tokenId,
@@ -1855,7 +1855,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         bool daiDonation
     );
 
-    event LogCancel(
+    event LogCancelGift(
         address indexed ephemeralAddress,
         address indexed sender,
         uint tokenId
@@ -1874,9 +1874,12 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         addAddressToWhitelist(msg.sender);
     }
 
-    function gift(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) payable public returns (bool) {
-        require(to != address(0), "Must be a valid address");
-        require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
+    function gift(address _to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) payable public returns (bool) {
+        require(_to != address(0), "Must be a valid address");
+        if(_donationAmount > 0){
+            require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
+        }
+
         require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
         require(cards[_cardIndex].active, "Must be an active card");
 
@@ -1887,14 +1890,14 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
             require(_donationAmount + _giftAmount + EPHEMERAL_ADDRESS_FEE == msg.value, "Can only request to donate and gift the amount of ether sent + Ephemeral fee");
             _giftStatus = Statuses.Deposited;
             _sentToAddress = this;
-            ephemeralWalletCards[to] = tokenIdPointer;
-            to.transfer(EPHEMERAL_ADDRESS_FEE);
+            ephemeralWalletCards[_to] = tokenIdPointer;
+            _to.transfer(EPHEMERAL_ADDRESS_FEE);
         }
 
         else {
             require(_donationAmount + _giftAmount == msg.value,"Can only request to donate and gift the amount of ether sent");
             _giftStatus = Statuses.Claimed;
-            _sentToAddress = to;
+            _sentToAddress = _to;
         }
 
         if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
@@ -1904,18 +1907,18 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         if(cards[_cardIndex].minPrice > 0){ //if the card has a minimum price check that enough has been sent
         // Convert the current value of the eth send to a USD value of atto (1 usd = 10^18 atto).
         // require(getEthUsdValue(msg.value) >= (cards[_cardIndex].minPrice), "Must send at least the minimum amount");
-            require (getMinCardPriceInWei(_cardIndex)<=msg.value,"Must send at least the minimum amount to buy card");
+            require (getMinCardPriceInWei(_cardIndex) <= msg.value,"Must send at least the minimum amount to buy card");
         }
 
         tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
-            gifter : msg.sender,
-            message : _message,
+            gifter: msg.sender,
+            message: _message,
             daiDonation: false,
-            giftAmount : _giftAmount,
+            giftAmount: _giftAmount,
             donationAmount: _donationAmount,
             status: _giftStatus,
-            cardIndex : _cardIndex,
-            benefactorIndex : _benefactorIndex
+            cardIndex: _cardIndex,
+            benefactorIndex: _benefactorIndex
         });
 
         // Card is minted to the _sentToAddress. This is either this radicards contract(if claimableLink==true)
@@ -1926,28 +1929,33 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         // transfer the ETH to the benefactor
         if(_donationAmount > 0){
             benefactors[_benefactorIndex].ethAddress.transfer(_donationAmount);
+            totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
         }
         // transfer gift to recipient.
-        // note that we only do this if the link is not claimable as if it is the eth sits in escrow within this contract
-        if(_giftAmount > 0 && !_claimableLink){
-            _sentToAddress.transfer(_giftAmount);
-        }
 
-        // tally up the total eth gifted and donated
-        totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
-        totalDonatedInWei = totalDonatedInWei.add(_donationAmount);
+        if(_giftAmount > 0){
+            totalGiftedInWei = totalGiftedInWei.add(_giftAmount);
+        // note that we only do the transfer if the link is not claimable as if it is the eth sits in escrow within this contract
+            if(!_claimableLink){
+                _sentToAddress.transfer(_giftAmount);
+            }
+        }
 
         emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
         return true;
     }
 
-    function giftInDai(address to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) public payable returns (bool) {
-        require(to != address(0), "Must be a valid address");
-        require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
+    function giftInDai(address _to, uint256 _benefactorIndex, uint256 _cardIndex, string _message, uint256 _donationAmount, uint256 _giftAmount, bool _claimableLink) public payable returns (bool) {
+        require(_to != address(0), "Must be a valid address");
+        if (_donationAmount > 0){
+            require(benefactors[_benefactorIndex].ethAddress != address(0), "Must specify existing benefactor");
+        }
+
         require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
         require(cards[_cardIndex].active, "Must be an active card");
-        require((_donationAmount + _giftAmount)<= daiContract.allowance(msg.sender, this), "Must have provided high enough alowance to Radicard contract");
-        require((_donationAmount + _giftAmount)<= daiContract.balanceOf(msg.sender), "Must have enough token balance of dai to pay for donation and gift amount");
+
+        require((_donationAmount + _giftAmount) <= daiContract.allowance(msg.sender, this), "Must have provided high enough alowance to Radicard contract");
+        require((_donationAmount + _giftAmount) <= daiContract.balanceOf(msg.sender), "Must have enough token balance of dai to pay for donation and gift amount");
 
         if (cards[_cardIndex].maxQnty > 0){ //the max quantity is set to zero to indicate no limit. Only need to check that can mint if limited
             require(cards[_cardIndex].minted < cards[_cardIndex].maxQnty, "Can't exceed maximum quantity of card type");
@@ -1966,24 +1974,24 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
             _giftStatus = Statuses.Deposited;
             _sentToAddress = this;
             // need to store the address of the ephemeral account and the card that it owns for claimable link functionality
-            ephemeralWalletCards[to] = tokenIdPointer;
-            to.transfer(EPHEMERAL_ADDRESS_FEE);
+            ephemeralWalletCards[_to] = tokenIdPointer;
+            _to.transfer(EPHEMERAL_ADDRESS_FEE);
         }
 
         else {
             _giftStatus = Statuses.Claimed;
-            _sentToAddress = to;
+            _sentToAddress = _to;
         }
 
         tokenIdToRadiCardIndex[tokenIdPointer] = RadiCard({
-            gifter : msg.sender,
-            message : _message,
+            gifter: msg.sender,
+            message: _message,
             daiDonation: true,
-            giftAmount : _giftAmount,
+            giftAmount: _giftAmount,
             donationAmount: _donationAmount,
             status: _giftStatus,
-            cardIndex : _cardIndex,
-            benefactorIndex : _benefactorIndex
+            cardIndex: _cardIndex,
+            benefactorIndex: _benefactorIndex
         });
 
         // Card is minted to the _sentToAddress. This is either this radicards contract(if claimableLink==true)
@@ -1995,19 +2003,17 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         // transfer the DAI to the benefactor
         if(_donationAmount > 0){
             address _benefactorAddress = benefactors[_benefactorIndex].ethAddress;
-            require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to charity failed");
+            require(daiContract.transferFrom(msg.sender, _benefactorAddress, _donationAmount),"Sending to benefactor failed");
+            totalDonatedInAtto = totalDonatedInAtto.add(_donationAmount);
         }
 
         // transfer gift to recipient. note that this pattern is slightly different from the eth case as irrespective of
         // if it is a claimable link or not we preform the transaction. if it is indeed a claimable link the dai is sent
         // to the contract and held in escrow
         if(_giftAmount > 0){
-            require(daiContract.transferFrom(msg.sender, _sentToAddress, _giftAmount),"Sending to recipaint failed");
+            require(daiContract.transferFrom(msg.sender, _sentToAddress, _giftAmount),"Sending to recipient failed");
+            totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
         }
-
-        // tally up the total eth gifted and donated
-        totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
-        totalDonatedInAtto = totalDonatedInAtto.add(_donationAmount);
 
         emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
 
@@ -2054,7 +2060,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         super.transferFrom(this, msg.sender, tokenId);
 
         // log cancel event
-        emit LogCancel(_ephemeralAddress, msg.sender, tokenId);
+        emit LogCancelGift(_ephemeralAddress, msg.sender, tokenId);
 
         return true;
     }
@@ -2089,7 +2095,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         }
 
         // log claim event
-        emit LogClaim(
+        emit LogClaimGift(
             _ephemeralAddress,
             card.gifter,
             tokenId,
@@ -2218,7 +2224,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
 
     function setMaxQuantity(uint256 _cardIndex, uint256 _maxQnty) external onlyIfWhitelisted(msg.sender) {
         require(bytes(cards[_cardIndex].tokenURI).length != 0, "Must specify existing card");
-        require(cards[_cardIndex].minted<=_maxQnty, "Cant set the max quantity less than the current total minted");
+        require(cards[_cardIndex].minted <= _maxQnty, "Can't set the max quantity less than the current total minted");
         cards[_cardIndex].maxQnty = _maxQnty;
     }
 
@@ -2228,12 +2234,12 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
     }
 
     function setDaiContractAddress(address _daiERC20ContractAddress) external onlyIfWhitelisted(msg.sender){
-        require(_daiERC20ContractAddress != address(0), "Can't be address zero");
+        require(_daiERC20ContractAddress != address(0), "Must be a valid address");
         daiContract = StandardToken(_daiERC20ContractAddress);
     }
 
     function setMedianizerContractAddress(address _MedianizerContractAddress) external onlyIfWhitelisted(msg.sender){
-        require(_MedianizerContractAddress != address(0), "Can't be address zero");
+        require(_MedianizerContractAddress != address(0), "Must be a valid address");
         medianizerContract = Medianizer(_MedianizerContractAddress);
     }
 
@@ -2249,6 +2255,6 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
 
   //returns the minimum required in wei for a particular card given the card min price in dai
     function getMinCardPriceInWei(uint256 _cardIndex) public view returns(uint256){
-        return ((cards[_cardIndex].minPrice*1 ether)/getEtherPrice());
+        return ((cards[_cardIndex].minPrice * 1 ether)/getEtherPrice());
     }
 }
