@@ -95,6 +95,9 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         uint256 indexed _cardIndex,
         address _from,
         uint256 _tokenId,
+        bool daiDonation,
+        uint256 giftAmount,
+        uint256 donationAmount,
         Statuses status
     );
 
@@ -192,7 +195,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
                 _sentToAddress.transfer(_giftAmount);
             }
         }
-        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
+        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, false, _giftAmount, _donationAmount, _giftStatus);
         return true;
     }
 
@@ -266,7 +269,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
             totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
         }
 
-        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
+        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, true, _giftAmount, _donationAmount, _giftStatus);
         return true;
     }
 

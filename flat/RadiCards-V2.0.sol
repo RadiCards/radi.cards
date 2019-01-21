@@ -1843,6 +1843,9 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         uint256 indexed _cardIndex,
         address _from,
         uint256 _tokenId,
+        bool daiDonation,
+        uint256 giftAmount,
+        uint256 donationAmount,
         Statuses status
     );
 
@@ -1940,8 +1943,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
                 _sentToAddress.transfer(_giftAmount);
             }
         }
-
-        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
+        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, false, _giftAmount, _donationAmount, _giftStatus);
         return true;
     }
 
@@ -2015,10 +2017,8 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
             totalGiftedInAtto = totalGiftedInAtto.add(_giftAmount);
         }
 
-        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, _giftStatus);
-
+        emit CardGifted(_sentToAddress, _benefactorIndex, _cardIndex, msg.sender, _tokenId, true, _giftAmount, _donationAmount, _giftStatus);
         return true;
-
     }
 
     function _mint(address to, string tokenURI) internal returns (uint256 _tokenId) {
@@ -2056,12 +2056,12 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
             }
         }
 
-        // send nft to buyer
-        super.transferFrom(this, msg.sender, tokenId);
+        // send nft to buyer. for this we use a custom transfer function to take the nft out of escrow and
+        // send it back to the buyer.
+        transferFromEscrow(msg.sender, tokenId);
 
         // log cancel event
         emit LogCancelGift(_ephemeralAddress, msg.sender, tokenId);
-
         return true;
     }
 
@@ -2082,7 +2082,7 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         card.status = Statuses.Claimed;
 
         // send nft to receiver
-        super.transferFrom(this, _receiver, tokenId);
+        transferFromEscrow(_receiver, tokenId);
 
         // transfer optional ether & dai to receiver's address
         if (card.giftAmount > 0) {
@@ -2238,23 +2238,32 @@ contract RadiCards is ERC721Token, ERC721Holder, Whitelist {
         daiContract = StandardToken(_daiERC20ContractAddress);
     }
 
+    // sets the medianizer contract for the makerdao implementation used as a price oracle
     function setMedianizerContractAddress(address _MedianizerContractAddress) external onlyIfWhitelisted(msg.sender){
         require(_MedianizerContractAddress != address(0), "Must be a valid address");
         medianizerContract = Medianizer(_MedianizerContractAddress);
     }
 
-  // returns the current ether price in usd. 18 decimal point precision used
+    // returns the current ether price in usd. 18 decimal point precision used
     function getEtherPrice() public view returns(uint256){
         return uint256(medianizerContract.read());
     }
 
-  //returns the value of ether in atto  (1 usd of ether = 10^18 atto)
+    // returns the value of ether in atto  (1 usd of ether = 10^18 atto)
     function getEthUsdValue(uint256 _ether) public view returns(uint256){
         return ((_ether*getEtherPrice())/(1 ether));
     }
 
-  //returns the minimum required in wei for a particular card given the card min price in dai
+    // returns the minimum required in wei for a particular card given the card min price in dai
     function getMinCardPriceInWei(uint256 _cardIndex) public view returns(uint256){
         return ((cards[_cardIndex].minPrice * 1 ether)/getEtherPrice());
+    }
+    // transfer tokens held by this contract in escrow to the recipient. Used when either claiming or cancelling gifts
+    function transferFromEscrow(address _recipient,uint256 _tokenId) internal{
+        require(super.ownerOf(_tokenId) == address(this),"The card must be owned by the contract for it to be in escrow");
+        super.clearApproval(this, _tokenId);
+        super.removeTokenFrom(this, _tokenId);
+        super.addTokenTo(_recipient, _tokenId);
+        emit Transfer(this, _recipient, _tokenId);
     }
 }
