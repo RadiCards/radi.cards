@@ -30,22 +30,43 @@
         <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
       </div>
     </div>
-
-    <div class="row mt-2" v-else>
-      <div class="col">
-        <b-row no-gutters>
-          <b-col
-            cols="6"
-            sm="6"
-            lg="4"
-            v-if="accountCards && accountCards.length > 0"
-            v-for="card in accountCards"
-            :key="card.tokenId"
-            class="pt-3"
-          >
-            <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
-          </b-col>
-        </b-row>
+    <div v-else>
+      <h3>Premium Cards</h3>
+      <div class="row mt-2">
+        <div class="col">
+          <b-row no-gutters>
+            <b-col
+              cols="6"
+              sm="6"
+              lg="4"
+              v-if="card.cardMaxQnty > 0"
+              v-for="card in accountCards"
+              :key="card.tokenId"
+              class="pt-3"
+            >
+              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
+            </b-col>
+          </b-row>
+        </div>
+      </div>
+      <hr>
+      <h3>Standard Cards</h3>
+      <div class="row mt-2">
+        <div class="col">
+          <b-row no-gutters>
+            <b-col
+              cols="6"
+              sm="6"
+              lg="4"
+              v-if="card.cardMaxQnty == 0"
+              v-for="card in accountCards"
+              :key="card.tokenId"
+              class="pt-3"
+            >
+              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
+            </b-col>
+          </b-row>
+        </div>
       </div>
     </div>
   </section>
@@ -77,7 +98,7 @@ export default {
   methods: {
     handelCardTransfered(cardTransfered) {
       this.cardTransferOccured = true;
-      this.transferedAddress = cardTransfered
+      this.transferedAddress = cardTransfered;
       this.$store.dispatch(actions.RESET_TRANSFER_STATUS);
     }
   },

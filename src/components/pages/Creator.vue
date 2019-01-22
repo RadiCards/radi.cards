@@ -223,7 +223,7 @@
 
         <div class="section step step--twocol step2" v-if="step === 3">
           <div class="step__card">
-            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
           <div class="flex-column">
             <div class="step__title">

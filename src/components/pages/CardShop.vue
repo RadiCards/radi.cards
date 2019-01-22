@@ -3,10 +3,17 @@
     <h2>Card Shop</h2>
     <br>
     <p>Creative, unique art pieces from from all around the interwebs.</p>
-
+    <h3>Premium Cards</h3>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
-      <b-col cols="6" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
-        <card :cdata="card" classes="card--gallery" />
+      <b-col cols="6" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3" v-if="card.cardMaxQnty > 0">
+        <card :cdata="card" classes="card--gallery"/>
+      </b-col>
+    </b-row>
+    <hr>
+    <h3>Standard Cards</h3>
+    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+      <b-col cols="6" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3"  v-if="card.cardMaxQnty == 0">
+        <card :cdata="card" classes="card--gallery"/>
       </b-col>
     </b-row>
 
