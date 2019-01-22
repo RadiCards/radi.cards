@@ -7,7 +7,8 @@
 
   &-brand {
     img {
-      max-width: 10rem;
+      max-width: 22rem;
+      padding-left: 1rem;
 
       @include tabletAndUp() {
         max-width: auto;

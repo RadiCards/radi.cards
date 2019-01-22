@@ -2,7 +2,7 @@
   <div>
     <h1>
       {{text}}
-      <img src="/static/icons/Wind.png">
+      <img src="/static/icons/Wind.svg">
     </h1>
   </div>
 </template>

@@ -17,15 +17,15 @@
         <h5>COMPATIBLE WITH</h5>
         <div class="icons">
           <div>
-            <img src="/static/icons/wechat.png">
+            <img src="/static/icons/wechat.svg">
             <span>WeChat</span>
           </div>
           <div>
-            <img src="/static/icons/imToken.png">
+            <img src="/static/icons/imToken.svg">
             <span>imToken</span>
           </div>
           <div>
-            <img src="/static/icons/DAI.png">
+            <img src="/static/icons/DAI.svg">
             <span>DAI</span>
           </div>
         </div>
@@ -43,7 +43,7 @@
           </span>
         </div>
         <div>
-          <img src="/static/images/sombreros.png">
+          <img src="/static/images/deposit.svg">
           <h5>Deposit</h5>
           <span>ether or DAI &amp;
             <br>generate hongbao
@@ -292,7 +292,7 @@ export default {
 }
 .section--credits {
   h5 {
-    margin-bottom: 1rem;
+    margin-bottom: 0.1rem;
     padding: 0;
     color: $darkgray;
   }

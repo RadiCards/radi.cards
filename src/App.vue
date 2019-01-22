@@ -4,8 +4,7 @@
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
           <h1>
-            <span style="position: absolute; left: -9999px;">RadiCards</span>
-            <img src="/static/images/logo.svg" alt="RadiCards">
+            <img src="/static/images/logo_cn.svg" alt="RadiCards">
           </h1>
         </router-link>
 
