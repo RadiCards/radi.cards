@@ -12,6 +12,7 @@ const {
 const advanceBlock = require('../helpers/advanceToBlock');
 
 const DaiContract = artifacts.require("ERC20Mock.sol");
+const MedianizerContract = artifacts.require("MedianizerMock.sol")
 
 const {
   shouldBehaveLikeERC721
@@ -95,6 +96,26 @@ contract('RadiCards ERC721 Common', function (accounts) {
     await this.token.addCard(cardTwo, "QmQW8sa7KrpZuTD2TzvjsHLXjeAASiN7kE8ry5sCLYwMTy", true, 0, 0, {
       from: owner
     });
+
+    this.daiContract = await DaiContract.new(account1, etherToWei(100), {
+      from: owner
+    });
+
+    await this.daiContract.approve(this.token.address, etherToWei(50), {
+      from: account1
+    });
+
+    await this.token.setDaiContractAddress(this.daiContract.address, {
+      from: owner
+    });
+
+    this.medianizerContract = await MedianizerContract.new({
+      from: owner
+    })
+
+    await this.token.setMedianizerContractAddress(this.medianizerContract.address, {
+      from: owner
+    })
   });
 
   describe('like an ERC721', function () {
