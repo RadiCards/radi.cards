@@ -121,12 +121,13 @@
               </div>
             </div>
 
-            <p>Donate to charity of your choice</p>
-            <select v-model="formData.benefactor">
+            <p class="margin">Donate to charity of your choice</p>
+            <select class="margin red-drop" v-model="formData.benefactor">
               <option v-for="item in benefactors" :value="item" v-bind:key="item.name">{{item.name}}</option>
             </select>
             <br>
             <vue-slider
+              class="margin"
               ref="slider"
               v-bind="donationSliderOptions"
               v-model="formData.percentage"
@@ -641,6 +642,20 @@ export default {
   line-height: normal;
   font-size: 18px;
   font-weight: bold;
+}
+
+.margin {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.red-drop {
+  background: rgba(0, 0, 0, 0);
+  color: $darkgray;
+  border: 0px solid $darkgray;
+  height: 30px;
+  text-align: right;
+  direction: rtl;
 }
 
 .share-box {
