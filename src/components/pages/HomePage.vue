@@ -35,7 +35,7 @@
     <section class="section">
       <windy-title text="Send Hongbao in 3 Easy Steps"></windy-title>
       <br>
-      
+
       <div class="steps">
         <div>
           <img src="/static/images/choose.svg">
@@ -52,7 +52,7 @@
           </span>
         </div>
         <div>
-          <img src="/static/images/sombreros.png">
+          <img src="/static/images/send.svg">
           <h5>Send</h5>
           <span>hongbao to friends via
             <br>WeChat &amp; Email
@@ -179,7 +179,10 @@
               <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>
             </li>
             <li>
-              <a href="https://helpdesk.unicef.org.nz/help/donate-to-unicef-via-cryptocurrencies" target="_blank">unicef.org</a>
+              <a
+                href="https://helpdesk.unicef.org.nz/help/donate-to-unicef-via-cryptocurrencies"
+                target="_blank"
+              >unicef.org</a>
             </li>
             <li>
               <a href="https://www.bitcoinvenezuela.com" target="_blank">bitcoinvenezuela.com</a>

@@ -27,6 +27,17 @@
               >{{accountCards.length}}</span>
             </router-link>
           </li>
+          <li class="nav-item">
+            <a href="https://t.me/RadiCards">
+              <img
+                border="0"
+                alt="Radi's Telegram"
+                src="/static/images/telegram.svg"
+                width="25"
+                height="25"
+              >
+            </a>
+          </li>
           <!-- <li class="nav-item">
             <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
               Send a card
