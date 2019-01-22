@@ -34,9 +34,11 @@
 
     <section class="section">
       <windy-title text="Send Hongbao in 3 Easy Steps"></windy-title>
+      <br>
+      
       <div class="steps">
         <div>
-          <img src="/static/images/sombreros.png">
+          <img src="/static/images/choose.svg">
           <h5>Choose</h5>
           <span>cool hangbao design from
             <br>artists around the word
@@ -58,7 +60,7 @@
         </div>
       </div>
     </section>
-
+    <br>
     <section class="section">
       <windy-title text="Choose from a collection of hongbao art"></windy-title>
 
@@ -117,10 +119,10 @@
               <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
             </li>
             <li>
-              <a href="https://volca.tech" target="_blank">volca</a>
+              <a href="https://volca.tech" target="_blank">volca.tech</a>
             </li>
             <li>
-              <a href="https://www.gustav.tech" target="_blank">gustav tech</a>
+              <a href="https://www.gustav.tech" target="_blank">gustav.tech</a>
             </li>
             <li>
               <a href="https://www.chris.seifert.space" target="_blank">chris seifert</a>
@@ -173,6 +175,15 @@
         <div class="col-md-4 col-xs-12">
           <h5>All donations go to</h5>
           <ul>
+            <li>
+              <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>
+            </li>
+            <li>
+              <a href="https://helpdesk.unicef.org.nz/help/donate-to-unicef-via-cryptocurrencies" target="_blank">unicef.org</a>
+            </li>
+            <li>
+              <a href="https://www.bitcoinvenezuela.com" target="_blank">bitcoinvenezuela.com</a>
+            </li>
             <li>
               <a href="https://eff.org" target="_blank">eff.org</a>
             </li>

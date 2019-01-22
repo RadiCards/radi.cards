@@ -3,7 +3,7 @@
     <h2>Charity</h2>
 
     <h3>
-      <a href="https://www.grassrootseconomics.org/">Grass Roots Economics</a>
+      <a href="https://www.grassrootseconomics.org/">Grassroots Economics</a>
       <p class="p--small">
         <a href="https://etherscan.io/address/0x72f8547fae0F65C55f3BD0dD991c9A132C447ce6">etherscan</a>
       </p>
