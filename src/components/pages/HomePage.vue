@@ -3,9 +3,12 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <img src="/static/images/title2.png">
+        <h1 class="hero">Send your Ethereum hongbao</h1>
+        <h1 class="hero">via WeChat</h1>
+
+        <!--- <img src="/static/images/title2.png">
         <br>
-        <img src="/static/images/title1.png">
+        <img src="/static/images/title1.png">-->
       </blockquote>
 
       <router-link :to="{ name: 'cardshop' }" class="btn">Send Ether Hongbao</router-link>
@@ -248,6 +251,11 @@ export default {
   }
 }
 // Page-specific style
+.hero {
+  font-size: 3.9rem;
+  color: $darkgray;
+}
+
 .section--hero .cheeky-comment {
   position: absolute;
   top: 140%;

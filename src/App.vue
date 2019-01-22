@@ -168,7 +168,7 @@ body {
   margin: 0;
   padding: 0;
 
-  background-color: $darkred;
+  background-color: #ffffff;
   background-image: url("/static/images/pattern.svg");
   background-repeat: repeat;
   background-attachment: static;
