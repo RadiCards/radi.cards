@@ -95,7 +95,7 @@
     >
       <h6 v-html="cardMessageFormatted"></h6>
       <hr>
-      <p class="descr">
+      <p class="descr" v-if="cdata.BenefactorIndex!=0">
         Your donation goes to
         <strong>
           <a

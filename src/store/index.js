@@ -402,12 +402,16 @@ const store = new Vuex.Store({
       let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
         let gifter = accountToken[0];
-        let giftAmount = accountToken[1].toNumber();
-        let message = accountToken[2];
-        let extra = accountToken[3];
-        let cardIndex = accountToken[4];
-        let benefactorIndex = accountToken[5].toNumber();
+        let message = accountToken[1];
+        let daiDonation = accountToken[2];
+        let giftAmount = accountToken[3].toNumber();
+        let donationAmount = accountToken[4].toNumber();
+        let status = accountToken[5].toNumber();
+        let cardIndex = accountToken[6];
+        let benefactorIndex = accountToken[7].toNumber();
         let tokenId = tokenIds[loopIndex].toNumber();
+        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
+        let decodedStatus = statuses[status]
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
@@ -417,9 +421,13 @@ const store = new Vuex.Store({
             web3.utils.toChecksumAddress(gifter); //if the current account created the card
           let allCardInformation = {
             ...{
-              extra: extra,
-              giftAmount: giftAmount / 1000000000000000000,
+              gifter: gifter,
               message: message,
+              daiDonation: daiDonation,
+              giftAmount: giftAmount / 1000000000000000000,
+              donationAmount: donationAmount / 1000000000000000000,
+              status: decodedStatus,
+              cardInded: cardIndex,
               BenefactorIndex: benefactorIndex,
               accountCreatedCard: accountCreatedCard,
               tokenId: tokenId
@@ -446,26 +454,32 @@ const store = new Vuex.Store({
           const contract = await state.contract.deployed();
           let accountToken = await contract.tokenDetails(tokenId);
           let gifter = accountToken[0];
-          let giftAmount = accountToken[1].toNumber();
-          let message = accountToken[2];
-          let extra = accountToken[3];
-          let cardIndex = accountToken[4];
-          let benefactorIndex = accountToken[5].toNumber();
+          let message = accountToken[1];
+          let daiDonation = accountToken[2];
+          let giftAmount = accountToken[3].toNumber();
+          let donationAmount = accountToken[4].toNumber();
+          let status = accountToken[5].toNumber();
+          let cardIndex = accountToken[6];
+          let benefactorIndex = accountToken[7].toNumber();
+          let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
+          let decodedStatus = statuses[status]
           if (state.cards) {
             let cardInformation = state.cards.filter(card => {
               return card.cardIndex === cardIndex.toNumber();
             });
-            let accountCreatedCard = false;
-            if (state.account) {
-              accountCreatedCard =
-                state.account.toLowerCase() === gifter.toLowerCase(); //if the current account created the card
-            }
+            let accountCreatedCard =
+              web3.utils.toChecksumAddress(state.account) ===
+              web3.utils.toChecksumAddress(gifter); //if the current account created the card
 
             let allCardInformation = {
               ...{
-                extra: extra,
-                giftAmount: giftAmount / 1000000000000000000,
+                gifter: gifter,
                 message: message,
+                daiDonation: daiDonation,
+                giftAmount: giftAmount / 1000000000000000000,
+                donationAmount: donationAmount / 1000000000000000000,
+                status: decodedStatus,
+                cardInded: cardIndex,
                 BenefactorIndex: benefactorIndex,
                 accountCreatedCard: accountCreatedCard,
                 tokenId: tokenId
@@ -506,6 +520,8 @@ const store = new Vuex.Store({
 
         let cardPromises = await _.map(cardIds, async id => {
           let results = await contract.cards.call(id);
+          console.log("SOMTHING")
+          console.log(results)
           let result = mapTokenDetails(results, ipfsPrefix, id);
           return result;
         });
@@ -531,6 +547,10 @@ const store = new Vuex.Store({
 async function mapTokenDetails(results, ipfsPrefix, id) {
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
   dataResp.cardIndex = id.toNumber();
+  dataResp.cardActive = results[1];
+  dataResp.cardMinted = results[2].toNumber();
+  dataResp.cardMaxQnty = results[3].toNumber();
+  dataResp.cardMinPrice = results[4].toNumber();
   return dataResp;
 }
 
