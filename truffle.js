@@ -17,7 +17,7 @@ module.exports = {
       settings: {
         optimizer: {
           enabled: true, // Default: false
-          runs: 200      // Default: 200
+          runs: 500      // Default: 200
         },
       }
     }
@@ -27,8 +27,8 @@ module.exports = {
       host: '127.0.0.1',
       port: 8545,
       network_id: '*', // Match any network id
-      // gas: 6721975,
-      // gasPrice: 0x01
+      gas: 6000000000,
+      gasPrice: 1
     },
     ganache: {
       host: "127.0.0.1",
@@ -72,6 +72,14 @@ module.exports = {
         return new HDWalletProvider(mnemonic, `https://rinkeby.infura.io/v3/${infuraApikey}`);
       },
       network_id: 4,
+      gas: 6500000, // default = 4712388
+      gasPrice: 10000000000 // default = 100 gwei = 100000000000
+    },
+    kovan: {
+      provider: function () {
+        return new HDWalletProvider(mnemonic, `https://kovan.infura.io/v3/${infuraApikey}`);
+      },
+      network_id: 42,
       gas: 6500000, // default = 4712388
       gasPrice: 10000000000 // default = 100 gwei = 100000000000
     }

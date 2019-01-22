@@ -1,12 +1,18 @@
-const {assertRevert} = require('../helpers/assertRevert');
-const {inLogs} = require('../helpers/expectEvent');
+const {
+  assertRevert
+} = require('../helpers/assertRevert');
+const {
+  inLogs
+} = require('../helpers/expectEvent');
 const BigNumber = web3.BigNumber;
 
 require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-function shouldBehaveLikeMintAndBurnERC721 (
+const etherToWei = require("../helpers/etherToWei");
+
+function shouldBehaveLikeMintAndBurnERC721(
   creator,
   [owner, newOwner, approved, anyone]
 ) {
@@ -26,16 +32,17 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
   const TOKEN_URI = '123abcHash';
 
+  const oneUSDInWei = etherToWei(1).dividedToIntegerBy(130);
+
   describe('like a mintable and burnable ERC721', function () {
     beforeEach(async function () {
-      this.minContribution = await this.token.minContribution();
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
         from: creator,
-        value: this.minContribution
+        value: oneUSDInWei * 2
       });
-      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {
+      await this.token.gift(owner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
         from: creator,
-        value: this.minContribution
+        value: oneUSDInWei * 2
       });
     });
 
@@ -44,7 +51,10 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when successful', function () {
         beforeEach(async function () {
-          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {from: creator, value: this.minContribution});
+          const result = await this.token.gift(newOwner, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
+            from: creator,
+            value: oneUSDInWei * 2
+          });
           logs = result.logs;
         });
 
@@ -68,7 +78,10 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when the given owner address is the zero address', function () {
         it('reverts', async function () {
-          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', 'FFFFFF', {from: creator}));
+          await assertRevert(this.token.gift(ZERO_ADDRESS, benefactorEFF, cardOne, 'Happy Xmas', oneUSDInWei, oneUSDInWei, false, {
+            from: creator,
+            value: oneUSDInWei * 2
+          }));
         });
       });
     });
@@ -78,7 +91,9 @@ function shouldBehaveLikeMintAndBurnERC721 (
 
       describe('when successful', function () {
         it('burns should revert as not allowed', async function () {
-          await assertRevert(this.token.burn(tokenId, {from: creator}));
+          await assertRevert(this.token.burn(tokenId, {
+            from: creator
+          }));
           (await this.token.balanceOf(owner)).should.be.bignumber.equal(2);
         });
       });
