@@ -204,7 +204,7 @@
                   <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
                     <p class="p--bold">Send to my own ETH wallet address</p>
                     <p>Your wallet:</p>
-                    <p>{{account}}</p>
+                    <p class="p--smallitalic">{{account}}</p>
                   </div>
                 </label>
               </div>
@@ -433,8 +433,6 @@ export default {
         piecewise: false,
         usdKeyboard: false,
         enableCross: true,
-        piecewiseStyle: false,
-        piecewiseLabel: false,
         tooltip: "always",
         tooltipDir: "top",
         reverse: false,
@@ -515,7 +513,10 @@ export default {
   },
   methods: {
     validateDonationMethod() {
-      if (this.formData.currency === undefined) {
+      if (
+        this.formData.currency === undefined ||
+        this.formData.currency === null
+      ) {
         return false;
       }
 
