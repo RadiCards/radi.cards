@@ -67,6 +67,8 @@ p {
   &.p--small {
     font-size: 0.875rem;
     margin-bottom: 10px;
+    font-weight: lighter;
+    font-style: oblique;
     // line-height: 2rem;
   }
   &.p--smallitalic {
