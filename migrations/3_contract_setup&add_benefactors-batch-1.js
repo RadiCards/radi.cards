@@ -68,5 +68,33 @@ module.exports = async (deployer, network, accounts) => {
   //   {from: account}
   // );
 
+  await contract.addBenefactor(
+    3,
+    '0x5f48465bb9a29a3904a8d320146e78640df0e96e',
+    'Bitcoin Venezuela',
+    'https://www.bitcoinvenezuela.com/',
+    'https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU', {
+      from: account
+    }
+  );
 
+  await contract.addBenefactor(
+    4,
+    '0x72f8547fae0F65C55f3BD0dD991c9A132C447ce6',
+    'Grass Roots Economics',
+    'https://www.grassrootseconomics.org/',
+    'https://ipfs.infura.io/ipfs/QmaQkbvPMxVyNto6JBqqK7YPN9Lk3kgjTqcXYbNS7jCLfS', {
+      from: account
+    }
+  );
+
+  await contract.addBenefactor(
+    5,
+    '0xb9407f0033dca85ac48126a53e1997ffde04b746',
+    'UNICEF New Zealand',
+    'https://helpdesk.unicef.org.nz/help/donate-to-unicef-via-cryptocurrencies',
+    'https://ipfs.infura.io/ipfs/Qmc8oRTHBLRNif4b6F9S5KxmZF7AoPaQrQgBeBudTsXUAC', {
+      from: account
+    }
+  );
 };
