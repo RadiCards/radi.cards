@@ -205,7 +205,7 @@
                   <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
                     <p class="p--bold">Send to my own ETH wallet address</p>
                     <p>Your wallet:</p>
-                    <p class="p--smallitalic">{{account}}</p>
+                    <p class="p--smallitalic small-account">{{account}}</p>
                   </div>
                 </label>
               </div>
@@ -915,5 +915,9 @@ textarea {
   display: flex;
   flex-direction: column;
   width: 100%;
+}
+
+.small-address {
+  font-size: 0.6rem;
 }
 </style>
