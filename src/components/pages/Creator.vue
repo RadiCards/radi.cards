@@ -54,7 +54,7 @@
 
         <div class="section step step--twocol step2" v-if="step === 1">
           <div class="step__card">
-            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
           <div class="flex-column">
             <div class="step__title">
@@ -461,7 +461,7 @@ export default {
         card: {},
         valueInETH: null,
         recipient: null,
-        benefactor: null,
+        benefactor: { id: 0 },
         message: null,
         valueInDAI: null,
         currency: null

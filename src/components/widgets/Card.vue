@@ -17,7 +17,6 @@
           <p class="descr" v-if="cdata.description">{{ cdata.description }}</p>
           <b-badge variant="light" class="mt-2" v-if="company">{{company}}</b-badge>
         </div>
-
       </figcaption>
 
       <div class="help" v-if="isFlippable">
@@ -94,17 +93,18 @@
       v-if="cdata.message"
     >
       <h6 v-html="cardMessageFormatted"></h6>
-      <hr>
-      <p class="descr" v-if="cdata.BenefactorIndex!=0">
-        Your donation goes to
-        <strong>
-          <a
-            v-if="cdata.BenefactorIndex && benefactors"
-            :href="benefactors[cdata.BenefactorIndex-1].website"
-            target="_blank"
-          >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-        </strong>
-      </p>
+      <div v-if="cdata.BenefactorIndex!=0">
+        <div class="descr">
+          <hr>Your donation goes to
+          <strong>
+            <a
+              v-if="cdata.BenefactorIndex && benefactors"
+              :href="benefactors[cdata.BenefactorIndex-1].website"
+              target="_blank"
+            >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+          </strong>
+        </div>
+      </div>
       <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer</button>
