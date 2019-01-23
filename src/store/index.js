@@ -44,7 +44,8 @@ const store = new Vuex.Store({
     donatedInEth: 0,
     donatedInDai: 0,
     giftedInEth: 0,
-    giftedInDai: 0
+    giftedInDai: 0,
+    ephemeralAddressFee: 0
   },
   getters: {
     getGiftingStatus: state => (to, cardIndex) => {
@@ -108,6 +109,9 @@ const store = new Vuex.Store({
     [mutations.SET_TOTAL_GIFTED_IN_DAI](state, totalGiftedInDai) {
       state.giftedInDai = totalGiftedInDai;
     },
+    [mutations.SET_EPHEMERAL_ADDRESS_FEE](state, ephemeralAddressFee) {
+      state.ephemeralAddressFee = ephemeralAddressFee;
+    },
     [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
     },
@@ -138,7 +142,7 @@ const store = new Vuex.Store({
     },
     [mutations.CLEAR_GIFT_STATUS](state) {
       Vue.set(state, `giftingStatus`, {});
-    }
+    },
   },
   actions: {
     [actions.GET_CURRENT_NETWORK]: function ({
@@ -188,31 +192,38 @@ const store = new Vuex.Store({
         let contract = await RadiCards.deployed();
 
         let totalSupply = (await contract.totalSupply()).toString("10");
+        if (state.totalSupply !== totalSupply) {
+          commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
+        }
 
         let currentEthPriceInUSD = web3.utils.fromWei((await contract.getEtherPrice()).toString("10"), 'ether');
-        let totalGiftedInEth = web3.utils.fromWei((await contract.totalGiftedInWei()).toString("10"), 'ether');
-        let totalDonatedInEth = web3.utils.fromWei((await contract.totalDonatedInWei()).toString("10"), 'ether');
-        let totalGiftedInDai = web3.utils.fromWei((await contract.totalGiftedInAtto()).toString("10"), 'ether');
-        let totalDonatedInDai = web3.utils.fromWei((await contract.totalDonatedInAtto()).toString("10"), 'ether');
-
         if (state.usdPrice !== currentEthPriceInUSD) {
           commit(mutations.SET_USD_PRICE, currentEthPriceInUSD);
         }
+
+        let totalGiftedInEth = web3.utils.fromWei((await contract.totalGiftedInWei()).toString("10"), 'ether');
         if (state.giftedInEth !== totalGiftedInEth) {
           commit(mutations.SET_TOTAL_GIFTED_IN_ETH, totalGiftedInEth)
         }
-        if (state.giftedInDai !== totalGiftedInDai) {
-          commit(mutations.SET_TOTAL_GIFTED_IN_DAI, totalGiftedInDai)
-        }
+
+        let totalDonatedInEth = web3.utils.fromWei((await contract.totalDonatedInWei()).toString("10"), 'ether');
         if (state.donatedInEth !== totalDonatedInEth) {
           commit(mutations.SET_TOTAL_DONATED_IN_ETH, totalDonatedInEth)
         }
+        let totalGiftedInDai = web3.utils.fromWei((await contract.totalGiftedInAtto()).toString("10"), 'ether');
+
+        if (state.giftedInDai !== totalGiftedInDai) {
+          commit(mutations.SET_TOTAL_GIFTED_IN_DAI, totalGiftedInDai)
+        }
+
+        let totalDonatedInDai = web3.utils.fromWei((await contract.totalDonatedInAtto()).toString("10"), 'ether');
         if (state.donatedInDai !== totalDonatedInDai) {
           commit(mutations.SET_TOTAL_DONATED_IN_DAI, totalDonatedInDai)
         }
 
-        if (state.totalSupply !== totalSupply) {
-          commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
+        let ephemeralAddressFee = web3.utils.fromWei((await contract.EPHEMERAL_ADDRESS_FEE()).toString("10"), 'ether');
+        if (state.ephemeralAddressFee !== ephemeralAddressFee) {
+          commit(mutations.SET_EPHEMERAL_ADDRESS_FEE, ephemeralAddressFee)
         }
 
         if (updatedAccounts[0] !== account) {
