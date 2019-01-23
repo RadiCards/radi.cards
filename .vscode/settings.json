@@ -32,6 +32,7 @@
     "text",
     "typescript",
     "typescriptreact",
+    "vue",
     "yml"
   ]
 }

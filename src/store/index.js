@@ -29,8 +29,6 @@ const store = new Vuex.Store({
     accountCards: [],
     currentNetwork: null,
     etherscanBase: null,
-    totalSupply: null,
-    totalGifted: null,
     uploadedHash: null,
     searchResult: null,
     notFound: null,
@@ -41,7 +39,12 @@ const store = new Vuex.Store({
     transfers: [],
     giftingStatus: {},
     transferStatus: "",
-    usdPrice: 0
+    totalSupply: null,
+    usdPrice: 0,
+    donatedInEth: 0,
+    donatedInDai: 0,
+    giftedInEth: 0,
+    giftedInDai: 0
   },
   getters: {
     getGiftingStatus: state => (to, cardIndex) => {
@@ -93,8 +96,17 @@ const store = new Vuex.Store({
     [mutations.SET_TOTAL_SUPPLY](state, totalSupply) {
       state.totalSupply = totalSupply;
     },
-    [mutations.SET_TOTAL_GIFTED](state, totalGifted) {
-      state.totalGifted = totalGifted;
+    [mutations.SET_TOTAL_DONATED_IN_ETH](state, totalDonatedInEth) {
+      state.donatedInEth = totalDonatedInEth;
+    },
+    [mutations.SET_TOTAL_DONATED_IN_DAI](state, totalDonatedInDai) {
+      state.donatedInDai = totalDonatedInDai;
+    },
+    [mutations.SET_TOTAL_GIFTED_IN_ETH](state, totalGiftedInEth) {
+      state.giftedInEth = totalGiftedInEth;
+    },
+    [mutations.SET_TOTAL_GIFTED_IN_DAI](state, totalGiftedInDai) {
+      state.giftedInDai = totalGiftedInDai;
     },
     [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
@@ -176,15 +188,31 @@ const store = new Vuex.Store({
         let contract = await RadiCards.deployed();
 
         let totalSupply = (await contract.totalSupply()).toString("10");
-        let totalGifted = (await contract.totalGiftedInWei()).toString("10");
-        totalGifted = web3.utils.fromWei(totalGifted, 'ether')
+
+        let currentEthPriceInUSD = web3.utils.fromWei((await contract.getEtherPrice()).toString("10"), 'ether');
+        let totalGiftedInEth = web3.utils.fromWei((await contract.totalGiftedInWei()).toString("10"), 'ether');
+        let totalDonatedInEth = web3.utils.fromWei((await contract.totalDonatedInWei()).toString("10"), 'ether');
+        let totalGiftedInDai = web3.utils.fromWei((await contract.totalGiftedInAtto()).toString("10"), 'ether');
+        let totalDonatedInDai = web3.utils.fromWei((await contract.totalDonatedInAtto()).toString("10"), 'ether');
+
+        if (state.usdPrice !== currentEthPriceInUSD) {
+          commit(mutations.SET_USD_PRICE, currentEthPriceInUSD);
+        }
+        if (state.giftedInEth !== totalGiftedInEth) {
+          commit(mutations.SET_TOTAL_GIFTED_IN_ETH, totalGiftedInEth)
+        }
+        if (state.giftedInDai !== totalGiftedInDai) {
+          commit(mutations.SET_TOTAL_GIFTED_IN_DAI, totalGiftedInDai)
+        }
+        if (state.donatedInEth !== totalDonatedInEth) {
+          commit(mutations.SET_TOTAL_DONATED_IN_ETH, totalDonatedInEth)
+        }
+        if (state.donatedInDai !== totalDonatedInDai) {
+          commit(mutations.SET_TOTAL_DONATED_IN_DAI, totalDonatedInDai)
+        }
 
         if (state.totalSupply !== totalSupply) {
           commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
-        }
-
-        if (state.totalGifted !== totalGifted) {
-          commit(mutations.SET_TOTAL_GIFTED, totalGifted);
         }
 
         if (updatedAccounts[0] !== account) {
@@ -550,7 +578,7 @@ async function mapTokenDetails(results, ipfsPrefix, id) {
   dataResp.cardActive = results[1];
   dataResp.cardMinted = results[2].toNumber();
   dataResp.cardMaxQnty = results[3].toNumber();
-  dataResp.cardMinPrice = results[4].toNumber();
+  dataResp.cardMinPrice = web3.utils.fromWei(results[4].toString("10"), 'ether');
   return dataResp;
 }
 
