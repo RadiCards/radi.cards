@@ -82,6 +82,10 @@
                     <p class="p--smallitalic">= {{equivalentFiatCost}}USD = X RMB</p>
                     <div class="paymentPresets">
                       <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
+                        @click="setDonationAmount(0.2)"
+                      >0.2 ETH</button>
+                      <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.5}]"
                         @click="setDonationAmount(0.5)"
                       >0.5 ETH</button>
@@ -89,10 +93,6 @@
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 1}]"
                         @click="setDonationAmount(1)"
                       >1 ETH</button>
-                      <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 2}]"
-                        @click="setDonationAmount(2)"
-                      >2 ETH</button>
                     </div>
                   </div>
                 </label>
@@ -116,17 +116,17 @@
 
                     <div class="paymentPresets">
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 10}]"
-                        @click="setDonationAmount(10)"
-                      >10 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 25}]"
+                        @click="setDonationAmount(25)"
+                      >25 DAI</button>
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 20}]"
-                        @click="setDonationAmount(20)"
-                      >20 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 60}]"
+                        @click="setDonationAmount(60)"
+                      >60 DAI</button>
                       <button
-                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 50}]"
-                        @click="setDonationAmount(50)"
-                      >50 DAI</button>
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 120}]"
+                        @click="setDonationAmount(120)"
+                      >120 DAI</button>
                     </div>
                   </div>
                 </label>
@@ -168,7 +168,7 @@
             </div>
 
             <div class="fieldgroup--radio column">
-              <!-- OwnWallet -->
+              <!-- QR -->
               <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
                 <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
                 <label for="selectQR" class="field--radio__content">
@@ -228,7 +228,7 @@
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(3)"
-              value="GENERATE HANGOBAO"
+              value="PREVIEW HANGOBAO"
             >
           </div>
         </div>
@@ -244,6 +244,13 @@
 
               <p>HERE you can find all the stored data to wire in:</p>
               <pre>{{formData}}</pre>
+
+              <input
+                type="button"
+                class="button button--fullwidth"
+                @click="giveBirth"
+                value="GENERATE HANGOBAO"
+              >
             </div>
           </div>
         </div>
@@ -472,7 +479,7 @@ export default {
         errors: [],
         card: {},
         valueInETH: 0.5,
-        valueInDAI: 20,
+        valueInDAI: 60,
         recipient: 0,
         percentage: 5,
         benefactor: {
@@ -626,25 +633,66 @@ export default {
       event.preventDefault();
 
       this.checkForm();
-      if (this.formData.errors.length === 0) {
-        var recipient = this.account;
-        if (this.formData.sendOptions === "wallet") {
+      var recipient;
+      var totalSendAmount;
+      let claimableLink;
+      let transactionValue;
+
+      switch (this.formData.sendingMethod) {
+        case "QR":
+          recipient = "SOME MAGIC NOT YET DONE";
+          claimableLink = true;
+          break;
+        case "ETH":
           recipient = this.formData.recipient;
-        }
-        let valueInETH = this.formData.valueInETH + "";
+          claimableLink = false;
+          break;
+        case "Self":
+          recipient = this.account;
+          claimableLink = false;
+          break;
+        default:
+          this.formData.errors.push("Invalid send method selected");
+      }
+      switch (this.formData.currency) {
+        case "ETH":
+          totalSendAmount = this.formData.valueInETH;
+          //the value in eth should be equal to the total selected for both gift and donation
+          transactionValue = totalSendAmount;
+          if (claimableLink) {
+            //if the link is claimable we must add the ephemeral fee
+            transactionValue += 0.01;
+          }
+          break;
+        case "DAI":
+          totalSendAmount = this.formData.valueInDAI;
+          // in the case of dai we dont need to send any eth with (unless it is a claimable link)
+          transactionValue = 0;
+          if (claimableLink) {
+            //if the link is claimable we must add the ephemeral fee
+            transactionValue += 0.01;
+          }
+          break;
+        default:
+          this.formData.errors.push("Invalid currency type selected");
+      }
+      var donationAmount = (totalSendAmount * this.formData.percentage) / 100;
+      var giftAmount =
+        (totalSendAmount * (100 - this.formData.percentage)) / 100;
+
+      if (this.formData.errors.length === 0) {
         let benefactorIndex = this.formData.benefactor.id;
         let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message;
-        let extra = "";
 
-        this.$store.dispatch(actions.BIRTH, {
-          recipient,
-          benefactorIndex,
-          cardIndex,
-          message,
-          extra,
-          valueInETH
-        });
+        // this.$store.dispatch(actions.BIRTH, {
+        //   recipient,
+        //   benefactorIndex,
+        //   cardIndex,
+        //   message,
+        //   extra,
+        //   valueInETH
+        // });
       }
     },
     checkForm: function() {
