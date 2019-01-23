@@ -72,8 +72,14 @@
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
                     <p class="p--bold">Send ETH</p>
-                    <input type="number" class="field form-control" v-model="formData.valueInETH">
-
+                    <input
+                      type="number"
+                      class="field form-control"
+                      v-model="formData.valueInETH"
+                      step="0.1"
+                      :min="premuimCardInformation.minInEth"
+                    >
+                    <p class="p--smallitalic">= {{equivalentFiatCost}}USD = X RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.5}]"
@@ -100,7 +106,13 @@
 
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
                     <p class="p--bold">Send DAI</p>
-                    <input type="number" class="field form-control" v-model="formData.valueInDAI">
+                    <input
+                      type="number"
+                      class="field form-control"
+                      v-model="formData.valueInDAI"
+                      :step="1.0"
+                      :min="premuimCardInformation.minInDai"
+                    >
 
                     <div class="paymentPresets">
                       <button
@@ -459,11 +471,19 @@ export default {
       formData: {
         errors: [],
         card: {},
-        valueInETH: null,
-        recipient: null,
-        benefactor: { id: 0 },
+        valueInETH: 0.5,
+        valueInDAI: 20,
+        recipient: 0,
+        percentage: 5,
+        benefactor: {
+          address: "0xb189f76323678e094d4996d182a792e52369c005",
+          name: "Electronic Frontier Foundation",
+          website: "https://www.eff.org",
+          image:
+            "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU",
+          id: 1
+        },
         message: null,
-        valueInDAI: null,
         currency: null
       },
       step: 0,
@@ -507,6 +527,28 @@ export default {
           return this.cards[c];
         }
       }
+    },
+    premuimCardInformation() {
+      let cardInfoObject = {
+        minInEth: 0,
+        minInDai: 0,
+        sendValueUSD: 0,
+        sendValueOTHER: 0
+      };
+      if (this.card.cardMaxQnty > 0) {
+        // the min price for the card in eth will be the card price in usd
+        //deviled by the current usd/eth price as defined by the oracle
+
+        cardInfoObject.minInEth = (
+          this.card.cardMinPrice / this.usdPrice
+        ).toFixed(2);
+        cardInfoObject.minInDai = this.card.cardMinPrice;
+      }
+
+      return cardInfoObject;
+    },
+    equivalentFiatCost() {
+      return this.formData.valueInETH * this.usdPrice;
     }
   },
   mounted() {
