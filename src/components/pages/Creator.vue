@@ -58,8 +58,8 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>Add money</h4>
-              <p>Add ether or DAI to your hongbao</p>
+              <h4>Top-up your card</h4>
+              <p>You need to add at least 0.02 ETH (for the gas fee) in order to create a new radicard.</p>
             </div>
 
             <div class="fieldgroup--radio column">
@@ -67,7 +67,7 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'ETH'}]">
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
                 <label for="selectETH" class="field--radio__content">
-                  <p class="p--smallitalic">Topup your hongbao with cryptocurrency</p>
+                  <p class="p--smallitalic">Top-up your radicard with cryptocurrency</p>
                   <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
@@ -101,7 +101,7 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'DAI'}]">
                 <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
                 <label for="selectDAI" class="field--radio__content">
-                  <p class="p--smallitalic">Topup your hongbao with stable cryptocurrency</p>
+                  <p class="p--smallitalic">Top-up your radicard with stable cryptocurrency</p>
                   <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
 
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
@@ -154,8 +154,12 @@
               @click="goToStep(2)"
               value="NEXT"
             >
-            <p v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance">You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}</p>
-            <p v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance">You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}</p>
+            <p
+              v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance"
+            >You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}</p>
+            <p
+              v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance"
+            >You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}</p>
           </div>
         </div>
 
@@ -224,13 +228,14 @@
                 </label>
               </div>
             </div>
-
+            <br>
+            <br>
             <input
               type="button"
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(3)"
-              value="PREVIEW HANGOBAO"
+              value="PREVIEW HONGBAO"
             >
           </div>
         </div>
