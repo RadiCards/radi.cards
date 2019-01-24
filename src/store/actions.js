@@ -2,7 +2,7 @@ export const INIT_APP = "INIT_APP";
 
 export const GET_CURRENT_NETWORK = "GET_CURRENT_NETWORK";
 
-export const BIRTH = "BIRTH";
+export const MINT_CARD = "MINT_CARD";
 export const TRANSFER_CARD = "TRANSFER_CARD";
 
 export const RESET_TRANSFER_STATUS = "RESET_TRANSFER_STATUS";

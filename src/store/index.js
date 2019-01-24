@@ -48,8 +48,8 @@ const store = new Vuex.Store({
     ephemeralAddressFee: 0
   },
   getters: {
-    getGiftingStatus: state => (to, cardIndex) => {
-      return state.giftingStatus[`${to}_${cardIndex}`] || {};
+    getGiftingStatus: state => (from, cardIndex) => {
+      return state.giftingStatus[`${from}_${cardIndex}`] || {};
     },
     getTransferStatus: state => () => {
       console.log(state.transferStatus);
@@ -127,16 +127,16 @@ const store = new Vuex.Store({
     [mutations.SET_GIFT_STATUS](state, data) {
       const {
         cardIndex,
-        to
+        from
       } = data;
-      var arrayIndex = `${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`;
+      var arrayIndex = `${state.web3.utils.toChecksumAddress(from)}_${cardIndex}`;
       const newState = {
         ...state.giftingStatus[arrayIndex],
         ...data
       };
       Vue.set(
         state.giftingStatus,
-        `${state.web3.utils.toChecksumAddress(to)}_${cardIndex}`,
+        `${state.web3.utils.toChecksumAddress(from)}_${cardIndex}`,
         newState
       );
     },
@@ -248,18 +248,33 @@ const store = new Vuex.Store({
       commit(mutations.SET_GIFT_STATUS, {});
     },
 
-    async [actions.BIRTH]({
+    async [actions.MINT_CARD]({
       commit,
       dispatch,
       state
     }, {
+      currency,
       recipient,
       benefactorIndex,
       cardIndex,
       message,
-      extra,
-      valueInETH
+      donationAmount,
+      giftAmount,
+      claimableLink,
+      transactionValue
     }) {
+      console.log(
+        currency,
+        recipient,
+        benefactorIndex,
+        cardIndex,
+        message,
+        donationAmount,
+        giftAmount,
+        claimableLink,
+        transactionValue
+      )
+
       const contract = await state.contract.deployed();
       commit(mutations.CLEAR_GIFT_STATUS);
 
@@ -267,40 +282,62 @@ const store = new Vuex.Store({
 
       commit(mutations.SET_GIFT_STATUS, {
         status: "TRIGGERED",
-        to: recipient,
+        from: state.account,
         cardIndex: cardIndex
       });
 
       //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted.
       // if rejected, catch in fail
       try {
-        const transaction = await contract.gift.sendTransaction(
-          recipient,
-          benefactorIndex,
-          cardIndex,
-          message,
-          extra, {
-            from: state.account,
-            value: state.web3.utils.toWei(valueInETH, "ether")
-          }
-        );
+        let transaction
+        switch (currency) {
+          case "ETH":
+            transaction = await contract.gift.sendTransaction(
+              recipient,
+              benefactorIndex,
+              cardIndex,
+              message,
+              state.web3.utils.toWei(donationAmount, "ether"),
+              state.web3.utils.toWei(giftAmount, "ether"),
+              claimableLink, {
+                from: state.account,
+                value: state.web3.utils.toWei(transactionValue, "ether")
+              }
+            );
+            break;
+          case "DAI":
+            transaction = await contract.giftInDai.sendTransaction(
+              recipient,
+              benefactorIndex,
+              cardIndex,
+              message,
+              state.web3.utils.toWei(donationAmount, "ether"),
+              state.web3.utils.toWei(giftAmount, "ether"),
+              claimableLink, {
+                from: state.account,
+                value: state.web3.utils.toWei(transactionValue, "ether")
+              }
+            );
+            break;
+        }
         console.log("transaction submitted");
         commit(mutations.SET_GIFT_STATUS, {
           status: "SUBMITTED",
-          to: recipient,
+          from: state.account,
           cardIndex: cardIndex,
           tx: transaction
         });
       } catch (e) {
         console.log("rejection/error");
+        console.log(e)
         commit(mutations.SET_GIFT_STATUS, {
           status: "FAILURE",
-          to: recipient,
+          from: state.account,
           cardIndex: cardIndex
         });
       }
 
-      // Watch for the transfer event from ZERO address to the recipient immediately after the
+      // Watch for the transfer event from ZERO address to the recipient immediately after
       const transferEvent = contract.Transfer({
         _from: `0x0`,
         _to: recipient
@@ -322,7 +359,7 @@ const store = new Vuex.Store({
           } = args;
           commit(mutations.SET_GIFT_STATUS, {
             status: "SUCCESS",
-            to: recipient,
+            from: state.account,
             cardIndex: cardIndex,
             tokenId: _tokenId
           });
@@ -334,7 +371,7 @@ const store = new Vuex.Store({
           console.log("failure", error);
           commit(mutations.SET_GIFT_STATUS, {
             status: "FAILURE",
-            to: recipient,
+            from: state.account,
             cardIndex: cardIndex
           });
           transferEvent.stopWatching();

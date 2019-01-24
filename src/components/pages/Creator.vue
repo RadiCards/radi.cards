@@ -232,7 +232,8 @@
             >
           </div>
         </div>
-
+        {{getGiftingStatus(account, formData.card.cardIndex).status}}
+        <!-- CONFIRMATION PAGE -->
         <div class="section step step--twocol step2" v-if="step === 3">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
@@ -255,10 +256,29 @@
           </div>
         </div>
 
-        <!-- STATUS: PENDING -->
+        <!-- STATUS: SUBMITTED -->
         <div
           class="section step step--twocol step4"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'TRIGGERED'"
+        >
+          <div class="step__card">
+            <div class="centered">
+              <card v-if="formData.card" :cdata="previewCardObject"/>
+            </div>
+          </div>
+
+          <div class="step__info">
+            <br>
+
+            <h4>Transaction has been triggered!</h4>
+            <p>Please accept the transaction in your web3 provider, such as metamask</p>
+          </div>
+        </div>
+
+        <!-- STATUS: SUBMITTED -->
+        <div
+          class="section step step--twocol step4"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'SUBMITTED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -289,11 +309,11 @@
             <p>Best to not close this tab and go make some tea.</p>
             <p>Good things will happen.</p>
             <br>
-            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+            <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
               <a
                 class="a--external"
-                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
             </p>
@@ -303,7 +323,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="(step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS')"
+          v-if="(step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'SUCCESS')"
         >
           <div class="step__card">
             <div class="centered">
@@ -338,21 +358,21 @@
                   v-if="formData.email && formData.email.length > 0"
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
-                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
+                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
                 >send</mailto-link>
               </div>
               <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
               <div class="copy-field">
                 <a
                   id="copyfield"
-                  :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
+                  :href="'https://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId"
                   target="_blank"
                   class="field form-control"
                 >
-                  <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
+                  <strong>{{'radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId}}</strong>
                 </a>
                 <div
-                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
+                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(account, formData.card.cardIndex).tokenId)"
                   target="_blank"
                 >copy</div>
               </div>
@@ -372,7 +392,7 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILURE'"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'FAILURE'"
         >
           <div class="step__card">
             <div class="centered">
@@ -395,11 +415,11 @@
               class="btn"
             >Start over</router-link>
             <button class="btn" @click="giveBirth">Retry Transaction</button>
-            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
+            <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
               <a
                 class="a--external"
-                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
               >here</a>
             </p>
@@ -507,7 +527,8 @@ export default {
       "uploadedHashs",
       "cards",
       "benefactors",
-      "usdPrice"
+      "usdPrice",
+      "ephemeralAddressFee"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
@@ -637,10 +658,11 @@ export default {
       var totalSendAmount;
       let claimableLink;
       let transactionValue;
+      let currency;
 
       switch (this.formData.sendingMethod) {
         case "QR":
-          recipient = "SOME MAGIC NOT YET DONE";
+          recipient = null; //ephemeral address is generated in the store
           claimableLink = true;
           break;
         case "ETH":
@@ -649,6 +671,7 @@ export default {
           break;
         case "Self":
           recipient = this.account;
+          this.formData.recipient = recipient;
           claimableLink = false;
           break;
         default:
@@ -656,21 +679,23 @@ export default {
       }
       switch (this.formData.currency) {
         case "ETH":
+          currency = "ETH";
           totalSendAmount = this.formData.valueInETH;
           //the value in eth should be equal to the total selected for both gift and donation
           transactionValue = totalSendAmount;
           if (claimableLink) {
             //if the link is claimable we must add the ephemeral fee
-            transactionValue += 0.01;
+            transactionValue += this.ephemeralAddressFee;
           }
           break;
         case "DAI":
+          currency = "DAI";
           totalSendAmount = this.formData.valueInDAI;
           // in the case of dai we dont need to send any eth with (unless it is a claimable link)
           transactionValue = 0;
           if (claimableLink) {
             //if the link is claimable we must add the ephemeral fee
-            transactionValue += 0.01;
+            transactionValue += this.ephemeralAddressFee;
           }
           break;
         default:
@@ -680,19 +705,27 @@ export default {
       var giftAmount =
         (totalSendAmount * (100 - this.formData.percentage)) / 100;
 
+      // last thing to do is to cast the donation,gift and transaction values to strings
+      // as they are converted to wei in the store and this requires string or bignumber inputs
+      donationAmount = donationAmount.toString();
+      giftAmount = giftAmount.toString();
+      transactionValue = transactionValue.toString();
+
       if (this.formData.errors.length === 0) {
         let benefactorIndex = this.formData.benefactor.id;
         let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message;
-
-        // this.$store.dispatch(actions.BIRTH, {
-        //   recipient,
-        //   benefactorIndex,
-        //   cardIndex,
-        //   message,
-        //   extra,
-        //   valueInETH
-        // });
+        this.$store.dispatch(actions.MINT_CARD, {
+          currency,
+          recipient,
+          benefactorIndex,
+          cardIndex,
+          message,
+          donationAmount,
+          giftAmount,
+          claimableLink,
+          transactionValue
+        });
       }
     },
     checkForm: function() {
