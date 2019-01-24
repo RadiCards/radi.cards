@@ -12,6 +12,11 @@
 
       <figcaption>
         <div class="card__meta">
+          <div variant="light" v-if="cdata.cardMaxQnty>0">
+            <p class="p--smallitalic">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}}</p>
+            <img src="/static/icons/specialedition.svg" alt>
+          </div>
+
           <h4 class="title">{{ cdata.name }}</h4>
           <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
           <p class="descr" v-if="cdata.description">{{ cdata.description }}</p>
