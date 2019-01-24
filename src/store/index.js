@@ -316,6 +316,7 @@ const store = new Vuex.Store({
       )
 
       const contract = await state.contract.deployed();
+      const daiContract = await DaiErc20.at(state.daiContractAddress);
       commit(mutations.CLEAR_GIFT_STATUS);
 
       const blockNumber = await state.web3.eth.getBlockNumber();
@@ -326,6 +327,17 @@ const store = new Vuex.Store({
         cardIndex: cardIndex
       });
 
+      // if the donation is in dai we must check that they have a sufficient approved allowance to gift the card
+      if (currency === "DAI" && (donationAmount + giftAmount) > state.daiAllowance) {
+        console.log("Insufficient allowance. requesting increase")
+        let requiredApproval = parseFloat(donationAmount) + parseFloat(giftAmount) + parseFloat(state.daiAllowance)
+        let requiredApprovalAtto = web3.utils.toWei(requiredApproval.toString(), "ether")
+        let approvalTransaction = await daiContract.approve(contract.address, requiredApprovalAtto, {
+          from: state.account,
+          value: 0
+        })
+
+      }
       //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted.
       // if rejected, catch in fail
       try {

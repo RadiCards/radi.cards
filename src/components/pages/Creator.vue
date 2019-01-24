@@ -288,7 +288,12 @@
             <br>
 
             <h4>Transaction has been triggered!</h4>
-            <p>Please accept the transaction in your web3 provider, such as metamask</p>
+            <br>
+            <p>Please accept the transaction in your web3 provider, such as metamask, ImToken ect.</p>
+
+            <p
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDai"
+            >As you requested to send DAI with your card you will need to first approve for the RadiCards contract to access the specified DAI amount from your wallet. This means you will need to sign two transactions to generate your card.</p>
           </div>
         </div>
 
