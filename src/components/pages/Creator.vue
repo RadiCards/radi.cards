@@ -79,7 +79,7 @@
                       step="0.1"
                       :min="premuimCardInformation.minInEth"
                     >
-                    <p class="p--smallitalic">= {{equivalentFiatCost}}USD = X RMB</p>
+                    <p class="p--smallitalic">≈ {{equivalentFiatCost}}USD = X RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
@@ -154,6 +154,8 @@
               @click="goToStep(2)"
               value="NEXT"
             >
+            <p v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance">You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}</p>
+            <p v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance">You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}</p>
           </div>
         </div>
 
@@ -234,7 +236,10 @@
         </div>
         {{getGiftingStatus(account, formData.card.cardIndex).status}}
         <!-- CONFIRMATION PAGE -->
-        <div class="section step step--twocol step2" v-if="step === 3 && !getGiftingStatus(account, formData.card.cardIndex).status">
+        <div
+          class="section step step--twocol step2"
+          v-if="step === 3 && !getGiftingStatus(account, formData.card.cardIndex).status"
+        >
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
@@ -528,7 +533,10 @@ export default {
       "cards",
       "benefactors",
       "usdPrice",
-      "ephemeralAddressFee"
+      "ephemeralAddressFee",
+      "ethBalance",
+      "daiBalance",
+      "daiAllowance"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
@@ -576,7 +584,7 @@ export default {
       return cardInfoObject;
     },
     equivalentFiatCost() {
-      return this.formData.valueInETH * this.usdPrice;
+      return Math.round(this.formData.valueInETH * this.usdPrice);
     }
   },
   mounted() {
@@ -591,7 +599,21 @@ export default {
         return false;
       }
 
+      if (
+        this.formData.currency === "ETH" &&
+        this.formData.valueInETH > this.ethBalance
+      ) {
+        return false;
+      }
+
       if (this.formData.currency === "ETH" && this.formData.valueInETH < 0.01) {
+        return false;
+      }
+
+      if (
+        this.formData.currency === "DAI" &&
+        this.formData.valueInDAI > this.daiBalance
+      ) {
         return false;
       }
 
