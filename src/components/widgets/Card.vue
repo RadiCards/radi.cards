@@ -5,20 +5,33 @@
     @click="redirect"
   >
     <figure class="card__front" @click="flip" v-if="!transfer && !share">
-      <div class="card__image">
+      <div class="card__image" style="margin-bottom: 10px;">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
       </div>
 
       <figcaption>
         <div class="card__meta">
-          <div variant="light" v-if="cdata.cardMaxQnty>0">
-            <p class="p--smallitalic">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}}</p>
-            <img src="/static/icons/specialedition.svg" alt>
+          <div class="row" variant="light" v-if="cdata.cardMaxQnty>0">
+            <div class="col-6 pl-0">
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}}</p>
+            </div>
+            <div class="col-6 text-right pr-0">
+              <div>
+                <img src="/static/icons/specialedition.svg" alt>
+              </div>
+            </div>
           </div>
-
-          <h4 class="title">{{ cdata.name }}</h4>
-          <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
+          <div class="row">
+            <div class="col-8 pl-0">
+              <h4 class="title">{{ cdata.name }}</h4>
+              <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
+            </div>
+            <div class="col-4 text-right pr-0">
+              {{(cdata.cardMinPrice /usdPrice).toFixed(2)}} ETH
+              <p class="p--smallitalic">{{cdata.cardMinPrice}} USD</p>
+            </div>
+          </div>
           <p class="descr" v-if="cdata.description">{{ cdata.description }}</p>
           <b-badge variant="light" class="mt-2" v-if="company">{{company}}</b-badge>
         </div>
@@ -163,7 +176,7 @@ export default {
         return null;
       }
     },
-    ...mapState(["card", "benefactors"]),
+    ...mapState(["card", "benefactors", "usdPrice"]),
     ...mapGetters(["getTransferStatus"]),
     isFlippable: function() {
       return this.cdata.message && this.cdata.message.length > 0;
