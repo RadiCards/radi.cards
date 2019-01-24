@@ -262,7 +262,7 @@
 
               <p>HERE you can find all the stored data to wire in:</p>
               <pre>{{formData}}</pre>
-
+              {{formData.errors}}
               <input
                 type="button"
                 class="button button--fullwidth"
@@ -432,7 +432,7 @@
             </p>
 
             <router-link
-              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+              @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
               :to="{ name: 'cardshop' }"
               class="btn"
             >Start over</router-link>
@@ -731,10 +731,11 @@ export default {
           currency = "ETH";
           totalSendAmount = this.formData.valueInETH;
           //the value in eth should be equal to the total selected for both gift and donation
-          transactionValue = totalSendAmount;
+          transactionValue = parseFloat(totalSendAmount);
           if (claimableLink) {
             //if the link is claimable we must add the ephemeral fee
-            transactionValue += this.ephemeralAddressFee;
+            console.log(transactionValue);
+            transactionValue += parseFloat(this.ephemeralAddressFee);
           }
           break;
         case "DAI":
@@ -744,7 +745,7 @@ export default {
           transactionValue = 0;
           if (claimableLink) {
             //if the link is claimable we must add the ephemeral fee
-            transactionValue += this.ephemeralAddressFee;
+            transactionValue += parseFloat(this.ephemeralAddressFee);
           }
           break;
         default:
@@ -759,6 +760,7 @@ export default {
       donationAmount = donationAmount.toString();
       giftAmount = giftAmount.toString();
       transactionValue = transactionValue.toString();
+      console.log(transactionValue);
 
       if (this.formData.errors.length === 0) {
         let benefactorIndex = this.formData.benefactor.id;

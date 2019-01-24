@@ -53,6 +53,7 @@ const store = new Vuex.Store({
     daiContractAddress: null,
     daiBalance: 0,
     daiAllowance: 0,
+    ephemeralPrivateKey: null
   },
   getters: {
     getGiftingStatus: state => (from, cardIndex) => {
@@ -139,6 +140,9 @@ const store = new Vuex.Store({
     },
     [mutations.SET_TRANSFER_STATUS](state, data) {
       state.transferStatus = data.status;
+    },
+    [mutations.SET_EPHEMERAL_PRIVATE_KEY](state, ephemeralPrivateKey) {
+      state.ephemeralPrivateKey = ephemeralPrivateKey;
     },
     [mutations.CLEAR_TRANSFER_STATUS](state) {
       Vue.set(state, `transferStatus`, "");
@@ -315,6 +319,8 @@ const store = new Vuex.Store({
         transactionValue
       )
 
+      console.log("store mint dispatch")
+
       const contract = await state.contract.deployed();
       const daiContract = await DaiErc20.at(state.daiContractAddress);
       commit(mutations.CLEAR_GIFT_STATUS);
@@ -327,6 +333,14 @@ const store = new Vuex.Store({
         cardIndex: cardIndex
       });
 
+      if (claimableLink) {
+        let ephemeralAccount = web3.eth.accounts.create();
+        console.log("generating ephemeralAccount")
+        console.log(ephemeralAccount);
+        recipient = ephemeralAccount.address;
+        commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, ephemeralAccount.privateKey)
+      }
+
       // if the donation is in dai we must check that they have a sufficient approved allowance to gift the card
       if (currency === "DAI" && (donationAmount + giftAmount) > state.daiAllowance) {
         console.log("Insufficient allowance. requesting increase")
@@ -336,7 +350,6 @@ const store = new Vuex.Store({
           from: state.account,
           value: 0
         })
-
       }
       //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted.
       // if rejected, catch in fail
@@ -388,15 +401,21 @@ const store = new Vuex.Store({
           cardIndex: cardIndex
         });
       }
+      //if the link was set to claimable then we need to listen for the contract address
+      //receiving the card
+      if (claimableLink) {
+        recipient = contract.address
+      }
 
       // Watch for the transfer event from ZERO address to the recipient immediately after
-      const transferEvent = contract.Transfer({
-        _from: `0x0`,
-        _to: recipient
+      const transferEvent = contract.CardGifted({
+        _to: recipient,
+        _cardIndex: cardIndex
       }, {
         fromBlock: blockNumber,
         toBlock: "latest" // wait until event comes through
       });
+      console.log(transferEvent)
 
       transferEvent.watch(function (error, event) {
         if (!error) {
