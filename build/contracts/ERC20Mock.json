@@ -386,14 +386,14 @@
     "absolutePath": "/Users/chris/Projects/radi.cards/contracts/mocks/ERC20Mock.sol",
     "exportedSymbols": {
       "ERC20Mock": [
-        2969
+        3022
       ]
     },
-    "id": 2970,
+    "id": 3023,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2952,
+        "id": 3005,
         "literals": [
           "solidity",
           "^",
@@ -406,10 +406,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol",
         "file": "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol",
-        "id": 2953,
+        "id": 3006,
         "nodeType": "ImportDirective",
-        "scope": 2970,
-        "sourceUnit": 5109,
+        "scope": 3023,
+        "sourceUnit": 5162,
         "src": "26:71:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -420,48 +420,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2954,
+              "id": 3007,
               "name": "MintableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 5108,
+              "referencedDeclaration": 5161,
               "src": "147:13:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MintableToken_$5108",
+                "typeIdentifier": "t_contract$_MintableToken_$5161",
                 "typeString": "contract MintableToken"
               }
             },
-            "id": 2955,
+            "id": 3008,
             "nodeType": "InheritanceSpecifier",
             "src": "147:13:4"
           }
         ],
         "contractDependencies": [
-          4831,
-          4927,
-          4970,
-          5002,
-          5108,
-          5355
+          4884,
+          4980,
+          5023,
+          5055,
+          5161,
+          5408
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 2969,
+        "id": 3022,
         "linearizedBaseContracts": [
-          2969,
-          5108,
-          4831,
-          5355,
-          4927,
-          4970,
-          5002
+          3022,
+          5161,
+          4884,
+          5408,
+          4980,
+          5023,
+          5055
         ],
         "name": "ERC20Mock",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2967,
+              "id": 3020,
               "nodeType": "Block",
               "src": "235:53:4",
               "statements": [
@@ -471,11 +471,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2963,
+                        "id": 3016,
                         "name": "initialAccount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2957,
+                        "referencedDeclaration": 3010,
                         "src": "250:14:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -484,11 +484,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2964,
+                        "id": 3017,
                         "name": "initialBalance",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2959,
+                        "referencedDeclaration": 3012,
                         "src": "266:14:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -507,18 +507,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 2962,
+                      "id": 3015,
                       "name": "mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5088,
+                      "referencedDeclaration": 5141,
                       "src": "245:4:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) returns (bool)"
                       }
                     },
-                    "id": 2965,
+                    "id": 3018,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -532,14 +532,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 2966,
+                  "id": 3019,
                   "nodeType": "ExpressionStatement",
                   "src": "245:36:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 2968,
+            "id": 3021,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -547,15 +547,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2960,
+              "id": 3013,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2957,
+                  "id": 3010,
                   "name": "initialAccount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2968,
+                  "scope": 3021,
                   "src": "180:22:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -564,7 +564,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2956,
+                    "id": 3009,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "180:7:4",
@@ -578,10 +578,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2959,
+                  "id": 3012,
                   "name": "initialBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2968,
+                  "scope": 3021,
                   "src": "204:22:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -590,7 +590,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2958,
+                    "id": 3011,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "204:7:4",
@@ -607,19 +607,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2961,
+              "id": 3014,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "235:0:4"
             },
-            "scope": 2969,
+            "scope": 3022,
             "src": "167:121:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2970,
+        "scope": 3023,
         "src": "125:165:4"
       }
     ],
@@ -629,14 +629,14 @@
     "absolutePath": "/Users/chris/Projects/radi.cards/contracts/mocks/ERC20Mock.sol",
     "exportedSymbols": {
       "ERC20Mock": [
-        2969
+        3022
       ]
     },
-    "id": 2970,
+    "id": 3023,
     "nodeType": "SourceUnit",
     "nodes": [
       {
-        "id": 2952,
+        "id": 3005,
         "literals": [
           "solidity",
           "^",
@@ -649,10 +649,10 @@
       {
         "absolutePath": "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol",
         "file": "openzeppelin-solidity/contracts/token/ERC20/MintableToken.sol",
-        "id": 2953,
+        "id": 3006,
         "nodeType": "ImportDirective",
-        "scope": 2970,
-        "sourceUnit": 5109,
+        "scope": 3023,
+        "sourceUnit": 5162,
         "src": "26:71:4",
         "symbolAliases": [],
         "unitAlias": ""
@@ -663,48 +663,48 @@
             "arguments": null,
             "baseName": {
               "contractScope": null,
-              "id": 2954,
+              "id": 3007,
               "name": "MintableToken",
               "nodeType": "UserDefinedTypeName",
-              "referencedDeclaration": 5108,
+              "referencedDeclaration": 5161,
               "src": "147:13:4",
               "typeDescriptions": {
-                "typeIdentifier": "t_contract$_MintableToken_$5108",
+                "typeIdentifier": "t_contract$_MintableToken_$5161",
                 "typeString": "contract MintableToken"
               }
             },
-            "id": 2955,
+            "id": 3008,
             "nodeType": "InheritanceSpecifier",
             "src": "147:13:4"
           }
         ],
         "contractDependencies": [
-          4831,
-          4927,
-          4970,
-          5002,
-          5108,
-          5355
+          4884,
+          4980,
+          5023,
+          5055,
+          5161,
+          5408
         ],
         "contractKind": "contract",
         "documentation": null,
         "fullyImplemented": true,
-        "id": 2969,
+        "id": 3022,
         "linearizedBaseContracts": [
-          2969,
-          5108,
-          4831,
-          5355,
-          4927,
-          4970,
-          5002
+          3022,
+          5161,
+          4884,
+          5408,
+          4980,
+          5023,
+          5055
         ],
         "name": "ERC20Mock",
         "nodeType": "ContractDefinition",
         "nodes": [
           {
             "body": {
-              "id": 2967,
+              "id": 3020,
               "nodeType": "Block",
               "src": "235:53:4",
               "statements": [
@@ -714,11 +714,11 @@
                     "arguments": [
                       {
                         "argumentTypes": null,
-                        "id": 2963,
+                        "id": 3016,
                         "name": "initialAccount",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2957,
+                        "referencedDeclaration": 3010,
                         "src": "250:14:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_address",
@@ -727,11 +727,11 @@
                       },
                       {
                         "argumentTypes": null,
-                        "id": 2964,
+                        "id": 3017,
                         "name": "initialBalance",
                         "nodeType": "Identifier",
                         "overloadedDeclarations": [],
-                        "referencedDeclaration": 2959,
+                        "referencedDeclaration": 3012,
                         "src": "266:14:4",
                         "typeDescriptions": {
                           "typeIdentifier": "t_uint256",
@@ -750,18 +750,18 @@
                           "typeString": "uint256"
                         }
                       ],
-                      "id": 2962,
+                      "id": 3015,
                       "name": "mint",
                       "nodeType": "Identifier",
                       "overloadedDeclarations": [],
-                      "referencedDeclaration": 5088,
+                      "referencedDeclaration": 5141,
                       "src": "245:4:4",
                       "typeDescriptions": {
                         "typeIdentifier": "t_function_internal_nonpayable$_t_address_$_t_uint256_$returns$_t_bool_$",
                         "typeString": "function (address,uint256) returns (bool)"
                       }
                     },
-                    "id": 2965,
+                    "id": 3018,
                     "isConstant": false,
                     "isLValue": false,
                     "isPure": false,
@@ -775,14 +775,14 @@
                       "typeString": "bool"
                     }
                   },
-                  "id": 2966,
+                  "id": 3019,
                   "nodeType": "ExpressionStatement",
                   "src": "245:36:4"
                 }
               ]
             },
             "documentation": null,
-            "id": 2968,
+            "id": 3021,
             "implemented": true,
             "isConstructor": true,
             "isDeclaredConst": false,
@@ -790,15 +790,15 @@
             "name": "",
             "nodeType": "FunctionDefinition",
             "parameters": {
-              "id": 2960,
+              "id": 3013,
               "nodeType": "ParameterList",
               "parameters": [
                 {
                   "constant": false,
-                  "id": 2957,
+                  "id": 3010,
                   "name": "initialAccount",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2968,
+                  "scope": 3021,
                   "src": "180:22:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -807,7 +807,7 @@
                     "typeString": "address"
                   },
                   "typeName": {
-                    "id": 2956,
+                    "id": 3009,
                     "name": "address",
                     "nodeType": "ElementaryTypeName",
                     "src": "180:7:4",
@@ -821,10 +821,10 @@
                 },
                 {
                   "constant": false,
-                  "id": 2959,
+                  "id": 3012,
                   "name": "initialBalance",
                   "nodeType": "VariableDeclaration",
-                  "scope": 2968,
+                  "scope": 3021,
                   "src": "204:22:4",
                   "stateVariable": false,
                   "storageLocation": "default",
@@ -833,7 +833,7 @@
                     "typeString": "uint256"
                   },
                   "typeName": {
-                    "id": 2958,
+                    "id": 3011,
                     "name": "uint256",
                     "nodeType": "ElementaryTypeName",
                     "src": "204:7:4",
@@ -850,19 +850,19 @@
             },
             "payable": false,
             "returnParameters": {
-              "id": 2961,
+              "id": 3014,
               "nodeType": "ParameterList",
               "parameters": [],
               "src": "235:0:4"
             },
-            "scope": 2969,
+            "scope": 3022,
             "src": "167:121:4",
             "stateMutability": "nonpayable",
             "superFunction": null,
             "visibility": "public"
           }
         ],
-        "scope": 2970,
+        "scope": 3023,
         "src": "125:165:4"
       }
     ],
@@ -874,7 +874,7 @@
   },
   "networks": {},
   "schemaVersion": "3.0.1",
-  "updatedAt": "2019-01-20T15:48:43.594Z",
+  "updatedAt": "2019-01-24T09:47:51.183Z",
   "devdoc": {
     "methods": {
       "allowance(address,address)": {

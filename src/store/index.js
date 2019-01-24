@@ -8,14 +8,17 @@ import createLogger from "vuex/dist/logger";
 import moment from "moment";
 import {
   getEtherscanAddress,
-  getNetIdString
+  getNetIdString,
+  getDaiContractAddress
 } from "../utils";
 import _ from "lodash";
 
 import truffleContract from "truffle-contract";
 import RadiCardsABI from "../../build/contracts/RadiCards.json";
+import DaiERC20ABI from "../../build/contracts/ERC20.json"
 
 const RadiCards = truffleContract(RadiCardsABI);
+const DaiErc20 = truffleContract(DaiERC20ABI);
 
 Vue.use(Vuex);
 
@@ -45,7 +48,11 @@ const store = new Vuex.Store({
     donatedInDai: 0,
     giftedInEth: 0,
     giftedInDai: 0,
-    ephemeralAddressFee: 0
+    ephemeralAddressFee: 0,
+    ethBalance: 0,
+    daiContractAddress: null,
+    daiBalance: 0,
+    daiAllowance: 0,
   },
   getters: {
     getGiftingStatus: state => (from, cardIndex) => {
@@ -115,6 +122,18 @@ const store = new Vuex.Store({
     [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
     },
+    [mutations.SET_DAI_CONTRACT_ADDRESS](state, daiContractAddress) {
+      state.daiContractAddress = daiContractAddress;
+    },
+    [mutations.SET_ACCOUNT_ETH_BALANCE](state, ethBalance) {
+      state.ethBalance = ethBalance;
+    },
+    [mutations.SET_ACCOUNT_DAI_BALANCE](state, daiBalance) {
+      state.daiBalance = daiBalance;
+    },
+    [mutations.SET_ACCOUNT_DAI_ALLOWANCE](state, daiAllowance) {
+      state.daiAllowance = daiAllowance;
+    },
     [mutations.SET_TRANSFER](state, transfer) {
       Vue.set(state, "transfers", state.transfers.concat(transfer));
     },
@@ -157,6 +176,10 @@ const store = new Vuex.Store({
       getEtherscanAddress().then(etherscanBase => {
         commit(mutations.SET_ETHERSCAN_NETWORK, etherscanBase);
       });
+
+      getDaiContractAddress().then(daiContractAddress => {
+        commit(mutations.SET_DAI_CONTRACT_ADDRESS, daiContractAddress);
+      });
     },
     [actions.INIT_APP]: async function ({
       commit,
@@ -164,6 +187,7 @@ const store = new Vuex.Store({
       state
     }, web3) {
       RadiCards.setProvider(web3.currentProvider);
+      DaiErc20.setProvider(web3.currentProvider);
 
       //dirty hack for web3@1.0.0 support for localhost testrpc, see https://github.com/trufflesuite/truffle-contract/issues/56#issuecomment-331084530
       if (typeof RadiCards.currentProvider.sendAsync !== "function") {
@@ -189,7 +213,28 @@ const store = new Vuex.Store({
 
       const refreshHandler = async () => {
         let updatedAccounts = await web3.eth.getAccounts();
+
+        if (updatedAccounts[0] !== account) {
+          account = updatedAccounts[0];
+          commit(mutations.SET_ACCOUNT, account);
+        }
+
+        let ethBalance = web3.utils.fromWei((await web3.eth.getBalance(account)), 'ether');
+        if (state.ethBalance !== ethBalance) {
+          commit(mutations.SET_ACCOUNT_ETH_BALANCE, ethBalance);
+        }
         let contract = await RadiCards.deployed();
+        let daiContract = await DaiErc20.at(state.daiContractAddress);
+
+        let daiBalance = web3.utils.fromWei((await daiContract.balanceOf(state.account)).toString("10"), 'ether');
+        if (state.daiBalance !== daiBalance) {
+          commit(mutations.SET_ACCOUNT_DAI_BALANCE, daiBalance);
+        }
+
+        let daiAllowance = web3.utils.fromWei((await daiContract.allowance(state.account, contract.address)).toString("10"), 'ether');
+        if (state.daiAllowance !== daiAllowance) {
+          commit(mutations.SET_ACCOUNT_DAI_ALLOWANCE, daiAllowance);
+        }
 
         let totalSupply = (await contract.totalSupply()).toString("10");
         if (state.totalSupply !== totalSupply) {
@@ -224,11 +269,6 @@ const store = new Vuex.Store({
         let ephemeralAddressFee = web3.utils.fromWei((await contract.EPHEMERAL_ADDRESS_FEE()).toString("10"), 'ether');
         if (state.ephemeralAddressFee !== ephemeralAddressFee) {
           commit(mutations.SET_EPHEMERAL_ADDRESS_FEE, ephemeralAddressFee)
-        }
-
-        if (updatedAccounts[0] !== account) {
-          account = updatedAccounts[0];
-          commit(mutations.SET_ACCOUNT, account);
         }
       };
 

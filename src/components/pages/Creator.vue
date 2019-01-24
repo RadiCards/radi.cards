@@ -234,7 +234,7 @@
         </div>
         {{getGiftingStatus(account, formData.card.cardIndex).status}}
         <!-- CONFIRMATION PAGE -->
-        <div class="section step step--twocol step2" v-if="step === 3">
+        <div class="section step step--twocol step2" v-if="step === 3 && !getGiftingStatus(account, formData.card.cardIndex).status">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
