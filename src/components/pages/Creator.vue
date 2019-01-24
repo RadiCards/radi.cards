@@ -154,8 +154,19 @@
               @click="goToStep(2)"
               value="NEXT"
             >
-            <p v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance">You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}</p>
-            <p v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance">You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}</p>
+            <p
+              v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance"
+            >You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}.</p>
+            <p
+              v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance"
+            >You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}.</p>
+
+            <p
+              v-if="formData.currency === 'ETH' && formData.valueInETH * usdPrice < formData.card.cardMinPrice"
+            >You have selected too little ETH to pay for the card! The minimum price for this card is {{parseFloat(formData.card.cardMinPrice / usdPrice).toFixed(3)}} ETH.</p>
+            <p
+              v-if="formData.currency === 'DAI' && formData.valueInDAI < formData.card.cardMinPrice"
+            >You have selected too little DAI to pay for the card! The minimum price for this card is {{parseFloat(formData.card.cardMinPrice).toFixed(3)}} DAI.</p>
           </div>
         </div>
 
@@ -584,7 +595,8 @@ export default {
       return cardInfoObject;
     },
     equivalentFiatCost() {
-      return Math.round(this.formData.valueInETH * this.usdPrice);
+      return parseFloat(this.formData.valueInETH * this.usdPrice).toFixed(2);
+      // return Math.round(this.formData.valueInETH * this.usdPrice);
     }
   },
   mounted() {
@@ -592,32 +604,11 @@ export default {
   },
   methods: {
     validateDonationMethod() {
+      // valid input
       if (
         this.formData.currency === undefined ||
         this.formData.currency === null
       ) {
-        return false;
-      }
-
-      if (
-        this.formData.currency === "ETH" &&
-        this.formData.valueInETH > this.ethBalance
-      ) {
-        return false;
-      }
-
-      if (this.formData.currency === "ETH" && this.formData.valueInETH < 0.01) {
-        return false;
-      }
-
-      if (
-        this.formData.currency === "DAI" &&
-        this.formData.valueInDAI > this.daiBalance
-      ) {
-        return false;
-      }
-
-      if (this.formData.currency === "DAI" && this.formData.valueInDAI < 1) {
         return false;
       }
 
@@ -629,6 +620,36 @@ export default {
         return false;
       }
 
+      // user has enough balance to send card
+      if (
+        this.formData.currency === "ETH" &&
+        this.formData.valueInETH > this.ethBalance
+      ) {
+        return false;
+      }
+
+      if (
+        this.formData.currency === "DAI" &&
+        this.formData.valueInDAI > this.daiBalance
+      ) {
+        return false;
+      }
+
+      // user enough has been selected for the price of the card
+      if (
+        this.formData.currency === "ETH" &&
+        this.formData.valueInETH * this.usdPrice <
+          this.formData.card.cardMinPrice
+      ) {
+        return false;
+      }
+
+      if (
+        this.formData.currency === "DAI" &&
+        this.formData.valueInDAI < this.formData.card.cardMinPrice
+      ) {
+        return false;
+      }
       return true;
     },
     validateSendingMethod() {
