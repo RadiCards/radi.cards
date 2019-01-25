@@ -5,6 +5,7 @@ import Creator from "@/components/pages/Creator";
 import Account from "@/components/pages/Account";
 import CardShop from "@/components/pages/CardShop";
 import ViewCard from "@/components/pages/ViewCard";
+import ClaimGift from "@/components/pages/ClaimGift";
 import About from "@/components/pages/About";
 import Charity from "@/components/pages/Charity";
 import TermsOfService from "@/components/pages/TermsOfService";
@@ -40,6 +41,11 @@ export default new Router({
       path: "/card/:id",
       name: "card",
       component: ViewCard
+    },
+    {
+      path: "/claim/:pk",
+      name: "card",
+      component: ClaimGift
     },
     {
       path: "/about",

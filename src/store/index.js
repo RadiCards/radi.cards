@@ -683,14 +683,49 @@ const store = new Vuex.Store({
             account: this.state.account
           });
         }
-        dispatch(actions.LOAD_DEEP_URL_CARD, {
-          tokenId: this.state.deepUrlCardNumber
-        });
+        if (this.state.deepUrlCardNumber) {
+          dispatch(actions.LOAD_DEEP_URL_CARD, {
+            tokenId: this.state.deepUrlCardNumber
+          });
+        }
+        if (this.state.ephemeralPrivateKey) {
+          dispatch(actions.CLAIM_GIFT, {
+            privateKey: this.state.ephemeralPrivateKey
+          });
+        }
+
       }
-    }
+    },
+    [actions.CLAIM_GIFT]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      privateKey
+    }) {
+      if (state.ephemeralPrivateKey === null) {
+        commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
+      } else {
+        const contract = await state.contract.deployed();
+        console.log("SSS")
+        console.log(privateKey)
+        // console.log(web3.eth.accounts)
+        let ephemeralAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
+        web3.eth.accounts.wallet.add(ephemeralAccount);
+        console.log("ACCOUNT UNLOCKED")
+        console.log(ephemeralAccount)
+
+        web3.eth.accounts.wallet.add(ephemeralAccount);
+        if (state.account != null) {
+          console.log("Account", state.account)
+          let ClaimTransaction = await contract.claimGift(state.account, {
+            from: ephemeralAccount.address
+          })
+        }
+      }
+    },
   }
 });
-
 async function mapTokenDetails(results, ipfsPrefix, id) {
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
   dataResp.cardIndex = id.toNumber();

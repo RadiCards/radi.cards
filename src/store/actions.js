@@ -13,4 +13,6 @@ export const LOAD_BENEFACTORS = "LOAD_BENEFACTORS";
 export const LOAD_DEEP_URL_CARD = "LOAD_DEEP_URL_CARD";
 export const GET_USD_PRICE = "GET_USD_PRICE";
 
+export const CLAIM_GIFT = "CLAIM_GIFT";
+
 export const RESET_GIFT_STATUS = "RESET_GIFT_STATUS";

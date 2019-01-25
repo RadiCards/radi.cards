@@ -359,8 +359,15 @@
 
             <h4>You rock!</h4>
 
-            <p>We've successfully sent an awesome radicard to
+            <p v-if="formData.sendingMethod != 'QR'">We've successfully sent an awesome Radicard to
               <clickable-address :eth-address="formData.recipient"></clickable-address>
+            </p>
+            <p
+              v-if="formData.sendingMethod=='QR'"
+            >We've successfully generated a claimable link for your Radicard gift! Send this link to your friend and they can claim the card and crypto contents.
+              <br>
+
+              https://radi.cards/claimGift/{{ephemeralPrivateKey}}
             </p>
             <br>
 
@@ -394,7 +401,7 @@
                   <strong>{{'radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId}}</strong>
                 </a>
                 <div
-                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(account, formData.card.cardIndex).tokenId)"
+                  @click="copyToClipboard('https://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId)"
                   target="_blank"
                 >copy</div>
               </div>
@@ -553,7 +560,8 @@ export default {
       "ephemeralAddressFee",
       "ethBalance",
       "daiBalance",
-      "daiAllowance"
+      "daiAllowance",
+      "ephemeralPrivateKey"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
