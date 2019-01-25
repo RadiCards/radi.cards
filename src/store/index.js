@@ -2,6 +2,14 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import Web3 from "web3";
+import {
+  Wallet,
+  providers,
+  Contract,
+  utils
+} from "ethers";
+
+
 import * as actions from "./actions";
 import * as mutations from "./mutation-types";
 import createLogger from "vuex/dist/logger";
@@ -706,21 +714,16 @@ const store = new Vuex.Store({
       if (state.ephemeralPrivateKey === null) {
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
       } else {
-        const contract = await state.contract.deployed();
-        console.log("SSS")
-        console.log(privateKey)
-        // console.log(web3.eth.accounts)
-        let ephemeralAccount = web3.eth.accounts.privateKeyToAccount(privateKey);
-        web3.eth.accounts.wallet.add(ephemeralAccount);
-        console.log("ACCOUNT UNLOCKED")
-        console.log(ephemeralAccount)
-
-        web3.eth.accounts.wallet.add(ephemeralAccount);
         if (state.account != null) {
-          console.log("Account", state.account)
-          let ClaimTransaction = await contract.claimGift(state.account, {
-            from: ephemeralAccount.address
-          })
+          const provider = new providers.JsonRpcProvider(
+            "https://kovan.infura.io"
+          );
+          let claimAddress = state.account
+          const transitWallet = new Wallet(privateKey, provider);
+          let contractWithSigner = new Contract("0xe7e45701520cE91f34B1DF31A8CA6436eF969531", RadiCardsABI['abi'], transitWallet)
+          const tx = await contractWithSigner.claimGift(claimAddress);
+          console.log("TX")
+          console.log(tx)
         }
       }
     },
