@@ -6,7 +6,7 @@
         <img src="/static/images/red-arrow.svg" class="dl-1">
         <span class="cheeky-comment">click on the card to see the hidden message.</span>
       </b-col>
-      <b-col cols="12" md="6" class="text-center">
+      <b-col cols="12" md="6" class="text-center" v-if="deepUrlCard">
         <h3
           v-if="deepUrlCard.status=='Deposited' && account!=null"
         >Transferring card to your unlocked wallet! 🎉</h3>

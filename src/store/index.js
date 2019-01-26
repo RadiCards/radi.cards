@@ -642,6 +642,11 @@ const store = new Vuex.Store({
             ...cardInformation[0]
           };
           commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
+          if (this.state.ephemeralPrivateKey) {
+            dispatch(actions.CLAIM_GIFT, {
+              privateKey: this.state.ephemeralPrivateKey
+            });
+          }
         }
       }
 
@@ -722,21 +727,22 @@ const store = new Vuex.Store({
             break;
         }
         const provider = new providers.JsonRpcProvider(providerAddress);
-        let claimAddress = state.account
         const transitWallet = new Wallet(privateKey, provider);
         // next we grab the card index to check it hasent been claimed before
         let tokenId = await contract.ephemeralWalletCards(transitWallet.address)
         console.log("inded")
         console.log(tokenId.toString())
-        dispatch(actions.LOAD_DEEP_URL_CARD, {
-          tokenId: tokenId
-        });
+        if (!state.deepUrlCard) {
+          dispatch(actions.LOAD_DEEP_URL_CARD, {
+            tokenId: tokenId
+          });
+        }
         // wait until the deep url for the claimable card has been loaded
         if (state.deepUrlCard) {
           // only if the card is in the deposited state and there is an unlocked account do we preform the claim transaction
           if (state.deepUrlCard.status === 'Deposited' && state.account != null) {
             let contractWithSigner = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], transitWallet)
-            const tx = await contractWithSigner.claimGift(claimAddress);
+            const tx = await contractWithSigner.claimGift(state.account);
           }
         }
       }

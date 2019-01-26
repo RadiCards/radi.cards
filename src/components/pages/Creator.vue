@@ -366,7 +366,6 @@
               v-if="formData.sendingMethod=='QR'"
             >We've successfully generated a claimable link for your Radicard gift! Send this link to your friend and they can claim the card and crypto contents.
               <br>
-
               https://radi.cards/claimGift/{{ephemeralPrivateKey}}
             </p>
             <br>
@@ -760,8 +759,7 @@ export default {
           this.formData.errors.push("Invalid currency type selected");
       }
       var donationAmount = (totalSendAmount * this.formData.percentage) / 100;
-      var giftAmount =
-        (totalSendAmount * (100 - this.formData.percentage)) / 100;
+      var giftAmount = totalSendAmount - donationAmount;
 
       // last thing to do is to cast the donation,gift and transaction values to strings
       // as they are converted to wei in the store and this requires string or bignumber inputs
