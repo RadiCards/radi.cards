@@ -10,12 +10,15 @@ import store from './store'
 import logging from './logging'
 import Web3 from 'web3'
 import VueClipboard from 'vue-clipboard2'
+import AsyncComputed from 'vue-async-computed';
 
 Vue.use(VueClipboard)
 
 Vue.config.productionTip = false;
 
 Vue.use(BootstrapVue);
+
+Vue.use(AsyncComputed);
 
 Vue.filter('toEth', function (value) {
   if (!value) return '';
