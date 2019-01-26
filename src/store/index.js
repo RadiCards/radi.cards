@@ -604,47 +604,47 @@ const store = new Vuex.Store({
     }) {
       if (state.deepUrlCardNumber === null) {
         commit(mutations.SET_DEEP_URL_CARD_NUMBER, tokenId);
-      } else {
-        if (state.contract) {
-          const contract = await state.contract.deployed();
-          let accountToken = await contract.tokenDetails(tokenId);
-          let gifter = accountToken[0];
-          let message = accountToken[1];
-          let daiDonation = accountToken[2];
-          let giftAmount = accountToken[3].toNumber();
-          let donationAmount = accountToken[4].toNumber();
-          let status = accountToken[5].toNumber();
-          let cardIndex = accountToken[6];
-          let benefactorIndex = accountToken[7].toNumber();
-          let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
-          let decodedStatus = statuses[status]
-          if (state.cards) {
-            let cardInformation = state.cards.filter(card => {
-              return card.cardIndex === cardIndex.toNumber();
-            });
-            let accountCreatedCard =
-              web3.utils.toChecksumAddress(state.account) ===
-              web3.utils.toChecksumAddress(gifter); //if the current account created the card
+      }
+      if (state.contract) {
+        const contract = await state.contract.deployed();
+        let accountToken = await contract.tokenDetails(tokenId);
+        let gifter = accountToken[0];
+        let message = accountToken[1];
+        let daiDonation = accountToken[2];
+        let giftAmount = accountToken[3].toNumber();
+        let donationAmount = accountToken[4].toNumber();
+        let status = accountToken[5].toNumber();
+        let cardIndex = accountToken[6];
+        let benefactorIndex = accountToken[7].toNumber();
+        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
+        let decodedStatus = statuses[status]
+        if (state.cards) {
+          let cardInformation = state.cards.filter(card => {
+            return card.cardIndex === cardIndex.toNumber();
+          });
+          let accountCreatedCard =
+            web3.utils.toChecksumAddress(state.account) ===
+            web3.utils.toChecksumAddress(gifter); //if the current account created the card
 
-            let allCardInformation = {
-              ...{
-                gifter: gifter,
-                message: message,
-                daiDonation: daiDonation,
-                giftAmount: giftAmount / 1000000000000000000,
-                donationAmount: donationAmount / 1000000000000000000,
-                status: decodedStatus,
-                cardInded: cardIndex,
-                BenefactorIndex: benefactorIndex,
-                accountCreatedCard: accountCreatedCard,
-                tokenId: tokenId
-              },
-              ...cardInformation[0]
-            };
-            commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
-          }
+          let allCardInformation = {
+            ...{
+              gifter: gifter,
+              message: message,
+              daiDonation: daiDonation,
+              giftAmount: giftAmount / 1000000000000000000,
+              donationAmount: donationAmount / 1000000000000000000,
+              status: decodedStatus,
+              cardInded: cardIndex,
+              BenefactorIndex: benefactorIndex,
+              accountCreatedCard: accountCreatedCard,
+              tokenId: tokenId
+            },
+            ...cardInformation[0]
+          };
+          commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
         }
       }
+
     },
     [actions.LOAD_BENEFACTORS]: async function ({
       commit,
@@ -709,22 +709,35 @@ const store = new Vuex.Store({
       if (state.ephemeralPrivateKey === null) {
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
       } else {
-        if (state.account != null) {
-          let networkId = await window.web3.eth.net.getId()
-          let providerAddress;
-          switch (networkId) {
-            case 1:
-              providerAddress = "https://mainnet.infura.io"
-              break;
-            case 42:
-              providerAddress = "https://kovan.infura.io"
-              break;
+        const contract = await state.contract.deployed();
+        //load the ephemeral wallet from the private key using ethers.js
+        let networkId = await window.web3.eth.net.getId()
+        let providerAddress;
+        switch (networkId) {
+          case 1:
+            providerAddress = "https://mainnet.infura.io"
+            break;
+          case 42:
+            providerAddress = "https://kovan.infura.io"
+            break;
+        }
+        const provider = new providers.JsonRpcProvider(providerAddress);
+        let claimAddress = state.account
+        const transitWallet = new Wallet(privateKey, provider);
+        // next we grab the card index to check it hasent been claimed before
+        let tokenId = await contract.ephemeralWalletCards(transitWallet.address)
+        console.log("inded")
+        console.log(tokenId.toString())
+        dispatch(actions.LOAD_DEEP_URL_CARD, {
+          tokenId: tokenId
+        });
+        // wait until the deep url for the claimable card has been loaded
+        if (state.deepUrlCard) {
+          // only if the card is in the deposited state and there is an unlocked account do we preform the claim transaction
+          if (state.deepUrlCard.status === 'Deposited' && state.account != null) {
+            let contractWithSigner = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], transitWallet)
+            const tx = await contractWithSigner.claimGift(claimAddress);
           }
-          const provider = new providers.JsonRpcProvider(providerAddress);
-          let claimAddress = state.account
-          const transitWallet = new Wallet(privateKey, provider);
-          let contractWithSigner = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], transitWallet)
-          const tx = await contractWithSigner.claimGift(claimAddress);
         }
       }
     },
