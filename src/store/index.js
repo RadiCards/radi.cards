@@ -670,20 +670,15 @@ const store = new Vuex.Store({
       if (state.contract) {
         const contract = await state.contract.deployed();
         let cardIds = await contract.cardsKeys();
-        console.log(cardIds);
         let ipfsPrefix = await contract.tokenBaseURI();
 
         let cardPromises = await _.map(cardIds, async id => {
           let results = await contract.cards.call(id);
-          console.log("SOMTHING")
-          console.log(results)
           let result = mapTokenDetails(results, ipfsPrefix, id);
           return result;
         });
         let cards = await Promise.all(cardPromises);
         cards.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
-
-        console.log(cards);
 
         commit(mutations.SET_CARDS, cards);
         if (this.state.account) {
@@ -715,15 +710,21 @@ const store = new Vuex.Store({
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
       } else {
         if (state.account != null) {
-          const provider = new providers.JsonRpcProvider(
-            "https://kovan.infura.io"
-          );
+          let networkId = await window.web3.eth.net.getId()
+          let providerAddress;
+          switch (networkId) {
+            case 1:
+              providerAddress = "https://mainnet.infura.io"
+              break;
+            case 42:
+              providerAddress = "https://kovan.infura.io"
+              break;
+          }
+          const provider = new providers.JsonRpcProvider(providerAddress);
           let claimAddress = state.account
           const transitWallet = new Wallet(privateKey, provider);
-          let contractWithSigner = new Contract("0xe7e45701520cE91f34B1DF31A8CA6436eF969531", RadiCardsABI['abi'], transitWallet)
+          let contractWithSigner = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], transitWallet)
           const tx = await contractWithSigner.claimGift(claimAddress);
-          console.log("TX")
-          console.log(tx)
         }
       }
     },

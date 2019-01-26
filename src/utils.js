@@ -59,7 +59,6 @@ const getDaiContractAddress = () => {
     });
 }
 
-
 module.exports = {
   getEtherscanAddress,
   getNetIdString,
