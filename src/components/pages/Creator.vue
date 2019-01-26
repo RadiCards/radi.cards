@@ -366,7 +366,7 @@
               v-if="formData.sendingMethod=='QR'"
             >We've successfully generated a claimable link for your Radicard gift! Send this link to your friend and they can claim the card and crypto contents.
               <br>
-              https://radi.cards/claimGift/{{ephemeralPrivateKey}}
+              <qr-code-image :link="'https://radi.cards/claimGift/' + ephemeralPrivateKey"></qr-code-image>
             </p>
             <br>
 
@@ -469,6 +469,7 @@ import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
 import MailtoLink from "../../components/widgets/MailtoLink";
+import QrCodeImage from "../../components/widgets/QRCodeImage";
 import { AssertionError } from "assert";
 import vueSlider from "vue-slider-component";
 
@@ -476,6 +477,7 @@ export default {
   name: "creator",
   components: {
     ClickableTransaction,
+    QrCodeImage,
     Card,
     Benefactor,
     Samplequote,
