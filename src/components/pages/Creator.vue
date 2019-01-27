@@ -49,7 +49,91 @@
           </div>
         </div>
 
+        <!-- select where funds are going page -->
         <div class="section step step--twocol step2" v-if="step === 1">
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+          </div>
+          <div class="flex-column">
+            <div class="step__title">
+              <h4>{{ $t("m.sendMethod")}}</h4>
+              <p>{{ $t("m.chooseSendMethod")}}</p>
+            </div>
+
+            <div class="fieldgroup--radio column">
+              <!-- QR -->
+              <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
+                <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
+                <label for="selectQR" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.supported")}}</p>
+                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">{{ $t("m.QR")}}</span>
+                  <div v-if="formData.sendingMethod === 'QR'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.QR")}}</p>
+                  </div>
+                </label>
+              </div>
+
+              <!-- ETH -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'ETH'}]"
+              >
+                <input type="radio" id="selectETH" value="ETH" v-model="formData.sendingMethod">
+                <label for="selectETH" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.sendDirect")}}</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'ETH'"
+                    class="pretext"
+                  >{{ $t("m.addEthWallet")}}</span>
+                  <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.addEthWallet")}}</p>
+                    <input
+                      type="text"
+                      placeholder="0x..."
+                      class="field form-control"
+                      v-model="formData.recipient"
+                    >
+                  </div>
+                </label>
+              </div>
+
+              <!-- Self -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'Self'}]"
+              >
+                <input type="radio" id="selectSelf" value="Self" v-model="formData.sendingMethod">
+                <label for="selectSelf" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.sendLater")}}</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'Self'"
+                    class="pretext"
+                  >{{ $t("m.sendOwn")}}</span>
+                  <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.sendOwn")}}</p>
+                    <br>
+                    <p>{{ $t("m.yourWallet")}}</p>
+                    <p class="p--smallitalic small-account">{{account}}</p>
+                  </div>
+                </label>
+              </div>
+            </div>
+            <br>
+            <br>
+            <input
+              type="button"
+              class="button button--fullwidth"
+              :disabled="!validateSendingMethod()"
+              @click="goToStep(2)"
+              value="PREVIEW HONGBAO"
+            >
+            <p
+              v-if="formData.sendingMethod==='QR'"
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
+          </div>
+        </div>
+
+
+        <!-- add donation page -->
+        <div class="section step step--twocol step2" v-if="step === 2">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
@@ -148,7 +232,7 @@
               type="button"
               class="button button--fullwidth"
               :disabled="!validateDonationMethod()"
-              @click="goToStep(2)"
+              @click="goToStep(3)"
               value="NEXT"
             >
             <p
@@ -167,86 +251,6 @@
           </div>
         </div>
 
-        <div class="section step step--twocol step2" v-if="step === 2">
-          <div class="step__card">
-            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
-          </div>
-          <div class="flex-column">
-            <div class="step__title">
-              <h4>{{ $t("m.sendMethod")}}</h4>
-              <p>{{ $t("m.chooseSendMethod")}}</p>
-            </div>
-
-            <div class="fieldgroup--radio column">
-              <!-- QR -->
-              <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
-                <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
-                <label for="selectQR" class="field--radio__content">
-                  <p class="p--smallitalic">{{ $t("m.supported")}}</p>
-                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">{{ $t("m.QR")}}</span>
-                  <div v-if="formData.sendingMethod === 'QR'" class="sendOptionSelectedContent">
-                    <p class="p--bold">{{ $t("m.QR")}}</p>
-                  </div>
-                </label>
-              </div>
-
-              <!-- ETH -->
-              <div
-                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'ETH'}]"
-              >
-                <input type="radio" id="selectETH" value="ETH" v-model="formData.sendingMethod">
-                <label for="selectETH" class="field--radio__content">
-                  <p class="p--smallitalic">{{ $t("m.sendDirect")}}</p>
-                  <span
-                    v-if="formData.sendingMethod !== 'ETH'"
-                    class="pretext"
-                  >{{ $t("m.addEthWallet")}}</span>
-                  <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
-                    <p class="p--bold">{{ $t("m.addEthWallet")}}</p>
-                    <input
-                      type="text"
-                      placeholder="0x..."
-                      class="field form-control"
-                      v-model="formData.recipient"
-                    >
-                  </div>
-                </label>
-              </div>
-
-              <!-- Self -->
-              <div
-                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'Self'}]"
-              >
-                <input type="radio" id="selectSelf" value="Self" v-model="formData.sendingMethod">
-                <label for="selectSelf" class="field--radio__content">
-                  <p class="p--smallitalic">{{ $t("m.sendLater")}}</p>
-                  <span
-                    v-if="formData.sendingMethod !== 'Self'"
-                    class="pretext"
-                  >{{ $t("m.sendOwn")}}</span>
-                  <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
-                    <p class="p--bold">{{ $t("m.sendOwn")}}</p>
-                    <br>
-                    <p>{{ $t("m.yourWallet")}}</p>
-                    <p class="p--smallitalic small-account">{{account}}</p>
-                  </div>
-                </label>
-              </div>
-            </div>
-            <br>
-            <br>
-            <input
-              type="button"
-              class="button button--fullwidth"
-              :disabled="!validateSendingMethod()"
-              @click="goToStep(3)"
-              value="PREVIEW HONGBAO"
-            >
-            <p
-              v-if="formData.sendingMethod==='QR'"
-            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
-          </div>
-        </div>
         <!-- CONFIRMATION PAGE -->
         <div
           class="section step step--twocol step2"
