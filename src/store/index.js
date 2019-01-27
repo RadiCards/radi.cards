@@ -9,7 +9,6 @@ import {
   utils
 } from "ethers";
 
-
 import * as actions from "./actions";
 import * as mutations from "./mutation-types";
 import createLogger from "vuex/dist/logger";
@@ -470,7 +469,6 @@ const store = new Vuex.Store({
       tokenId
     }) {
       const contract = await state.contract.deployed();
-
       commit(mutations.CLEAR_TRANSFER_STATUS);
       const blockNumber = await state.web3.eth.getBlockNumber();
 
@@ -705,7 +703,6 @@ const store = new Vuex.Store({
             privateKey: this.state.ephemeralPrivateKey
           });
         }
-
       }
     },
     [actions.CLAIM_GIFT]: async function ({
@@ -716,7 +713,6 @@ const store = new Vuex.Store({
     }, {
       privateKey
     }) {
-
       if (state.ephemeralPrivateKey === null) {
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
         commit(mutations.SET_TRANSFER_STATUS, {
@@ -737,9 +733,6 @@ const store = new Vuex.Store({
         }
         const provider = new providers.JsonRpcProvider(providerAddress);
         const transitWallet = new Wallet(privateKey, provider);
-        // commit(mutations.SET_TRANSFER_STATUS, {
-        //   status: "WALLET_UNLOCKED"
-        // });
 
         let ethersContract = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], provider);
         let contractWithSigner = ethersContract.connect(transitWallet);
@@ -776,7 +769,6 @@ const store = new Vuex.Store({
                   status: "TRANSFERRED",
                 });
                 //  once transferred need to reload the account cards
-
                 commit(mutations.PUSH_ACCOUNT_CARD, state.deepUrlCard)
               }
             });

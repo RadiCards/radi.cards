@@ -1,7 +1,5 @@
 <template>
   <div class="container">
-    <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
-    <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <div v-if="account==null">
       <h4>{{ $t("m.noWeb3")}}</h4>
       <p class="pt-2">
@@ -131,7 +129,6 @@
           </div>
         </div>
 
-
         <!-- add donation page -->
         <div class="section step step--twocol step2" v-if="step === 2">
           <div class="step__card">
@@ -160,7 +157,9 @@
                       step="0.1"
                       :min="premuimCardInformation.minInEth"
                     >
-                    <p class="p--smallitalic">≈ {{equivalentFiatCost}}USD = X RMB</p>
+                    <p
+                      class="p--smallitalic"
+                    >≈ {{equivalentFiatCost(formData.valueInETH)}}USD = X RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
@@ -184,7 +183,6 @@
                 <label for="selectDAI" class="field--radio__content">
                   <p class="p--smallitalic">{{ $t("m.topUpStable")}}</p>
                   <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
-
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
                     <p class="p--bold">Send DAI</p>
                     <input
@@ -194,7 +192,6 @@
                       :step="1.0"
                       :min="premuimCardInformation.minInDai"
                     >
-
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInDAI == 25}]"
@@ -263,10 +260,58 @@
             <div class="step__title">
               <h4>{{ $t("m.ready")}}</h4>
               <p>{{ $t("m.readyDesc")}}</p>
+             <br>
+              <div class="field mt-2 mb-4">
+                <div v-if="formData.currency==='ETH'">
+                  <p>
+                    <strong>Hongbao total value:</strong>
+                    {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD
+                  </p>
+                  <p class="p--smallitalic">
+                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD
+                    <br>
+                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
+                  </p>
+                </div>
 
-              <p>HERE you can find all the stored data to wire in:</p>
-              <pre>{{formData}}</pre>
-              {{formData.errors}}
+                <div v-if="formData.currency==='DAI'">
+                  <p>
+                    <strong>Hongbao total value:</strong>
+                    {{formData.valueInETH}}DAI
+                  </p>
+                  <p class="p--smallitalic">
+                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}DAI
+                    <br>
+                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}DAI
+                  </p>
+                </div>
+
+                <div v-if="formData.sendingMethod==='Self'">
+                  <p>
+                    <strong>Recipient:</strong> my wallet
+                  </p>
+                  <p class="p--smallitalic">{{formData.recipient}}</p>
+                </div>
+                <div v-if="formData.sendingMethod==='ETH'">
+                  <p>
+                    <strong>Recipient:</strong> other address
+                  </p>
+                  <p class="p--smallitalic">{{formData.recipient}}</p>
+                </div>
+                <div v-if="formData.sendingMethod==='QR'">
+                  <p>
+                    <strong>Recipient:</strong> claimable link
+                  </p>
+                  <p class="p--smallitalic">QR code will be generated in next step.</p>
+                </div>
+
+                <p>
+                  <strong>Card Message:</strong>
+                  <br>
+                  <p class="p--smallitalic">{{formData.message}}</p>
+                </p>
+              </div>
+              <br>
               <input
                 type="button"
                 class="button button--fullwidth"
@@ -606,7 +651,6 @@ export default {
       if (this.card.cardMaxQnty > 0) {
         // the min price for the card in eth will be the card price in usd
         //deviled by the current usd/eth price as defined by the oracle
-
         cardInfoObject.minInEth = (
           this.card.cardMinPrice / this.usdPrice
         ).toFixed(2);
@@ -614,16 +658,16 @@ export default {
       }
 
       return cardInfoObject;
-    },
-    equivalentFiatCost() {
-      return parseFloat(this.formData.valueInETH * this.usdPrice).toFixed(2);
-      // return Math.round(this.formData.valueInETH * this.usdPrice);
     }
   },
   mounted() {
     this.$nextTick(function() {});
   },
   methods: {
+    equivalentFiatCost(ethAmount) {
+      return parseFloat(ethAmount * this.usdPrice).toFixed(2);
+      // return Math.round(this.formData.valueInETH * this.usdPrice);
+    },
     startOver() {
       this.$store.dispatch(actions.RESET_GIFT_STATUS);
       this.$router.push({ name: "cardshop" });
