@@ -437,11 +437,7 @@
               <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.
             </p>
 
-            <router-link
-              @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
-              :to="{ name: 'cardshop' }"
-              class="btn"
-            >Start over</router-link>
+            <button @click="startOver" class="btn">Start over</button>
             <button class="btn" @click="giveBirth">Retry Transaction</button>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               You can view the transaction of Etherscan
@@ -618,6 +614,11 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    startOver() {
+      this.$store.dispatch(actions.RESET_GIFT_STATUS);
+      this.$router.push({ name: "cardshop" });
+
+    },
     validateDonationMethod() {
       // valid input
       if (
@@ -760,7 +761,10 @@ export default {
         default:
           this.formData.errors.push("Invalid currency type selected");
       }
-      var donationAmount = (totalSendAmount * this.formData.percentage) / 100;
+      var donationAmount = (
+        (totalSendAmount * this.formData.percentage) /
+        100
+      ).toFixed(10);
       var giftAmount = totalSendAmount - donationAmount;
 
       // last thing to do is to cast the donation,gift and transaction values to strings
