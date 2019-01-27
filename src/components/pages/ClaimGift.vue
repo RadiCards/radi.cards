@@ -11,11 +11,12 @@
         <h3 v-if="getTransferStatus()==='EMPTY'">Loading Information from blockchain.</h3>
         <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">Getting gift information 🤞</h3>
         <h3 v-if="getTransferStatus()==='SUBMITTED'">Transferring card to your unlocked wallet! 🚀</h3>
-        <h3 v-if="getTransferStatus()==='TRANSFERRED'"
+        <h3
+          v-if="getTransferStatus()==='TRANSFERRED'"
         >The card has been transferred to your wallet! 🎉</h3>
-        <h3 v-if="getTransferStatus()==='CLAIMED'">This link has already been claimed 🙁</h3>
+        <h3 v-if="getTransferStatus()==='CLAIMED'">This RadiCard has already been claimed 🙁</h3>
         <h3 v-if="account===null">
-          You've opened a claimable card! But you don't have a web3 browser. 🙁 We recommend you try
+          Someone sent you a RadiCard! In order to claim it, you need to have a web3 wallet installed. Choose to install from one of the following providers here.
           <a
             target="__blank"
             href="https://metamask.io"
@@ -29,10 +30,7 @@
         <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;">
 
         <div v-if="deepUrlCard">
-          <p
-            class="pt-4 pb-4"
-            v-if="deepUrlCard.giftAmount>0"
-          >This card has a gift crypto gift associated with it!</p>
+          <p class="pt-4 pb-4" v-if="deepUrlCard.giftAmount>0">This card has money inside!</p>
           <p
             v-if="deepUrlCard.daiDonation"
           >A total of {{deepUrlCard.giftAmount}} DAI was sent with the card!</p>
