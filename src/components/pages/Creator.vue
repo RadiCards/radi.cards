@@ -462,7 +462,7 @@
 
             <div>
               <router-link
-                @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
+                @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
                 :to="{ name: 'cardshop' }"
                 style="width:100%; margin-top:20px;"
                 class="btn pick"
@@ -858,9 +858,9 @@ export default {
       ) {
         this.formData.errors.push("Recipient not valid address.");
       }
-      if (this.formData.valueInETH < 0.02) {
-        this.formData.errors.push("Value must be at least 0.02ETH");
-      }
+      // if (this.formData.valueInETH < 0.02) {
+      //   this.formData.errors.push("Value must be at least 0.02ETH");
+      // }
       if (!this.formData.message) {
         this.formData.errors.push("Message is required.");
       }
