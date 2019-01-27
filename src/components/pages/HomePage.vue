@@ -33,7 +33,7 @@
     </section>
 
     <section class="section">
-      <windy-title v-bind:text="$t('message.send3Steps')"></windy-title>
+      <windy-title v-bind:text="$t('m.send3Steps')"></windy-title>
       <br>
 
       <div class="steps">
@@ -71,7 +71,7 @@
     </section>
     <br>
     <section class="section">
-      <windy-title v-bind:text="$t('message.chooseFrom')"></windy-title>
+      <windy-title v-bind:text="$t('m.chooseFrom')"></windy-title>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card
@@ -101,7 +101,7 @@
     </section>
 
     <section class="section section--credits">
-      <windy-title v-bind:text="$t('message.buidlt')"/>
+      <windy-title v-bind:text="$t('m.buidlt')"/>
       <div class="container" style="margin: 0 -2rem;">
         <div class="col-md-4 col-xs-12">
           <h5>{{ $t("m.buidltCC")}}</h5>
