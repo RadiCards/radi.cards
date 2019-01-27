@@ -121,7 +121,7 @@
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(2)"
-              value="PREVIEW HONGBAO"
+              value="NEXT"
             >
             <p
               v-if="formData.sendingMethod==='QR'"
@@ -268,11 +268,13 @@
                     {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD
                   </p>
                   <p class="p--smallitalic">
-                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD
+                    Send to recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
                     <br>
-                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
+                    Donate to charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD
+                    <br>
                   </p>
                 </div>
+                <br>
 
                 <div v-if="formData.currency==='DAI'">
                   <p>
@@ -280,41 +282,44 @@
                     {{formData.valueInETH}}DAI
                   </p>
                   <p class="p--smallitalic">
-                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}DAI
+                    Send to recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}DAI
                     <br>
-                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}DAI
+                    Donate to charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}DAI
+                    <br>
                   </p>
                 </div>
 
                 <div v-if="formData.sendingMethod==='Self'">
                   <p>
-                    <strong>Recipient:</strong> my wallet
+                    <strong>Sending method:</strong> my wallet
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
                   <p>
-                    <strong>Recipient:</strong> other address
+                    <strong>Sending method:</strong> other address
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='QR'">
                   <p>
-                    <strong>Recipient:</strong> claimable link
+                    <strong>Sending method:</strong> QR code
                   </p>
                   <p class="p--smallitalic">QR code will be generated in next step.</p>
                 </div>
+                <br>
 
                 <strong>Card Message:</strong>
                 <br>
                 <p class="p--smallitalic">{{formData.message}}</p>
               </div>
               <br>
+              <br>
               <input
                 type="button"
                 class="button button--fullwidth"
                 @click="giveBirth"
-                value="GENERATE HANGOBAO"
+                value="CONFIRM DETAILS & CREATE HANGBAO"
               >
             </div>
           </div>
