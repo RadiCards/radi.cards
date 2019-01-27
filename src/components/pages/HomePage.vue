@@ -3,18 +3,18 @@
   <div class="container">
     <section class="section section--hero">
       <blockquote class="blockquote--hero">
-        <h1 class="hero">Send your Ethereum hongbao</h1>
-        <h1 class="hero">via WeChat</h1>
+        <h1 class="hero">{{ $t("m.sendHongBao")}}</h1>
+        <h1 class="hero">{{ $t("m.viaWeChat")}}</h1>
 
         <!--- <img src="/static/images/title2.png">
         <br>
         <img src="/static/images/title1.png">-->
       </blockquote>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">Send Ether Hongbao</router-link>
+      <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
 
       <div class="compatible">
-        <h5>COMPATIBLE WITH</h5>
+        <h5>{{ $t("m.compatibleWith")}}</h5>
         <div class="icons">
           <div>
             <img src="/static/icons/wechat.svg">
@@ -33,36 +33,45 @@
     </section>
 
     <section class="section">
-      <windy-title text="Send Hongbao in 3 Easy Steps"></windy-title>
+      <windy-title v-bind:text="$t('message.send3Steps')"></windy-title>
       <br>
 
       <div class="steps">
         <div>
           <img src="/static/images/choose.svg">
-          <h5>Choose</h5>
-          <span>cool hangbao design from
-            <br>artists around the word
+          <h5>{{ $t("m.Choose")}}</h5>
+          <span>
+            {{ $t("m.coolHb")}}
+            <br>
+            {{ $t("artists.artists")}}
           </span>
         </div>
         <div>
           <img src="/static/images/deposit.svg">
-          <h5>Deposit</h5>
-          <span>ether or DAI &amp;
-            <br>generate hongbao
+          <h5>{{ $t("m.Deposit")}}</h5>
+          <span>
+            {{ $t("m.ethOrDai")}}
+            <br>
+            {{ $t("m.generateHb")}}
           </span>
         </div>
         <div>
           <img src="/static/images/send.svg">
-          <h5>Send</h5>
-          <span>hongbao to friends via
-            <br>WeChat &amp; Email
+          <h5>{{ $t("m.Send")}}</h5>
+          <span>
+            {{ $t("m.hb2f")}}
+            <br>
+            {{ $t("m.wc&email")}}
+          </span>
+          <span>
+            <br>
           </span>
         </div>
       </div>
     </section>
     <br>
     <section class="section">
-      <windy-title text="Choose from a collection of hongbao art"></windy-title>
+      <windy-title v-bind:text="$t('message.chooseFrom')"></windy-title>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card
@@ -87,15 +96,15 @@
             </div>
           </div>
         </div>
-        <span class="text">Getting cards...</span>
+        <span class="text">{{ $t("m.gettingCards")}}</span>
       </div>
     </section>
 
     <section class="section section--credits">
-      <windy-title text="Buidl-t with <3 on Ethereum and IPFS"/>
+      <windy-title v-bind:text="$t('message.buidlt')"/>
       <div class="container" style="margin: 0 -2rem;">
         <div class="col-md-4 col-xs-12">
-          <h5>Buidl-t on Ethereum and IPFS by the crypto collectible community</h5>
+          <h5>{{ $t("m.buidltCC")}}</h5>
           <ul>
             <li>
               <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
@@ -131,7 +140,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h5>Community buidl-ing and creative partnership</h5>
+          <h5>{{ $t("m.communities")}}</h5>
           <ul>
             <li>
               <a href="https://superrare.co" target="_blank">superrare.co</a>
@@ -173,7 +182,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h5>All donations go to</h5>
+          <h5>{{ $t("m.donations")}}</h5>
           <ul>
             <li>
               <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>

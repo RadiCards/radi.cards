@@ -3,13 +3,10 @@
     <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
     <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
     <div v-if="account==null">
-      <h4>No web3 wallet could be detected! 🧐</h4>
+      <h4>{{ $t("m.noWeb3")}}</h4>
       <p class="pt-2">
-        In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try
-        <a
-          target="__blank"
-          href="https://metamask.io"
-        >Meta Mask</a>,
+        {{ $t("m.noWeb3desc")}}
+        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
         <a target="__blank" href="https://token.im/download?locale=en-US">imToken Wallet</a>,
         <a target="__blank" href="https://status.im">Status</a>,
         <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
@@ -25,11 +22,11 @@
           </div>
           <div class="step__info">
             <div class="step__title">
-              <h4>Customise card</h4>
-              <p>Add message &amp; recipient details</p>
+              <h4>{{ $t("m.customiseCard")}}</h4>
+              <p>{{ $t("m.customiseCardDesc")}}</p>
             </div>
 
-            <span class="input-label">Add a message (This will be visible on the blockchain)</span>
+            <span class="input-label">{{ $t("m.addMessage")}}</span>
             <b-form-textarea
               id="textarea"
               class="field"
@@ -58,8 +55,8 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>Top-up your card</h4>
-              <p>You need to add at least 0.02 ETH (for the gas fee) in order to create a new radicard.</p>
+              <h4>{{ $t("m.topUp")}}</h4>
+              <p>{{ $t("m.topUpDesc")}}</p>
             </div>
 
             <div class="fieldgroup--radio column">
@@ -67,7 +64,7 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'ETH'}]">
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
                 <label for="selectETH" class="field--radio__content">
-                  <p class="p--smallitalic">Top-up your radicard with cryptocurrency</p>
+                  <p class="p--smallitalic">{{ $t("m.topUpCrypto")}}</p>
                   <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
@@ -101,7 +98,7 @@
               <div :class="['field field--radio', {'isSelected': formData.currency === 'DAI'}]">
                 <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
                 <label for="selectDAI" class="field--radio__content">
-                  <p class="p--smallitalic">Top-up your radicard with stable cryptocurrency</p>
+                  <p class="p--smallitalic">{{ $t("m.topUpStable")}}</p>
                   <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
 
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
@@ -133,7 +130,7 @@
               </div>
             </div>
 
-            <p class="margin">Donate to charity of your choice</p>
+            <p class="margin">{{ $t("m.donateCharity")}}</p>
             <select class="margin red-drop" v-model="formData.benefactor">
               <option v-for="item in benefactors" :value="item" v-bind:key="item.name">{{item.name}}</option>
             </select>
@@ -156,17 +153,17 @@
             >
             <p
               v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance"
-            >You don't have enough ETH to send that much! Your ETH balance is {{parseFloat(ethBalance).toFixed(3)}}.</p>
+            >{{ $t("m.noETH")}}{{parseFloat(ethBalance).toFixed(3)}}.</p>
             <p
               v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance"
-            >You don't have enough DAI to send that much! Your DAI balance is {{parseFloat(daiBalance).toFixed(3)}}.</p>
+            >{{ $t("m.noDAI")}}{{parseFloat(daiBalance).toFixed(3)}}.</p>
 
             <p
               v-if="formData.currency === 'ETH' && formData.valueInETH * usdPrice < formData.card.cardMinPrice"
-            >You have selected too little ETH to pay for the card! The minimum price for this card is {{parseFloat(formData.card.cardMinPrice / usdPrice).toFixed(3)}} ETH.</p>
+            >{{ $t("m.donateCharity")}}{{parseFloat(formData.card.cardMinPrice / usdPrice).toFixed(3)}} ETH.</p>
             <p
               v-if="formData.currency === 'DAI' && formData.valueInDAI < formData.card.cardMinPrice"
-            >You have selected too little DAI to pay for the card! The minimum price for this card is {{parseFloat(formData.card.cardMinPrice).toFixed(3)}} DAI.</p>
+            >{{ $t("m.donateCharity")}}{{parseFloat(formData.card.cardMinPrice).toFixed(3)}} DAI.</p>
           </div>
         </div>
 
@@ -176,8 +173,8 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>Add money</h4>
-              <p>Add ether or DAI to your hongbao</p>
+              <h4>{{ $t("m.addMoney")}}</h4>
+              <p>{{ $t("m.addMoneyDesc")}}</p>
             </div>
 
             <div class="fieldgroup--radio column">
@@ -185,10 +182,10 @@
               <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
                 <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
                 <label for="selectQR" class="field--radio__content">
-                  <p class="p--smallitalic">Works with WeChat, Twitter, Facebook</p>
-                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">Send via QR code</span>
+                  <p class="p--smallitalic">{{ $t("m.supported")}}</p>
+                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">{{ $t("m.QR")}}</span>
                   <div v-if="formData.sendingMethod === 'QR'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send via QR code</p>
+                    <p class="p--bold">{{ $t("m.QR")}}</p>
                   </div>
                 </label>
               </div>
@@ -199,13 +196,13 @@
               >
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.sendingMethod">
                 <label for="selectETH" class="field--radio__content">
-                  <p class="p--smallitalic">Send hongbao to a recipient right away</p>
+                  <p class="p--smallitalic">{{ $t("m.sendDirect")}}</p>
                   <span
                     v-if="formData.sendingMethod !== 'ETH'"
                     class="pretext"
-                  >Send to another ETH wallet</span>
+                  >{{ $t("m.addMoneyDesc")}}</span>
                   <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send to another ETH wallet</p>
+                    <p class="p--bold">{{ $t("m.addMoneyDesc")}}</p>
                     <input
                       type="text"
                       placeholder="0x..."
@@ -222,14 +219,15 @@
               >
                 <input type="radio" id="selectSelf" value="Self" v-model="formData.sendingMethod">
                 <label for="selectSelf" class="field--radio__content">
-                  <p class="p--smallitalic">Send hongbao to a recipient at a later time</p>
+                  <p class="p--smallitalic">{{ $t("m.sendLater")}}</p>
                   <span
                     v-if="formData.sendingMethod !== 'Self'"
                     class="pretext"
-                  >Send hongbao to a recipient at a later time</span>
+                  >{{ $t("m.sendLater")}}</span>
                   <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send to my own ETH wallet address</p>
-                    <p>Your wallet:</p>
+                    <p class="p--bold">{{ $t("m.sendOwn")}}</p>
+                    <br>
+                    <p>{{ $t("m.yourWallet")}}</p>
                     <p class="p--smallitalic small-account">{{account}}</p>
                   </div>
                 </label>
@@ -257,8 +255,8 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>Your hongbao is ready!</h4>
-              <p>Now send this hongbao to your friends!</p>
+              <h4>{{ $t("m.ready")}}</h4>
+              <p>{{ $t("m.readyDesc")}}</p>
 
               <p>HERE you can find all the stored data to wire in:</p>
               <pre>{{formData}}</pre>
@@ -287,13 +285,13 @@
           <div class="step__info">
             <br>
 
-            <h4>Transaction has been triggered!</h4>
+            <h4>{{ $t("m.transactionTriggered")}}</h4>
             <br>
-            <p>Please accept the transaction in your web3 provider, such as metamask, ImToken ect.</p>
+            <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
             <p
               v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDai"
-            >As you requested to send DAI with your card you will need to first approve for the RadiCards contract to access the specified DAI amount from your wallet. This means you will need to sign two transactions to generate your card.</p>
+            >{{ $t("m.DAIDisclaimer")}}</p>
           </div>
         </div>
 
@@ -325,19 +323,19 @@
 
             <br>
 
-            <h4>Card is being created...</h4>
-            <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
+            <h4>{{ $t("m.cardCreated")}}</h4>
+            <p>{{ $t("m.cardCreatedDesc")}}</p>
             <br>
-            <p>Best to not close this tab and go make some tea.</p>
-            <p>Good things will happen.</p>
+            <p>{{ $t("m.cardCreatedDesc2")}}</p>
+            <p>{{ $t("m.cardCreatedDesc3")}}</p>
             <br>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
-              You can view the transaction of Etherscan
+              {{ $t("m.cardCreatedDesc4")}}
               <a
                 class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
-              >here</a>
+              >{{ $t("m.cardCreatedDesc5")}}</a>
             </p>
           </div>
         </div>
@@ -357,23 +355,23 @@
             <br>
             <br>
 
-            <h4>You rock!</h4>
+            <h4>{{$t("m.rock")}}</h4>
 
-            <p v-if="formData.sendingMethod != 'QR'">We've successfully sent an awesome Radicard to
+            <p v-if="formData.sendingMethod != 'QR'">
+              {{$t("m.sendSuccess")}}
               <clickable-address :eth-address="formData.recipient"></clickable-address>
             </p>
-            <p
-              v-if="formData.sendingMethod=='QR'"
-            >We've successfully generated a claimable link for your Radicard gift! Send this link to your friend and they can claim the card and crypto contents.
+            <p v-if="formData.sendingMethod=='QR'">
+              {{$t("m.claimableLink")}}
               <br>
               <qr-code-image :link="'https://radi.cards/claimGift/' + ephemeralPrivateKey"></qr-code-image>
             </p>
             <br>
 
             <div class="share-box">
-              <h2>Share with others</h2>
+              <h2>{{$t("m.shareOthers")}}</h2>
               <br>
-              <span class="subtext">email this radicard to your friend</span>
+              <span class="subtext">{{$t("m.shareOthersEmail")}}</span>
               <br>
               <div class="email-field">
                 <input
@@ -389,7 +387,7 @@
                   :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
                 >send</mailto-link>
               </div>
-              <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
+              <span class="subtext">{{$t("m.shareOthersLink")}}</span>
               <div class="copy-field">
                 <a
                   id="copyfield"
@@ -412,7 +410,7 @@
                 :to="{ name: 'cardshop' }"
                 style="width:100%; margin-top:20px;"
                 class="btn pick"
-              >Pick another card and keep rocking</router-link>
+              >{{$t("m.pickAnother")}}</router-link>
             </div>
           </div>
         </div>
@@ -429,27 +427,28 @@
           </div>
 
           <div class="step__info">
-            <h4>Oops...!</h4>
+            <h4>{{$t("m.oops")}}</h4>
 
-            <p>Something seems to have gone wrong and your card could not be created.</p>
+            <p>{{$t("m.oopsDesc")}}</p>
             <br>
             <p class="pb-3">
-              <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.
+              <strong>{{$t("m.checkWallet")}}</strong>
+              {{$t("m.checkWalletDesc")}}
             </p>
 
             <router-link
               @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
               :to="{ name: 'cardshop' }"
               class="btn"
-            >Start over</router-link>
-            <button class="btn" @click="giveBirth">Retry Transaction</button>
+            >{{$t("m.startOver")}}</router-link>
+            <button class="btn" @click="giveBirth">{{$t("m.retry")}}</button>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
-              You can view the transaction of Etherscan
+              {{$t("m.viewEthScan")}}
               <a
                 class="a--external"
                 :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
-              >here</a>
+              >{{$t("m.cardCreatedDesc5")}}</a>
             </p>
           </div>
         </div>
