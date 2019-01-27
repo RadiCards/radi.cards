@@ -43,7 +43,7 @@
           <span>
             {{ $t("m.coolHb")}}
             <br>
-            {{ $t("artists.artists")}}
+            {{ $t("m.artists")}}
           </span>
         </div>
         <div>
@@ -182,7 +182,8 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <h5>{{ $t("m.donations")}}</h5>
+          <!-- <h5>{{ $t("m.donations")}}</h5> -->
+          <h5>Some donations text?</h5>
           <ul>
             <li>
               <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>

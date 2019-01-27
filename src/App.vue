@@ -1,5 +1,37 @@
 <template>
   <div id="app">
+    <div class="topBar">
+      <div class="row">
+        <div class="col-lg-6 col-md-12">
+          <div v-if="account" style="!important padding-top-1000px">
+            <strong>
+              <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
+              Address:
+            </strong>
+            <clickable-address :eth-address="account"></clickable-address>|
+            <strong>ETH Balance:</strong>
+            {{ethBalanceRound}} |
+            <strong>DAI Balance:</strong>
+            {{daiBalanceRound}}
+          </div>
+        </div>
+        <div class="col-lg-6 col-md-12 text-right">
+          <strong>Language:</strong>
+          <button
+            @click="changeLanguage('english')"
+            :class="['button button--outline', {'isSelected' : language==='english'}]"
+            class="p-1"
+          >ENG 🇬🇧</button>
+          <button
+            @click="changeLanguage('chinese')"
+            :class="['button button--outline', {'isSelected' : language==='chinese'}]"
+            class="p-1"
+          >CHN 🇨🇳</button>
+        </div>
+      </div>
+      <div v-if="!account"></div>
+    </div>
+    <hr class="m-0 p-0">
     <header>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
@@ -86,17 +118,49 @@ import * as mutations from "./store/mutation-types";
 import CurrentNetwork from "./components/widgets/CurrentNetwork";
 import ClickableAddress from "./components/widgets/ClickableAddress";
 import { PortisProvider } from "portis";
+import i18n from "./lang.js";
 
 export default {
   name: "app",
   components: { ClickableAddress, CurrentNetwork },
   data() {
     return {
-      web3Detected: true
+      web3Detected: true,
+      language: "english"
     };
   },
+  methods: {
+    changeLanguage(newLanguage) {
+      this.language = newLanguage;
+      if (newLanguage === "english") {
+        this.$i18n.locale = "en";
+      }
+      if (newLanguage === "chinese") {
+        this.$i18n.locale = "zh";
+      }
+    }
+  },
   computed: {
-    ...mapState(["contractAddress", "accountCards", "account", "usdPrice"])
+    ...mapState([
+      "contractAddress",
+      "accountCards",
+      "account",
+      "usdPrice",
+      "ethBalance",
+      "daiBalance"
+    ]),
+    ethBalanceRound() {
+      if (this.ethBalance) {
+        return parseFloat(this.ethBalance).toFixed(3);
+      }
+      return 0;
+    },
+    daiBalanceRound() {
+      if (this.daiBalance) {
+        return parseFloat(this.daiBalance).toFixed(3);
+      }
+      return 0;
+    }
   },
   async mounted() {
     if (window.ethereum) {
@@ -263,6 +327,14 @@ footer {
     padding-right: 1rem;
     font-size: 2rem;
   }
+}
+
+.topBar {
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-bottom: 0;
 }
 
 .section {
