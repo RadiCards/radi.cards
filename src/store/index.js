@@ -49,7 +49,7 @@ const store = new Vuex.Store({
     deepUrlCard: null,
     transfers: [],
     giftingStatus: {},
-    transferStatus: "",
+    transferStatus: "EMPTY",
     totalSupply: null,
     usdPrice: 0,
     donatedInEth: 0,
@@ -130,6 +130,9 @@ const store = new Vuex.Store({
     },
     [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
+    },
+    [mutations.PUSH_ACCOUNT_CARD](state, accountCard) {
+      state.accountCards.push(accountCard);
     },
     [mutations.SET_DAI_CONTRACT_ADDRESS](state, daiContractAddress) {
       state.daiContractAddress = daiContractAddress;
@@ -333,8 +336,6 @@ const store = new Vuex.Store({
       const daiContract = await DaiErc20.at(state.daiContractAddress);
       commit(mutations.CLEAR_GIFT_STATUS);
 
-      const blockNumber = await state.web3.eth.getBlockNumber();
-
       commit(mutations.SET_GIFT_STATUS, {
         status: "TRIGGERED",
         from: state.account,
@@ -415,8 +416,11 @@ const store = new Vuex.Store({
         recipient = contract.address
       }
 
+      const blockNumber = await state.web3.eth.getBlockNumber();
+      console.log("bn")
+      console.log(blockNumber)
       // Watch for the transfer event from ZERO address to the recipient immediately after
-      const transferEvent = contract.CardGifted({
+      const transferEvent = await contract.CardGifted({
         _to: recipient,
         _cardIndex: cardIndex
       }, {
@@ -707,15 +711,20 @@ const store = new Vuex.Store({
     [actions.CLAIM_GIFT]: async function ({
       commit,
       dispatch,
-      state
+      state,
+      scope
     }, {
       privateKey
     }) {
+
       if (state.ephemeralPrivateKey === null) {
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
+        commit(mutations.SET_TRANSFER_STATUS, {
+          status: "TRIGGERED"
+        });
       } else {
-        const contract = await state.contract.deployed();
         //load the ephemeral wallet from the private key using ethers.js
+        const contract = await state.contract.deployed();
         let networkId = await window.web3.eth.net.getId()
         let providerAddress;
         switch (networkId) {
@@ -728,6 +737,13 @@ const store = new Vuex.Store({
         }
         const provider = new providers.JsonRpcProvider(providerAddress);
         const transitWallet = new Wallet(privateKey, provider);
+        // commit(mutations.SET_TRANSFER_STATUS, {
+        //   status: "WALLET_UNLOCKED"
+        // });
+
+        let ethersContract = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], provider);
+        let contractWithSigner = ethersContract.connect(transitWallet);
+
         // next we grab the card index to check it hasent been claimed before
         let tokenId = await contract.ephemeralWalletCards(transitWallet.address)
         console.log("inded")
@@ -739,10 +755,31 @@ const store = new Vuex.Store({
         }
         // wait until the deep url for the claimable card has been loaded
         if (state.deepUrlCard) {
+          if (state.deepUrlCard.status === 'Claimed') {
+            commit(mutations.SET_TRANSFER_STATUS, {
+              status: "CLAIMED"
+            });
+          }
           // only if the card is in the deposited state and there is an unlocked account do we preform the claim transaction
           if (state.deepUrlCard.status === 'Deposited' && state.account != null) {
-            let contractWithSigner = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], transitWallet)
             const tx = await contractWithSigner.claimGift(state.account);
+            commit(mutations.SET_TRANSFER_STATUS, {
+              status: "SUBMITTED",
+
+            });
+            console.log("CLAIMING")
+            ethersContract.on("LogClaimGift", (ephemeralAddress, sender, tokenId, receiver, giftAmount, daiDonation, event) => {
+              console.log("ANYTHING IN THIS")
+              console.log(ephemeralAddress);
+              if (transitWallet.address === ephemeralAddress) {
+                commit(mutations.SET_TRANSFER_STATUS, {
+                  status: "TRANSFERRED",
+                });
+                //  once transferred need to reload the account cards
+
+                commit(mutations.PUSH_ACCOUNT_CARD, state.deepUrlCard)
+              }
+            });
           }
         }
       }

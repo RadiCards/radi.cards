@@ -244,9 +244,9 @@
               @click="goToStep(3)"
               value="PREVIEW HONGBAO"
             >
+            <p v-if="formData.sendingMethod==='QR'">If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
           </div>
         </div>
-        {{getGiftingStatus(account, formData.card.cardIndex).status}}
         <!-- CONFIRMATION PAGE -->
         <div
           class="section step step--twocol step2"
@@ -366,7 +366,8 @@
               v-if="formData.sendingMethod=='QR'"
             >We've successfully generated a claimable link for your Radicard gift! Send this link to your friend and they can claim the card and crypto contents.
               <br>
-              <qr-code-image :link="'https://radi.cards/claimGift/' + ephemeralPrivateKey"></qr-code-image>
+              <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
+              https://radi.cards/claim/{{ephemeralPrivateKey}}
             </p>
             <br>
 
@@ -617,7 +618,6 @@ export default {
     startOver() {
       this.$store.dispatch(actions.RESET_GIFT_STATUS);
       this.$router.push({ name: "cardshop" });
-
     },
     validateDonationMethod() {
       // valid input
@@ -770,8 +770,8 @@ export default {
       // last thing to do is to cast the donation,gift and transaction values to strings
       // as they are converted to wei in the store and this requires string or bignumber inputs
       donationAmount = donationAmount.toString();
-      giftAmount = giftAmount.toString();
-      transactionValue = transactionValue.toString();
+      giftAmount = giftAmount.toFixed(10).toString();
+      transactionValue = transactionValue.toFixed(10).toString();
       console.log(transactionValue);
 
       if (this.formData.errors.length === 0) {
