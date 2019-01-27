@@ -173,8 +173,8 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>{{ $t("m.sendingMethod")}}</h4>
-              <p>{{ $t("m.addMoneyDesc")}}</p>
+              <h4>{{ $t("m.sendMethod")}}</h4>
+              <p>{{ $t("m.chooseSendMethod")}}</p>
             </div>
 
             <div class="fieldgroup--radio column">
@@ -200,9 +200,9 @@
                   <span
                     v-if="formData.sendingMethod !== 'ETH'"
                     class="pretext"
-                  >{{ $t("m.addMoneyDesc")}}</span>
+                  >{{ $t("m.addEthWallet")}}</span>
                   <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
-                    <p class="p--bold">{{ $t("m.addMoneyDesc")}}</p>
+                    <p class="p--bold">{{ $t("m.addEthWallet")}}</p>
                     <input
                       type="text"
                       placeholder="0x..."
@@ -223,7 +223,7 @@
                   <span
                     v-if="formData.sendingMethod !== 'Self'"
                     class="pretext"
-                  >{{ $t("m.sendLater")}}</span>
+                  >{{ $t("m.sendOwn")}}</span>
                   <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
                     <p class="p--bold">{{ $t("m.sendOwn")}}</p>
                     <br>
