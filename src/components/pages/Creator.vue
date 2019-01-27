@@ -173,7 +173,7 @@
           </div>
           <div class="flex-column">
             <div class="step__title">
-              <h4>{{ $t("m.addMoney")}}</h4>
+              <h4>{{ $t("m.sendingMethod")}}</h4>
               <p>{{ $t("m.addMoneyDesc")}}</p>
             </div>
 
@@ -242,7 +242,9 @@
               @click="goToStep(3)"
               value="PREVIEW HONGBAO"
             >
-            <p v-if="formData.sendingMethod==='QR'">If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
+            <p
+              v-if="formData.sendingMethod==='QR'"
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
           </div>
         </div>
         <!-- CONFIRMATION PAGE -->
