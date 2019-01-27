@@ -260,7 +260,7 @@
             <div class="step__title">
               <h4>{{ $t("m.ready")}}</h4>
               <p>{{ $t("m.readyDesc")}}</p>
-             <br>
+              <br>
               <div class="field mt-2 mb-4">
                 <div v-if="formData.currency==='ETH'">
                   <p>
@@ -305,11 +305,9 @@
                   <p class="p--smallitalic">QR code will be generated in next step.</p>
                 </div>
 
-                <p>
-                  <strong>Card Message:</strong>
-                  <br>
-                  <p class="p--smallitalic">{{formData.message}}</p>
-                </p>
+                <strong>Card Message:</strong>
+                <br>
+                <p class="p--smallitalic">{{formData.message}}</p>
               </div>
               <br>
               <input
@@ -417,6 +415,12 @@
               <br>
               <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
               https://radi.cards/claim/{{ephemeralPrivateKey}}
+              <a
+                @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
+                target="_blank"
+                class="btn btn--narrow btn--subtle"
+                style="margin-top: 0.5rem;"
+              >Copy</a>
             </p>
             <br>
 
