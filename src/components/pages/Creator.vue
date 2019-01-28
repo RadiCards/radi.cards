@@ -121,7 +121,7 @@
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(2)"
-              value="NEXT"
+              value="PREVIEW HONGBAO"
             >
             <p
               v-if="formData.sendingMethod==='QR'"
@@ -907,9 +907,7 @@ export default {
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
 }
 .field {
-  background: rgba(255, 255, 255, 0);
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
-  border: white;
+  background: rgba(196, 196, 196, 0);
 }
 
 .subtext {
