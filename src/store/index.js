@@ -51,6 +51,7 @@ const store = new Vuex.Store({
     transferStatus: "EMPTY",
     totalSupply: null,
     usdPrice: 0,
+    cynPrice: 0,
     donatedInEth: 0,
     donatedInDai: 0,
     giftedInEth: 0,
@@ -88,9 +89,10 @@ const store = new Vuex.Store({
       state.cards = cards;
     },
     [mutations.SET_USD_PRICE](state, price) {
-      console.log(price);
-      console.log(state);
       state.usdPrice = price;
+    },
+    [mutations.SET_CYN_PRICE](state, price) {
+      state.cynPrice = price;
     },
     [mutations.SET_CURRENT_NETWORK](state, currentNetwork) {
       state.currentNetwork = currentNetwork;
@@ -552,13 +554,26 @@ const store = new Vuex.Store({
     [actions.GET_USD_PRICE]: async function ({
       commit
     }) {
+      // axios
+      //   .get("https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD")
+      //   .then(
+      //     response => {
+      //       let currentPriceInUSD = response.data[0].price_usd;
+      //       console.log(response.data);
+      //       commit(mutations.SET_USD_PRICE, currentPriceInUSD);
+      //     },
+      //     response => {
+      //       console.error(response);
+      //     }
+      //   );
       axios
-        .get("https://api.coinmarketcap.com/v1/ticker/ethereum/?convert=USD")
+        .get("http://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y")
         .then(
           response => {
-            let currentPriceInUSD = response.data[0].price_usd;
-            console.log(response.data);
-            commit(mutations.SET_USD_PRICE, currentPriceInUSD);
+            let currentUSDtoCYN = response.data['CNY_USD']['val'];
+            console.log("PPP")
+            console.log(response.data['CNY_USD']['val']);
+            commit(mutations.SET_CYN_PRICE, currentUSDtoCYN);
           },
           response => {
             console.error(response);

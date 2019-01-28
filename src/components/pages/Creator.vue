@@ -159,7 +159,7 @@
                     >
                     <p
                       class="p--smallitalic"
-                    >≈ {{equivalentFiatCost(formData.valueInETH)}}USD = X RMB</p>
+                    >≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
@@ -265,12 +265,12 @@
                 <div v-if="formData.currency==='ETH'">
                   <p>
                     <strong>Hongbao total value:</strong>
-                    {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD
+                    {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB
                   </p>
                   <p class="p--smallitalic">
-                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD
+                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}RMB
                     <br>
-                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
+                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
                   </p>
                 </div>
 
@@ -491,10 +491,7 @@
               {{$t("m.checkWalletDesc")}}
             </p>
 
-            <button
-              @click="startOverCreation"
-              class="btn"
-            >{{$t("m.startOver")}}</button>
+            <button @click="startOverCreation" class="btn">{{$t("m.startOver")}}</button>
             <button class="btn" @click="giveBirth">{{$t("m.retry")}}</button>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               {{$t("m.viewEthScan")}}
@@ -615,7 +612,8 @@ export default {
       "ethBalance",
       "daiBalance",
       "daiAllowance",
-      "ephemeralPrivateKey"
+      "ephemeralPrivateKey",
+      "cynPrice"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
@@ -668,7 +666,9 @@ export default {
   methods: {
     equivalentFiatCost(ethAmount) {
       return parseFloat(ethAmount * this.usdPrice).toFixed(2);
-      // return Math.round(this.formData.valueInETH * this.usdPrice);
+    },
+    equivalentCynCost(ethAmount) {
+      return (parseFloat(ethAmount * this.usdPrice) / this.cynPrice).toFixed(2);
     },
     startOverCreation: function(event) {
       event.preventDefault();
