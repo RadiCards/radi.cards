@@ -907,6 +907,7 @@ export default {
 }
 .field {
   background: white;
+  box-shadow: 0 0.25rem 1rem rgba($darkgray, 0.1);
 }
 
 .subtext {
@@ -1092,7 +1093,7 @@ textarea {
   .step__card {
     padding-left: 1rem;
     margin-bottom: 2rem;
-    color: white;
+    // color: white;
   }
 
   @include tabletAndUp() {
