@@ -34,7 +34,7 @@ module.exports = async (deployer, network, accounts) => {
   console.log(`Account = ${account}`);
 
   const contract = await RadiCards.deployed();
-  await contract.addCard(8, "QmRAyRPpEBFEiYaAQNfZJk8R1hrFAEGusVvzSBzLJnxyeo", true, 200, 0, {from: account}); // Little Cactus	- Small perspective
+  await contract.addCard(8, "QmRyjQWtMvKDxe8bVM9MkY3wxxNJTtsdGjTJgkzTa9fUTh", true, 200, 0, {from: account}); // Little Cactus	- Small perspective
   await contract.addCard(9, "QmZnvGMv7ZJQBJKTNqCz2G6LKTDfeAyWV24HQrYegySPL9", true, 1, '300000000000000000', {from: account}); //Li Tong - Nervos new year card No.7
   await contract.addCard(10, "QmaVc3KZQsCvebtqLW5L19Di7pwrJ5c1BjDjc9TKMLrZWv", true, 1, '500000000000000000', {from: account});//Li Tong - Nervos new year card No.4
   await contract.addCard(11, "QmPuAu3rT9DKBmUJfvuSnnDAHT3BB7wedHgPtvqn9JcVvQ", true, 1, '200000000000000000', {from: account}); // Li Tong - Nervos new year card No.2
