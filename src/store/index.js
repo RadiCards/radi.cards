@@ -164,7 +164,7 @@ const store = new Vuex.Store({
       } = data;
       var arrayIndex = `${state.web3.utils.toChecksumAddress(from)}_${cardIndex}`;
       const newState = {
-        ...state.giftingStatus[arrayIndex],
+        // ...state.giftingStatus[arrayIndex],
         ...data
       };
       Vue.set(
@@ -299,9 +299,8 @@ const store = new Vuex.Store({
       dispatch,
       state
     }) {
-      commit(mutations.SET_GIFT_STATUS, {});
+      commit(mutations.CLEAR_GIFT_STATUS);
     },
-
     async [actions.MINT_CARD]({
       commit,
       dispatch,
@@ -416,49 +415,87 @@ const store = new Vuex.Store({
       }
 
       const blockNumber = await state.web3.eth.getBlockNumber();
-      console.log("bn")
-      console.log(blockNumber)
-      // Watch for the transfer event from ZERO address to the recipient immediately after
-      const transferEvent = await contract.CardGifted({
-        _to: recipient,
-        _cardIndex: cardIndex
-      }, {
-        fromBlock: blockNumber,
-        toBlock: "latest" // wait until event comes through
-      });
-      console.log(transferEvent)
 
-      transferEvent.watch(function (error, event) {
-        if (!error) {
-          console.log("Transfer event found", event);
-          const {
-            args
-          } = event;
-          const {
-            _from,
-            _to,
-            _tokenId
-          } = args;
+
+      console.log("CC")
+      console.log(contract)
+      await contract.CardGifted({
+        filter: {
+          _from: `0x0`,
+          _to: recipient
+        },
+        fromBlock: blockNumber
+      }, (error, event) => {
+        console.log(event, error)
+        if (event) {
           commit(mutations.SET_GIFT_STATUS, {
             status: "SUCCESS",
             from: state.account,
             cardIndex: cardIndex,
-            tokenId: _tokenId
           });
-
-          dispatch(actions.LOAD_ACCOUNT_CARDS, {
-            account: state.account
-          });
-        } else {
-          console.log("failure", error);
+        }
+        if (error) {
           commit(mutations.SET_GIFT_STATUS, {
             status: "FAILURE",
             from: state.account,
             cardIndex: cardIndex
           });
-          transferEvent.stopWatching();
         }
-      });
+      })
+      //   .on('data', (event) => {
+      //   console.log(event); // same results as the optional callback above
+      // })
+      // .on('changed', (event) => {
+      //   // remove event from local database
+      //   consol.log(event)
+      // })
+      // .on('error', console.error);
+
+
+      // const blockNumber = await state.web3.eth.getBlockNumber();
+      // console.log("bn")
+      // console.log(blockNumber)
+      // Watch for the transfer event from ZERO address to the recipient immediately after
+      // const transferEvent = await contract.CardGifted({
+      //   _from: `0x0`,
+      //   _to: recipient,
+      // }, {
+      //   fromBlock: blockNumber,
+      //   toBlock: "latest" // wait until event comes through
+      // });
+      // console.log(transferEvent)
+
+      // transferEvent.watch(function (error, event) {
+      //   if (!error) {
+      //     console.log("Transfer event found", event);
+      //     const {
+      //       args
+      //     } = event;
+      //     const {
+      //       _from,
+      //       _to,
+      //       _tokenId
+      //     } = args;
+      //     commit(mutations.SET_GIFT_STATUS, {
+      //       status: "SUCCESS",
+      //       from: state.account,
+      //       cardIndex: cardIndex,
+      //       tokenId: _tokenId
+      //     });
+
+      //     dispatch(actions.LOAD_ACCOUNT_CARDS, {
+      //       account: state.account
+      //     });
+      //   } else {
+      //     console.log("failure", error);
+      //     commit(mutations.SET_GIFT_STATUS, {
+      //       status: "FAILURE",
+      //       from: state.account,
+      //       cardIndex: cardIndex
+      //     });
+      //     transferEvent.stopWatching();
+      //   }
+      // });
     },
     [actions.TRANSFER_CARD]: async function ({
       commit,
@@ -511,14 +548,6 @@ const store = new Vuex.Store({
           transferEvent.stopWatching();
         }
       });
-    },
-
-    [actions.RESET_TRANSFER_STATUS]: async function ({
-      commit,
-      dispatch,
-      state
-    }) {
-      commit(mutations.SET_TRANSFER_STATUS, {});
     },
     [actions.GET_USD_PRICE]: async function ({
       commit

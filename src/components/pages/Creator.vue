@@ -50,7 +50,7 @@
         <!-- select where funds are going page -->
         <div class="section step step--twocol step2" v-if="step === 1">
           <div class="step__card">
-            <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
           <div class="flex-column">
             <div class="step__title">
@@ -461,12 +461,11 @@
             </div>
 
             <div>
-              <router-link
-                @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
-                :to="{ name: 'cardshop' }"
+              <button
+                @click="startOverCreation"
                 style="width:100%; margin-top:20px;"
                 class="btn pick"
-              >{{$t("m.pickAnother")}}</router-link>
+              >{{$t("m.pickAnother")}}</button>
             </div>
           </div>
         </div>
@@ -492,11 +491,10 @@
               {{$t("m.checkWalletDesc")}}
             </p>
 
-            <router-link
-              @click="this.$store.dispatch(actions.RESET_GIFT_STATUS);"
-              :to="{ name: 'cardshop' }"
+            <button
+              @click="startOverCreation"
               class="btn"
-            >{{$t("m.startOver")}}</router-link>
+            >{{$t("m.startOver")}}</button>
             <button class="btn" @click="giveBirth">{{$t("m.retry")}}</button>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               {{$t("m.viewEthScan")}}
@@ -672,7 +670,8 @@ export default {
       return parseFloat(ethAmount * this.usdPrice).toFixed(2);
       // return Math.round(this.formData.valueInETH * this.usdPrice);
     },
-    startOver() {
+    startOverCreation: function(event) {
+      event.preventDefault();
       this.$store.dispatch(actions.RESET_GIFT_STATUS);
       this.$router.push({ name: "cardshop" });
     },
