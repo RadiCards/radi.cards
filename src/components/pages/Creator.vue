@@ -121,7 +121,7 @@
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(2)"
-              value="PREVIEW HONGBAO"
+              value="NEXT"
             >
             <p
               v-if="formData.sendingMethod==='QR'"
@@ -288,19 +288,19 @@
 
                 <div v-if="formData.sendingMethod==='Self'">
                   <p>
-                    <strong>Recipient:</strong> my wallet
+                    <strong>Recipient:</strong> my ETH wallet
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
                   <p>
-                    <strong>Recipient:</strong> other address
+                    <strong>Recipient:</strong> other ETH address
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='QR'">
                   <p>
-                    <strong>Recipient:</strong> claimable link
+                    <strong>Recipient:</strong> email, WeChat or other chat apps
                   </p>
                   <p class="p--smallitalic">QR code will be generated in next step.</p>
                 </div>
@@ -907,7 +907,7 @@ export default {
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
 }
 .field {
-  background: rgba(196, 196, 196, 0);
+  background: white;
 }
 
 .subtext {
