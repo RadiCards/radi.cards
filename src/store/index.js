@@ -677,6 +677,7 @@ const store = new Vuex.Store({
       if (state.contract) {
         const contract = await state.contract.deployed();
         let cardIds = await contract.cardsKeys();
+        console.log(cardIds);
         let ipfsPrefix = await contract.tokenBaseURI();
 
         let cardPromises = await _.map(cardIds, async id => {
@@ -779,6 +780,7 @@ const store = new Vuex.Store({
   }
 });
 async function mapTokenDetails(results, ipfsPrefix, id) {
+  console.log(id);
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
   dataResp.cardIndex = id.toNumber();
   dataResp.cardActive = results[1];
