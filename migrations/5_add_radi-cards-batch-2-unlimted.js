@@ -34,9 +34,9 @@ module.exports = async (deployer, network, accounts) => {
   console.log(`Account = ${account}`);
 
   const contract = await RadiCards.deployed();
-  await contract.addCard(3, "QmZoBtnkDXXiod8CFyrXyun6CTWi826jwHhMhPPqc2Bjp2", true, 0, 0, {from: account}); // Ophelia Fu	- Ink Fireworks
-  await contract.addCard(4, "QmcNqjBXr1hwL6xHhigutMKcqACqa9aNysDGWzgN6N3QVr", true, 0, 0, {from: account}); // Pet3rpan - Chinese NoYuan
-  await contract.addCard(5, "QmWfXVp37surPRAwSX9bf5MJ2WfiN94mqgcGwJaJoM54m3", true, 0, 0, {from: account}); // Joyful IN PIG YEAR
-  await contract.addCard(6, "Qmdwb211MBb2n5BkYF6p6xr7QkPte669kQCiJveQiAtTkb", true, 0, 0, {from: account}); //Aktiv Protesk	- Pinki.B
-  await contract.addCard(7, "QmSe6BLCR17kvBh94HuHreWPry5VEzorEpeuGHiCEwCg6M", true, 0, 0, {from: account}); //Aktiv Protesk	- Pinki.B
+  await contract.addCard(3, "QmZoBtnkDXXiod8CFyrXyun6CTWi826jwHhMhPPqc2Bjp2", true, 0, '1000000000000000000', {from: account}); // Ophelia Fu	- Ink Fireworks
+  await contract.addCard(4, "QmcNqjBXr1hwL6xHhigutMKcqACqa9aNysDGWzgN6N3QVr", true, 0, '1000000000000000000', {from: account}); // Pet3rpan - Chinese NoYuan
+  await contract.addCard(5, "QmWfXVp37surPRAwSX9bf5MJ2WfiN94mqgcGwJaJoM54m3", true, 0, '1000000000000000000', {from: account}); // Joyful IN PIG YEAR
+  await contract.addCard(6, "Qmdwb211MBb2n5BkYF6p6xr7QkPte669kQCiJveQiAtTkb", true, 0, '1000000000000000000', {from: account}); //Aktiv Protesk	- Pinki.B
+  await contract.addCard(7, "QmSe6BLCR17kvBh94HuHreWPry5VEzorEpeuGHiCEwCg6M", true, 0, '1000000000000000000', {from: account}); //Aktiv Protesk	- Pinki.B
 };

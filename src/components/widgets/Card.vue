@@ -5,7 +5,10 @@
     @click="redirect"
   >
     <figure class="card__front" @click="flip" v-if="!transfer && !share">
-    <div v-if="maxMinted" class="pb-4">Maximum number of this card type minted. Can't select this card!</div>
+      <div
+        v-if="maxMinted"
+        class="pb-4"
+      >Maximum number of this card type minted. Can't select this card!</div>
       <div class="card__image" style="margin-bottom: 10px;">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
@@ -235,7 +238,10 @@ export default {
         this.$route.path.lastIndexOf("create") === -1
       ) {
         //check if another card can be minted
-        if (this.cdata.cardMaxQnty === this.cdata.cardMinted) {
+        if (
+          this.cdata.cardMaxQnty === this.cdata.cardMinted &&
+          this.cdata.cardMinted > 0
+        ) {
           this.maxMinted = true;
         } else {
           var index = this.cdata.cardIndex;
