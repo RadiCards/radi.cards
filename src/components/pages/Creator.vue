@@ -121,7 +121,7 @@
               class="button button--fullwidth"
               :disabled="!validateSendingMethod()"
               @click="goToStep(2)"
-              value="PREVIEW HONGBAO"
+              value="NEXT"
             >
             <p
               v-if="formData.sendingMethod==='QR'"
@@ -288,19 +288,19 @@
 
                 <div v-if="formData.sendingMethod==='Self'">
                   <p>
-                    <strong>Recipient:</strong> my wallet
+                    <strong>Recipient:</strong> my ETH wallet
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
                   <p>
-                    <strong>Recipient:</strong> other address
+                    <strong>Recipient:</strong> other ETH address
                   </p>
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='QR'">
                   <p>
-                    <strong>Recipient:</strong> claimable link
+                    <strong>Recipient:</strong> email, WeChat or other chat apps
                   </p>
                   <p class="p--smallitalic">QR code will be generated in next step.</p>
                 </div>
@@ -314,7 +314,7 @@
                 type="button"
                 class="button button--fullwidth"
                 @click="giveBirth"
-                value="GENERATE HANGOBAO"
+                value="CREATE HANGBAO"
               >
             </div>
           </div>
@@ -904,37 +904,33 @@ export default {
   background: white;
   padding: 20px;
   box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+}
+.field {
+  background: white;
+}
 
-  .field {
-    background: rgba(196, 196, 196, 0);
-  }
+.subtext {
+  line-height: normal;
+  font-size: 14px;
+  color: $darkgray;
+  opacity: 0.9;
+}
 
-  .subtext {
-    line-height: normal;
-    font-size: 14px;
+.email-field {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
 
-    color: $darkgray;
-
-    opacity: 0.9;
-  }
-
-  .email-field {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-
-    a {
-      color: white;
-      background: black;
-      padding: 0px 15px;
-      line-height: 38px;
-    }
+  a {
+    color: white;
+    background: black;
+    padding: 0px 15px;
+    line-height: 38px;
   }
 
   .copy-field {
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
 
     #copyfield {
       background: rgba(196, 196, 196, 0) !important;
@@ -1096,6 +1092,7 @@ textarea {
   .step__card {
     padding-left: 1rem;
     margin-bottom: 2rem;
+    color: white;
   }
 
   @include tabletAndUp() {
