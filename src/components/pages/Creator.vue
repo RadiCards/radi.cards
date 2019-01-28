@@ -277,12 +277,12 @@
                 <div v-if="formData.currency==='DAI'">
                   <p>
                     <strong>Hongbao total value:</strong>
-                    {{formData.valueInETH}}DAI
+                    {{formData.valueInDAI}}DAI
                   </p>
                   <p class="p--smallitalic">
-                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}DAI
+                    Charity: {{(formData.valueInDAI*formData.percentage/100).toFixed(3)}}DAI
                     <br>
-                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}DAI
+                    Recipient: {{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}}DAI
                   </p>
                 </div>
 
