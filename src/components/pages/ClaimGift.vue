@@ -10,6 +10,17 @@
       <b-col cols="12" md="6" class="text-center">
         <h3 v-if="getTransferStatus()==='EMPTY'">Loading Information from blockchain.</h3>
         <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">Getting gift information 🤞</h3>
+        <h3
+          v-if="getTransferStatus()==='READY'"
+        >Ready to claim the gift and transfer to your unlocked wallet!
+          <input
+            type="button"
+            class="button button--fullwidth"
+            @click="claimGift"
+            value="Claim Gift!"
+            style="margin-top:30px"
+          >
+        </h3>
         <h3 v-if="getTransferStatus()==='SUBMITTED'">Transferring card to your unlocked wallet! 🚀</h3>
         <h3
           v-if="getTransferStatus()==='TRANSFERRED'"
@@ -65,9 +76,17 @@ export default {
   mounted() {
     let privateKey = this.$route.params.pk;
     console.log("privateKey", privateKey);
-    this.$store.dispatch(actions.CLAIM_GIFT, { privateKey });
+    this.$store.dispatch(actions.CLAIM_GIFT, { privateKey, execute: false });
   },
-  methods: {}
+  methods: {
+    claimGift() {
+      let privateKey = this.$route.params.pk;
+      this.$store.dispatch(actions.CLAIM_GIFT, {
+        privateKey: privateKey,
+        execute: true
+      });
+    }
+  }
 };
 </script>
 

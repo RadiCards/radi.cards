@@ -692,7 +692,8 @@ const store = new Vuex.Store({
           commit(mutations.SET_DEEP_URL_CARD, allCardInformation);
           if (this.state.ephemeralPrivateKey) {
             dispatch(actions.CLAIM_GIFT, {
-              privateKey: this.state.ephemeralPrivateKey
+              privateKey: this.state.ephemeralPrivateKey,
+              execute: false
             });
           }
         }
@@ -747,7 +748,8 @@ const store = new Vuex.Store({
         }
         if (this.state.ephemeralPrivateKey) {
           dispatch(actions.CLAIM_GIFT, {
-            privateKey: this.state.ephemeralPrivateKey
+            privateKey: this.state.ephemeralPrivateKey,
+            execute: false
           });
         }
       }
@@ -758,7 +760,8 @@ const store = new Vuex.Store({
       state,
       scope
     }, {
-      privateKey
+      privateKey,
+      execute
     }) {
       if (state.ephemeralPrivateKey === null) {
         commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, privateKey);
@@ -799,9 +802,13 @@ const store = new Vuex.Store({
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "CLAIMED"
             });
+          } else {
+            commit(mutations.SET_TRANSFER_STATUS, {
+              status: "READY"
+            });
           }
           // only if the card is in the deposited state and there is an unlocked account do we preform the claim transaction
-          if (state.deepUrlCard.status === 'Deposited' && state.account != null) {
+          if (state.deepUrlCard.status === 'Deposited' && state.account != null && execute) {
             const tx = await contractWithSigner.claimGift(state.account);
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "SUBMITTED",
