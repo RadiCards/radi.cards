@@ -424,7 +424,7 @@
             </p>
             <br>
 
-            <div class="share-box">
+            <!-- <div class="share-box">
               <h2>{{$t("m.shareOthers")}}</h2>
               <br>
               <span class="subtext">{{$t("m.shareOthersEmail")}}</span>
@@ -458,7 +458,7 @@
                   target="_blank"
                 >copy</div>
               </div>
-            </div>
+            </div> -->
 
             <div>
               <button
