@@ -1,32 +1,38 @@
 <template>
   <div id="app">
     <div class="topBar">
-      <div class="row">
-        <div class="col-lg-6 col-md-12">
-          <div v-if="account" style="!important padding-top-1000px">
-            <strong>
-              <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
-              Address:
-            </strong>
-            <clickable-address :eth-address="account"></clickable-address>|
-            <strong>ETH Balance:</strong>
-            {{ethBalanceRound}} |
-            <strong>DAI Balance:</strong>
-            {{daiBalanceRound}}
+      <div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div v-if="account">
+              <strong>
+                <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
+                Address:
+              </strong>
+              <clickable-address :eth-address="account"></clickable-address>|
+              <strong>ETH Balance:</strong>
+              {{ethBalanceRound}} |
+              <strong>DAI Balance:</strong>
+              {{daiBalanceRound}}
+            </div>
+            <div v-if="!account && currentNetwork">Please unlock your web3 wallet!</div>
+            <p style="color:red"
+              v-if="currentNetwork!=='Main Ethereum Network'"
+            >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
           </div>
-        </div>
-        <div class="col-lg-6 col-md-12 text-right">
-          <strong>Language:</strong>
-          <button
-            @click="changeLanguage('english')"
-            :class="['button button--outline', {'isSelected' : language==='english'}]"
-            class="p-1"
-          >ENG 🇬🇧</button>
-          <button
-            @click="changeLanguage('chinese')"
-            :class="['button button--outline', {'isSelected' : language==='chinese'}]"
-            class="p-1"
-          >CHN 🇨🇳</button>
+          <div class="col-lg-4 text-right">
+            <strong>Language:</strong>
+            <button
+              @click="changeLanguage('english')"
+              :class="['button button--outline', {'isSelected' : language==='english'}]"
+              class="p-1"
+            >ENG 🇬🇧</button>
+            <button
+              @click="changeLanguage('chinese')"
+              :class="['button button--outline', {'isSelected' : language==='chinese'}]"
+              class="p-1"
+            >CHN 🇨🇳</button>
+          </div>
         </div>
       </div>
       <div v-if="!account"></div>
@@ -147,7 +153,8 @@ export default {
       "account",
       "usdPrice",
       "ethBalance",
-      "daiBalance"
+      "daiBalance",
+      "currentNetwork"
     ]),
     ethBalanceRound() {
       if (this.ethBalance) {
