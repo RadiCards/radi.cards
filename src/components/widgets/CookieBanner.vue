@@ -9,7 +9,7 @@
         </span>
       </div>
 
-      <input type="button" class="accept-button" value="ACCEPT" @click="hide()">
+      <input type="button" class="accept-button" value="I allow cookies" @click="hide()">
     </div>
   </div>
 </template>
@@ -55,8 +55,8 @@ export default {
 
   .message {
     font-family: Helvetica;
-    line-height: 24px;
-    font-size: 20px;
+    line-height: 20px;
+    font-size: 15px;
     color: #000000;
     display: flex;
     flex-direction: column;
@@ -75,7 +75,8 @@ export default {
     text-align: center;
     background: black;
     color: white;
-    padding: 20px;
+    padding-left: 20px;
+    padding-right: 20px;
   }
 }
 </style>

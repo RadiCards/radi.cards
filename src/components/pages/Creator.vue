@@ -458,8 +458,7 @@
                   target="_blank"
                 >copy</div>
               </div>
-            </div> -->
-
+            </div>-->
             <div>
               <button
                 @click="startOverCreation"
@@ -903,11 +902,9 @@ export default {
 .share-box {
   background: white;
   padding: 20px;
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
 }
 .field {
   background: white;
-  box-shadow: 0 0.25rem 1rem rgba($darkgray, 0.1);
 }
 
 .subtext {
