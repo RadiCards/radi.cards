@@ -137,7 +137,6 @@
           <div class="flex-column">
             <div class="step__title">
               <h4>{{ $t("m.topUp")}}</h4>
-              <p>{{ $t("m.topUpDesc")}}</p>
             </div>
 
             <div class="fieldgroup--radio column">

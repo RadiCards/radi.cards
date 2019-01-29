@@ -1,9 +1,12 @@
 <template>
   <section class="section">
     <h2>{{ $t("m.cardShop")}}</h2>
+    <p class="p--small">{{ $t("m.cardShopSub")}}</p>
     <br>
-    <p>{{ $t("m.cardShopSub")}}</p>
+    <br>
+    <br>
     <h3>{{ $t("m.premiumCards")}}</h3>
+    <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
       <b-col
         cols="6"
@@ -17,8 +20,14 @@
         <card :cdata="card" classes="card--gallery"/>
       </b-col>
     </b-row>
+    <br>
+    <br>
     <hr>
+    <br>
+    <br>
+    <br>
     <h3>{{ $t("m.standardCards")}}</h3>
+    <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
       <b-col
         cols="6"
