@@ -2,6 +2,18 @@
   <div id="app">
     <hr class="m-0 p-0">
     <header>
+      <p class="notice" v-if="!account && currentNetwork">
+        Please unlock your web3 wallet or if you do not have one, go install
+        <a
+          href="https://metamask.io/"
+          target="_blank"
+          style="color: #ff9284"
+        >MetaMask</a>
+      </p>
+      <p
+        class="notice"
+        v-if="currentNetwork!=='Main Ethereum Network'"
+      >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
           <h1>
@@ -10,6 +22,17 @@
         </router-link>
 
         <ul class="navbar-nav">
+          <li class="nav-item">
+            <a href="https://t.me/RadiCards">
+              <img
+                border="0"
+                alt="Radi's Telegram"
+                src="/static/images/telegram.svg"
+                width="25"
+                height="25"
+              >
+            </a>
+          </li>
           <li class="nav-item">
             <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
           </li>
@@ -27,17 +50,6 @@
                 v-if="accountCards.length > 0"
               >{{accountCards.length}}</span>
             </router-link>
-          </li>
-          <li class="nav-item">
-            <a href="https://t.me/RadiCards">
-              <img
-                border="0"
-                alt="Radi's Telegram"
-                src="/static/images/telegram.svg"
-                width="25"
-                height="25"
-              >
-            </a>
           </li>
 
           <li class="nav-item">
@@ -90,11 +102,6 @@
               <strong>DAI Balance:</strong>
               {{daiBalanceRound}}
             </div>
-            <div v-if="!account && currentNetwork">Please unlock your web3 wallet!</div>
-            <p
-              style="color:red"
-              v-if="currentNetwork!=='Main Ethereum Network'"
-            >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
           </div>
         </div>
       </div>
@@ -268,6 +275,22 @@ body {
   font-family: "Helvetica", "Helvetica Neue", "Arial", sans-serif;
   letter-spacing: -0.03rem;
   line-height: 1.25rem;
+}
+// Notification */
+
+.notice {
+  color: $darkred;
+  background: white;
+  font-size: 0.8rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 1rem;
+  box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 35%;
+  margin: auto;
 }
 
 // Selection */
