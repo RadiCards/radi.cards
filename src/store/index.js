@@ -617,9 +617,10 @@ const store = new Vuex.Store({
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
-          let accountCreatedCard =
-            web3.utils.toChecksumAddress(account) ===
-            web3.utils.toChecksumAddress(gifter); //if the current account created the card
+          //if the current account created the card
+          let accountCreatedCard = state.account === null
+            ? false
+            : web3.utils.toChecksumAddress(state.account) === web3.utils.toChecksumAddress(gifter);
           let allCardInformation = {
             ...{
               gifter: gifter,
@@ -668,9 +669,10 @@ const store = new Vuex.Store({
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
-          let accountCreatedCard =
-            web3.utils.toChecksumAddress(state.account) ===
-            web3.utils.toChecksumAddress(gifter); //if the current account created the card
+          //if the current account created the card
+          let accountCreatedCard = state.account === null
+            ? false
+            : web3.utils.toChecksumAddress(state.account) === web3.utils.toChecksumAddress(gifter);
 
           let allCardInformation = {
             ...{

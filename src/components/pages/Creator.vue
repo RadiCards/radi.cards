@@ -577,7 +577,7 @@ export default {
       formData: {
         errors: [],
         card: {},
-        valueInETH: 0.5,
+        valueInETH: 0.02,
         valueInDAI: 60,
         recipient: 0,
         percentage: 5,
