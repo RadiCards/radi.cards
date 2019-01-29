@@ -88,6 +88,10 @@ p {
     font-weight: bold;
     margin-bottom: 10px;
   }
+  &.p--tiny {
+    font-size: 0.3rem;
+    font-weight: lighter;
+  }
 }
 
 // Blockquote

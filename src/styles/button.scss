@@ -30,6 +30,7 @@
     color: $white;
   }
 
+
   // Appearance
   &--subtle {
     background-color: rgba($darkgray, 0.05);
@@ -43,6 +44,28 @@
       color: $darkgray;
     }
   }
+
+  &--tiny {
+    background-color: white;
+    border: 0;
+    color: $darkgray;
+    padding:0.3rem;    
+    font-size: 0.9rem;
+
+    &:hover {
+      background: rgba($darkgray, 0);
+      color: black;
+    }
+    &:visited {
+      color: white;
+    }
+    &.isSelected {
+      background: $white;
+      color: black;
+      font-weight: bolder;
+    }
+  }
+  
   &--reveal {
     background: transparent;
     border: 2px solid transparent;
@@ -55,7 +78,7 @@
     &.btn--subtle,
     &.button--subtle {
       &:hover {
-        background: rgba($darkgray, 0.05);
+        background: rgba($darkgray, 0.5);
         border-color: transparent;
       }
     }
@@ -85,7 +108,7 @@
   }
   &--small {
     padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
+    font-size: 0.5rem;
 
     &.btn--outline,
     &.button--outline {

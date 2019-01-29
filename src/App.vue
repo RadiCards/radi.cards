@@ -1,42 +1,5 @@
 <template>
   <div id="app">
-    <div class="topBar">
-      <div>
-        <div class="row">
-          <div class="col-lg-8">
-            <div v-if="account">
-              <strong>
-                <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
-                Address:
-              </strong>
-              <clickable-address :eth-address="account"></clickable-address>|
-              <strong>ETH Balance:</strong>
-              {{ethBalanceRound}} |
-              <strong>DAI Balance:</strong>
-              {{daiBalanceRound}}
-            </div>
-            <div v-if="!account && currentNetwork">Please unlock your web3 wallet!</div>
-            <p style="color:red"
-              v-if="currentNetwork!=='Main Ethereum Network'"
-            >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
-          </div>
-          <div class="col-lg-4 text-right">
-            <strong>Language:</strong>
-            <button
-              @click="changeLanguage('english')"
-              :class="['button button--outline', {'isSelected' : language==='english'}]"
-              class="p-1"
-            >ENG 🇬🇧</button>
-            <button
-              @click="changeLanguage('chinese')"
-              :class="['button button--outline', {'isSelected' : language==='chinese'}]"
-              class="p-1"
-            >CHN 🇨🇳</button>
-          </div>
-        </div>
-      </div>
-      <div v-if="!account"></div>
-    </div>
     <hr class="m-0 p-0">
     <header>
       <nav class="navbar navbar-expand-md">
@@ -76,6 +39,20 @@
               >
             </a>
           </li>
+
+          <li class="nav-item">
+            <div class="col-lg-12 text-right">
+              <button
+                @click="changeLanguage('english')"
+                :class="['button button--tiny', {'isSelected' : language==='english'}]"
+              >EN</button>
+              
+              <button
+                @click="changeLanguage('chinese')"
+                :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
+              >CN</button>
+            </div>
+          </li>
           <!-- <li class="nav-item">
             <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
               Send a card
@@ -98,7 +75,31 @@
     <main role="main">
       <router-view></router-view>
     </main>
-
+    <div class="topBar">
+      <div>
+        <div class="row">
+          <div class="col-lg-8">
+            <div v-if="account">
+              <strong>
+                <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
+                Address:
+              </strong>
+              <clickable-address :eth-address="account"></clickable-address>|
+              <strong>ETH Balance:</strong>
+              {{ethBalanceRound}} |
+              <strong>DAI Balance:</strong>
+              {{daiBalanceRound}}
+            </div>
+            <div v-if="!account && currentNetwork">Please unlock your web3 wallet!</div>
+            <p
+              style="color:red"
+              v-if="currentNetwork!=='Main Ethereum Network'"
+            >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
+          </div>
+        </div>
+      </div>
+      <div v-if="!account"></div>
+    </div>
     <footer class="footer container-fluid mt-5">
       <div class="row">
         <div class="col text-left">
@@ -340,7 +341,7 @@ footer {
   padding-left: 20px;
   padding-right: 20px;
   padding-top: 10px;
-  padding-bottom: 10px;
+  padding-bottom: 5px;
   margin-bottom: 0;
 }
 
