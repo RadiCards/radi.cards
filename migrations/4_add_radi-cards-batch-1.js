@@ -39,14 +39,14 @@ module.exports = async (deployer, network, accounts) => {
     "Qmd16ovvFnvarp4fvXrWpLgPNsMEUJ3tMTMyhsmfbsNbMr",
     true,
     0,
-    0,
+    "1000000000000000000",
     { from: account }
   );
   await contract.addCard(
     2,
     "QmQjkpEFWEWQz4KxUmG8U3hrJe5KmCTyWCVVXAjcQJST2N",
     true,
-    10,
+    0,
     "1000000000000000000",
     { from: account }
   );
