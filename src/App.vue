@@ -114,11 +114,6 @@
               <strong>DAI Balance:</strong>
               {{daiBalanceRound}}
             </div>
-            <div v-if="!account && currentNetwork">Please unlock your web3 wallet!</div>
-            <p
-              style="color:red"
-              v-if="currentNetwork && currentNetwork!=='Main Ethereum Network'"
-            >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
           </div>
         </div>
       </div>
