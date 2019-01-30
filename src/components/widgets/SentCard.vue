@@ -4,7 +4,7 @@
   <div :class="['SentCard', {'isExpanded': expanded}]" v-if="wallet">
     <div class="SentCard__heading" @click="toggleDetail">
       <figure class="SentCard__img">
-        <img :src="wallet.card.image">
+        <img v-if="wallet" :src="wallet.card.image">
       </figure>
       <h6 class="SentCard__name mt-2">
         You sent a card on {{wallet.time}}
