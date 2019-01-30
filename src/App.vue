@@ -72,6 +72,66 @@
             </router-link>
           </li>-->
         </ul>
+
+        <div class="navbar-hamburger" @click="togglePopover()">
+          <img src="/static/icons/hamburger.svg">
+        </div>
+
+        <div class="navbar-popover" v-if="showNavPopover">
+          <ul>
+            <li class="nav-item nav-close" @click="togglePopover()">
+              <img src="/static/icons/cross.svg">
+            </li>
+            <li class="nav-item">
+              <a href="https://t.me/RadiCards">
+                <img
+                  border="0"
+                  alt="Radi's Telegram"
+                  src="/static/images/telegram.svg"
+                  width="25"
+                  height="25"
+                >
+              </a>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'charity' }" class="nav-link">Charity</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+            </li>
+            <li class="nav-item">
+              <router-link :to="{ name: 'account' }" class="nav-link">
+                Your cards
+                <span
+                  class="ml-1 badge badge-primary"
+                  v-if="accountCards.length > 0"
+                >{{accountCards.length}}</span>
+              </router-link>
+            </li>
+
+            <li class="nav-item">
+              <div class="col-lg-12 text-right">
+                <button
+                  @click="changeLanguage('english')"
+                  :class="['button button--tiny', {'isSelected' : language==='english'}]"
+                >EN</button>
+                
+                <button
+                  @click="changeLanguage('chinese')"
+                  :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
+                >CN</button>
+              </div>
+            </li>
+            <!-- <li class="nav-item">
+              <router-link :to="{ name: 'create' }" class="btn btn-lg btn-outline-primary">
+                Send a card
+              </router-link>
+            </li>-->
+          </ul>
+        </div>
       </nav>
     </header>
     <div class="container-fluid mt-5" v-if="!web3Detected">
@@ -141,7 +201,8 @@ export default {
   data() {
     return {
       web3Detected: true,
-      language: "english"
+      language: "english",
+      showNavPopover: false
     };
   },
   methods: {
@@ -153,6 +214,9 @@ export default {
       if (newLanguage === "chinese") {
         this.$i18n.locale = "zh";
       }
+    },
+    togglePopover() {
+      this.showNavPopover = !this.showNavPopover;
     }
   },
   computed: {
