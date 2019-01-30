@@ -373,6 +373,10 @@ header {
   max-width: $maxWidth;
   margin: 0 auto;
   padding: 1.25rem;
+
+  @include tabletAndDown() {
+    max-width: 100%;
+  }
 }
 
 // Main
