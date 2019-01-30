@@ -23,8 +23,10 @@
               <h4>{{ $t("m.customiseCard")}}</h4>
               <p>{{ $t("m.customiseCardDesc")}}</p>
             </div>
-
-            <span class="input-label">{{ $t("m.addMessage")}}</span>
+            <div class="input-label">
+              <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
+              {{ $t("m.addMessage")}}
+            </div>
             <b-form-textarea
               id="textarea"
               class="field"
@@ -33,8 +35,6 @@
               :rows="3"
               :max-rows="6"
             ></b-form-textarea>
-
-            <br>
 
             <br>
             <input
@@ -956,11 +956,11 @@ export default {
 }
 
 .input-label {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  margin-top: 0.675rem;
-  display: inline-block;
-  color: $darkgray;
+  font-size: 0.79rem;
+  color: $darkred;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 0.15rem;
 }
 input,
 textarea {
