@@ -160,7 +160,7 @@
                     >
                     <p
                       class="p--smallitalic"
-                    >≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB</p>
+                    >{{equivalentFiatCost(formData.valueInETH)}}USD / {{equivalentCynCost(formData.valueInETH)}}RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
@@ -261,47 +261,89 @@
             <div class="step__title">
               <h4>{{ $t("m.ready")}}</h4>
               <p>{{ $t("m.readyDesc")}}</p>
-              <br>
-              <br>
               <div class="flex-column">
-                <div v-if="formData.currency==='ETH'">
-                  <h5>
-                    Card cost
-                    {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB
-                  </h5>
-                  <br>
-                  <h5>
-                    Top-up money
-                    {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
-                  </h5>
-                  <br>
-                  <hr>
-                  <br>
-                  <h5>Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}RMB</h5>
-                </div>
-
-                <div v-if="formData.currency==='DAI'">
-                  <h5>Card cost</h5>
-                  {{formData.valueInDAI}}DAI
-                  <h5>Charity: {{(formData.valueInDAI*formData.percentage/100).toFixed(3)}}DAI</h5>
-                  <br>
-                  Recipient: {{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}}DAI
-                </div>
-
                 <div v-if="formData.sendingMethod==='Self'">
-                  <h5>Recipient:</h5>my ETH wallet
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to my ETH wallet
+                    </div>
+                  </div>
                   <h5>{{formData.recipient}}</h5>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
-                  <h5>Recipient: other ETH address</h5>
-
-                  <p class="p--smallitalic">{{formData.recipient}}</p>
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to ETH address
+                    </div>
+                  </div>
+                  <h5>{{formData.recipient}}</h5>
                 </div>
+                <br>
                 <div v-if="formData.sendingMethod==='QR'">
-                  <h5>
-                    <h5>Recipient:</h5>email, WeChat or other chat apps
-                  </h5>
-                  <h5>QR code will be generated in next step.</h5>
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent via email, WeChat or other chat apps
+                    </div>
+                  </div>
+                  <br>
+                </div>
+                <br>
+                <div v-if="formData.currency==='ETH'">
+                  <h5 class="alignleft">Card cost</h5>
+                  <h5 class="alignright">{{formData.valueInETH}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost(formData.valueInETH)}} $ / {{equivalentCynCost(formData.valueInETH)}} ¥</div>
+                  </div>
+
+                  <br>
+                  <br>
+                  <h5 class="alignleft">Top-up money</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <hr>
+                  <br>
+                  <h5 class="alignleft">Charity</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*formData.percentage/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} ¥</div>
+                  </div>
+                </div>
+
+                <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">Card cost</h5>
+                  <h5 class="alignright">{{formData.valueInDAI}} DAI</h5>
+                  <br>
+                  <h5 class="alignleft">Charity</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</div>
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <h4 class="alignleft">Total</h4>
+                  <h4 class="alignright">XXX ETH</h4>
                 </div>
 
                 <!-- <strong>Card Message:</strong>
@@ -415,9 +457,7 @@
               <div class="qr-link">
                 <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
               </div>
-              <div class="claim-url">
-                https://radi.cards/claim/{{ephemeralPrivateKey}}
-              </div>
+              <div class="claim-url">https://radi.cards/claim/{{ephemeralPrivateKey}}</div>
               <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
@@ -962,12 +1002,23 @@ export default {
 }
 
 .input-label {
-  font-size: 0.79rem;
+  font-size: 0.9rem;
   color: $darkred;
   text-align: left;
   width: 100%;
   padding-bottom: 0.15rem;
 }
+.input-label-currency {
+  font-size: 0.8rem;
+  color: $gray;
+  background-color: $greylightest;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 0.5rem;
+}
+
 input,
 textarea {
   margin-bottom: 1rem;
@@ -1175,5 +1226,13 @@ textarea {
 
 .small-address {
   font-size: 0.6rem;
+}
+
+// Confirmation
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
 }
 </style>
