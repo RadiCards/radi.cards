@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from "vuex";
 import axios from "axios";
 import Web3 from "web3";
+import createPersistedState from "vuex-persistedstate";
 import {
   Wallet,
   providers,
@@ -22,7 +23,7 @@ import _ from "lodash";
 
 import truffleContract from "truffle-contract";
 import RadiCardsABI from "../../build/contracts/RadiCards.json";
-import DaiERC20ABI from "../../build/contracts/ERC20.json"
+import DaiERC20ABI from "../../build/contracts/ERC20.json";
 
 const RadiCards = truffleContract(RadiCardsABI);
 const DaiErc20 = truffleContract(DaiERC20ABI);
@@ -30,7 +31,13 @@ const DaiErc20 = truffleContract(DaiERC20ABI);
 Vue.use(Vuex);
 
 const store = new Vuex.Store({
-  plugins: [createLogger()],
+  plugins: [
+    createLogger(),
+    createPersistedState({
+      key: "Radicards",
+      paths: ["ephemeralWallets"]
+    })
+  ],
   state: {
     web3: null,
     contract: null,
@@ -61,7 +68,8 @@ const store = new Vuex.Store({
     daiContractAddress: null,
     daiBalance: 0,
     daiAllowance: 0,
-    ephemeralPrivateKey: null
+    ephemeralPrivateKey: null,
+    ephemeralWallets: []
   },
   getters: {
     getGiftingStatus: state => (from, cardIndex) => {
@@ -129,6 +137,9 @@ const store = new Vuex.Store({
     [mutations.SET_EPHEMERAL_ADDRESS_FEE](state, ephemeralAddressFee) {
       state.ephemeralAddressFee = ephemeralAddressFee;
     },
+    [mutations.ADD_EPHEMERAL_WALLET](state, ephemeralWallet) {
+      state.ephemeralWallets.push(ephemeralWallet);
+    },
     [mutations.SET_ACCOUNT_CARDS](state, accountCards) {
       state.accountCards = accountCards;
     },
@@ -164,7 +175,9 @@ const store = new Vuex.Store({
         cardIndex,
         from
       } = data;
-      var arrayIndex = `${state.web3.utils.toChecksumAddress(from)}_${cardIndex}`;
+      var arrayIndex = `${state.web3.utils.toChecksumAddress(
+        from
+      )}_${cardIndex}`;
       const newState = {
         // ...state.giftingStatus[arrayIndex],
         ...data
@@ -177,7 +190,7 @@ const store = new Vuex.Store({
     },
     [mutations.CLEAR_GIFT_STATUS](state) {
       Vue.set(state, `giftingStatus`, {});
-    },
+    }
   },
   actions: {
     [actions.GET_CURRENT_NETWORK]: function ({
@@ -235,19 +248,31 @@ const store = new Vuex.Store({
           commit(mutations.SET_ACCOUNT, account);
         }
 
-        let ethBalance = web3.utils.fromWei((await web3.eth.getBalance(account)), 'ether');
+        let ethBalance = web3.utils.fromWei(
+          await web3.eth.getBalance(account),
+          "ether"
+        );
         if (state.ethBalance !== ethBalance) {
           commit(mutations.SET_ACCOUNT_ETH_BALANCE, ethBalance);
         }
         let contract = await RadiCards.deployed();
         let daiContract = await DaiErc20.at(state.daiContractAddress);
 
-        let daiBalance = web3.utils.fromWei((await daiContract.balanceOf(state.account)).toString("10"), 'ether');
+        let daiBalance = web3.utils.fromWei(
+          (await daiContract.balanceOf(state.account)).toString("10"),
+          "ether"
+        );
         if (state.daiBalance !== daiBalance) {
           commit(mutations.SET_ACCOUNT_DAI_BALANCE, daiBalance);
         }
 
-        let daiAllowance = web3.utils.fromWei((await daiContract.allowance(state.account, contract.address)).toString("10"), 'ether');
+        let daiAllowance = web3.utils.fromWei(
+          (await daiContract.allowance(
+            state.account,
+            contract.address
+          )).toString("10"),
+          "ether"
+        );
         if (state.daiAllowance !== daiAllowance) {
           commit(mutations.SET_ACCOUNT_DAI_ALLOWANCE, daiAllowance);
         }
@@ -257,34 +282,52 @@ const store = new Vuex.Store({
           commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
         }
 
-        let currentEthPriceInUSD = web3.utils.fromWei((await contract.getEtherPrice()).toString("10"), 'ether');
+        let currentEthPriceInUSD = web3.utils.fromWei(
+          (await contract.getEtherPrice()).toString("10"),
+          "ether"
+        );
         if (state.usdPrice !== currentEthPriceInUSD) {
           commit(mutations.SET_USD_PRICE, currentEthPriceInUSD);
         }
 
-        let totalGiftedInEth = web3.utils.fromWei((await contract.totalGiftedInWei()).toString("10"), 'ether');
+        let totalGiftedInEth = web3.utils.fromWei(
+          (await contract.totalGiftedInWei()).toString("10"),
+          "ether"
+        );
         if (state.giftedInEth !== totalGiftedInEth) {
-          commit(mutations.SET_TOTAL_GIFTED_IN_ETH, totalGiftedInEth)
+          commit(mutations.SET_TOTAL_GIFTED_IN_ETH, totalGiftedInEth);
         }
 
-        let totalDonatedInEth = web3.utils.fromWei((await contract.totalDonatedInWei()).toString("10"), 'ether');
+        let totalDonatedInEth = web3.utils.fromWei(
+          (await contract.totalDonatedInWei()).toString("10"),
+          "ether"
+        );
         if (state.donatedInEth !== totalDonatedInEth) {
-          commit(mutations.SET_TOTAL_DONATED_IN_ETH, totalDonatedInEth)
+          commit(mutations.SET_TOTAL_DONATED_IN_ETH, totalDonatedInEth);
         }
-        let totalGiftedInDai = web3.utils.fromWei((await contract.totalGiftedInAtto()).toString("10"), 'ether');
+        let totalGiftedInDai = web3.utils.fromWei(
+          (await contract.totalGiftedInAtto()).toString("10"),
+          "ether"
+        );
 
         if (state.giftedInDai !== totalGiftedInDai) {
-          commit(mutations.SET_TOTAL_GIFTED_IN_DAI, totalGiftedInDai)
+          commit(mutations.SET_TOTAL_GIFTED_IN_DAI, totalGiftedInDai);
         }
 
-        let totalDonatedInDai = web3.utils.fromWei((await contract.totalDonatedInAtto()).toString("10"), 'ether');
+        let totalDonatedInDai = web3.utils.fromWei(
+          (await contract.totalDonatedInAtto()).toString("10"),
+          "ether"
+        );
         if (state.donatedInDai !== totalDonatedInDai) {
-          commit(mutations.SET_TOTAL_DONATED_IN_DAI, totalDonatedInDai)
+          commit(mutations.SET_TOTAL_DONATED_IN_DAI, totalDonatedInDai);
         }
 
-        let ephemeralAddressFee = web3.utils.fromWei((await contract.EPHEMERAL_ADDRESS_FEE()).toString("10"), 'ether');
+        let ephemeralAddressFee = web3.utils.fromWei(
+          (await contract.EPHEMERAL_ADDRESS_FEE()).toString("10"),
+          "ether"
+        );
         if (state.ephemeralAddressFee !== ephemeralAddressFee) {
-          commit(mutations.SET_EPHEMERAL_ADDRESS_FEE, ephemeralAddressFee)
+          commit(mutations.SET_EPHEMERAL_ADDRESS_FEE, ephemeralAddressFee);
         }
       };
 
@@ -328,9 +371,9 @@ const store = new Vuex.Store({
         giftAmount,
         claimableLink,
         transactionValue
-      )
+      );
 
-      console.log("store mint dispatch")
+      console.log("store mint dispatch");
 
       const contract = await state.contract.deployed();
       const daiContract = await DaiErc20.at(state.daiContractAddress);
@@ -344,26 +387,41 @@ const store = new Vuex.Store({
 
       if (claimableLink) {
         let ephemeralAccount = web3.eth.accounts.create();
-        console.log("generating ephemeralAccount")
+        console.log("generating ephemeralAccount");
         console.log(ephemeralAccount);
         recipient = ephemeralAccount.address;
-        commit(mutations.SET_EPHEMERAL_PRIVATE_KEY, ephemeralAccount.privateKey)
+        commit(
+          mutations.SET_EPHEMERAL_PRIVATE_KEY,
+          ephemeralAccount.privateKey
+        );
       }
 
       // if the donation is in dai we must check that they have a sufficient approved allowance to gift the card
-      if (currency === "DAI" && (donationAmount + giftAmount) > state.daiAllowance) {
-        console.log("Insufficient allowance. requesting increase")
-        let requiredApproval = parseFloat(donationAmount) + parseFloat(giftAmount) + parseFloat(state.daiAllowance)
-        let requiredApprovalAtto = web3.utils.toWei(requiredApproval.toString(), "ether")
-        let approvalTransaction = await daiContract.approve(contract.address, requiredApprovalAtto, {
-          from: state.account,
-          value: 0
-        })
+      if (
+        currency === "DAI" &&
+        donationAmount + giftAmount > state.daiAllowance
+      ) {
+        console.log("Insufficient allowance. requesting increase");
+        let requiredApproval =
+          parseFloat(donationAmount) +
+          parseFloat(giftAmount) +
+          parseFloat(state.daiAllowance);
+        let requiredApprovalAtto = web3.utils.toWei(
+          requiredApproval.toString(),
+          "ether"
+        );
+        let approvalTransaction = await daiContract.approve(
+          contract.address,
+          requiredApprovalAtto, {
+            from: state.account,
+            value: 0
+          }
+        );
       }
       //submit the tx. using sendTransaction as this returns a tx hash as soon as the tx is submitted.
       // if rejected, catch in fail
       try {
-        let transaction
+        let transaction;
         switch (currency) {
           case "ETH":
             transaction = await contract.gift.sendTransaction(
@@ -403,7 +461,7 @@ const store = new Vuex.Store({
         });
       } catch (e) {
         console.log("rejection/error");
-        console.log(e)
+        console.log(e);
         commit(mutations.SET_GIFT_STATUS, {
           status: "FAILURE",
           from: state.account,
@@ -413,28 +471,36 @@ const store = new Vuex.Store({
       //if the link was set to claimable then we need to listen for the contract address
       //receiving the card
       if (claimableLink) {
-        recipient = contract.address
+        recipient = contract.address;
       }
 
       const blockNumber = await state.web3.eth.getBlockNumber();
-
-
-      console.log("CC")
-      console.log(contract)
       await contract.CardGifted({
         filter: {
           _from: `0x0`,
           _to: recipient
         },
         fromBlock: blockNumber
-      }, (error, event) => {
-        console.log(event, error)
+      },
+      (error, event) => {
         if (event) {
           commit(mutations.SET_GIFT_STATUS, {
             status: "SUCCESS",
             from: state.account,
             cardIndex: cardIndex,
+            tokenId: event.args._tokenId.toNumber(10)
           });
+          //lastly we must store the card we just created in the localstoreage
+          let tokenId = event.args._tokenId.toNumber(10);
+          let ephemeralWalletObject = {
+            key: this.state.ephemeralPrivateKey,
+            recipient: recipient,
+            address: recipient,
+            time: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            tokenId: event.args._tokenId.toNumber(10),
+            value: transactionValue
+          };
+          commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
         }
         if (error) {
           commit(mutations.SET_GIFT_STATUS, {
@@ -443,61 +509,69 @@ const store = new Vuex.Store({
             cardIndex: cardIndex
           });
         }
-      })
-      //   .on('data', (event) => {
-      //   console.log(event); // same results as the optional callback above
-      // })
-      // .on('changed', (event) => {
-      //   // remove event from local database
-      //   consol.log(event)
-      // })
-      // .on('error', console.error);
+      }
+      );
+    },
+    [actions.GET_ACCOUNT_GIFT_STATUS]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
+      let sentTokenIds = [];
+      state.ephemeralWallets.forEach(function (wallet) {
+        sentTokenIds.push(wallet.tokenId);
+      });
 
-
-      // const blockNumber = await state.web3.eth.getBlockNumber();
-      // console.log("bn")
-      // console.log(blockNumber)
-      // Watch for the transfer event from ZERO address to the recipient immediately after
-      // const transferEvent = await contract.CardGifted({
-      //   _from: `0x0`,
-      //   _to: recipient,
-      // }, {
-      //   fromBlock: blockNumber,
-      //   toBlock: "latest" // wait until event comes through
-      // });
-      // console.log(transferEvent)
-
-      // transferEvent.watch(function (error, event) {
-      //   if (!error) {
-      //     console.log("Transfer event found", event);
-      //     const {
-      //       args
-      //     } = event;
-      //     const {
-      //       _from,
-      //       _to,
-      //       _tokenId
-      //     } = args;
-      //     commit(mutations.SET_GIFT_STATUS, {
-      //       status: "SUCCESS",
-      //       from: state.account,
-      //       cardIndex: cardIndex,
-      //       tokenId: _tokenId
-      //     });
-
-      //     dispatch(actions.LOAD_ACCOUNT_CARDS, {
-      //       account: state.account
-      //     });
-      //   } else {
-      //     console.log("failure", error);
-      //     commit(mutations.SET_GIFT_STATUS, {
-      //       status: "FAILURE",
-      //       from: state.account,
-      //       cardIndex: cardIndex
-      //     });
-      //     transferEvent.stopWatching();
-      //   }
-      // });
+      const contract = await state.contract.deployed();
+      const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id));
+      let tokenDetailsArray = await Promise.all(tokenDetails);
+      let loopIndex = 0;
+      tokenDetailsArray.forEach(function (accountToken) {
+        let gifter = accountToken[0];
+        let message = accountToken[1];
+        let daiDonation = accountToken[2];
+        let giftAmount = accountToken[3].toNumber();
+        let donationAmount = accountToken[4].toNumber();
+        let status = accountToken[5].toNumber();
+        let cardIndex = accountToken[6];
+        let benefactorIndex = accountToken[7].toNumber();
+        let tokenId = sentTokenIds[loopIndex];
+        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"];
+        let decodedStatus = statuses[status];
+        if (state.cards) {
+          let cardInformation = state.cards.filter(card => {
+            return card.cardIndex === cardIndex.toNumber();
+          });
+          //if the current account created the card
+          let accountCreatedCard = false;
+          if (state.account) {
+            accountCreatedCard =
+              web3.utils.toChecksumAddress(state.account) ===
+              web3.utils.toChecksumAddress(gifter);
+          }
+          let allCardInformation = {
+            ...{
+              gifter: gifter,
+              message: message,
+              daiDonation: daiDonation,
+              giftAmount: giftAmount / 1000000000000000000,
+              donationAmount: donationAmount / 1000000000000000000,
+              status: decodedStatus,
+              cardIndex: cardIndex,
+              BenefactorIndex: benefactorIndex,
+              accountCreatedCard: accountCreatedCard,
+              tokenId: tokenId
+            },
+            ...cardInformation[0]
+          };
+          state.ephemeralWallets.map((wallet, index) => {
+            if (wallet.tokenId === tokenId) {
+              state.ephemeralWallets[index]["card"] = allCardInformation;
+            }
+          });
+        }
+        loopIndex++;
+      });
     },
     [actions.TRANSFER_CARD]: async function ({
       commit,
@@ -567,12 +641,14 @@ const store = new Vuex.Store({
       //     }
       //   );
       axios
-        .get("http://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y")
+        .get(
+          "http://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y"
+        )
         .then(
           response => {
-            let currentUSDtoCYN = response.data['CNY_USD']['val'];
-            console.log("PPP")
-            console.log(response.data['CNY_USD']['val']);
+            let currentUSDtoCYN = response.data["CNY_USD"]["val"];
+            console.log("PPP");
+            console.log(response.data["CNY_USD"]["val"]);
             commit(mutations.SET_CYN_PRICE, currentUSDtoCYN);
           },
           response => {
@@ -611,16 +687,19 @@ const store = new Vuex.Store({
         let cardIndex = accountToken[6];
         let benefactorIndex = accountToken[7].toNumber();
         let tokenId = tokenIds[loopIndex].toNumber();
-        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
-        let decodedStatus = statuses[status]
+        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"];
+        let decodedStatus = statuses[status];
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
           //if the current account created the card
-          let accountCreatedCard = state.account === null
-            ? false
-            : web3.utils.toChecksumAddress(state.account) === web3.utils.toChecksumAddress(gifter);
+          let accountCreatedCard = false;
+          if (state.account) {
+            accountCreatedCard =
+              web3.utils.toChecksumAddress(state.account) ===
+              web3.utils.toChecksumAddress(gifter);
+          }
           let allCardInformation = {
             ...{
               gifter: gifter,
@@ -629,7 +708,7 @@ const store = new Vuex.Store({
               giftAmount: giftAmount / 1000000000000000000,
               donationAmount: donationAmount / 1000000000000000000,
               status: decodedStatus,
-              cardInded: cardIndex,
+              cardIndex: cardIndex,
               BenefactorIndex: benefactorIndex,
               accountCreatedCard: accountCreatedCard,
               tokenId: tokenId
@@ -641,6 +720,7 @@ const store = new Vuex.Store({
         loopIndex++;
       });
       commit(mutations.SET_ACCOUNT_CARDS, tokenDetailsArrayProcessed);
+      dispatch(actions.GET_ACCOUNT_GIFT_STATUS);
     },
     [actions.LOAD_DEEP_URL_CARD]: async function ({
       commit,
@@ -663,16 +743,19 @@ const store = new Vuex.Store({
         let status = accountToken[5].toNumber();
         let cardIndex = accountToken[6];
         let benefactorIndex = accountToken[7].toNumber();
-        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"]
-        let decodedStatus = statuses[status]
+        let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"];
+        let decodedStatus = statuses[status];
         if (state.cards) {
           let cardInformation = state.cards.filter(card => {
             return card.cardIndex === cardIndex.toNumber();
           });
           //if the current account created the card
-          let accountCreatedCard = state.account === null
-            ? false
-            : web3.utils.toChecksumAddress(state.account) === web3.utils.toChecksumAddress(gifter);
+          let accountCreatedCard = false;
+          if (state.account) {
+            accountCreatedCard =
+              web3.utils.toChecksumAddress(state.account) ===
+              web3.utils.toChecksumAddress(gifter);
+          }
 
           let allCardInformation = {
             ...{
@@ -682,7 +765,7 @@ const store = new Vuex.Store({
               giftAmount: giftAmount / 1000000000000000000,
               donationAmount: donationAmount / 1000000000000000000,
               status: decodedStatus,
-              cardInded: cardIndex,
+              cardIndex: cardIndex,
               BenefactorIndex: benefactorIndex,
               accountCreatedCard: accountCreatedCard,
               tokenId: tokenId
@@ -698,7 +781,6 @@ const store = new Vuex.Store({
           }
         }
       }
-
     },
     [actions.LOAD_BENEFACTORS]: async function ({
       commit,
@@ -771,26 +853,32 @@ const store = new Vuex.Store({
       } else {
         //load the ephemeral wallet from the private key using ethers.js
         const contract = await state.contract.deployed();
-        let networkId = await window.web3.eth.net.getId()
+        let networkId = await window.web3.eth.net.getId();
         let providerAddress;
         switch (networkId) {
           case 1:
-            providerAddress = "https://mainnet.infura.io"
+            providerAddress = "https://mainnet.infura.io";
             break;
           case 42:
-            providerAddress = "https://kovan.infura.io"
+            providerAddress = "https://kovan.infura.io";
             break;
         }
         const provider = new providers.JsonRpcProvider(providerAddress);
         const transitWallet = new Wallet(privateKey, provider);
 
-        let ethersContract = new Contract(RadiCardsABI['networks'][networkId]["address"], RadiCardsABI['abi'], provider);
+        let ethersContract = new Contract(
+          RadiCardsABI["networks"][networkId]["address"],
+          RadiCardsABI["abi"],
+          provider
+        );
         let contractWithSigner = ethersContract.connect(transitWallet);
 
         // next we grab the card index to check it hasent been claimed before
-        let tokenId = await contract.ephemeralWalletCards(transitWallet.address)
-        console.log("inded")
-        console.log(tokenId.toString())
+        let tokenId = await contract.ephemeralWalletCards(
+          transitWallet.address
+        );
+        console.log("inded");
+        console.log(tokenId.toString());
         if (!state.deepUrlCard) {
           dispatch(actions.LOAD_DEEP_URL_CARD, {
             tokenId: tokenId
@@ -798,7 +886,7 @@ const store = new Vuex.Store({
         }
         // wait until the deep url for the claimable card has been loaded
         if (state.deepUrlCard) {
-          if (state.deepUrlCard.status === 'Claimed') {
+          if (state.deepUrlCard.status === "Claimed") {
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "CLAIMED"
             });
@@ -808,28 +896,42 @@ const store = new Vuex.Store({
             });
           }
           // only if the card is in the deposited state and there is an unlocked account do we preform the claim transaction
-          if (state.deepUrlCard.status === 'Deposited' && state.account != null && execute) {
+          if (
+            state.deepUrlCard.status === "Deposited" &&
+            state.account != null &&
+            execute
+          ) {
             const tx = await contractWithSigner.claimGift(state.account);
             commit(mutations.SET_TRANSFER_STATUS, {
-              status: "SUBMITTED",
-
+              status: "SUBMITTED"
             });
-            console.log("CLAIMING")
-            ethersContract.on("LogClaimGift", (ephemeralAddress, sender, tokenId, receiver, giftAmount, daiDonation, event) => {
-              console.log("ANYTHING IN THIS")
-              console.log(ephemeralAddress);
-              if (transitWallet.address === ephemeralAddress) {
-                commit(mutations.SET_TRANSFER_STATUS, {
-                  status: "TRANSFERRED",
-                });
-                //  once transferred need to reload the account cards
-                commit(mutations.PUSH_ACCOUNT_CARD, state.deepUrlCard)
+            console.log("CLAIMING");
+            ethersContract.on(
+              "LogClaimGift",
+              (
+                ephemeralAddress,
+                sender,
+                tokenId,
+                receiver,
+                giftAmount,
+                daiDonation,
+                event
+              ) => {
+                console.log("ANYTHING IN THIS");
+                console.log(ephemeralAddress);
+                if (transitWallet.address === ephemeralAddress) {
+                  commit(mutations.SET_TRANSFER_STATUS, {
+                    status: "TRANSFERRED"
+                  });
+                  //  once transferred need to reload the account cards
+                  commit(mutations.PUSH_ACCOUNT_CARD, state.deepUrlCard);
+                }
               }
-            });
+            );
           }
         }
       }
-    },
+    }
   }
 });
 async function mapTokenDetails(results, ipfsPrefix, id) {
@@ -839,7 +941,10 @@ async function mapTokenDetails(results, ipfsPrefix, id) {
   dataResp.cardActive = results[1];
   dataResp.cardMinted = results[2].toNumber();
   dataResp.cardMaxQnty = results[3].toNumber();
-  dataResp.cardMinPrice = web3.utils.fromWei(results[4].toString("10"), 'ether');
+  dataResp.cardMinPrice = web3.utils.fromWei(
+    results[4].toString("10"),
+    "ether"
+  );
   return dataResp;
 }
 

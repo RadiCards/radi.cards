@@ -68,6 +68,17 @@
           </b-row>
         </div>
       </div>
+      <hr>
+      <h1>Your Sent Cards</h1>
+      <div class="row mt-2">
+        <div class="col">
+          <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.address">
+            <b-col cols="12" class="pt-3">
+              <sent-card :wallet="wallet"/>
+            </b-col>
+          </b-row>
+        </div>
+      </div>
     </div>
   </section>
 </template>
@@ -77,11 +88,11 @@ import { mapGetters, mapState } from "vuex";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import ClickableAddress from "../widgets/ClickableAddress";
-
+import SentCard from "../widgets/SentCard";
 import Card from "../../components/widgets/Card";
 export default {
   name: "account",
-  components: { ClickableTransaction, ClickableAddress, Card },
+  components: { ClickableTransaction, ClickableAddress, Card, SentCard },
   data() {
     return {
       cardTransferOccured: false,
@@ -89,7 +100,13 @@ export default {
     };
   },
   computed: {
-    ...mapState(["account", "accountCards", "transfers", "cards"]),
+    ...mapState([
+      "account",
+      "accountCards",
+      "transfers",
+      "cards",
+      "ephemeralWallets"
+    ]),
     ...mapGetters(["findTx"])
   },
   mounted() {
