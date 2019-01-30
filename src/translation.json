@@ -31,7 +31,7 @@
       "noWeb3desc": "In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try",
       "customiseCard": "Customise card",
       "customiseCardDesc": "Add message & recipient details",
-      "addMessage": "Add a message (This will be visible on the blockchain)",
+      "addMessage": "This message is uncensorable and will be visible on the blockchain",
       "topUp": "Top-up your card",
       "topUpDesc": "You need to add at least 0.02 ETH (for the gas fee) in order to create a new radicard.",
       "topUpCrypto": "Top-up your radicard with cryptocurrency",

@@ -18,32 +18,34 @@
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
-          <div class="step__info">
-            <div class="step__title">
-              <h4>{{ $t("m.customiseCard")}}</h4>
-              <p>{{ $t("m.customiseCardDesc")}}</p>
+          <div class="flex-column">
+            <div class="step__info">
+              <div class="step__title">
+                <h4>{{ $t("m.customiseCard")}}</h4>
+                <p>{{ $t("m.customiseCardDesc")}}</p>
+              </div>
+              <div class="input-label">
+                <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
+                {{ $t("m.addMessage")}}
+              </div>
+              <b-form-textarea
+                id="textarea"
+                class="field"
+                v-model="formData.message"
+                placeholder="max 128 characters"
+                :rows="3"
+                :max-rows="6"
+              ></b-form-textarea>
+
+              <br>
+              <input
+                type="button"
+                class="button button--fullwidth"
+                :disabled="!formData.message"
+                @click="goToStep(1)"
+                value="NEXT"
+              >
             </div>
-
-            <span class="input-label">{{ $t("m.addMessage")}}</span>
-            <b-form-textarea
-              id="textarea"
-              class="field"
-              v-model="formData.message"
-              placeholder="max 128 characters"
-              :rows="3"
-              :max-rows="6"
-            ></b-form-textarea>
-
-            <br>
-
-            <br>
-            <input
-              type="button"
-              class="button button--fullwidth"
-              :disabled="!formData.message"
-              @click="goToStep(1)"
-              value="NEXT"
-            >
           </div>
         </div>
 
@@ -956,15 +958,16 @@ export default {
 }
 
 .input-label {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  margin-top: 0.675rem;
-  display: inline-block;
-  color: $darkgray;
+  font-size: 0.79rem;
+  color: $darkred;
+  text-align: left;
+  width: 100%;
+  padding-bottom: 0.15rem;
 }
 input,
 textarea {
   margin-bottom: 1rem;
+  width: 100%;
 }
 // textarea {
 //   border: 1px solid $darkgray;
