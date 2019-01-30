@@ -211,7 +211,7 @@
             </div>
 
             <p class="margin">{{ $t("m.donateCharity")}}</p>
-            <select class="margin red-drop" v-model="formData.benefactor">
+            <select class="margin charity-drop" v-model="formData.benefactor">
               <option v-for="item in benefactors" :value="item" v-bind:key="item.name">{{item.name}}</option>
             </select>
             <br>
@@ -889,13 +889,11 @@ export default {
   margin-bottom: 10px;
 }
 
-.red-drop {
-  background: rgba(0, 0, 0, 0);
+.charity-drop {
   color: $darkgray;
   border: 0px solid $darkgray;
   height: 30px;
-  text-align: right;
-  direction: rtl;
+  width: 100%;
 }
 
 .share-box {
