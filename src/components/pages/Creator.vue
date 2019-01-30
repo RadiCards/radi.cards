@@ -409,18 +409,21 @@
               {{$t("m.sendSuccess")}}
               <clickable-address :eth-address="formData.recipient"></clickable-address>
             </p>
-            <p v-if="formData.sendingMethod=='QR'">
+            <div class="qr" v-if="formData.sendingMethod=='QR'">
               {{$t("m.claimableLink")}}
               <br>
-              <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
-              https://radi.cards/claim/{{ephemeralPrivateKey}}
+              <div class="qr-link">
+                <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
+                https://radi.cards/claim/{{ephemeralPrivateKey}}
+              </div>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle"
                 style="margin-top: 0.5rem;"
               >Copy</a>
-            </p>
+            </div>
+
             <br>
 
             <!-- <div class="share-box">
@@ -1017,6 +1020,15 @@ textarea {
   .btn {
     align-self: flex-end;
   }
+}
+
+.btn {
+  white-space: normal;
+}
+
+.qr-link {
+  word-wrap: break-word;
+  padding-right: 1.5rem;
 }
 
 // Steps preview (top)
