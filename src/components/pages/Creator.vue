@@ -262,53 +262,51 @@
               <h4>{{ $t("m.ready")}}</h4>
               <p>{{ $t("m.readyDesc")}}</p>
               <br>
-              <div class="field mt-2 mb-4">
+              <br>
+              <div class="flex-column">
                 <div v-if="formData.currency==='ETH'">
-                  <p>
-                    <strong>Hongbao total value:</strong>
+                  <h5>
+                    Card cost
                     {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB
-                  </p>
-                  <p class="p--smallitalic">
-                    Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}RMB
-                    <br>
-                    Recipient: {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
-                  </p>
+                  </h5>
+                  <br>
+                  <h5>
+                    Top-up money
+                    {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
+                  </h5>
+                  <br>
+                  <hr>
+                  <br>
+                  <h5>Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}RMB</h5>
                 </div>
 
                 <div v-if="formData.currency==='DAI'">
-                  <p>
-                    <strong>Hongbao total value:</strong>
-                    {{formData.valueInDAI}}DAI
-                  </p>
-                  <p class="p--smallitalic">
-                    Charity: {{(formData.valueInDAI*formData.percentage/100).toFixed(3)}}DAI
-                    <br>
-                    Recipient: {{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}}DAI
-                  </p>
+                  <h5>Card cost</h5>
+                  {{formData.valueInDAI}}DAI
+                  <h5>Charity: {{(formData.valueInDAI*formData.percentage/100).toFixed(3)}}DAI</h5>
+                  <br>
+                  Recipient: {{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}}DAI
                 </div>
 
                 <div v-if="formData.sendingMethod==='Self'">
-                  <p>
-                    <strong>Recipient:</strong> my ETH wallet
-                  </p>
-                  <p class="p--smallitalic">{{formData.recipient}}</p>
+                  <h5>Recipient:</h5>my ETH wallet
+                  <h5>{{formData.recipient}}</h5>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
-                  <p>
-                    <strong>Recipient:</strong> other ETH address
-                  </p>
+                  <h5>Recipient: other ETH address</h5>
+
                   <p class="p--smallitalic">{{formData.recipient}}</p>
                 </div>
                 <div v-if="formData.sendingMethod==='QR'">
-                  <p>
-                    <strong>Recipient:</strong> email, WeChat or other chat apps
-                  </p>
-                  <p class="p--smallitalic">QR code will be generated in next step.</p>
+                  <h5>
+                    <h5>Recipient:</h5>email, WeChat or other chat apps
+                  </h5>
+                  <h5>QR code will be generated in next step.</h5>
                 </div>
 
-                <strong>Card Message:</strong>
+                <!-- <strong>Card Message:</strong>
                 <br>
-                <p class="p--smallitalic">{{formData.message}}</p>
+                <p class="p--smallitalic">{{formData.message}}</p>-->
               </div>
               <br>
               <input
