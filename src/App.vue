@@ -356,6 +356,10 @@ body {
   text-align: center;
   width: 35%;
   margin: auto;
+
+  @include tabletAndDown() {
+    width: 90%;
+  }
 }
 
 // Selection */
