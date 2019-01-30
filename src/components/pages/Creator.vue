@@ -414,8 +414,11 @@
               <br>
               <div class="qr-link">
                 <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
+              </div>
+              <div class="claim-url">
                 https://radi.cards/claim/{{ephemeralPrivateKey}}
               </div>
+              <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
                 target="_blank"
@@ -1029,6 +1032,12 @@ textarea {
 .qr-link {
   word-wrap: break-word;
   padding-right: 1.5rem;
+}
+
+.claim-url {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
 }
 
 // Steps preview (top)
