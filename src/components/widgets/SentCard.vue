@@ -7,11 +7,10 @@
         <img :src="wallet.card.image">
       </figure>
       <h6 class="SentCard__name mt-2">
-        You sent a card on {{wallet.time}} to
-        <clickable-address :eth-address="wallet.recipient"></clickable-address>
+        You sent a card on {{wallet.time}}
       </h6>
       <p class="SentCard__value mt-2">
-        Total Value sent with card: {{wallet.card.giftAmount+wallet.card.donationAmount}}
+        Total value sent with card: {{wallet.card.giftAmount+wallet.card.donationAmount}}
         {{(wallet.card.daiDonation)?'DAI':'ETH'}}
       </p>
 

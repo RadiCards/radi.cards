@@ -475,9 +475,6 @@ const store = new Vuex.Store({
       }
 
       const blockNumber = await state.web3.eth.getBlockNumber();
-
-      console.log("CC");
-      console.log(contract);
       await contract.CardGifted({
         filter: {
           _from: `0x0`,
@@ -486,16 +483,14 @@ const store = new Vuex.Store({
         fromBlock: blockNumber
       },
       (error, event) => {
-        console.log(event, error);
         if (event) {
-          console.log("AAAAAA");
-          console.log(event);
           commit(mutations.SET_GIFT_STATUS, {
             status: "SUCCESS",
             from: state.account,
             cardIndex: cardIndex,
             tokenId: event.args._tokenId.toNumber(10)
           });
+          //lastly we must store the card we just created in the localstoreage
           let tokenId = event.args._tokenId.toNumber(10);
           let ephemeralWalletObject = {
             key: this.state.ephemeralPrivateKey,
@@ -524,18 +519,12 @@ const store = new Vuex.Store({
     }) {
       let sentTokenIds = [];
       state.ephemeralWallets.forEach(function (wallet) {
-        console.log("IN for");
-        console.log(wallet);
         sentTokenIds.push(wallet.tokenId);
       });
-      console.log(sentTokenIds);
 
       const contract = await state.contract.deployed();
       const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id));
       let tokenDetailsArray = await Promise.all(tokenDetails);
-      console.log("VAAL");
-      console.log(tokenDetailsArray);
-      let tokenDetailsArrayProcessed = [];
       let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
         let gifter = accountToken[0];
