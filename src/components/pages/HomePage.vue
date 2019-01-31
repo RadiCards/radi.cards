@@ -1,10 +1,10 @@
 
 <template>
   <div class="container">
-    <section class="section section--hero">
-      <blockquote class="blockquote--hero">
-        <h1 class="hero">{{ $t("m.sendHongBao")}}</h1>
-        <h1 class="hero">{{ $t("m.viaWeChat")}}</h1>
+    <section class="section section--hero p-0">
+      <blockquote class="blockquote--hero mb-5">
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.sendHongBao")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.viaWeChat")}}</h1>
 
         <!--- <img src="/static/images/title2.png">
         <br>
@@ -37,7 +37,7 @@
       <br>
 
       <b-row class="steps text-center">
-        <b-col class="" cols="12" sm="12" lg="4">
+        <b-col class cols="12" sm="12" lg="4">
           <img src="/static/images/choose.svg">
           <h5>{{ $t("m.Choose")}}</h5>
           <span>
@@ -46,7 +46,7 @@
             {{ $t("m.artists")}}
           </span>
         </b-col>
-        <b-col class="" cols="12" sm="12" lg="4">
+        <b-col class cols="12" sm="12" lg="4">
           <img src="/static/images/deposit.svg">
           <h5>{{ $t("m.Deposit")}}</h5>
           <span>
@@ -55,7 +55,7 @@
             {{ $t("m.generateHb")}}
           </span>
         </b-col>
-        <b-col class="" cols="12" sm="12" lg="4">
+        <b-col class cols="12" sm="12" lg="4">
           <img src="/static/images/send.svg">
           <h5>{{ $t("m.Send")}}</h5>
           <span>
@@ -269,6 +269,33 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+// h1 {
+//   font-size: 2.5rem !important;
+// }
+// @media (min-width: 544px) {
+//   h1 {
+//     font-size: 0.1rem !important;
+//   }
+// }
+
+// @media (min-width: 768px) {
+//   h1 {
+//     font-size: 1.5rem;
+//   }
+// }
+
+// @media (min-width: 992px) {
+//   h1 {
+//     font-size: 2.0rem;
+//   }
+// }
+
+// @media (min-width: 1200px) {
+//   h1 {
+//     font-size: 2.5rem;
+//   }
+// }
+
 .blockquote--hero {
   img {
     max-width: 100%;
@@ -276,10 +303,24 @@ export default {
 }
 // Page-specific style
 .hero {
-  font-size: 3.9rem;
+  font-size: 2.5rem !important;
   color: $darkgray;
-}
+  @media (min-width: 544px) {
+    font-size: 2.5rem !important;
+  }
 
+  @media (min-width: 768px) {
+    font-size: 3rem !important;
+  }
+
+  @media (min-width: 992px) {
+    font-size: 3.5rem !important;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 4.0rem !important;
+  }
+}
 .section--hero .cheeky-comment {
   position: absolute;
   top: 140%;
