@@ -72,7 +72,7 @@ import * as actions from "./store/actions";
 import * as mutations from "./store/mutation-types";
 import CurrentNetwork from "./components/widgets/CurrentNetwork";
 import ClickableAddress from "./components/widgets/ClickableAddress";
-import { PortisProvider } from "portis";
+import Portis from "@portis/web3";
 
 export default {
   name: "app",
@@ -114,9 +114,11 @@ export default {
       this.$store.dispatch(actions.INIT_APP, window.web3);
     } else {
       console.log("Bootstrapping web app - provider acknowedgled");
-      const provider = new PortisProvider({
-        apiKey: "4416d7928834f658ba93945eac36b71d"
-      });
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     }

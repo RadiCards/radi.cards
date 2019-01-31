@@ -13,7 +13,7 @@
         <a target="__blank" href="https://status.im">Status</a>,
         <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
         <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
-        <a target="__blank" href="https://app.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
+        <a target="__blank" href="https://wallet.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
       </p>
     </div>
     <form v-if="account!=null && account != undefined">
