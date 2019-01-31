@@ -289,18 +289,18 @@
                 </div>
                 <br>
                 <div v-if="formData.currency==='ETH'">
-                  <h5 class="alignleft">Card cost</h5>
+                  <!-- <h5 class="alignleft">Card cost</h5>
                   <h5 class="alignright">{{formData.valueInETH}} ETH</h5>
                   <br>
                   <div class="alignright">
                     <div
                       class="input-label-currency"
                     >{{equivalentFiatCost(formData.valueInETH)}} $ / {{equivalentCynCost(formData.valueInETH)}} ¥</div>
-                  </div>
-
+                  </div>-->
+                  <!--
                   <br>
-                  <br>
-                  <h5 class="alignleft">Top-up money</h5>
+                  <br>-->
+                  <h5 class="alignleft">Recipient Gift</h5>
                   <h5
                     class="alignright"
                   >{{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}} ETH</h5>
@@ -311,7 +311,7 @@
                     >{{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} ¥</div>
                   </div>
                   <br>
-                  <hr>
+                  <!-- <hr> -->
                   <br>
                   <h5 class="alignleft">Charity</h5>
                   <h5
@@ -322,6 +322,18 @@
                     <div
                       class="input-label-currency"
                     >{{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">Claimable link fee</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
                   </div>
                 </div>
 
@@ -343,7 +355,9 @@
                 <hr>
                 <div>
                   <h4 class="alignleft">Total</h4>
-                  <h4 class="alignright">XXX ETH</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee): formData.valueInEth}} ETH</h4>
                 </div>
 
                 <!-- <strong>Card Message:</strong>
