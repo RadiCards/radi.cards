@@ -471,14 +471,22 @@
               <div class="qr-link">
                 <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
               </div>
-              <div class="claim-url">https://radi.cards/claim/{{ephemeralPrivateKey}}</div>
+              <!-- <div class="claim-url">https://radi.cards/claim/{{ephemeralPrivateKey}}</div> -->
+              <a
+                :href="'https://radi.cards/claim/' + ephemeralPrivateKey"
+                target="_blank"
+                class="claim-url"
+              >Your gift claimable link</a>
               <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle"
                 style="margin-top: 0.5rem;"
-              >Copy</a>
+              >Copy link to clipboard</a>
+              <div v-if="copied">
+                <p class="p--smallitalic">Claimable link copied to clipboard!</p>
+              </div>
             </div>
 
             <br>
@@ -655,7 +663,8 @@ export default {
       walletVisible: false,
       response: {
         ipfsHash: null
-      }
+      },
+      copied: false
     };
   },
   computed: {
@@ -795,6 +804,7 @@ export default {
     },
     copyToClipboard(text) {
       this.$copyText(text);
+      this.copied = true;
     },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);

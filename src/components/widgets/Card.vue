@@ -309,8 +309,8 @@ export default {
 
   &.card--gallery {
     @include tabletAndDown() {
-      width: calc(50vw - 1rem);
-      padding: $p_v/1.5 $p_h/2;
+      // width: calc(50vw - 1rem);
+      // padding: $p_v/1.5 $p_h/2;
 
       figcaption {
         max-width: 100%;

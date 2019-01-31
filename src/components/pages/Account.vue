@@ -6,17 +6,17 @@
     </h2>
     <clickable-address :eth-address="account"></clickable-address>
 
-    <div class="row mt-5 mb-5 transferedCard" v-if="cardTransferOccured">
-      <div class="col-2">
+    <b-row class="mt-5 mb-5 transferedCard" v-if="cardTransferOccured">
+      <b-col col="2">
         <img src="/static/icons/success.png" alt style="width: 5rem;">
-      </div>
-      <div class="col-10">
+      </b-col>
+      <b-col col="10">
         <h2>Successfully Transfered!</h2>
         <p>Card was transfered to address {{transferedAddress}}</p>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
-    <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
+    <b-row class="mt-5" v-if="!accountCards || accountCards.length === 0">
       <div class="col text-center">
         <img src="/static/icons/radi-cards.svg" alt class="img--placeholder">
         <br>
@@ -29,55 +29,52 @@
         <br>
         <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
       </div>
-    </div>
+    </b-row>
     <div v-else>
-      <h3>Premium Cards</h3>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters>
-            <b-col
-              cols="6"
-              sm="6"
-              lg="4"
-              v-if="card.cardMaxQnty > 0"
-              v-for="card in accountCards"
-              :key="card.tokenId"
-              class="pt-3"
-            >
-              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
-            </b-col>
-          </b-row>
-        </div>
+      <div v-if="hasPremiumCards">
+        <h3 class="mt-2">Premium Cards</h3>
+        <b-row no-gutters>
+          <b-col
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            v-if="card.cardMaxQnty > 0"
+            v-for="card in accountCards"
+            :key="card.tokenId"
+            class="pt-3"
+          >
+            <card classes="card" @cardTransfered="handelCardTransfered" :cdata="card"/>
+          </b-col>
+        </b-row>
+        <hr>
       </div>
-      <hr>
-      <h3>Standard Cards</h3>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters>
-            <b-col
-              cols="6"
-              sm="6"
-              lg="4"
-              v-if="card.cardMaxQnty == 0"
-              v-for="card in accountCards"
-              :key="card.tokenId"
-              class="pt-3"
-            >
-              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
-            </b-col>
-          </b-row>
-        </div>
+      <div v-if="hasStandardCards">
+        <h3 class="mt-2">Standard Cards</h3>
+
+        <b-row no-gutters>
+          <b-col
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            v-if="card.cardMaxQnty == 0"
+            v-for="card in accountCards"
+            :key="card.tokenId"
+            class="pt-3"
+          >
+            <card classes="card" @cardTransfered="handelCardTransfered" :cdata="card"/>
+          </b-col>
+        </b-row>
+        <hr>
       </div>
-      <hr>
-      <h1>Your Sent Cards</h1>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.address">
-            <b-col cols="12" class="pt-3">
-              <sent-card :wallet="wallet"/>
-            </b-col>
-          </b-row>
-        </div>
+      <div v-if="hasSentCards">
+        <h1 class="mt-2">Your Sent Cards</h1>
+        <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
+          <b-col cols="12" class="pt-3">
+            <sent-card :wallet="wallet"/>
+          </b-col>
+        </b-row>
       </div>
     </div>
   </section>
@@ -107,7 +104,31 @@ export default {
       "cards",
       "ephemeralWallets"
     ]),
-    ...mapGetters(["findTx"])
+    hasPremiumCards() {
+      let hasCard = false;
+      if (this.accountCards) {
+        this.accountCards.forEach(function(card) {
+          if (card.cardMaxQnty > 0) {
+            hasCard = true;
+          }
+        });
+      }
+      return hasCard;
+    },
+    hasStandardCards() {
+      let hasCard = false;
+      if (this.accountCards) {
+        this.accountCards.forEach(function(card) {
+          if (card.cardMaxQnty === 0) {
+            hasCard = true;
+          }
+        });
+      }
+      return hasCard;
+    },
+    hasSentCards() {
+      return this.ephemeralWallets.length > 0;
+    }
   },
   mounted() {
     this.$store.dispatch(actions.RESET_TRANSFER_STATUS);

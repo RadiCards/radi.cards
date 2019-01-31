@@ -1,16 +1,14 @@
 
 
 <template>
-  <div :class="['SentCard', {'isExpanded': expanded}]" v-if="wallet">
+  <div :class="['SentCard', {'isExpanded': expanded}]" v-if="wallet.card">
     <div class="SentCard__heading" @click="toggleDetail">
       <figure class="SentCard__img">
-        <img v-if="wallet" :src="wallet.card.image">
+        <img v-if="wallet.card" :src="wallet.card.image">
       </figure>
-      <h6 class="SentCard__name mt-2">
-        You sent a card on {{wallet.time}}
-      </h6>
+      <h6 class="SentCard__name mt-2">You sent this card {{fromNow}}</h6>
       <p class="SentCard__value mt-2">
-        Total value sent with card: {{wallet.card.giftAmount+wallet.card.donationAmount}}
+        Card Value {{wallet.card.giftAmount+wallet.card.donationAmount}}
         {{(wallet.card.daiDonation)?'DAI':'ETH'}}
       </p>
 
@@ -31,7 +29,7 @@
               <strong>This card's claimable link has no yet been claimed!</strong>
               <br>You can cancel the link and get the funds back or regenerate the claimable link.
               <a
-                @click="copyToClipboard('https://radi.cards/claim/' + wallet.key)"
+                @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
               >Regenerate Claimable Link</a>
@@ -62,19 +60,35 @@ import router from "../../router";
 import Card from "./Card";
 import ClickableAddress from "../widgets/ClickableAddress";
 
+import moment from "moment";
+
 export default {
   name: "SentCard",
   components: { Card, ClickableAddress },
+  date() {
+    return {};
+  },
   props: {
     wallet: {
       type: Object
     }
   },
   computed: {
-    ...mapState(["ClickableAddress", "SentCards", "cards"])
+    ...mapState(["ClickableAddress", "SentCards", "cards"]),
     // cdata() {
     //   return this.cards[this.wallet.cardIndex];
     // }
+    fromNow() {
+      console.log("A");
+      console.log(this.wallet.time);
+      let timeObject = null;
+      if (this.wallet) {
+        timeObject = moment(this.wallet.time, "Do MMMM YYYY, h:mm:ss a");
+        console.log("OBJ");
+        console.log(timeObject);
+      }
+      return timeObject.startOf('day').fromNow()
+    }
   },
   methods: {
     copyToClipboard(text) {

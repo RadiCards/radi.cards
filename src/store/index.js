@@ -493,14 +493,16 @@ const store = new Vuex.Store({
           //lastly we must store the card we just created in the localstoreage
           let tokenId = event.args._tokenId.toNumber(10);
           let ephemeralWalletObject = {
-            key: this.state.ephemeralPrivateKey,
+            privateKey: this.state.ephemeralPrivateKey,
             recipient: recipient,
-            address: recipient,
-            time: moment().format('MMMM Do YYYY, h:mm:ss a'),
+            time: moment().format('Do MMMM YYYY, h:mm:ss a'),
             tokenId: event.args._tokenId.toNumber(10),
             value: transactionValue
           };
           commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
+          commit(mutations.LOAD_ACCOUNT_CARDS, {
+            account: this.state.account
+          });
         }
         if (error) {
           commit(mutations.SET_GIFT_STATUS, {

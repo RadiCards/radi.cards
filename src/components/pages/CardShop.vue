@@ -9,15 +9,16 @@
     <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
       <b-col
-        cols="6"
-        sm="6"
+        cols="12"
+        sm="12"
+        md="6"
         lg="4"
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
         v-if="card.cardMaxQnty > 0"
       >
-        <card :cdata="card" classes="card--gallery"/>
+        <card :cdata="card" classes="card"/>
       </b-col>
     </b-row>
     <br>
@@ -30,15 +31,16 @@
     <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
       <b-col
-        cols="6"
-        sm="6"
+        cols="12"
+        sm="12"
+        md="6"
         lg="4"
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
         v-if="card.cardMaxQnty == 0"
       >
-        <card :cdata="card" classes="card--gallery"/>
+        <card :cdata="card" classes="card"/>
       </b-col>
     </b-row>
 

@@ -36,8 +36,8 @@
       <windy-title v-bind:text="$t('m.send3Steps')"></windy-title>
       <br>
 
-      <div class="steps">
-        <div>
+      <b-row class="steps text-center">
+        <b-col class="" cols="12" sm="12" lg="4">
           <img src="/static/images/choose.svg">
           <h5>{{ $t("m.Choose")}}</h5>
           <span>
@@ -45,8 +45,8 @@
             <br>
             {{ $t("m.artists")}}
           </span>
-        </div>
-        <div>
+        </b-col>
+        <b-col class="" cols="12" sm="12" lg="4">
           <img src="/static/images/deposit.svg">
           <h5>{{ $t("m.Deposit")}}</h5>
           <span>
@@ -54,8 +54,8 @@
             <br>
             {{ $t("m.generateHb")}}
           </span>
-        </div>
-        <div>
+        </b-col>
+        <b-col class="" cols="12" sm="12" lg="4">
           <img src="/static/images/send.svg">
           <h5>{{ $t("m.Send")}}</h5>
           <span>
@@ -66,8 +66,8 @@
           <span>
             <br>
           </span>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
     </section>
     <br>
     <section class="section">
