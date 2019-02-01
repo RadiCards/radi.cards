@@ -289,17 +289,6 @@
                 </div>
                 <br>
                 <div v-if="formData.currency==='ETH'">
-                  <!-- <h5 class="alignleft">Card cost</h5>
-                  <h5 class="alignright">{{formData.valueInETH}} ETH</h5>
-                  <br>
-                  <div class="alignright">
-                    <div
-                      class="input-label-currency"
-                    >{{equivalentFiatCost(formData.valueInETH)}} $ / {{equivalentCynCost(formData.valueInETH)}} ¥</div>
-                  </div>-->
-                  <!--
-                  <br>
-                  <br>-->
                   <h5 class="alignleft">Recipient Gift</h5>
                   <h5
                     class="alignright"
@@ -334,10 +323,77 @@
                         class="input-label-currency"
                       >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
                     </div>
+                    <br>
+                    <br>
+                  </div>
+
+                  <hr>
+                  <h4 class="alignleft">Total</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH.toFixed(3)}} ETH</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? equivalentFiatCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $ / " + equivalentCynCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $": equivalentFiatCost(formData.valueInETH) + " $ / " + equivalentCynCost(formData.valueInETH) + " ¥"}}</div>
                   </div>
                 </div>
 
                 <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">Recipient Gift</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} $ / {{((formData.valueInDAI*(100 - formData.percentage)/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <!-- <hr> -->
+                  <br>
+                  <h5 class="alignleft">Charity</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} $ / {{((formData.valueInDAI*formData.percentage/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">Claimable link fee</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                  <hr>
+                  <h4 class="alignleft">Total</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? parseFloat(ephemeralAddressFee) + " ETH & " + parseFloat(formData.valueInDAI) + " DAI" : parseFloat(formData.valueInDAI) + " DAI"}}</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? (parseFloat(equivalentFiatCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " +(parseFloat(equivalentCynCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " ¥": (parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " + ((parseFloat(formData.valueInDAI))/cynPrice).toFixed(2) + " ¥"}}</div>
+                  </div>
+                </div>
+
+                <!-- <div v-if="formData.currency==='DAI'">
                   <h5 class="alignleft">Card cost</h5>
                   <h5 class="alignright">{{formData.valueInDAI}} DAI</h5>
                   <br>
@@ -354,12 +410,17 @@
                 </div>
                 <hr>
                 <div>
-                  <h4 class="alignleft">Total</h4>
-                  <h4
-                    class="alignright"
-                  >{{formData.sendingMethod==='QR' ? parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee): formData.valueInEth}} ETH</h4>
-                </div>
-
+                  <div v-if="formData.currency==='DAI'">
+                    <h4
+                      v-if="formData.sendingMethod==='QR'"
+                      class="alignright"
+                    >{{parseFloat(ephemeralAddressFee)}} ETH</h4>
+                    <h4
+                      v-if="formData.sendingMethod!=='QR'"
+                      class="alignright"
+                    >{{parseFloat(formData.valueInDAI)}} DAI</h4>
+                  </div>
+                </div>-->
                 <!-- <strong>Card Message:</strong>
                 <br>
                 <p class="p--smallitalic">{{formData.message}}</p>-->
@@ -394,7 +455,7 @@
             <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
             <p
-              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDai"
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
             >{{ $t("m.DAIDisclaimer")}}</p>
           </div>
         </div>
