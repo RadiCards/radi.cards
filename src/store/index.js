@@ -644,7 +644,7 @@ const store = new Vuex.Store({
       //   );
       axios
         .get(
-          "http://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y"
+          "https://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y"
         )
         .then(
           response => {
