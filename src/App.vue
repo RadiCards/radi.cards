@@ -205,7 +205,6 @@ export default {
   },
   methods: {
     changeLanguage(newLanguage) {
-      alert("HIT");
       this.language = newLanguage;
       if (newLanguage === "english") {
         this.$i18n.locale = "en";
