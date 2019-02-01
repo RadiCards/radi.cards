@@ -500,7 +500,7 @@ const store = new Vuex.Store({
             value: transactionValue
           };
           commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
-          commit(mutations.LOAD_ACCOUNT_CARDS, {
+          dispatch(actions.LOAD_ACCOUNT_CARDS, {
             account: this.state.account
           });
         }
@@ -879,8 +879,6 @@ const store = new Vuex.Store({
         let tokenId = await contract.ephemeralWalletCards(
           transitWallet.address
         );
-        console.log("inded");
-        console.log(tokenId.toString());
         if (!state.deepUrlCard) {
           dispatch(actions.LOAD_DEEP_URL_CARD, {
             tokenId: tokenId
@@ -907,7 +905,6 @@ const store = new Vuex.Store({
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "SUBMITTED"
             });
-            console.log("CLAIMING");
             ethersContract.on(
               "LogClaimGift",
               (
@@ -919,8 +916,6 @@ const store = new Vuex.Store({
                 daiDonation,
                 event
               ) => {
-                console.log("ANYTHING IN THIS");
-                console.log(ephemeralAddress);
                 if (transitWallet.address === ephemeralAddress) {
                   commit(mutations.SET_TRANSFER_STATUS, {
                     status: "TRANSFERRED"

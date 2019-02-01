@@ -8,7 +8,7 @@
       </figure>
       <h6 class="SentCard__name mt-2">You sent this card {{fromNow}}</h6>
       <p class="SentCard__value mt-2">
-        Card Value {{wallet.card.giftAmount+wallet.card.donationAmount}}
+        Value {{wallet.card.giftAmount+wallet.card.donationAmount}}
         {{(wallet.card.daiDonation)?'DAI':'ETH'}}
       </p>
 
@@ -25,9 +25,9 @@
             <card :cdata="wallet.card" class="mb-5"/>
           </b-col>
           <b-col cols="12" sm="12" lg="6">
-            <div class="text-center pt-5" v-if="wallet.card.status==='Deposited'">
+            <div class="text-center" v-if="wallet.card.status==='Deposited'">
               <strong>This card's claimable link has no yet been claimed!</strong>
-              <br>You can cancel the link and get the funds back or regenerate the claimable link.
+              You can cancel the link and get the funds back or regenerate the claimable link.
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"

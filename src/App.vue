@@ -2,6 +2,7 @@
   <div id="app">
     <hr class="m-0 p-0">
     <header>
+      {{language}}
       <p class="notice" v-if="!account && currentNetwork">
         Please unlock your web3 wallet or if you do not have one, go install
         <a
@@ -59,7 +60,7 @@
                 @click="changeLanguage('english')"
                 :class="['button button--tiny', {'isSelected' : language==='english'}]"
               >EN</button>
-              
+
               <button
                 @click="changeLanguage('chinese')"
                 :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
@@ -118,7 +119,6 @@
                   @click="changeLanguage('english')"
                   :class="['button button--tiny', {'isSelected' : language==='english'}]"
                 >EN</button>
-                
                 <button
                   @click="changeLanguage('chinese')"
                   :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
@@ -243,6 +243,22 @@ export default {
     }
   },
   async mounted() {
+    try {
+      imToken.callAPI("device.getCurrentLanguage", function(
+        err,
+        languageReturned
+      ) {
+        console.log(err);
+        if (languageReturned === "zh-CN") {
+          this.changeLanguage("chinese");
+        }
+      });
+    } catch (e) {
+      if (navigator.language === "zh-CN") {
+        this.changeLanguage("chinese");
+      }
+    }
+
     if (window.ethereum) {
       window.web3 = new Web3(ethereum);
 
