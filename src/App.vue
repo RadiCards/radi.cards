@@ -383,6 +383,13 @@ body {
   @include tabletAndDown() {
     width: 90%;
   }
+
+  @media (max-width: 630px) {
+    color: #d35443;
+    font-size: 12px;
+    line-height: 14px;
+  }
+
 }
 
 // Selection */

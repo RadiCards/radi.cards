@@ -10,7 +10,6 @@
       </div>
 
       <input type="button" class="accept-button" value="I allow cookies" @click="hide()">
-      <p type="button" class="accept-text" value="I allow cookies" @click="hide()"/>
     </div>
   </div>
 </template>
@@ -87,7 +86,7 @@ export default {
     color: white;
     padding-left: 20px;
     padding-right: 20px;
-    
+
     @media (max-width: 630px) {
       font-size: 10px;
       padding-left: 10px;
