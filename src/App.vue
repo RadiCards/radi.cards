@@ -279,16 +279,24 @@ export default {
     }
   },
   created() {
+    let queryLanguage = this.$route.query.locale
+
     try {
-      imToken.callAPI("device.getCurrentLanguage", function(
-        err,
-        languageReturned
-      ) {
-        console.log(err);
-        if (languageReturned === "zh-CN") {
-          this.changeLanguage("chinese");
-        }
-      });
+      let queryLanguage = this.$route.query.locale
+      console.log(queryLanguage)
+      if (queryLanguage === "zh-CN" || queryLanguage === "zh-Hant-US" || queryLanguage === "zh-Hant-HK" || queryLanguage === "zh-Hant-TW") {
+        this.changeLanguage("chinese");  
+      }
+      
+      // imToken.callAPI("device.getCurrentLanguage", function(
+      //   err,
+      //   languageReturned
+      // ) {
+      //   console.log(err);
+      //   if (languageReturned === "zh-CN") {
+      //     this.changeLanguage("chinese");
+      //   }
+      // });
     } catch (e) {
       if (navigator.language === "zh-CN") {
         this.changeLanguage("chinese");

@@ -28,7 +28,8 @@
             <div class="text-center" v-if="wallet.card.status==='Deposited'">
               <strong>This card's claimable link has no yet been claimed!</strong>
               You can cancel the link and get the funds back or regenerate the claimable link.
-              <a
+              <br>
+              <br><a
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
@@ -87,7 +88,7 @@ export default {
         console.log("OBJ");
         console.log(timeObject);
       }
-      return timeObject.startOf('day').fromNow()
+      return timeObject.startOf('minute').fromNow()
     }
   },
   methods: {
