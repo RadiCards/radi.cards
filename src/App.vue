@@ -35,17 +35,17 @@
             </a>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+            <router-link :to="{ name: 'about' }" class="nav-link">{{ $t("m.about")}}</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'charity' }" class="nav-link">Charity</router-link>
+            <router-link :to="{ name: 'charity' }" class="nav-link">{{ $t("m.charity")}}</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+            <router-link :to="{ name: 'cardshop' }" class="nav-link">{{ $t("m.cardShop")}}</router-link>
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
-              Your cards
+              {{ $t("m.myCards")}}
               <span
                 class="ml-1 badge badge-primary"
                 v-if="accountCards.length > 0"
@@ -63,7 +63,7 @@
               <button
                 @click="changeLanguage('chinese')"
                 :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
-              >CN</button>
+              >中文</button>
             </div>
           </li>
           <!-- <li class="nav-item">
@@ -285,9 +285,9 @@ export default {
       let queryLanguage = this.$route.query.locale
       console.log(queryLanguage)
       if (queryLanguage === "zh-CN" || queryLanguage === "zh-Hant-US" || queryLanguage === "zh-Hant-HK" || queryLanguage === "zh-Hant-TW") {
-        this.changeLanguage("chinese");  
+        this.changeLanguage("chinese");
       }
-      
+
       // imToken.callAPI("device.getCurrentLanguage", function(
       //   err,
       //   languageReturned
