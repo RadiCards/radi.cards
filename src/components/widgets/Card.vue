@@ -115,22 +115,34 @@
       v-if="cdata.message"
     >
       <h6 v-html="cardMessageFormatted"></h6>
-      <div v-if="cdata.BenefactorIndex!=0">
-        <div class="descr">
-          <hr>Your donation goes to
-          <strong>
-            <a
-              v-if="cdata.BenefactorIndex && benefactors"
-              :href="benefactors[cdata.BenefactorIndex-1].website"
-              target="_blank"
-            >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-          </strong>
-        </div>
-      </div>
       <div class="descr" v-if="cdata.accountCreatedCard"></div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer</button>
         <button @click="shareCard" class="cancelButton">Share</button>
+      </div>
+      <br>
+
+      <div class="descr aligh">
+        <strong>Token # {{cdata.tokenId}}</strong>
+        <br>
+        Creator:
+        <clickable-address :eth-address="cdata.gifter"></clickable-address>
+        <br>
+        Gift Amount:{{cdata.giftAmount}}
+        <br>
+        <div v-if="cdata.donationAmount>0">
+          Donation Amount:{{cdata.donationAmount}}
+          <div v-if="cdata.BenefactorIndex!=0">
+              Charity
+              <strong>
+                <a
+                  v-if="cdata.BenefactorIndex && benefactors"
+                  :href="benefactors[cdata.BenefactorIndex-1].website"
+                  target="_blank"
+                >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+              </strong>
+          </div>
+        </div>
       </div>
       {{transferedCardNotification}}
     </figure>
@@ -143,10 +155,11 @@
 import { mapGetters, mapState } from "vuex";
 import router from "../../router";
 import * as actions from "../../store/actions";
+import ClickableAddress from "./ClickableAddress";
 
 export default {
   name: "card",
-
+  components: { ClickableAddress },
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {

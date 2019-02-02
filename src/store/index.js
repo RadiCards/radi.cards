@@ -329,6 +329,15 @@ const store = new Vuex.Store({
         if (state.ephemeralAddressFee !== ephemeralAddressFee) {
           commit(mutations.SET_EPHEMERAL_ADDRESS_FEE, ephemeralAddressFee);
         }
+        let ephemeralWalletsLoaded = 0;
+        state.ephemeralWallets.forEach(function (wallet) {
+          if (wallet.card != null) {
+            ephemeralWalletsLoaded++;
+          }
+        });
+        if (state.ephemeralWallets.length > ephemeralWalletsLoaded) {
+          dispatch(actions.GET_ACCOUNT_GIFT_STATUS);
+        }
       };
 
       // Every second check if the main account has changed
@@ -545,8 +554,6 @@ const store = new Vuex.Store({
       console.log(sentTokenIds)
 
 
-
-
       const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id.toNumber()));
       let tokenDetailsArray = await Promise.all(tokenDetails);
       console.log("BBBB")
@@ -593,9 +600,10 @@ const store = new Vuex.Store({
           };
           console.log("in loop")
           state.ephemeralWallets.map((wallet, index) => {
-            if (web3.utils.toChecksumAddress(wallet.gifter) === web3.utils.toChecksumAddress(gifter)) {
-              state.ephemeralWallets[index]["card"] = allCardInformation;
-            }
+            // if (web3.utils.toChecksumAddress(wallet.gifter) === web3.utils.toChecksumAddress(gifter)) {
+            //   state.ephemeralWallets[index]["card"] = allCardInformation;
+            // }
+            state.ephemeralWallets[loopIndex]["card"] = allCardInformation;
           });
         }
         loopIndex++;

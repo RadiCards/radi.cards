@@ -4,9 +4,12 @@
     <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>View all the cards you have sent in the past. You can regenerate claimable links here if you have lost them and cancel outstanding gifts if they have not yet been claimed.
     <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
       <b-col cols="12" class="pt-3">
-        <sent-card :wallet="wallet"/>
+        <sent-card :wallet="wallet" v-if="wallet.card"/>
       </b-col>
     </b-row>
+    <div
+      v-if="hasPendingCards"
+    >You have pending transactions for claimable links. Please wait a minute for these to be mined and you will then be able to view them above.</div>
   </div>
 </template>
 
@@ -22,6 +25,15 @@ export default {
     ...mapState(["ephemeralWallets"]),
     hasSentCards() {
       return this.ephemeralWallets.length > 0;
+    },
+    hasPendingCards() {
+      let ephemeralWalletsLoaded = 0;
+      this.ephemeralWallets.forEach(function(wallet) {
+        if (wallet.card != null) {
+          ephemeralWalletsLoaded++;
+        }
+      });
+      return this.ephemeralWallets.length > ephemeralWalletsLoaded;
     }
   }
 };
