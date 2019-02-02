@@ -61,7 +61,7 @@
               >{{ephemeralWallets.length}}</span>
             </router-link>
           </li>
-
+          <hr class="show-mobile">
           <li class="nav-item">
             <div class="col-lg-12 text-right">
               <button
@@ -83,13 +83,13 @@
         </ul>
 
         <div class="navbar-hamburger" @click="togglePopover()">
-          <img src="/static/icons/hamburger.svg">
+          <img src="/static/icons/hamburger_thin.svg">
         </div>
 
         <div class="navbar-popover" v-if="showNavPopover">
           <ul>
             <li class="nav-item nav-close" @click="togglePopover()">
-              <img src="/static/icons/cross.svg">
+              <img src="/static/icons/cross_thin.svg">
             </li>
             <li class="nav-item">
               <a href="https://t.me/RadiCards">
@@ -120,7 +120,7 @@
                 >{{accountCards.length}}</span>
               </router-link>
             </li>
-
+            <hr class="show-mobile">
             <li class="nav-item">
               <div class="col-lg-12 text-right">
                 <button
@@ -528,11 +528,20 @@ footer {
   }
 }
 
+.show-mobile {
+  @media (min-width: 766px) {
+    display: none;
+  }
+}
+
 .card-slider {
   display: flex;
   margin: 0 -1.25rem;
   padding: 2rem 1.25rem;
   overflow-x: auto;
+  @media (max-width: 560px) {
+    padding-top: 0;
+  }
 
   perspective: 1000px;
 
