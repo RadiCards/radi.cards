@@ -434,7 +434,7 @@ const store = new Vuex.Store({
               claimableLink, {
                 from: state.account,
                 value: state.web3.utils.toWei(transactionValue, "ether"),
-                gasPrice: state.web3.utils.toWei("20", 'gwei')
+                // gasPrice: state.web3.utils.toWei("20", 'gwei')
               }
             );
             break;
@@ -449,7 +449,7 @@ const store = new Vuex.Store({
               claimableLink, {
                 from: state.account,
                 value: state.web3.utils.toWei(transactionValue, "ether"),
-                gasPrice: state.web3.utils.toWei("20", 'gwei')
+                // gasPrice: state.web3.utils.toWei("20", 'gwei')
               }
             );
             break;
@@ -461,6 +461,21 @@ const store = new Vuex.Store({
           cardIndex: cardIndex,
           tx: transaction
         });
+
+        // we must store the card we just created in the localstoreage
+        if (claimableLink) {
+          let ephemeralWalletObject = {
+            gifter: state.account,
+            recipient: recipient,
+            privateKey: state.ephemeralPrivateKey,
+            time: moment().format('Do MMMM YYYY, h:mm:ss a'),
+            // tokenId: event.args._tokenId.toNumber(10),
+            value: transactionValue
+          };
+
+          commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
+        }
+
       } catch (e) {
         console.log("rejection/error");
         console.log(e);
@@ -495,16 +510,8 @@ const store = new Vuex.Store({
             cardIndex: cardIndex,
             tokenId: event.args._tokenId.toNumber(10)
           });
-          //lastly we must store the card we just created in the localstoreage
-          let tokenId = event.args._tokenId.toNumber(10);
-          let ephemeralWalletObject = {
-            privateKey: this.state.ephemeralPrivateKey,
-            recipient: recipient,
-            time: moment().format('Do MMMM YYYY, h:mm:ss a'),
-            tokenId: event.args._tokenId.toNumber(10),
-            value: transactionValue
-          };
-          commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
+          // need to add the token id, if posible. this will make it easer to load later if need be
+
           dispatch(actions.LOAD_ACCOUNT_CARDS, {
             account: this.state.account
           });
@@ -524,16 +531,29 @@ const store = new Vuex.Store({
       dispatch,
       state
     }) {
-      let sentTokenIds = [];
+      let ephemeralAddresses = [];
       state.ephemeralWallets.forEach(function (wallet) {
-        sentTokenIds.push(wallet.tokenId);
+        ephemeralAddresses.push(wallet.recipient);
       });
 
       const contract = await state.contract.deployed();
-      const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id));
+      console.log("addresse")
+      console.log(ephemeralAddresses)
+      const tokenIdDetails = ephemeralAddresses.map(address => contract.ephemeralWalletCards.call(address));
+      let sentTokenIds = await Promise.all(tokenIdDetails);
+      console.log("AAAAAAA")
+      console.log(sentTokenIds)
+
+
+
+
+      const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id.toNumber()));
       let tokenDetailsArray = await Promise.all(tokenDetails);
+      console.log("BBBB")
+      console.log(tokenDetailsArray)
       let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
+        console.log("in loop")
         let gifter = accountToken[0];
         let message = accountToken[1];
         let daiDonation = accountToken[2];
@@ -542,7 +562,7 @@ const store = new Vuex.Store({
         let status = accountToken[5].toNumber();
         let cardIndex = accountToken[6];
         let benefactorIndex = accountToken[7].toNumber();
-        let tokenId = sentTokenIds[loopIndex];
+        let tokenId = sentTokenIds[loopIndex]
         let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"];
         let decodedStatus = statuses[status];
         if (state.cards) {
@@ -571,8 +591,9 @@ const store = new Vuex.Store({
             },
             ...cardInformation[0]
           };
+          console.log("in loop")
           state.ephemeralWallets.map((wallet, index) => {
-            if (wallet.tokenId === tokenId) {
+            if (web3.utils.toChecksumAddress(wallet.gifter) === web3.utils.toChecksumAddress(gifter)) {
               state.ephemeralWallets[index]["card"] = allCardInformation;
             }
           });
