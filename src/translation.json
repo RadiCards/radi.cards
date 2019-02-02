@@ -35,10 +35,13 @@
       "customiseCard": "Customise card",
       "customiseCardDesc": "Add message & recipient details",
       "addMessage": "This message is uncensorable and will be visible on the blockchain",
+      "sendMessage": "max 128 characters",
       "topUp": "Top-up your card",
       "topUpDesc": "You need to add at least 0.02 ETH (for the gas fee) in order to create a new radicard.",
       "topUpCrypto": "Top-up your radicard with cryptocurrency",
       "topUpStable": "Top-up your radicard with stable cryptocurrency",
+      "sendEth": "Send ETH",
+      "sendStable": "Send DAI",
       "donateCharity": "Donate to charity of your choice",
       "noETH": "You don't have enough ETH to send that much! Your ETH balance is ",
       "noDAI": "You don't have enough DAI to send that much! Your DAI balance is ",
@@ -81,7 +84,10 @@
       "myAddress": "My Address:",
       "myBalanceEth": "ETH Balance:",
       "myBalanceDai": "DAI Balance:",
-      "terms": "Terms of Service"
+      "terms": "Terms of Service",
+      "recipientGift": "Recipient Gift",
+      "networkFee": "Network Fee",
+      "totalCost": "Total"
     }
   },
   "zh": {
@@ -120,10 +126,13 @@
       "customiseCard": "自定义红包",
       "customiseCardDesc": "添加邮件和收件人详细信息",
       "addMessage": "添加消息（这将在区块链中显示）",
+      "sendMessage": "最多128个字符",
       "topUp": "填满你的红包",
       "topUpDesc": "您需要添加至少0.02 ETH（用于gas费）才能创建新的红包。",
       "topUpCrypto": "用加密货币填充你的红包",
       "topUpStable": "用稳定货币填充你的红包",
+      "sendEth": "发送ETH",
+      "sendStable": "发送DAI",
       "donateCharity": "捐赠给您选择的慈善机构",
       "noETH": "你没有足够的ETH发送那么多！ 您的ETH余额为 ",
       "noDAI": "你没有足够的DAI发送那么多！ 您的DAI余额为 ",
@@ -166,7 +175,10 @@
       "myAddress": "我的钱包地址:",
       "myBalanceEth": "ETH余额:",
       "myBalanceDai": "DAI余额:",
-      "terms": "服务条款"
+      "terms": "服务条款",
+      "recipientGift": "接收器获得",
+      "networkFee": "网络费",
+      "totalCost": "总价"
     }
   }
 }

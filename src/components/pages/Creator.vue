@@ -32,7 +32,7 @@
                 id="textarea"
                 class="field"
                 v-model="formData.message"
-                placeholder="max 128 characters"
+                v-bind:placeholder="$t('m.sendMessage')"
                 :rows="3"
                 :max-rows="6"
               ></b-form-textarea>
@@ -125,9 +125,9 @@
               @click="goToStep(2)"
               value="NEXT"
             >
-            <p
+            <!-- <p
               v-if="formData.sendingMethod==='QR'"
-            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p> -->
           </div>
         </div>
 
@@ -147,10 +147,10 @@
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
                 <label for="selectETH" class="field--radio__content">
                   <p class="p--smallitalic">{{ $t("m.topUpCrypto")}}</p>
-                  <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
+                  <span v-if="formData.currency !== 'ETH'" class="pretext">{{ $t("m.sendEth")}}</span>
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send ETH</p>
+                    <p class="p--bold">{{ $t("m.sendEth")}}</p>
                     <input
                       type="number"
                       class="field form-control"
@@ -183,9 +183,9 @@
                 <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
                 <label for="selectDAI" class="field--radio__content">
                   <p class="p--smallitalic">{{ $t("m.topUpStable")}}</p>
-                  <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
+                  <span v-if="formData.currency !== 'DAI'" class="pretext">{{ $t("m.sendStable")}}</span>
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send DAI</p>
+                    <p class="p--bold">{{ $t("m.sendStable")}}</p>
                     <input
                       type="number"
                       class="field form-control"
@@ -289,7 +289,7 @@
                 </div>
                 <br>
                 <div v-if="formData.currency==='ETH'">
-                  <h5 class="alignleft">Recipient Gift</h5>
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
                   <h5
                     class="alignright"
                   >{{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}} ETH</h5>
@@ -302,7 +302,7 @@
                   <br>
                   <!-- <hr> -->
                   <br>
-                  <h5 class="alignleft">Charity</h5>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
                   <h5
                     class="alignright"
                   >{{(formData.valueInETH*formData.percentage/100).toFixed(3)}} ETH</h5>
@@ -315,7 +315,7 @@
                   <br>
                   <br>
                   <div v-if="formData.sendingMethod==='QR'">
-                    <h5 class="alignleft">Claimable link fee</h5>
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
                     <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
                     <br>
                     <div class="alignright">
@@ -328,7 +328,7 @@
                   </div>
 
                   <hr>
-                  <h4 class="alignleft">Total</h4>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
                   <h4
                     class="alignright"
                   >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH.toFixed(3)}} ETH</h4>
@@ -342,7 +342,7 @@
                 </div>
 
                 <div v-if="formData.currency==='DAI'">
-                  <h5 class="alignleft">Recipient Gift</h5>
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
                   <h5
                     class="alignright"
                   >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</h5>
@@ -355,7 +355,7 @@
                   <br>
                   <!-- <hr> -->
                   <br>
-                  <h5 class="alignleft">Charity</h5>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
                   <h5
                     class="alignright"
                   >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
@@ -368,7 +368,7 @@
                   <br>
                   <br>
                   <div v-if="formData.sendingMethod==='QR'">
-                    <h5 class="alignleft">Claimable link fee</h5>
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
                     <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
                     <br>
                     <div class="alignright">
@@ -380,7 +380,7 @@
                     <br>
                   </div>
                   <hr>
-                  <h4 class="alignleft">Total</h4>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
                   <h4
                     class="alignright"
                   >{{formData.sendingMethod==='QR' ? parseFloat(ephemeralAddressFee) + " ETH & " + parseFloat(formData.valueInDAI) + " DAI" : parseFloat(formData.valueInDAI) + " DAI"}}</h4>
