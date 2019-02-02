@@ -127,7 +127,7 @@
           </strong>
         </div>
       </div>
-      <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
+      <div class="descr" v-if="cdata.accountCreatedCard"></div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer</button>
         <button @click="shareCard" class="cancelButton">Share</button>

@@ -119,6 +119,11 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+.mb-5 {
+  width: 100%;
+  height: auto;
+}
+
 .SentCard {
   // margin: 0 -2rem;
   transition: all 0.2s ease-in-out;
@@ -183,7 +188,7 @@ export default {
     opacity: 0;
   }
   &.isExpanded .SentCard__detail {
-    max-height: 70vh;
+    max-height: 100%;
     opacity: 1;
   }
 
