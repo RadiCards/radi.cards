@@ -11,6 +11,7 @@ import logging from "./logging";
 import Web3 from "web3";
 import VueClipboard from "vue-clipboard2";
 import AsyncComputed from "vue-async-computed";
+import VueAnalytics from 'vue-analytics'
 // import messages from "./translation.json";
 import i18n from "./lang.js";
 
@@ -21,6 +22,10 @@ Vue.config.productionTip = false;
 Vue.use(BootstrapVue);
 
 Vue.use(AsyncComputed);
+
+Vue.use(VueAnalytics, {
+  id: 'UA-133667134-1'
+})
 
 Vue.filter("toEth", function(value) {
   if (!value) return "";
