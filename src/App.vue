@@ -52,6 +52,15 @@
               >{{accountCards.length}}</span>
             </router-link>
           </li>
+          <li class="nav-item" v-if="ephemeralWallets.length > 0">
+            <router-link :to="{ name: 'sent' }" class="nav-link">
+              Sent Cards
+              <span
+                class="ml-1 badge badge-primary"
+                v-if="ephemeralWallets.length > 0"
+              >{{ephemeralWallets.length}}</span>
+            </router-link>
+          </li>
 
           <li class="nav-item">
             <div class="col-lg-12 text-right">
@@ -225,7 +234,8 @@ export default {
       "usdPrice",
       "ethBalance",
       "daiBalance",
-      "currentNetwork"
+      "currentNetwork",
+      "ephemeralWallets"
     ]),
     ethBalanceRound() {
       if (this.ethBalance) {
@@ -279,12 +289,17 @@ export default {
     }
   },
   created() {
-    let queryLanguage = this.$route.query.locale
+    let queryLanguage = this.$route.query.locale;
 
     try {
-      let queryLanguage = this.$route.query.locale
-      console.log(queryLanguage)
-      if (queryLanguage === "zh-CN" || queryLanguage === "zh-Hant-US" || queryLanguage === "zh-Hant-HK" || queryLanguage === "zh-Hant-TW") {
+      let queryLanguage = this.$route.query.locale;
+      console.log(queryLanguage);
+      if (
+        queryLanguage === "zh-CN" ||
+        queryLanguage === "zh-Hant-US" ||
+        queryLanguage === "zh-Hant-HK" ||
+        queryLanguage === "zh-Hant-TW"
+      ) {
         this.changeLanguage("chinese");
       }
 
@@ -389,7 +404,6 @@ body {
     font-size: 12px;
     line-height: 14px;
   }
-
 }
 
 // Selection */

@@ -66,16 +66,7 @@
             <card classes="card" @cardTransfered="handelCardTransfered" :cdata="card"/>
           </b-col>
         </b-row>
-
       </div>
-    </div>
-    <div v-if="hasSentCards">
-      <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>
-      <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
-        <b-col cols="12" class="pt-3">
-          <sent-card :wallet="wallet"/>
-        </b-col>
-      </b-row>
     </div>
   </section>
 </template>
@@ -85,11 +76,10 @@ import { mapGetters, mapState } from "vuex";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import ClickableAddress from "../widgets/ClickableAddress";
-import SentCard from "../widgets/SentCard";
 import Card from "../../components/widgets/Card";
 export default {
   name: "account",
-  components: { ClickableTransaction, ClickableAddress, Card, SentCard },
+  components: { ClickableTransaction, ClickableAddress, Card },
   data() {
     return {
       cardTransferOccured: false,
@@ -126,9 +116,6 @@ export default {
       }
       return hasCard;
     },
-    hasSentCards() {
-      return this.ephemeralWallets.length > 0;
-    }
   },
   mounted() {
     this.$store.dispatch(actions.RESET_TRANSFER_STATUS);
