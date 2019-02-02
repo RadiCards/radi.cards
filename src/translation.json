@@ -25,11 +25,14 @@
       "donations": "Donate to charity",
       "charity": "Charity",
       "myCards": "My cards",
+      "aww": "Aww...",
+      "notYetSent": "You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!",
       "about": "About",
       "cardShop": "Card Shop",
       "cardShopSub": "Creative, unique art pieces from from all around the interwebs.",
       "premiumCards": "Premium Cards",
       "standardCards": "Standard Cards",
+      "sentCards": "Sent Cards",
       "noWeb3": "No web3 wallet could be detected! 🧐",
       "noWeb3desc": "In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try",
       "customiseCard": "Customise card",
@@ -87,7 +90,8 @@
       "terms": "Terms of Service",
       "recipientGift": "Recipient Gift",
       "networkFee": "Network Fee",
-      "totalCost": "Total"
+      "totalCost": "Total",
+      "createHongbao": "CREATE HONGBAO"
     }
   },
   "zh": {
@@ -116,11 +120,14 @@
       "donations": "捐赠给慈善机构",
       "charity": "爱心",
       "myCards": "我的红包",
+      "aww": "哎呀...",
+      "notYetSent": "你还没有发送或收到任何红包",
       "about": "关于我们",
       "cardShop": "红包店",
       "cardShopSub": "来自互联网的创意独特艺术作品。",
       "premiumCards": "高级红包",
       "standardCards": "标准红包",
+      "sentCards": "发送的红包",
       "noWeb3": "没有检测到web3钱包！🧐",
       "noWeb3desc": "要创建新的红包，您需要使用web3浏览器和以太网帐户。 我们建议你试试",
       "customiseCard": "自定义红包",
@@ -178,7 +185,8 @@
       "terms": "服务条款",
       "recipientGift": "接收器获得",
       "networkFee": "网络费",
-      "totalCost": "总价"
+      "totalCost": "总价",
+      "createHongbao": "生成红包链接"
     }
   }
 }

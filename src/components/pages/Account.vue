@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <h2 style="margin-bottom: 0.5rem;">
-      Your cards
+      {{ $t("m.myCards")}}
       <span class="badge badge-primary">{{accountCards.length}}</span>
     </h2>
     <clickable-address :eth-address="account"></clickable-address>
@@ -21,18 +21,18 @@
         <img src="/static/icons/radi-cards.svg" alt class="img--placeholder">
         <br>
         <br>
-        <h4>Aww...</h4>
+        <h4>{{ $t("m.aww")}}</h4>
         <br>
         <p
           style="max-width: 24rem; margin: 0 auto;"
-        >You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!</p>
+        >{{ $t("m.notYetSent")}}</p>
         <br>
-        <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+        <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
       </div>
     </b-row>
     <div v-else>
       <div v-if="hasPremiumCards">
-        <h3 class="mt-2">Premium Cards</h3>
+        <h3 class="mt-2">{{ $t("m.premiumCards")}}</h3>
         <b-row no-gutters>
           <b-col
             cols="12"
@@ -50,7 +50,7 @@
         <hr>
       </div>
       <div v-if="hasStandardCards">
-        <h3 class="mt-2">Standard Cards</h3>
+        <h3 class="mt-2">{{ $t("m.standardCards")}}</h3>
 
         <b-row no-gutters>
           <b-col
@@ -70,7 +70,7 @@
       </div>
     </div>
     <div v-if="hasSentCards">
-      <h1 class="mt-2">Your Sent Cards</h1>
+      <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>
       <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
         <b-col cols="12" class="pt-3">
           <sent-card :wallet="wallet"/>

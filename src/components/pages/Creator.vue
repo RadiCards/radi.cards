@@ -281,9 +281,9 @@
                 <br>
                 <div v-if="formData.sendingMethod==='QR'">
                   <div class="alignleft">
-                    <div class="input-label">
+                  <!-- <div class="input-label">
                       <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent via email, WeChat or other chat apps
-                    </div>
+                    </div> -->
                   </div>
                   <br>
                 </div>
@@ -430,7 +430,7 @@
                 type="button"
                 class="button button--fullwidth"
                 @click="giveBirth"
-                value="CREATE HANGBAO"
+                v-bind:value="$t('m.createHongbao')"
               >
             </div>
           </div>
