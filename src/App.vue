@@ -154,7 +154,7 @@
             <div v-if="account">
               <strong>
                 <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
-                Address:
+                My Address:
               </strong>
               <clickable-address :eth-address="account"></clickable-address>|
               <strong>ETH Balance:</strong>

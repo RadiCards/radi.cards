@@ -51,8 +51,6 @@
           <h5>{{ $t("m.Deposit")}}</h5>
           <span>
             {{ $t("m.ethOrDai")}}
-            <br>
-            {{ $t("m.generateHb")}}
           </span>
         </b-col>
         <b-col class cols="12" sm="12" lg="4">
@@ -182,8 +180,7 @@
         </div>
 
         <div class="col-md-4 col-xs-12">
-          <!-- <h5>{{ $t("m.donations")}}</h5> -->
-          <h5>Some donations text?</h5>
+          <h5>{{ $t("m.donations")}}</h5>
           <ul>
             <li>
               <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>
