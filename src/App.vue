@@ -94,17 +94,17 @@
               </a>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+              <router-link :to="{ name: 'about' }" class="nav-link">{{ $t("m.about")}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'charity' }" class="nav-link">Charity</router-link>
+              <router-link :to="{ name: 'charity' }" class="nav-link">{{ $t("m.charity")}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+              <router-link :to="{ name: 'cardshop' }" class="nav-link">{{ $t("m.cardShop")}}</router-link>
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'account' }" class="nav-link">
-                Your cards
+                {{ $t("m.myCards")}}
                 <span
                   class="ml-1 badge badge-primary"
                   v-if="accountCards.length > 0"
@@ -121,7 +121,7 @@
                 <button
                   @click="changeLanguage('chinese')"
                   :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
-                >CN</button>
+                >中文</button>
               </div>
             </li>
             <!-- <li class="nav-item">
@@ -154,12 +154,12 @@
             <div v-if="account">
               <strong>
                 <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
-                My Address:
+                {{ $t("m.myAddress")}}
               </strong>
               <clickable-address :eth-address="account"></clickable-address>|
-              <strong>ETH Balance:</strong>
+              <strong>{{ $t("m.myBalanceEth")}}</strong>
               {{ethBalanceRound}} |
-              <strong>DAI Balance:</strong>
+              <strong>{{ $t("m.myBalanceDai")}}</strong>
               {{daiBalanceRound}}
             </div>
           </div>
@@ -170,7 +170,7 @@
     <footer class="footer container-fluid mt-5">
       <div class="row">
         <div class="col text-left">
-          <router-link :to="{ name: 'terms-of-service' }">Terms of Service</router-link>&nbsp;&nbsp;
+          <router-link :to="{ name: 'terms-of-service' }">{{ $t("m.terms")}}</router-link>&nbsp;&nbsp;
           <!-- <router-link :to="{ name: 'privacy-policy' }">Privacy Policy</router-link> -->
         </div>
         <div class="col text-right small">
