@@ -46,6 +46,10 @@ export default {
   z-index: 2;
   padding: 20px;
 
+  @media (max-width: 630px) {
+    padding: 10px;
+    }
+
   .container {
     justify-content: space-between;
     display: flex;
@@ -60,6 +64,11 @@ export default {
     color: #000000;
     display: flex;
     flex-direction: column;
+
+    @media (max-width: 630px) {
+      line-height: 10px;
+      font-size: 10px;
+      }
 
     b {
     }
@@ -77,6 +86,13 @@ export default {
     color: white;
     padding-left: 20px;
     padding-right: 20px;
+
+    @media (max-width: 630px) {
+      font-size: 10px;
+      padding-left: 10px;
+      padding-right: 10px;
+    }
   }
+
 }
 </style>

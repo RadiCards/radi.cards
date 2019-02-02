@@ -6,9 +6,9 @@
       <figure class="SentCard__img">
         <img v-if="wallet.card" :src="wallet.card.image">
       </figure>
-      <h6 class="SentCard__name mt-2">You sent this card {{fromNow}}</h6>
+      <h6 class="SentCard__name mt-2">{{ $t("m.sent")}} {{fromNow}}</h6>
       <p class="SentCard__value mt-2">
-        Value {{wallet.card.giftAmount+wallet.card.donationAmount}}
+        {{ $t("m.value")}} {{wallet.card.giftAmount+wallet.card.donationAmount}}
         {{(wallet.card.daiDonation)?'DAI':'ETH'}}
       </p>
 
@@ -26,27 +26,27 @@
           </b-col>
           <b-col cols="12" sm="12" lg="6">
             <div class="text-center" v-if="wallet.card.status==='Deposited'">
-              <strong>This card's claimable link has no yet been claimed!</strong>
-              You can cancel the link and get the funds back or regenerate the claimable link.
+              <strong>{{ $t("m.notYetClaimed")}}</strong><br>
+              {{ $t("m.claimBackYourself")}}
               <br>
               <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
-              >Regenerate Claimable Link</a>
-              <a target="_blank" class="btn btn--narrow btn--subtle mt-3">Cancel claimable link</a>
+              >{{ $t("m.copyCardLink")}}</a>
+              <a target="_blank" class="btn btn--narrow btn--subtle mt-3">{{ $t("m.cancelLink")}}</a>
               <div class="text-center pt-2" v-if="linkGenerated">
                 <a
                   :href="'https://radi.cards/claim/' + wallet.privateKey"
                   target="_blank"
                   class="claim-url"
-                >Your gift claimable link</a>
-                <p class="p--smallitalic">Claimable link copied to clipboard!</p>
+                >{{ $t("m.yourLink")}}</a>
+                <p class="p--smallitalic">{{ $t("m.linkCopied")}}</p>
               </div>
             </div>
             <div class="text-center pt-5" v-if="wallet.card.status==='Claimed'">
-              <strong>This card's claimable link has already been claimed!</strong>
+              <strong>{{ $t("m.alreadyClaimed")}}</strong>
             </div>
           </b-col>
         </b-row>
@@ -119,6 +119,11 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+.mb-5 {
+  width: 100%;
+  height: auto;
+}
+
 .SentCard {
   // margin: 0 -2rem;
   transition: all 0.2s ease-in-out;
@@ -183,7 +188,7 @@ export default {
     opacity: 0;
   }
   &.isExpanded .SentCard__detail {
-    max-height: 70vh;
+    max-height: 100%;
     opacity: 1;
   }
 
