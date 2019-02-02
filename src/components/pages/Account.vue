@@ -68,14 +68,14 @@
         </b-row>
         <hr>
       </div>
-      <div v-if="hasSentCards">
-        <h1 class="mt-2">Your Sent Cards</h1>
-        <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
-          <b-col cols="12" class="pt-3">
-            <sent-card :wallet="wallet"/>
-          </b-col>
-        </b-row>
-      </div>
+    </div>
+    <div v-if="hasSentCards">
+      <h1 class="mt-2">Your Sent Cards</h1>
+      <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
+        <b-col cols="12" class="pt-3">
+          <sent-card :wallet="wallet"/>
+        </b-col>
+      </b-row>
     </div>
   </section>
 </template>

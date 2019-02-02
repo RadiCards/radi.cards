@@ -337,7 +337,7 @@
                   <div class="alignright">
                     <div
                       class="input-label-currency"
-                    >{{formData.sendingMethod==='QR' ? equivalentFiatCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $ / " + equivalentCynCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $": equivalentFiatCost(formData.valueInETH) + " $ / " + equivalentCynCost(formData.valueInETH) + " ¥"}}</div>
+                    >{{formData.sendingMethod==='QR' ? equivalentFiatCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $ / " + equivalentCynCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " ¥": equivalentFiatCost(formData.valueInETH) + " $ / " + equivalentCynCost(formData.valueInETH) + " ¥"}}</div>
                   </div>
                 </div>
 
