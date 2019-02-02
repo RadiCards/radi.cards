@@ -28,7 +28,8 @@
             <div class="text-center" v-if="wallet.card.status==='Deposited'">
               <strong>This card's claimable link has no yet been claimed!</strong>
               You can cancel the link and get the funds back or regenerate the claimable link.
-              <a
+              <br>
+              <br><a
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
