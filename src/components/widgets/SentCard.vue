@@ -34,7 +34,7 @@
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
-              >{{ $t("m.copyCardLink")}}</a>
+              >Regenerate Link</a>
               <a target="_blank" class="btn btn--narrow btn--subtle mt-3">{{ $t("m.cancelLink")}}</a>
               <div class="text-center pt-2" v-if="linkGenerated">
                 <a
