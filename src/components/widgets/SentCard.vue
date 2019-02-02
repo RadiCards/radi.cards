@@ -29,17 +29,19 @@
               <strong>This card's claimable link has no yet been claimed!</strong>
               You can cancel the link and get the funds back or regenerate the claimable link.
               <br>
-              <br><a
+              <br>
+              <a
                 @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
               >Regenerate Claimable Link</a>
-              <a
-                @click
-                target="_blank"
-                class="btn btn--narrow btn--subtle mt-3"
-              >Cancel claimable link</a>
+              <a target="_blank" class="btn btn--narrow btn--subtle mt-3">Cancel claimable link</a>
               <div class="text-center pt-2" v-if="linkGenerated">
+                <a
+                  :href="'https://radi.cards/claim/' + wallet.privateKey"
+                  target="_blank"
+                  class="claim-url"
+                >Your gift claimable link</a>
                 <p class="p--smallitalic">Claimable link copied to clipboard!</p>
               </div>
             </div>
@@ -88,7 +90,7 @@ export default {
         console.log("OBJ");
         console.log(timeObject);
       }
-      return timeObject.startOf('minute').fromNow()
+      return timeObject.startOf("minute").fromNow();
     }
   },
   methods: {
