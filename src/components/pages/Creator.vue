@@ -492,7 +492,6 @@
             <p>{{ $t("m.cardCreatedDesc")}}</p>
             <br>
             <p>{{ $t("m.cardCreatedDesc2")}}</p>
-            <p>{{ $t("m.cardCreatedDesc3")}}</p>
             <br>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               {{ $t("m.cardCreatedDesc4")}}
@@ -537,16 +536,16 @@
                 :href="'https://radi.cards/claim/' + ephemeralPrivateKey"
                 target="_blank"
                 class="claim-url"
-              >Your gift claimable link</a>
+              >{{ $t("m.yourLink")}}</a>
               <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle"
                 style="margin-top: 0.5rem;"
-              >Copy link to clipboard</a>
+              >{{ $t("m.copyLink")}}</a>
               <div v-if="copied">
-                <p class="p--smallitalic">Claimable link copied to clipboard!</p>
+                <p class="p--smallitalic">{{ $t("m.linkCopied")}}</p>
               </div>
             </div>
 
