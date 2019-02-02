@@ -88,7 +88,7 @@ export default {
         console.log("OBJ");
         console.log(timeObject);
       }
-      return timeObject.startOf('day').fromNow()
+      return timeObject.startOf('minute').fromNow()
     }
   },
   methods: {

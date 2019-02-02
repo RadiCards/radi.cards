@@ -63,7 +63,7 @@ const store = new Vuex.Store({
     donatedInDai: 0,
     giftedInEth: 0,
     giftedInDai: 0,
-    ephemeralAddressFee: 0,
+    ephemeralAddressFee: "0.01",
     ethBalance: 0,
     daiContractAddress: null,
     daiBalance: 0,
@@ -433,7 +433,8 @@ const store = new Vuex.Store({
               state.web3.utils.toWei(giftAmount, "ether"),
               claimableLink, {
                 from: state.account,
-                value: state.web3.utils.toWei(transactionValue, "ether")
+                value: state.web3.utils.toWei(transactionValue, "ether"),
+                gasPrice: state.web3.utils.toWei("20", 'gwei')
               }
             );
             break;
@@ -447,7 +448,8 @@ const store = new Vuex.Store({
               state.web3.utils.toWei(giftAmount, "ether"),
               claimableLink, {
                 from: state.account,
-                value: state.web3.utils.toWei(transactionValue, "ether")
+                value: state.web3.utils.toWei(transactionValue, "ether"),
+                gasPrice: state.web3.utils.toWei("20", 'gwei')
               }
             );
             break;
@@ -478,7 +480,10 @@ const store = new Vuex.Store({
       await contract.CardGifted({
         filter: {
           _from: `0x0`,
-          _to: recipient
+          _to: recipient,
+          _benefactorIndex: benefactorIndex,
+          _cardIndex: cardIndex,
+          giftAmount: state.web3.utils.toWei(giftAmount, "ether")
         },
         fromBlock: blockNumber
       },
@@ -649,8 +654,6 @@ const store = new Vuex.Store({
         .then(
           response => {
             let currentUSDtoCYN = response.data["CNY_USD"]["val"];
-            console.log("PPP");
-            console.log(response.data["CNY_USD"]["val"]);
             commit(mutations.SET_CYN_PRICE, currentUSDtoCYN);
           },
           response => {
