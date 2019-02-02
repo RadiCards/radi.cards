@@ -12,7 +12,7 @@
       "Choose": "Choose",
       "Deposit": "Fill",
       "Send": "Send",
-      "coolHb": "cool hangbao design from",
+      "coolHb": "unique hongbao design from",
       "artists": "artists around the world",
       "ethOrDai": "hongbao with ETH or DAI",
       "hb2f": "hongbao to friends via",
@@ -23,6 +23,9 @@
       "buidltCC": "Buidl-t on Ethereum and IPFS by the crypto collectible community",
       "communities": "Community buidl-ing and creative partnership",
       "donations": "Donate to charity",
+      "charity": "Charity",
+      "myCards": "My cards",
+      "about": "About",
       "cardShop": "Card Shop",
       "cardShopSub": "Creative, unique art pieces from from all around the interwebs.",
       "premiumCards": "Premium Cards",
@@ -74,7 +77,11 @@
       "checkWalletDesc": "(Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.",
       "startOver": "Start over",
       "retry": "Retry Transaction",
-      "viewEthScan": "You can view the transaction of Etherscan"
+      "viewEthScan": "You can view the transaction of Etherscan",
+      "myAddress": "My Address:",
+      "myBalanceEth": "ETH Balance:",
+      "myBalanceDai": "DAI Balance:",
+      "terms": "Terms of Service"
     }
   },
   "zh": {
@@ -101,6 +108,9 @@
       "buidltCC": "由NFT社区构建用以太坊和IPFS",
       "communities": "社区建设和创意伙伴关系",
       "donations": "捐赠给慈善机构",
+      "charity": "爱心",
+      "myCards": "我的红包",
+      "about": "关于我们",
       "cardShop": "红包店",
       "cardShopSub": "来自互联网的创意独特艺术作品。",
       "premiumCards": "高级红包",
@@ -152,7 +162,11 @@
       "checkWalletDesc": "（Metamask，Coinbase Wallet，Status，Portis）查看交易状态，或者再试一次。",
       "startOver": "重来",
       "retry": "重试交易",
-      "viewEthScan": "您可以在Etherscan上查看交易"
+      "viewEthScan": "您可以在Etherscan上查看交易",
+      "myAddress": "我的钱包地址:",
+      "myBalanceEth": "ETH余额:",
+      "myBalanceDai": "DAI余额:",
+      "terms": "服务条款"
     }
   }
 }
