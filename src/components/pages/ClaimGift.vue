@@ -48,33 +48,33 @@
 
         <div v-if="account===null" class="container" style="text-align: left;">
           <b-row class="logoRow">
-            <b-col cols="6">
-              <a target="__blank" href="https://metamask.io"><img class="walletIcon" id="metamask" src="/static/icons/metamask.png"/>
-              <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
-            </b-col>
-            <b-col cols="6">
-              <a target="__blank" href="https://token.im/download"><span><img class="walletIcon" id="imToken" src="/static/icons/imToken_color.png"/>
+            <b-col cols="6" id="imToken">
+              <a target="__blank" href="https://token.im/download"><span><img class="walletIcon" src="/static/icons/imToken_color.png"/>
               <p>imToken Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
             </b-col>
-          </b-row>
-          <b-row class="logoRow">
-            <b-col cols="6">
-              <a target="__blank" href="https://status.im"><img class="walletIcon" id="status" src="/static/icons/status.png"/>
-              <p>Status</p><p class="walletDesc">Mobile wallet</p></a>
-            </b-col>
-            <b-col cols="6">
-              <a target="__blank" href="https://trustwallet.com/"><span><img class="walletIcon" id="trust" src="/static/icons/trust.png"/>
+            <b-col cols="6" id="trust">
+              <a target="__blank" href="https://trustwallet.com/"><span><img class="walletIcon" src="/static/icons/trust.png"/>
               <p>Trust Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
             </b-col>
           </b-row>
           <b-row class="logoRow">
-            <b-col cols="6">
-              <a target="__blank" href="https://www.opera.com/crypto"><img class="walletIcon" id="opera" src="/static/icons/opera.png"/>
+            <b-col cols="6" id="status">
+              <a target="__blank" href="https://status.im"><img class="walletIcon" src="/static/icons/status.png"/>
+              <p>Status</p><p class="walletDesc">Mobile wallet</p></a>
+            </b-col>
+            <b-col cols="6" id="opera">
+              <a target="__blank" href="https://www.opera.com/crypto"><img class="walletIcon" src="/static/icons/opera.png"/>
               <p>Opera</p><p class="walletDesc">Android browser</p></a>
             </b-col>
-            <b-col cols="6">
-              <a target="__blank" href="https://app.portis.io/"><span><img class="walletIcon" id="portis" src="/static/icons/portis.png"/>
-              <p>Portis</p><p class="walletDesc">Mail wallet</p></span></a>
+          </b-row>
+          <b-row class="logoRow">
+          <b-col cols="6" id="metamask">
+            <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
+            <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
+          </b-col>
+            <b-col cols="6" id="portis">
+              <a target="__blank" href="https://app.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
+              <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
             </b-col>
           </b-row>
         </div>
@@ -177,6 +177,30 @@ export default {
 
 .logoRow {
   padding-bottom: 1rem;
+}
+
+@media (min-width: 765px) {
+  #imToken {
+    display: none;
+  }
+  #trust {
+    display: none;
+  }
+  #status {
+    display: none;
+  }
+  #opera {
+    display: none;
+  }
+}
+
+@media (max-width: 765px) {
+  #metamask {
+    display: none;
+  }
+  #portis {
+    display: none;
+  }
 }
 
 </style>
