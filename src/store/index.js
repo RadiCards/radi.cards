@@ -479,7 +479,8 @@ const store = new Vuex.Store({
             privateKey: state.ephemeralPrivateKey,
             time: moment().format('Do MMMM YYYY, h:mm:ss a'),
             // tokenId: event.args._tokenId.toNumber(10),
-            value: transactionValue
+            value: transactionValue,
+            card: null
           };
 
           commit(mutations.ADD_EPHEMERAL_WALLET, ephemeralWalletObject);
@@ -546,21 +547,20 @@ const store = new Vuex.Store({
       });
 
       const contract = await state.contract.deployed();
-      console.log("addresse")
-      console.log(ephemeralAddresses)
       const tokenIdDetails = ephemeralAddresses.map(address => contract.ephemeralWalletCards.call(address));
       let sentTokenIds = await Promise.all(tokenIdDetails);
-      console.log("AAAAAAA")
-      console.log(sentTokenIds)
 
+      let filteredIds = []
+      sentTokenIds.forEach(function (id) {
+        if (id.toNumber() > 0) {
+          filteredIds.push(id.toNumber())
+        }
+      })
 
-      const tokenDetails = sentTokenIds.map(id => contract.tokenDetails(id.toNumber()));
+      const tokenDetails = filteredIds.map(id => contract.tokenDetails(id));
       let tokenDetailsArray = await Promise.all(tokenDetails);
-      console.log("BBBB")
-      console.log(tokenDetailsArray)
       let loopIndex = 0;
       tokenDetailsArray.forEach(function (accountToken) {
-        console.log("in loop")
         let gifter = accountToken[0];
         let message = accountToken[1];
         let daiDonation = accountToken[2];
@@ -569,7 +569,7 @@ const store = new Vuex.Store({
         let status = accountToken[5].toNumber();
         let cardIndex = accountToken[6];
         let benefactorIndex = accountToken[7].toNumber();
-        let tokenId = sentTokenIds[loopIndex]
+        let tokenId = filteredIds[loopIndex];
         let statuses = ["Empty", "Deposited", "Claimed", "Cancelled"];
         let decodedStatus = statuses[status];
         if (state.cards) {
@@ -598,13 +598,7 @@ const store = new Vuex.Store({
             },
             ...cardInformation[0]
           };
-          console.log("in loop")
-          state.ephemeralWallets.map((wallet, index) => {
-            // if (web3.utils.toChecksumAddress(wallet.gifter) === web3.utils.toChecksumAddress(gifter)) {
-            //   state.ephemeralWallets[index]["card"] = allCardInformation;
-            // }
-            state.ephemeralWallets[loopIndex]["card"] = allCardInformation;
-          });
+          state.ephemeralWallets[loopIndex]["card"] = allCardInformation;
         }
         loopIndex++;
       });

@@ -1,15 +1,14 @@
 
 <template>
-  <div v-if="hasSentCards">
-    <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>{{ $t("m.sentCards2")}}
-    <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
+  <div v-if="ephemeralWallets.length > 0">
+    <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>
+    {{ $t("m.sentCards2")}}
+    <b-row no-gutters v-for="wallet in ephemeralWallets">
       <b-col cols="12" class="pt-3">
-        <sent-card :wallet="wallet" v-if="wallet.card"/>
+        <sent-card :wallet="wallet" v-if="wallet.card != null"/>
       </b-col>
     </b-row>
-    <div
-      v-if="hasPendingCards"
-    >{{ $t("m.pendingTransactions")}}</div>
+    <div v-if="hasPendingCards">{{ $t("m.pendingTransactions")}}</div>
   </div>
 </template>
 
@@ -23,9 +22,6 @@ export default {
   props: ["link"],
   computed: {
     ...mapState(["ephemeralWallets"]),
-    hasSentCards() {
-      return this.ephemeralWallets.length > 0;
-    },
     hasPendingCards() {
       let ephemeralWalletsLoaded = 0;
       this.ephemeralWallets.forEach(function(wallet) {
