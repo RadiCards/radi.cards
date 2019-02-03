@@ -236,6 +236,16 @@ const store = new Vuex.Store({
 
       dispatch(actions.GET_CURRENT_NETWORK);
 
+      let contract = await RadiCards.deployed();
+
+      let currentEthPriceInUSD = web3.utils.fromWei(
+        (await contract.getEtherPrice()).toString("10"),
+        "ether"
+      );
+      if (state.usdPrice !== currentEthPriceInUSD) {
+        commit(mutations.SET_USD_PRICE, currentEthPriceInUSD);
+      }
+
       let accounts = await web3.eth.getAccounts();
 
       let account = accounts[0];
@@ -280,14 +290,6 @@ const store = new Vuex.Store({
         let totalSupply = (await contract.totalSupply()).toString("10");
         if (state.totalSupply !== totalSupply) {
           commit(mutations.SET_TOTAL_SUPPLY, totalSupply);
-        }
-
-        let currentEthPriceInUSD = web3.utils.fromWei(
-          (await contract.getEtherPrice()).toString("10"),
-          "ether"
-        );
-        if (state.usdPrice !== currentEthPriceInUSD) {
-          commit(mutations.SET_USD_PRICE, currentEthPriceInUSD);
         }
 
         let totalGiftedInEth = web3.utils.fromWei(
