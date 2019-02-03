@@ -84,7 +84,7 @@ module.exports = async (deployer, network, accounts) => {
     from: account
   });
   //Na	imToken wishes a Happy New Year #1
-  await contract.addCard(24, "QmZLyV6JgrNyyRnvuFq3p6K3UCtg6eQmHgvwuEkkrKaM6E", true, 3, '10000000000000000000', {
+  await contract.addCard(25, "QmZLyV6JgrNyyRnvuFq3p6K3UCtg6eQmHgvwuEkkrKaM6E", true, 3, '10000000000000000000', {
     from: account
   });
   //Na	imToken wishes a Happy New Year #2
