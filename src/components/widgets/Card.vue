@@ -18,12 +18,17 @@
         <div class="card__meta">
           <div class="row" variant="light" v-if="cdata.cardMaxQnty>0">
             <div class="col-6 pl-0">
-              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}}</p>
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}} minted</p>
             </div>
             <div class="col-6 text-right pr-0">
               <div>
                 <img src="/static/icons/specialedition.svg" alt>
               </div>
+            </div>
+          </div>
+          <div class="row" variant="light" v-if="cdata.cardMaxQnty==0">
+            <div class="col-6 pl-0">
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}} minted</p>
             </div>
           </div>
           <div class="row">
@@ -123,24 +128,29 @@
       <br>
 
       <div class="descr aligh">
-        <strong>Token # {{cdata.tokenId}}</strong>
-        <br>
-        Creator:
-        <clickable-address :eth-address="cdata.gifter"></clickable-address>
-        <br>
-        Gift Amount:{{cdata.giftAmount}}
-        <br>
+        <strong v-if="cdata.tokenId">
+          Token # {{cdata.tokenId}}
+          <br>
+        </strong>
+        <div v-if="cdata.gifter">Creator:
+          <clickable-address :eth-address="cdata.gifter"></clickable-address>
+          <br>
+        </div>
+        <div v-if="cdata.giftAmount">
+          Gift Amount: {{cdata.giftAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
+          <br>
+        </div>
         <div v-if="cdata.donationAmount>0">
-          Donation Amount:{{cdata.donationAmount}}
+          Donation Amount: {{cdata.donationAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
           <div v-if="cdata.BenefactorIndex!=0">
-              Charity
-              <strong>
-                <a
-                  v-if="cdata.BenefactorIndex && benefactors"
-                  :href="benefactors[cdata.BenefactorIndex-1].website"
-                  target="_blank"
-                >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-              </strong>
+            Charity
+            <strong>
+              <a
+                v-if="cdata.BenefactorIndex && benefactors"
+                :href="benefactors[cdata.BenefactorIndex-1].website"
+                target="_blank"
+              >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+            </strong>
           </div>
         </div>
       </div>
