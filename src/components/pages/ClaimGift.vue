@@ -73,7 +73,7 @@
             <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
           </b-col>
             <b-col cols="6" id="portis">
-              <a target="__blank" href="https://app.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
+              <a target="__blank" href="https://wallet.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
               <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
             </b-col>
           </b-row>

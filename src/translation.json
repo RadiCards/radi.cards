@@ -1,7 +1,7 @@
 {
   "en": {
     "m": {
-      "sendMethod": "Hongbao sending method",
+      "sendMethod": "Sent via Wechat or to Ethereum address",
       "chooseSendMethod": "Choose how you would like to send your hongbao",
       "addEthWallet": "Add recipient ETH wallet address",
       "sendHongBao": "Send your Ethereum hongbao",
@@ -46,10 +46,10 @@
       "noWeb3": "No web3 wallet could be detected!",
       "noWeb3desc": "In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try",
       "customiseCard": "Add message",
-      "customiseCardDesc": " ",
+      "customiseCardDesc": "Message will appear on card back",
       "addMessage": "This message is uncensorable and will be visible on the blockchain",
       "sendMessage": "max 128 characters",
-      "topUp": "Top-up your card",
+      "topUp": "Fill your hongbao with ETH",
       "topUpDesc": "You need to add at least 0.02 ETH (for the gas fee) in order to create a new radicard.",
       "topUpCrypto": "Top-up your radicard with cryptocurrency",
       "topUpStable": "Top-up your radicard with stable cryptocurrency",
@@ -125,7 +125,7 @@
   },
   "zh": {
     "m": {
-      "sendMethod": "选择红包发送方式",
+      "sendMethod": "通过微信或以太坊地址发送",
       "chooseSendMethod": "选择您希望如何发送您的红包",
       "addEthWallet": "添加收件人ETH钱包地址",
       "sendHongBao": "用微信发送",
@@ -170,10 +170,10 @@
       "noWeb3": "没有检测到web3钱包！🧐",
       "noWeb3desc": "要创建新的红包，您需要使用web3浏览器和以太网帐户。 我们建议你试试",
       "customiseCard": "添加消息",
-      "customiseCardDesc": " ",
+      "customiseCardDesc": "消息将显示在卡片背面",
       "addMessage": "添加消息（这将在区块链中显示）",
       "sendMessage": "最多128个字符",
-      "topUp": "填满你的红包",
+      "topUp": "用加密货币填充你的红包",
       "topUpDesc": "您需要添加至少0.02 ETH（用于gas费）才能创建新的红包。",
       "topUpCrypto": "用加密货币填充你的红包",
       "topUpStable": "用稳定货币填充你的红包",
