@@ -1,7 +1,7 @@
 
 <template>
   <div v-if="hasSentCards">
-    <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>View all the cards you have sent in the past. You can regenerate claimable links here if you have lost them and cancel outstanding gifts if they have not yet been claimed.
+    <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>{{ $t("m.sentCards2")}}
     <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
       <b-col cols="12" class="pt-3">
         <sent-card :wallet="wallet" v-if="wallet.card"/>
@@ -9,7 +9,7 @@
     </b-row>
     <div
       v-if="hasPendingCards"
-    >You have pending transactions for claimable links. Please wait a minute for these to be mined and you will then be able to view them above.</div>
+    >{{ $t("m.pendingTransactions")}}</div>
   </div>
 </template>
 
