@@ -42,6 +42,7 @@
       </figcaption>
 
       <div class="help" v-if="isFlippable">
+        <span class="flipper-mobile">{{ $t("m.claimGiftClickCard")}}</span>
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
@@ -423,6 +424,18 @@ export default {
     img {
       width: 0.875rem;
       margin-right: 0.25rem;
+    }
+  }
+
+  .flipper-mobile {
+    @media (min-width: 1000px) {
+      display: none;
+    }
+  }
+
+  .card__meta {
+    @media (min-width: 1000px) {
+      padding-bottom: 0.5rem;
     }
   }
 
