@@ -103,7 +103,9 @@
       "createHongbao": "CREATE HONGBAO",
       "linkCopied": "Link copied to clipboard!",
       "yourLink": "Your unique hongbao link",
-      "copyLink": "Copy link to clipboard"
+      "copyLink": "Copy link to clipboard",
+      "copyLink2": "Copy link",
+      "pendingTransactions": "Your hongbao link is being generated. You will be able to view them above after the transaction is mined."
     }
   },
   "zh": {
@@ -210,7 +212,9 @@
       "createHongbao": "生成红包链接",
       "linkCopied": "链接复制到剪贴板！",
       "yourLink": "你独特的链接",
-      "copyLink": "复制链接到剪贴板"
+      "copyLink": "复制链接到剪贴板",
+      "copyLink2": "复制链接到剪贴板",
+      "pendingTransactions": "您的红包链接正在生成。 在挖掘交易后，您将能够在上面查看它们。"
     }
   }
 }

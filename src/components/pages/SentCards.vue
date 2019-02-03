@@ -9,7 +9,7 @@
     </b-row>
     <div
       v-if="hasPendingCards"
-    >You have pending transactions for claimable links. Please wait a minute for these to be mined and you will then be able to view them above.</div>
+    >{{ $t("m.pendingTransactions")}}</div>
   </div>
 </template>
 
