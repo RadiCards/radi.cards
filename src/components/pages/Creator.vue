@@ -1,17 +1,39 @@
 <template>
   <div class="container">
-    <div v-if="account==null">
+      <div v-if="account===null" class="container" style="text-align: left;">
       <h4>{{ $t("m.noWeb3")}}</h4>
-      <p class="pt-2">
-        {{ $t("m.noWeb3desc")}}
-        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
-        <a target="__blank" href="https://token.im/download?locale=en-US">imToken Wallet</a>,
-        <a target="__blank" href="https://status.im">Status</a>,
-        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
-        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
-        <a target="__blank" href="https://wallet.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
-      </p>
-    </div>
+      <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
+        <b-row class="logoRow">
+          <b-col cols="6" id="imToken">
+            <a target="__blank" href="https://token.im/download"><span><img class="walletIcon" src="/static/icons/imToken_color.png"/>
+            <p>imToken Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
+          </b-col>
+          <b-col cols="6" id="trust">
+            <a target="__blank" href="https://trustwallet.com/"><span><img class="walletIcon" src="/static/icons/trust.png"/>
+            <p>Trust Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
+          </b-col>
+        </b-row>
+        <b-row class="logoRow">
+          <b-col cols="6" id="status">
+            <a target="__blank" href="https://status.im"><img class="walletIcon" src="/static/icons/status.png"/>
+            <p>Status</p><p class="walletDesc">Mobile wallet</p></a>
+          </b-col>
+          <b-col cols="6" id="opera">
+            <a target="__blank" href="https://www.opera.com/crypto"><img class="walletIcon" src="/static/icons/opera.png"/>
+            <p>Opera</p><p class="walletDesc">Android browser</p></a>
+          </b-col>
+        </b-row>
+        <b-row class="logoRow">
+        <b-col cols="6" id="metamask">
+          <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
+          <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
+        </b-col>
+          <b-col cols="6" id="portis">
+            <a target="__blank" href="https://wallet.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
+            <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
+          </b-col>
+        </b-row>
+      </div>
     <form v-if="account!=null && account != undefined">
       <div role="tablist">
         <div class="section step step--twocol step1" v-if="step === 0">
@@ -1173,6 +1195,47 @@ textarea {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
+}
+
+.walletIcon {
+  float: left;
+  max-height: 40px;
+  @media (max-width: 1000px) {
+    padding-right: 100%;
+  }
+}
+
+
+.walletDesc {
+  font-size: 0.8rem;
+}
+
+.logoRow {
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 765px) {
+  #imToken {
+    display: none;
+  }
+  #trust {
+    display: none;
+  }
+  #status {
+    display: none;
+  }
+  #opera {
+    display: none;
+  }
+}
+
+@media (max-width: 765px) {
+  #metamask {
+    display: none;
+  }
+  #portis {
+    display: none;
+  }
 }
 
 // Steps preview (top)
