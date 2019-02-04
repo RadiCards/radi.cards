@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <b-row>
+    <b-row v-if="getTransferStatus()!=='BADURL'">
       <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
         <card :cdata="deepUrlCard"/>
         <span class="cheeky-comment" style="padding-left: 5px;padding-right: 5px;">
@@ -122,6 +122,7 @@
         <!-- <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;"> -->
       </b-col>
     </b-row>
+    <h3 v-if="getTransferStatus()==='BADURL'">Something went wrong with the url and a valid card could not be found 🙁️</h3>
   </div>
 </template>
 

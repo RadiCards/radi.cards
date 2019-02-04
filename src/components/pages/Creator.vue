@@ -47,7 +47,7 @@
             <p class="walletDesc">Chrome addon</p>
           </a>
         </b-col>
-        <!-- <b-col cols="6" id="portis">
+        <b-col cols="6" id="portis">
           <div @click="initPortis">
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
@@ -55,7 +55,7 @@
               <p class="walletDesc">Web wallet</p>
             </span>
           </div>
-        </b-col> -->
+        </b-col>
       </b-row>
     </div>
     <form v-if="account!=null && account != undefined">

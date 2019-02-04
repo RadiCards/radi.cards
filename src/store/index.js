@@ -914,11 +914,17 @@ const store = new Vuex.Store({
         }
         // wait until the deep url for the claimable card has been loaded
         if (state.deepUrlCard) {
-          if (state.deepUrlCard.status === "Claimed") {
+          if (state.deepUrlCard.tokenId.toNumber() === 0) {
+            console.log("BAAD")
+            commit(mutations.SET_TRANSFER_STATUS, {
+              status: "BADURL"
+            });
+          }
+          if (state.deepUrlCard.status === "Claimed" && state.deepUrlCard.tokenId.toNumber() !== 0) {
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "CLAIMED"
             });
-          } else {
+          } if (state.deepUrlCard.status === "Deposited" && state.deepUrlCard.tokenId.toNumber() !== 0) {
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "READY"
             });
