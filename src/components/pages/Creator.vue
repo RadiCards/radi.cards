@@ -3,8 +3,10 @@
     <div v-if="account===null" class="container" style="text-align: left;">
       <h4>{{ $t("m.noWeb3")}}</h4>
       <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
+      <br>
+      <br>
       <b-row class="logoRow">
-        <b-col cols="6" id="imToken">
+        <b-col class="wallet-button" cols="6" id="imToken">
           <a target="__blank" v-b-toggle.collapse1 variant="primary">
             <span>
               <img class="walletIcon" src="/static/icons/imToken_color.png">
@@ -12,24 +14,18 @@
               <p class="walletDesc">Mobile wallet</p>
             </span>
           </a>
-          <b-collapse id="collapse1" class="mt-2">
-          <b-card>
-            Don't have ImToken installed? install it
-            <a
-              target="__blank"
-              href="https://trustwalletapp.com"
-            >here</a>
-            <br>
-            <hr>
-            Have ImToken installed? Open this link in ImToken
-            <a
-              target="__blank"
-              :href="generateDeepURL()"
-            >here</a>
-          </b-card>
-        </b-collapse>
+          <b-collapse id="collapse1" class="wallet-reg mt-2">
+            <b-card>
+              <div class="walletDesc">New user</div>
+              <a target="__blank" href="https://trustwalletapp.com">Install</a>
+              <br>
+              <hr>
+              <div class="walletDesc">Existing user</div>
+              <a target="__blank" :href="generateDeepURL()">Log in</a>
+            </b-card>
+          </b-collapse>
         </b-col>
-         <b-col cols="6" id="trust">
+        <b-col class="wallet-button" cols="6" id="trust">
           <a target="__blank" @click="initPortis">
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
@@ -56,14 +52,14 @@
         </b-col>
       </b-row>-->
       <b-row class="logoRow">
-        <b-col cols="6" id="metamask">
+        <b-col class="wallet-button" cols="6" id="metamask">
           <a target="__blank" href="https://metamask.io">
             <img class="walletIcon" src="/static/icons/metamask.png">
             <p>MetaMask</p>
             <p class="walletDesc">Chrome addon</p>
           </a>
         </b-col>
-        <b-col cols="6" id="portis">
+        <b-col class="wallet-button" cols="6" id="portis">
           <div @click="initPortis">
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
@@ -860,7 +856,10 @@ export default {
   },
   methods: {
     generateDeepURL() {
-      return "imtokenv2://navigate/DappView?url=https://radi.cards" + this.$route.fullPath
+      return (
+        "imtokenv2://navigate/DappView?url=https://radi.cards" +
+        this.$route.fullPath
+      );
     },
     initPortis() {
       const portis = new Portis(
@@ -1255,6 +1254,37 @@ textarea {
   hyphens: auto;
 }
 
+.wallet-reg {
+  box-shadow: 0 0.1rem 0.4rem rgba($gray, 0.3);
+}
+
+.wallet-button {
+  padding-top: 0.8rem;
+  padding-bottom: 0.6rem;
+  padding-left: 0.7rem;
+  padding-right: -0.5rem;
+  transition: all 1s ease-in-out;
+
+  &:visited {
+    color: $white;
+  }
+  &:hover {
+    -moz-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+    -o-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+
+    -webkit-transition: transform 1.05s ease-in-out;
+    -moz-transition: transform 1.05s ease-in-out;
+    -ms-transition: transform 1.05s ease-in-out;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
 .walletIcon {
   float: left;
   max-height: 40px;
@@ -1265,6 +1295,7 @@ textarea {
 
 .walletDesc {
   font-size: 0.8rem;
+  color: $gray;
 }
 
 .logoRow {

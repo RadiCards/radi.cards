@@ -76,18 +76,13 @@
                 </span>
               </a>
               <b-collapse id="collapse1" class="mt-2">
-                <b-card>
-                  Don't have ImToken installed? install it
-                  <a
-                    target="__blank"
-                    href="https://trustwalletapp.com"
-                  >here</a>
+                <b-card>Don't have ImToken installed? install it
                   <br>
-                  <hr>Have ImToken installed? Open this link in ImToken
-                  <a
-                    target="__blank"
-                    :href="generateDeepURL()"
-                  >here</a>
+                  <a target="__blank" href="https://trustwalletapp.com">here</a>
+                  <br>
+                  <hr>
+                  <h3>Have ImToken installed? Open this link in ImToken</h3>
+                  <a target="__blank" :href="generateDeepURL()">here</a>
                 </b-card>
               </b-collapse>
             </b-col>
