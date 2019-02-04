@@ -44,7 +44,7 @@
     "vuejs-logger": "1.5.3",
     "vuex": "^3.0.1",
     "vuex-persistedstate": "^2.5.4",
-    "web3": "^1.0.0-beta.37"
+    "web3": "^1.0.0-beta.34"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",
