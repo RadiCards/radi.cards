@@ -503,9 +503,12 @@
             <br>
             <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
+            <h4
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
+            >{{ $t("m.DAIDisclaimer")}}</h4>
             <p
               v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
-            >{{ $t("m.DAIDisclaimer")}}</p>
+            >{{ $t("m.DAIDisclaimer2")}}</p>
           </div>
         </div>
 
