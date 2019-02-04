@@ -19,7 +19,7 @@
         >{{ $t("m.claimGiftGetInfo2")}}</p>
         <h3 class="gift-desc" v-if="getTransferStatus()==='READY'">{{ $t("m.claimGiftReady")}}</h3>
         <div class="input-label" v-if="deepUrlCard">
-          <p class="pt-4 pb-4" v-if="deepUrlCard.giftAmount>0"></p>
+          <p v-if="deepUrlCard.giftAmount>0"></p>
           <p
             v-if="deepUrlCard.daiDonation"
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalDAI")}}</p>
@@ -37,7 +37,7 @@
         >
 
         <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">
-          {{ $t("m.claimGiftTrans")}}
+          <h3 class="input-label-notice">{{ $t("m.claimGiftTrans")}}</h3>
           <div class="loading-spinner">
             <div class="loading-spinner-inner">
               <div class="holder">
@@ -52,11 +52,13 @@
             </div>
           </div>
         </h3>
-        <h3
-          style="padding-top: 1rem;"
-          v-if="getTransferStatus()==='TRANSFERRED'"
-        >{{ $t("m.claimGiftTrans2")}}</h3>
-        <h3 v-if="getTransferStatus()==='CLAIMED'">{{ $t("m.claimGiftAlreadyClaimed")}}</h3>
+        <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='TRANSFERRED'">
+          <h3 class="input-label-notice">{{ $t("m.claimGiftTrans2")}}</h3>
+        </h3>
+        <h3 class="input-label-notice" v-if="getTransferStatus()==='CLAIMED'">
+          <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
+          {{ $t("m.claimGiftAlreadyClaimed")}}
+        </h3>
         <h3 v-if="account===null">{{ $t("m.claimGiftProviders")}}</h3>
         <p class="pt-4 pb-4" v-if="account===null">{{ $t("m.claimGiftProviders2")}}</p>
 
@@ -120,9 +122,7 @@
         <!-- <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;"> -->
       </b-col>
     </b-row>
-    <h3
-      v-if="getTransferStatus()==='BADURL'"
-    >{{ $t("m.somethingWrong")}}</h3>
+    <h3 v-if="getTransferStatus()==='BADURL'">{{ $t("m.somethingWrong")}}</h3>
   </div>
 </template>
 
@@ -207,10 +207,20 @@ export default {
 
 .input-label {
   font-size: 0.9rem;
-  color: $darkred;
-  text-align: left;
+  color: $darkgray;
+  text-align: center;
   width: 100%;
-  padding-bottom: 0.15rem;
+  padding-bottom: 0.1rem;
+  background-color: white;
+}
+
+.input-label-notice {
+  font-size: 0.9rem;
+  color: $darkred;
+  text-align: center;
+  width: 100%;
+  padding-bottom: 1rem;
+  margin-top: 0.5rem;
 }
 
 .h3 {
