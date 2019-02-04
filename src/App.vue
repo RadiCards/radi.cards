@@ -230,8 +230,6 @@ export default {
   },
   methods: {
     isWeChatBrowser() {
-      console.log("WWWEEE")
-      console.log(navigator.userAgent.match(/MicroMessenger/) != null)
       return navigator.userAgent.match(/MicroMessenger/) != null;
     },
     initPortis() {

@@ -62,7 +62,7 @@
             <p class="walletDesc">Chrome addon</p>
           </a>
         </b-col>
-        <!-- <b-col cols="6" id="portis">
+        <b-col cols="6" id="portis">
           <div @click="initPortis">
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
@@ -70,7 +70,7 @@
               <p class="walletDesc">Web wallet</p>
             </span>
           </div>
-        </b-col>-->
+        </b-col>
       </b-row>
     </div>
     <form v-if="account!=null && account != undefined">
@@ -330,7 +330,7 @@
                       <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to my ETH wallet
                     </div>
                   </div>
-                  <h5>{{formData.recipient}}</h5>
+                  <h5></h5>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
                   <div class="alignleft">
@@ -393,7 +393,7 @@
                   <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
                   <h4
                     class="alignright"
-                  >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH.toFixed(3)}} ETH</h4>
+                  >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH}} ETH</h4>
                   <br>
                   <br>
                   <div class="alignright">
