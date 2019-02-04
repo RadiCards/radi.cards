@@ -37,7 +37,6 @@ export default {
 
 .banner {
   background: #ffffff;
-  border: 3px solid #000000;
   box-sizing: border-box;
   width: 100%;
   position: fixed;
@@ -45,10 +44,11 @@ export default {
   left: 0px;
   z-index: 2;
   padding: 20px;
+  box-shadow: 0 0.5rem 0.5rem rgba($gray, 0.3);
 
   @media (max-width: 630px) {
     padding: 10px;
-    }
+  }
 
   .container {
     justify-content: space-between;
@@ -68,7 +68,7 @@ export default {
     @media (max-width: 630px) {
       line-height: 10px;
       font-size: 10px;
-      }
+    }
 
     b {
     }
@@ -93,6 +93,5 @@ export default {
       padding-right: 10px;
     }
   }
-
 }
 </style>
