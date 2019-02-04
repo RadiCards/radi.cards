@@ -8,7 +8,7 @@
         <sent-card :wallet="wallet" v-if="wallet.card != null"/>
       </b-col>
     </b-row>
-    <div v-if="hasPendingCards">{{ $t("m.pendingTransactions")}}</div>
+    <div v-if="hasPendingCards">{{ $t("m.pendingTransactions")}} There is a total of {{numberOfPending}} pending links still in formation.</div>
   </div>
 </template>
 
@@ -18,6 +18,11 @@ import SentCard from "../widgets/SentCard";
 
 export default {
   components: { SentCard },
+  data() {
+    return {
+      numberOfPending: 0
+    };
+  },
   name: "QRCodeImage",
   props: ["link"],
   computed: {
@@ -29,6 +34,8 @@ export default {
           ephemeralWalletsLoaded++;
         }
       });
+      this.numberOfPending =
+        this.ephemeralWallets.length - ephemeralWalletsLoaded;
       return this.ephemeralWallets.length > ephemeralWalletsLoaded;
     }
   }

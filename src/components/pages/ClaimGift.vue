@@ -4,18 +4,27 @@
       <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
         <card :cdata="deepUrlCard"/>
         <span class="cheeky-comment" style="padding-left: 5px;padding-right: 5px;">
-          <img src="/static/images/red-arrow.svg" class="dl-1">{{ $t("m.claimGiftClickCard")}}
+          <img src="/static/images/red-arrow.svg" class="dl-1">
+          {{ $t("m.claimGiftClickCard")}}
         </span>
       </b-col>
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
         <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
         <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">{{ $t("m.claimGiftGetInfo")}}</h3>
-        <p class="pt-4 pb-4" v-if="getTransferStatus()==='TRIGGERED' && account!=null">{{ $t("m.claimGiftGetInfo2")}}</p>
-        <h3
-          v-if="getTransferStatus()==='READY'"
-        >{{ $t("m.claimGiftReady")}}
-
-
+        <p
+          class="pt-4 pb-4"
+          v-if="getTransferStatus()==='TRIGGERED' && account!=null"
+        >{{ $t("m.claimGiftGetInfo2")}}</p>
+        <h3 v-if="getTransferStatus()==='READY'">
+          {{ $t("m.claimGiftReady")}}
+          <input
+            v-if="account"
+            type="button"
+            class="button button--fullwidth"
+            @click="claimGift"
+            v-bind:value="$t('m.claimGiftAction')"
+            style="margin-top:30px"
+          >
         </h3>
         <div v-if="deepUrlCard">
           <p class="pt-4 pb-4" v-if="deepUrlCard.giftAmount>0">{{ $t("m.claimGiftMoney")}}</p>
@@ -26,62 +35,91 @@
             v-if="!deepUrlCard.daiDonation"
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalETH")}}</p>
         </div>
-        <input
-          v-if="account"
-          type="button"
-          class="button button--fullwidth"
-          @click="claimGift"
-          v-bind:value="$t('m.claimGiftAction')"
-          style="margin-top:30px"
-        >
-        <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">{{ $t("m.claimGiftTrans")}}</h3>
-        <h3 style="padding-top: 1rem;"
+
+        <h3
+          style="padding-top: 1rem;"
+          v-if="getTransferStatus()==='SUBMITTED'"
+        >{{ $t("m.claimGiftTrans")}}
+        <div class="loading-spinner">
+              <div class="loading-spinner-inner">
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+                <div class="holder">
+                  <div class="box"></div>
+                </div>
+              </div>
+            </div>
+        </h3>
+        <h3
+          style="padding-top: 1rem;"
           v-if="getTransferStatus()==='TRANSFERRED'"
         >{{ $t("m.claimGiftTrans2")}}</h3>
         <h3 v-if="getTransferStatus()==='CLAIMED'">{{ $t("m.claimGiftAlreadyClaimed")}}</h3>
-        <h3 v-if="account===null">
-          {{ $t("m.claimGiftProviders")}}
-        </h3>
-        <p class="pt-4 pb-4" v-if="account===null">
-          {{ $t("m.claimGiftProviders2")}}
-        </p>
+        <h3 v-if="account===null">{{ $t("m.claimGiftProviders")}}</h3>
+        <p class="pt-4 pb-4" v-if="account===null">{{ $t("m.claimGiftProviders2")}}</p>
 
         <div v-if="account===null" class="container" style="text-align: left;">
           <b-row class="logoRow">
             <b-col cols="6" id="imToken">
-              <a target="__blank" href="https://token.im/download"><span><img class="walletIcon" src="/static/icons/imToken_color.png"/>
-              <p>imToken Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
+              <a target="__blank" href="https://token.im/download">
+                <span>
+                  <img class="walletIcon" src="/static/icons/imToken_color.png">
+                  <p>imToken Wallet</p>
+                  <p class="walletDesc">Mobile wallet</p>
+                </span>
+              </a>
             </b-col>
             <b-col cols="6" id="trust">
-              <a target="__blank" href="https://trustwallet.com/"><span><img class="walletIcon" src="/static/icons/trust.png"/>
-              <p>Trust Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
+              <a target="__blank" href="https://trustwallet.com/">
+                <span>
+                  <img class="walletIcon" src="/static/icons/trust.png">
+                  <p>Trust Wallet</p>
+                  <p class="walletDesc">Mobile wallet</p>
+                </span>
+              </a>
             </b-col>
           </b-row>
           <b-row class="logoRow">
             <b-col cols="6" id="status">
-              <a target="__blank" href="https://status.im"><img class="walletIcon" src="/static/icons/status.png"/>
-              <p>Status</p><p class="walletDesc">Mobile wallet</p></a>
+              <a target="__blank" href="https://status.im">
+                <img class="walletIcon" src="/static/icons/status.png">
+                <p>Status</p>
+                <p class="walletDesc">Mobile wallet</p>
+              </a>
             </b-col>
             <b-col cols="6" id="opera">
-              <a target="__blank" href="https://www.opera.com/crypto"><img class="walletIcon" src="/static/icons/opera.png"/>
-              <p>Opera</p><p class="walletDesc">Android browser</p></a>
+              <a target="__blank" href="https://www.opera.com/crypto">
+                <img class="walletIcon" src="/static/icons/opera.png">
+                <p>Opera</p>
+                <p class="walletDesc">Android browser</p>
+              </a>
             </b-col>
           </b-row>
           <b-row class="logoRow">
-          <b-col cols="6" id="metamask">
-            <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
-            <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
-          </b-col>
-            <b-col cols="6" id="portis">
-              <div @click="initPortis"><span><img class="walletIcon" src="/static/icons/portis.png"/>
-              <p>Portis</p><p class="walletDesc">Web wallet</p></span></div>
+            <b-col cols="6" id="metamask">
+              <a target="__blank" href="https://metamask.io">
+                <img class="walletIcon" src="/static/icons/metamask.png">
+                <p>MetaMask</p>
+                <p class="walletDesc">Chrome addon</p>
+              </a>
             </b-col>
+            <!-- <b-col cols="6" id="portis">
+              <div @click="initPortis">
+                <span>
+                  <img class="walletIcon" src="/static/icons/portis.png">
+                  <p>Portis</p>
+                  <p class="walletDesc">Web wallet</p>
+                </span>
+              </div>
+            </b-col> -->
           </b-row>
         </div>
 
         <!-- <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;"> -->
-
-
       </b-col>
     </b-row>
   </div>
@@ -212,5 +250,4 @@ export default {
     display: none;
   }
 }
-
 </style>

@@ -111,7 +111,7 @@
       "claimGiftGetInfo": "Claim your hongbao on the blockchain!",
       "claimGiftGetInfo2": "Getting gift information 🤞",
       "claimGiftReady": "Claim your hongbao on the blockchain!",
-      "claimGiftTrans": "Transferring card to your unlocked wallet! 🚀",
+      "claimGiftTrans": "Transferring card to your unlocked wallet! 🚀 Please wait while the tx is processed.",
       "claimGiftTrans2": "The card has been transferred to your wallet! 🎉",
       "claimGiftAlreadyClaimed": "This card has already been claimed 🙁",
       "claimGiftProviders": "You received an Ethereum Hongbao, filled with magic internet money!",

@@ -619,7 +619,7 @@ const store = new Vuex.Store({
 
       console.log(recipient);
       console.log("transfering card...", recipient, tokenId);
-      const transaction = contract.safeTransferFrom(
+      const transaction = await contract.safeTransferFrom(
         state.account,
         recipient,
         tokenId, {
