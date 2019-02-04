@@ -2,7 +2,7 @@
   <div id="app">
     <hr class="m-0 p-0">
     <header>
-      <p class="notice" v-if="!account && currentNetwork">
+      <p class="notice" v-if="!account && currentNetwork && !isWeChatBrowser()">
         Please unlock your web3 wallet or if you do not have one, go install
         <a
           href="https://metamask.io/"
