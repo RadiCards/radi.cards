@@ -71,9 +71,10 @@
       "yourWallet": "Your wallet:",
       "ready": "Your hongbao is ready!",
       "readyDesc": "Check the details of your Hongbao before you send it",
-      "transactionTriggered": "Transaction has been triggered!",
-      "transactionTriggeredDesc": "Please accept the transaction in your web3 provider, such as metamask, imToken etc.",
-      "DAIDisclaimer": "As you requested to send DAI with your card you will need to first approve for the RadiCards contract to access the specified DAI amount from your wallet. This means you will need to sign two transactions to generate your card.",
+      "transactionTriggered": "Transaction triggered!",
+      "transactionTriggeredDesc": "Please accept the transaction in your web3 wallet.",
+      "DAIDisclaimer": "Please don't close this tab! You need to confirm two transactions!",
+      "DAIDisclaimer2": "Since you are sending DAI, you need to sign two transactions. First to approve our contract, then to send the DAI.",
       "cardCreated": "Please don't close this tab...",
       "cardCreatedDesc": "...generating your hongbao link only takes a few minutes.",
       "cardCreatedDesc2": "You will also find all sent and received cards under 'Sent Cards'.",
@@ -107,7 +108,7 @@
       "copyLink2": "Copy link",
       "pendingTransactions": "Your hongbao link is being generated. You will be able to view them above after the transaction is mined.",
       "claimGiftLoading": "Loading Information from blockchain.",
-      "claimGiftClickCard": "click on the card to see the message.",
+      "claimGiftClickCard": "click to ",
       "claimGiftGetInfo": "Claim your hongbao on the blockchain!",
       "claimGiftGetInfo2": "Getting gift information 🤞",
       "claimGiftReady": "Claim your hongbao on the blockchain!",
@@ -120,7 +121,9 @@
       "claimGiftTotal": "A total of",
       "claimGiftTotalDAI": "DAI was sent with the card!",
       "claimGiftTotalETH": "ETH was sent with the card!",
-      "claimGiftAction": "Claim Gift!"
+      "claimGiftAction": "Claim Gift!",
+      "sendDAI": "If you choose to send DAI you will need to sign two transactions during minting.",
+      "somethingWrong": "Something went wrong with the url and a valid card could not be found 🙁️"
     }
   },
   "zh": {
@@ -196,8 +199,9 @@
       "ready": "你的红吧准备好了！",
       "readyDesc": "在发送之前，请查看您的红包的详细信息！",
       "transactionTriggered": "交易已被触发！",
-      "transactionTriggeredDesc": "请在您的web3浏览器中接受该交易，例如Metamask，imToken等。",
-      "DAIDisclaimer": "当您要求向您的红包发送DAI时，您需要先批准RadiCards合同才能从您的钱包中访问指定的DAI金额。 这意味着您需要签署两个交易才能生成您的红包。",
+      "transactionTriggeredDesc": "请在您的web3浏览器中接受该交易！",
+      "DAIDisclaimer": "请不要关闭此选项卡！ 您需要确认两笔交易！",
+      "DAIDisclaimer2": "由于您要发送DAI，因此需要签署两个事务。 首先批准我们的合同，然后发送DAI。",
       "cardCreated": "请不要关闭此耳片...",
       "cardCreatedDesc": "生成您的红包链接只需几分钟。",
       "cardCreatedDesc2": "您还可以在“我的红包”下找到所有已发送和已收到的红包。",
@@ -244,7 +248,9 @@
       "claimGiftTotal": "一共",
       "claimGiftTotalDAI": "DAI 用红包发送了！",
       "claimGiftTotalETH": "ETH 用红包发送了！",
-      "claimGiftAction": "索赔礼物！"
+      "claimGiftAction": "索赔礼物！",
+      "sendDAI": "如果您选择发送DAI，则需要在铸造期间签署两笔交易。",
+      "somethingWrong": "网址出错了，无法找到有效的红包。🙁️"
     }
   }
 }

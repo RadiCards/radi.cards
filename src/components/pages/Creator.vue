@@ -287,7 +287,7 @@
             >{{ $t("m.noDAI")}}{{parseFloat(daiBalance).toFixed(3)}}.</p>
             <p
               v-if="formData.currency === 'DAI'"
-            >If you choose to send DAI you will need to sign two transactions during minting.</p>
+            >{{ $t("m.sendDAI")}}</p>
 
             <p
               v-if="formData.currency === 'ETH' && formData.valueInETH * usdPrice < formData.card.cardMinPrice"
@@ -503,9 +503,12 @@
             <br>
             <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
+            <h4
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
+            >{{ $t("m.DAIDisclaimer")}}</h4>
             <p
               v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
-            >{{ $t("m.DAIDisclaimer")}}</p>
+            >{{ $t("m.DAIDisclaimer2")}}</p>
           </div>
         </div>
 

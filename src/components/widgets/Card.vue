@@ -47,7 +47,6 @@
       </figcaption>
 
       <div class="help" v-if="isFlippable">
-        <span class="flipper-mobile">{{ $t("m.claimGiftClickCard")}}</span>
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>

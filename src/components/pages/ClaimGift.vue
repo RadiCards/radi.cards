@@ -3,11 +3,12 @@
     <b-row v-if="getTransferStatus()!=='BADURL'">
       <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
         <card :cdata="deepUrlCard"/>
-        <span class="cheeky-comment" style="padding-left: 5px;padding-right: 5px;">
+        <span class="cheeky-comment">
           <img src="/static/images/red-arrow.svg" class="dl-1">
           {{ $t("m.claimGiftClickCard")}}
         </span>
       </b-col>
+
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
         <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
         <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">{{ $t("m.claimGiftGetInfo")}}</h3>
@@ -36,23 +37,21 @@
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalETH")}}</p>
         </div>
 
-        <h3
-          style="padding-top: 1rem;"
-          v-if="getTransferStatus()==='SUBMITTED'"
-        >{{ $t("m.claimGiftTrans")}}
-        <div class="loading-spinner">
-              <div class="loading-spinner-inner">
-                <div class="holder">
-                  <div class="box"></div>
-                </div>
-                <div class="holder">
-                  <div class="box"></div>
-                </div>
-                <div class="holder">
-                  <div class="box"></div>
-                </div>
+        <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">
+          {{ $t("m.claimGiftTrans")}}
+          <div class="loading-spinner">
+            <div class="loading-spinner-inner">
+              <div class="holder">
+                <div class="box"></div>
+              </div>
+              <div class="holder">
+                <div class="box"></div>
+              </div>
+              <div class="holder">
+                <div class="box"></div>
               </div>
             </div>
+          </div>
         </h3>
         <h3
           style="padding-top: 1rem;"
@@ -122,7 +121,9 @@
         <!-- <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;"> -->
       </b-col>
     </b-row>
-    <h3 v-if="getTransferStatus()==='BADURL'">Something went wrong with the url and a valid card could not be found 🙁️</h3>
+    <h3
+      v-if="getTransferStatus()==='BADURL'"
+    >{{ $t("m.somethingWrong")}}</h3>
   </div>
 </template>
 
@@ -197,6 +198,8 @@ export default {
   width: 9rem;
   transform: rotate(6deg);
   font-weight: bold;
+  padding-left: 5px;
+  padding-right: 5px;
 
   @media (max-width: 1000px) {
     display: none;
