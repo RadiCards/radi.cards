@@ -3,7 +3,7 @@
   <div v-if="ephemeralWallets.length > 0">
     <h1 class="mt-2">{{ $t("m.sentCards")}}</h1>
     {{ $t("m.sentCards2")}}
-    <b-row no-gutters v-for="wallet in ephemeralWallets">
+    <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.recipient">
       <b-col cols="12" class="pt-3">
         <sent-card :wallet="wallet" v-if="wallet.card != null"/>
       </b-col>

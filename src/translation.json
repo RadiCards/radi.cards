@@ -44,7 +44,7 @@
       "sentCards": "Sent Cards",
       "sentCards2": "View all the cards you have sent in the past. You can send the link again or claim the hongbao back yourself.",
       "noWeb3": "Install an Ethereum browser!",
-      "noWeb3desc": "In order to claim it, please install an Ethereum wallet and get some Ether:",
+      "noWeb3desc": "In order to create a new card you require a web3 browser to access the Ethereum blockchain.",
       "customiseCard": "Add message",
       "customiseCardDesc": "Message will appear on card back",
       "addMessage": "This message is uncensorable and will be visible on the blockchain",

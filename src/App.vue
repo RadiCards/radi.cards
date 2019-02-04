@@ -288,15 +288,21 @@ export default {
       window.web3 = new Web3(web3.currentProvider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     } else {
-      console.log("Bootstrapping web app - provider acknowedgled");
-      const portis = new Portis(
-        "90dd46f3-6a56-4162-85dc-f310c53cced7",
-        "mainnet"
+      // console.log("Bootstrapping web app - provider acknowedgled");
+      // const portis = new Portis(
+      //   "90dd46f3-6a56-4162-85dc-f310c53cced7",
+      //   "mainnet"
+      // );
+      // const provider = portis.provider;
+      // window.web3 = new Web3(provider);
+      window.web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
+        )
       );
-      const provider = portis.provider;
-      window.web3 = new Web3(provider);
+      console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
       this.$store.dispatch(actions.INIT_APP, window.web3);
-    }
+    }``
   },
   created() {
     let queryLanguage = this.$route.query.locale;
