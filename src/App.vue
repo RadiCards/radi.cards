@@ -8,7 +8,7 @@
           href="https://metamask.io/"
           target="_blank"
           style="color: #ff9284"
-        >MetaMask</a>
+        >MetaMask</a> or sign in using <a @click="initPortis"> Portis</a>.
       </p>
       <p
         class="notice"
@@ -223,6 +223,15 @@ export default {
     };
   },
   methods: {
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
     changeLanguage(newLanguage) {
       this.language = newLanguage;
       if (newLanguage === "english") {

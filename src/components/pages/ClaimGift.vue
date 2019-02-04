@@ -72,10 +72,10 @@
             <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
             <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
           </b-col>
-            <!-- <b-col cols="6" id="portis">
-              <a target="__blank" href="https://wallet.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
-              <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
-            </b-col> -->
+            <b-col cols="6" id="portis">
+              <div @click="initPortis"><span><img class="walletIcon" src="/static/icons/portis.png"/>
+              <p>Portis</p><p class="walletDesc">Web wallet</p></span></div>
+            </b-col>
           </b-row>
         </div>
 
@@ -92,6 +92,7 @@ import { mapGetters, mapState } from "vuex";
 import Card from "../../components/widgets/Card";
 import router from "../../router";
 import * as actions from "../../store/actions";
+import Portis from "@portis/web3";
 
 export default {
   name: "creator",
@@ -112,6 +113,15 @@ export default {
     this.$store.dispatch(actions.CLAIM_GIFT, { privateKey, execute: false });
   },
   methods: {
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
     claimGift() {
       let privateKey = this.$route.params.pk;
       this.$store.dispatch(actions.CLAIM_GIFT, {

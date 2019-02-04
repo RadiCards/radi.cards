@@ -1,39 +1,63 @@
 <template>
   <div class="container">
-      <div v-if="account===null" class="container" style="text-align: left;">
+    <div v-if="account===null" class="container" style="text-align: left;">
       <h4>{{ $t("m.noWeb3")}}</h4>
       <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
-        <b-row class="logoRow">
-          <b-col cols="6" id="imToken">
-            <a target="__blank" href="https://token.im/download"><span><img class="walletIcon" src="/static/icons/imToken_color.png"/>
-            <p>imToken Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
-          </b-col>
-          <b-col cols="6" id="trust">
-            <a target="__blank" href="https://trustwallet.com/"><span><img class="walletIcon" src="/static/icons/trust.png"/>
-            <p>Trust Wallet</p><p class="walletDesc">Mobile wallet</p></span></a>
-          </b-col>
-        </b-row>
-        <b-row class="logoRow">
-          <b-col cols="6" id="status">
-            <a target="__blank" href="https://status.im"><img class="walletIcon" src="/static/icons/status.png"/>
-            <p>Status</p><p class="walletDesc">Mobile wallet</p></a>
-          </b-col>
-          <b-col cols="6" id="opera">
-            <a target="__blank" href="https://www.opera.com/crypto"><img class="walletIcon" src="/static/icons/opera.png"/>
-            <p>Opera</p><p class="walletDesc">Android browser</p></a>
-          </b-col>
-        </b-row>
-        <b-row class="logoRow">
-        <b-col cols="6" id="metamask">
-          <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
-          <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
+      <b-row class="logoRow">
+        <b-col cols="6" id="imToken">
+          <a target="__blank" href="https://token.im/download">
+            <span>
+              <img class="walletIcon" src="/static/icons/imToken_color.png">
+              <p>imToken Wallet</p>
+              <p class="walletDesc">Mobile wallet</p>
+            </span>
+          </a>
         </b-col>
-          <!-- <b-col cols="6" id="portis">
-            <a target="__blank" href="https://wallet.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
-            <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
-          </b-col> -->
-        </b-row>
-      </div>
+        <b-col cols="6" id="trust">
+          <a target="__blank" href="https://trustwallet.com/">
+            <span>
+              <img class="walletIcon" src="/static/icons/trust.png">
+              <p>Trust Wallet</p>
+              <p class="walletDesc">Mobile wallet</p>
+            </span>
+          </a>
+        </b-col>
+      </b-row>
+      <b-row class="logoRow">
+        <b-col cols="6" id="status">
+          <a target="__blank" href="https://status.im">
+            <img class="walletIcon" src="/static/icons/status.png">
+            <p>Status</p>
+            <p class="walletDesc">Mobile wallet</p>
+          </a>
+        </b-col>
+        <b-col cols="6" id="opera">
+          <a target="__blank" href="https://www.opera.com/crypto">
+            <img class="walletIcon" src="/static/icons/opera.png">
+            <p>Opera</p>
+            <p class="walletDesc">Android browser</p>
+          </a>
+        </b-col>
+      </b-row>
+      <b-row class="logoRow">
+        <b-col cols="6" id="metamask">
+          <a target="__blank" href="https://metamask.io">
+            <img class="walletIcon" src="/static/icons/metamask.png">
+            <p>MetaMask</p>
+            <p class="walletDesc">Chrome addon</p>
+          </a>
+        </b-col>
+        <b-col cols="6" id="portis">
+          <div @click="initPortis">
+            <span>
+              <img class="walletIcon" src="/static/icons/portis.png">
+              <p>Portis</p>
+              <p class="walletDesc">Web wallet</p>
+            </span>
+          </div>
+        </b-col>
+      </b-row>
+    </div>
     <form v-if="account!=null && account != undefined">
       <div role="tablist">
         <div class="section step step--twocol step1" v-if="step === 0">
@@ -149,7 +173,7 @@
             >
             <!-- <p
               v-if="formData.sendingMethod==='QR'"
-            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p> -->
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>-->
           </div>
         </div>
 
@@ -303,9 +327,9 @@
                 <br>
                 <div v-if="formData.sendingMethod==='QR'">
                   <div class="alignleft">
-                  <!-- <div class="input-label">
+                    <!-- <div class="input-label">
                       <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent via email, WeChat or other chat apps
-                    </div> -->
+                    </div>-->
                   </div>
                   <br>
                 </div>
@@ -670,6 +694,7 @@ import MailtoLink from "../../components/widgets/MailtoLink";
 import QrCodeImage from "../../components/widgets/QRCodeImage";
 import { AssertionError } from "assert";
 import vueSlider from "vue-slider-component";
+import Portis from "@portis/web3";
 
 export default {
   name: "creator",
@@ -813,6 +838,15 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
     equivalentFiatCost(ethAmount) {
       return parseFloat(ethAmount * this.usdPrice).toFixed(2);
     },
@@ -1204,7 +1238,6 @@ textarea {
     padding-right: 100%;
   }
 }
-
 
 .walletDesc {
   font-size: 0.8rem;
