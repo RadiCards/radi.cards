@@ -12,7 +12,10 @@
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
         <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
         <br>
-        <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">{{ $t("m.claimGiftGetInfo")}}</h3>
+        <h3
+          class="gift-desc"
+          v-if="getTransferStatus()==='TRIGGERED' && account!=null"
+        >{{ $t("m.claimGiftGetInfo")}}</h3>
         <p
           class="gift-desc pt-4 pb-4"
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
@@ -37,7 +40,7 @@
         >
 
         <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">
-          <h3 class="input-label-notice">{{ $t("m.claimGiftTrans")}}</h3>
+          <h3 class="input-label">{{ $t("m.claimGiftTrans")}}</h3>
           <div class="loading-spinner">
             <div class="loading-spinner-inner">
               <div class="holder">
@@ -53,14 +56,14 @@
           </div>
         </h3>
         <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='TRANSFERRED'">
-          <h3 class="input-label-notice">{{ $t("m.claimGiftTrans2")}}</h3>
+          <h3 class="input-label">{{ $t("m.claimGiftTrans2")}}</h3>
         </h3>
         <h3 class="input-label-notice" v-if="getTransferStatus()==='CLAIMED'">
           <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
           {{ $t("m.claimGiftAlreadyClaimed")}}
         </h3>
-        <h3 v-if="account===null">{{ $t("m.claimGiftProviders")}}</h3>
-        <p class="pt-4 pb-4" v-if="account===null">{{ $t("m.claimGiftProviders2")}}</p>
+        <h3 class="gift-desc" v-if="account===null">{{ $t("m.claimGiftProviders")}}</h3>
+        <p class="input-label pt-4 pb-4" v-if="account===null">{{ $t("m.claimGiftProviders2")}}</p>
 
         <div v-if="account===null" class="container" style="text-align: left;">
           <b-row class="logoRow">
@@ -74,20 +77,19 @@
               </a>
             </b-col>
             <b-collapse id="collapse1" class="mt-2">
-          <b-card>
-            Don't have ImToken installed? install it
-            <a
-              target="__blank"
-              href="https://trustwalletapp.com"
-            >here</a>
-            <br>
-            Have ImToken installed? Open this link in Imtoken
-            <a
-              target="__blank"
-              :href="generateDeepURL()"
-            >here</a>
-          </b-card>
-        </b-collapse>
+              <b-card>
+                Don't have ImToken installed? install it
+                <a
+                  target="__blank"
+                  href="https://trustwalletapp.com"
+                >here</a>
+                <br>Have ImToken installed? Open this link in Imtoken
+                <a
+                  target="__blank"
+                  :href="generateDeepURL()"
+                >here</a>
+              </b-card>
+            </b-collapse>
             <!-- <b-col cols="6" id="trust">
               <a target="__blank" href="https://trustwallet.com/">
                 <span>
@@ -112,7 +114,7 @@
                 <p>Opera</p>
                 <p class="walletDesc">Android browser</p>
               </a>
-            </b-col> -->
+            </b-col>-->
           </b-row>
           <b-row class="logoRow">
             <b-col cols="6" id="metamask">
@@ -168,7 +170,10 @@ export default {
   },
   methods: {
     generateDeepURL() {
-      return "imtokenv2://navigate/DappView?url=https://radi.cards" + this.$route.fullPath
+      return (
+        "imtokenv2://navigate/DappView?url=https://radi.cards" +
+        this.$route.fullPath
+      );
     },
     initPortis() {
       const portis = new Portis(
@@ -212,11 +217,13 @@ export default {
   position: absolute;
   top: 60%;
   left: 82%;
-  width: 9rem;
+  width: 5rem;
   transform: rotate(6deg);
   font-weight: bold;
   padding-left: 5px;
   padding-right: 5px;
+  background-color: white;
+  border-radius: 8px;
 
   @media (max-width: 1000px) {
     display: none;
@@ -224,11 +231,12 @@ export default {
 }
 
 .input-label {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: $darkgray;
   text-align: center;
   width: 100%;
   padding-bottom: 0.1rem;
+  padding-top: 2rem;
   background-color: white;
 }
 
@@ -247,8 +255,9 @@ export default {
 
 .gift-desc {
   margin-top: 10px;
-  font-size: 1rem;
+  font-size: 2rem;
   font-weight: 700;
+  text-align: center;
 }
 
 .pb-4 {
