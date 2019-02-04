@@ -76,7 +76,7 @@
       "DAIDisclaimer": "As you requested to send DAI with your card you will need to first approve for the RadiCards contract to access the specified DAI amount from your wallet. This means you will need to sign two transactions to generate your card.",
       "cardCreated": "Please don't close this tab...",
       "cardCreatedDesc": "...generating your hongbao link only takes a few minutes.",
-      "cardCreatedDesc2": "You will also find all sent and received cards under 'My Cards'.",
+      "cardCreatedDesc2": "You will also find all sent and received cards under 'Sent Cards'.",
       "cardCreatedDesc4": "You can view the transaction on Etherscan",
       "cardCreatedDesc5": "here.",
       "rock": "You rock!",
