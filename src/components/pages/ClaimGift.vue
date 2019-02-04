@@ -75,22 +75,33 @@
                   <p class="walletDesc">Mobile wallet</p>
                 </span>
               </a>
+              <b-collapse id="collapse1" class="mt-2">
+                <b-card>
+                  Don't have ImToken installed? install it
+                  <a
+                    target="__blank"
+                    href="https://trustwalletapp.com"
+                  >here</a>
+                  <br>
+                  <hr>Have ImToken installed? Open this link in ImToken
+                  <a
+                    target="__blank"
+                    :href="generateDeepURL()"
+                  >here</a>
+                </b-card>
+              </b-collapse>
             </b-col>
-            <b-collapse id="collapse1" class="mt-2">
-              <b-card>
-                Don't have ImToken installed? install it
-                <a
-                  target="__blank"
-                  href="https://trustwalletapp.com"
-                >here</a>
-                <br>Have ImToken installed? Open this link in Imtoken
-                <a
-                  target="__blank"
-                  :href="generateDeepURL()"
-                >here</a>
-              </b-card>
-            </b-collapse>
-            <!-- <b-col cols="6" id="trust">
+            <b-col cols="6" id="trust">
+              <a target="__blank" @click="initPortis">
+                <span>
+                  <img class="walletIcon" src="/static/icons/portis.png">
+                  <p>Portis</p>
+                  <p class="walletDesc">Web wallet</p>
+                </span>
+              </a>
+            </b-col>
+          </b-row>
+          <!-- <b-col cols="6" id="trust">
               <a target="__blank" href="https://trustwallet.com/">
                 <span>
                   <img class="walletIcon" src="/static/icons/trust.png">
@@ -114,8 +125,8 @@
                 <p>Opera</p>
                 <p class="walletDesc">Android browser</p>
               </a>
-            </b-col>-->
-          </b-row>
+            </b-col>
+          </b-row>-->
           <b-row class="logoRow">
             <b-col cols="6" id="metamask">
               <a target="__blank" href="https://metamask.io">

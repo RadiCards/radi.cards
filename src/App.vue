@@ -9,7 +9,7 @@
           target="_blank"
           style="color: #ff9284"
         >MetaMask</a>
-        <!-- or sign in using <a @click="initPortis"> Portis</a>. -->
+        or sign in using <a @click="initPortis"> Portis</a>.
       </p>
       <p
         class="notice"

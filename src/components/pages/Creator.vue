@@ -12,8 +12,7 @@
               <p class="walletDesc">Mobile wallet</p>
             </span>
           </a>
-        </b-col>
-        <b-collapse id="collapse1" class="mt-2">
+          <b-collapse id="collapse1" class="mt-2">
           <b-card>
             Don't have ImToken installed? install it
             <a
@@ -21,24 +20,26 @@
               href="https://trustwalletapp.com"
             >here</a>
             <br>
-            Have ImToken installed? Open this link in Imtoken
+            <hr>
+            Have ImToken installed? Open this link in ImToken
             <a
               target="__blank"
               :href="generateDeepURL()"
             >here</a>
           </b-card>
         </b-collapse>
-        <!-- <b-col cols="6" id="trust">
-          <a target="__blank" href="https://trustwallet.com/">
+        </b-col>
+         <b-col cols="6" id="trust">
+          <a target="__blank" @click="initPortis">
             <span>
-              <img class="walletIcon" src="/static/icons/trust.png">
-              <p>Trust Wallet</p>
-              <p class="walletDesc">Mobile wallet</p>
+              <img class="walletIcon" src="/static/icons/portis.png">
+              <p>Portis</p>
+              <p class="walletDesc">Web wallet</p>
             </span>
           </a>
         </b-col>
       </b-row>
-      <b-row class="logoRow">
+      <!--<b-row class="logoRow">
         <b-col cols="6" id="status">
           <a target="__blank" href="https://status.im">
             <img class="walletIcon" src="/static/icons/status.png">
@@ -52,8 +53,8 @@
             <p>Opera</p>
             <p class="walletDesc">Android browser</p>
           </a>
-        </b-col>-->
-      </b-row>
+        </b-col>
+      </b-row>-->
       <b-row class="logoRow">
         <b-col cols="6" id="metamask">
           <a target="__blank" href="https://metamask.io">
@@ -251,7 +252,7 @@
                       type="number"
                       class="field form-control"
                       v-model="formData.valueInDAI"
-                      :step="1.0"
+                      :step="0.5"
                       :min="premuimCardInformation.minInDai"
                     >
                     <div class="paymentPresets">
