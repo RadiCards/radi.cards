@@ -72,10 +72,10 @@
             <a target="__blank" href="https://metamask.io"><img class="walletIcon" src="/static/icons/metamask.png"/>
             <p>MetaMask</p><p class="walletDesc">Chrome addon</p></a>
           </b-col>
-            <b-col cols="6" id="portis">
+            <!-- <b-col cols="6" id="portis">
               <a target="__blank" href="https://wallet.portis.io/"><span><img class="walletIcon" src="/static/icons/portis.png"/>
               <p>Portis</p><p class="walletDesc">Web wallet</p></span></a>
-            </b-col>
+            </b-col> -->
           </b-row>
         </div>
 
