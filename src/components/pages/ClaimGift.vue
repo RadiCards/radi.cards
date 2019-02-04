@@ -11,24 +11,15 @@
 
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
         <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
+        <br>
         <h3 v-if="getTransferStatus()==='TRIGGERED' && account!=null">{{ $t("m.claimGiftGetInfo")}}</h3>
         <p
-          class="pt-4 pb-4"
+          class="gift-desc pt-4 pb-4"
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
         >{{ $t("m.claimGiftGetInfo2")}}</p>
-        <h3 v-if="getTransferStatus()==='READY'">
-          {{ $t("m.claimGiftReady")}}
-          <input
-            v-if="account"
-            type="button"
-            class="button button--fullwidth"
-            @click="claimGift"
-            v-bind:value="$t('m.claimGiftAction')"
-            style="margin-top:30px"
-          >
-        </h3>
-        <div v-if="deepUrlCard">
-          <p class="pt-4 pb-4" v-if="deepUrlCard.giftAmount>0">{{ $t("m.claimGiftMoney")}}</p>
+        <h3 class="gift-desc" v-if="getTransferStatus()==='READY'">{{ $t("m.claimGiftReady")}}</h3>
+        <div class="input-label" v-if="deepUrlCard">
+          <p class="pt-4 pb-4" v-if="deepUrlCard.giftAmount>0"></p>
           <p
             v-if="deepUrlCard.daiDonation"
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalDAI")}}</p>
@@ -36,6 +27,14 @@
             v-if="!deepUrlCard.daiDonation"
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalETH")}}</p>
         </div>
+        <input
+          v-if="account"
+          type="button"
+          class="button button--fullwidth"
+          @click="claimGift"
+          v-bind:value="$t('m.claimGiftAction')"
+          style="margin-top:10px"
+        >
 
         <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">
           {{ $t("m.claimGiftTrans")}}
@@ -204,6 +203,28 @@ export default {
   @media (max-width: 1000px) {
     display: none;
   }
+}
+
+.input-label {
+  font-size: 0.9rem;
+  color: $darkred;
+  text-align: left;
+  width: 100%;
+  padding-bottom: 0.15rem;
+}
+
+.h3 {
+  margin-top: 20px;
+}
+
+.gift-desc {
+  margin-top: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.pb-4 {
+  padding-bottom: 0rem;
 }
 
 .dl-1 {
