@@ -16,7 +16,7 @@
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
-        v-if="card.cardMaxQnty > 0"
+        v-if="card.cardMaxQnty > 0  && card.cardActive"
       >
         <card :cdata="card" classes="card"/>
       </b-col>
@@ -38,7 +38,7 @@
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
-        v-if="card.cardMaxQnty == 0"
+        v-if="card.cardMaxQnty == 0  && card.cardActive"
       >
         <card :cdata="card" classes="card"/>
       </b-col>
