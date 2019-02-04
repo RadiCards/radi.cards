@@ -9,6 +9,7 @@
           target="_blank"
           style="color: #ff9284"
         >MetaMask</a>
+        <!-- or sign in using <a @click="initPortis"> Portis</a>. -->
       </p>
       <p
         class="notice"
@@ -35,35 +36,44 @@
             </a>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+            <router-link :to="{ name: 'about' }" class="nav-link">{{ $t("m.about")}}</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'charity' }" class="nav-link">Charity</router-link>
+            <router-link :to="{ name: 'charity' }" class="nav-link">{{ $t("m.charity")}}</router-link>
           </li>
           <li class="nav-item">
-            <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+            <router-link :to="{ name: 'cardshop' }" class="nav-link">{{ $t("m.cardShop")}}</router-link>
           </li>
           <li class="nav-item">
             <router-link :to="{ name: 'account' }" class="nav-link">
-              Your cards
+              {{ $t("m.myCards")}}
               <span
                 class="ml-1 badge badge-primary"
                 v-if="accountCards.length > 0"
               >{{accountCards.length}}</span>
             </router-link>
           </li>
-
+          <li class="nav-item" v-if="ephemeralWallets.length > 0">
+            <router-link :to="{ name: 'sent' }" class="nav-link">
+              Sent Cards
+              <span
+                class="ml-1 badge badge-primary"
+                v-if="ephemeralWallets.length > 0"
+              >{{ephemeralWallets.length}}</span>
+            </router-link>
+          </li>
+          <hr class="show-mobile">
           <li class="nav-item">
             <div class="col-lg-12 text-right">
               <button
                 @click="changeLanguage('english')"
                 :class="['button button--tiny', {'isSelected' : language==='english'}]"
               >EN</button>
-              
+
               <button
                 @click="changeLanguage('chinese')"
                 :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
-              >CN</button>
+              >中文</button>
             </div>
           </li>
           <!-- <li class="nav-item">
@@ -74,13 +84,13 @@
         </ul>
 
         <div class="navbar-hamburger" @click="togglePopover()">
-          <img src="/static/icons/hamburger.svg">
+          <img src="/static/icons/hamburger_thin.svg">
         </div>
 
         <div class="navbar-popover" v-if="showNavPopover">
           <ul>
             <li class="nav-item nav-close" @click="togglePopover()">
-              <img src="/static/icons/cross.svg">
+              <img src="/static/icons/cross_thin.svg">
             </li>
             <li class="nav-item">
               <a href="https://t.me/RadiCards">
@@ -94,21 +104,31 @@
               </a>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'about' }" class="nav-link">About</router-link>
+              <router-link :to="{ name: 'about' }" class="nav-link">{{ $t("m.about")}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'charity' }" class="nav-link">Charity</router-link>
+              <router-link :to="{ name: 'charity' }" class="nav-link">{{ $t("m.charity")}}</router-link>
             </li>
             <li class="nav-item">
-              <router-link :to="{ name: 'cardshop' }" class="nav-link">Card Shop</router-link>
+              <router-link :to="{ name: 'cardshop' }" class="nav-link">{{ $t("m.cardShop")}}</router-link>
             </li>
             <li class="nav-item">
               <router-link :to="{ name: 'account' }" class="nav-link">
-                Your cards
+                {{ $t("m.myCards")}}
                 <span
                   class="ml-1 badge badge-primary"
                   v-if="accountCards.length > 0"
                 >{{accountCards.length}}</span>
+              </router-link>
+            </li>
+            <hr class="show-mobile">
+            <li class="nav-item" v-if="ephemeralWallets.length > 0">
+              <router-link :to="{ name: 'sent' }" class="nav-link">
+                Sent Cards
+                <span
+                  class="ml-1 badge badge-primary"
+                  v-if="ephemeralWallets.length > 0"
+                >{{ephemeralWallets.length}}</span>
               </router-link>
             </li>
 
@@ -118,11 +138,10 @@
                   @click="changeLanguage('english')"
                   :class="['button button--tiny', {'isSelected' : language==='english'}]"
                 >EN</button>
-                
                 <button
                   @click="changeLanguage('chinese')"
                   :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
-                >CN</button>
+                >中文</button>
               </div>
             </li>
             <!-- <li class="nav-item">
@@ -155,12 +174,12 @@
             <div v-if="account">
               <strong>
                 <!-- <img border="0" alt="wallet" src="/static/icons/wallet.svg" width="20" height="20"> -->
-                Address:
+                {{ $t("m.myAddress")}}
               </strong>
               <clickable-address :eth-address="account"></clickable-address>|
-              <strong>ETH Balance:</strong>
+              <strong>{{ $t("m.myBalanceEth")}}</strong>
               {{ethBalanceRound}} |
-              <strong>DAI Balance:</strong>
+              <strong>{{ $t("m.myBalanceDai")}}</strong>
               {{daiBalanceRound}}
             </div>
           </div>
@@ -171,7 +190,7 @@
     <footer class="footer container-fluid mt-5">
       <div class="row">
         <div class="col text-left">
-          <router-link :to="{ name: 'terms-of-service' }">Terms of Service</router-link>&nbsp;&nbsp;
+          <router-link :to="{ name: 'terms-of-service' }">{{ $t("m.terms")}}</router-link>&nbsp;&nbsp;
           <!-- <router-link :to="{ name: 'privacy-policy' }">Privacy Policy</router-link> -->
         </div>
         <div class="col text-right small">
@@ -192,8 +211,7 @@ import * as actions from "./store/actions";
 import * as mutations from "./store/mutation-types";
 import CurrentNetwork from "./components/widgets/CurrentNetwork";
 import ClickableAddress from "./components/widgets/ClickableAddress";
-import { PortisProvider } from "portis";
-import i18n from "./lang.js";
+import Portis from "@portis/web3";
 
 export default {
   name: "app",
@@ -206,6 +224,15 @@ export default {
     };
   },
   methods: {
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
     changeLanguage(newLanguage) {
       this.language = newLanguage;
       if (newLanguage === "english") {
@@ -227,7 +254,8 @@ export default {
       "usdPrice",
       "ethBalance",
       "daiBalance",
-      "currentNetwork"
+      "currentNetwork",
+      "ephemeralWallets"
     ]),
     ethBalanceRound() {
       if (this.ethBalance) {
@@ -270,15 +298,51 @@ export default {
       window.web3 = new Web3(web3.currentProvider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
     } else {
-      console.log("Bootstrapping web app - provider acknowedgled");
-      const provider = new PortisProvider({
-        apiKey: "4416d7928834f658ba93945eac36b71d"
-      });
-      window.web3 = new Web3(provider);
+      // console.log("Bootstrapping web app - provider acknowedgled");
+      // const portis = new Portis(
+      //   "90dd46f3-6a56-4162-85dc-f310c53cced7",
+      //   "mainnet"
+      // );
+      // const provider = portis.provider;
+      // window.web3 = new Web3(provider);
+      window.web3 = new Web3(
+        new Web3.providers.HttpProvider(
+          "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
+        )
+      );
+      console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
       this.$store.dispatch(actions.INIT_APP, window.web3);
-    }
+    }``
   },
   created() {
+    let queryLanguage = this.$route.query.locale;
+
+    try {
+      let queryLanguage = this.$route.query.locale;
+      console.log(queryLanguage);
+      if (
+        queryLanguage === "zh-CN" ||
+        queryLanguage === "zh-Hant-US" ||
+        queryLanguage === "zh-Hant-HK" ||
+        queryLanguage === "zh-Hant-TW"
+      ) {
+        this.changeLanguage("chinese");
+      }
+
+      // imToken.callAPI("device.getCurrentLanguage", function(
+      //   err,
+      //   languageReturned
+      // ) {
+      //   console.log(err);
+      //   if (languageReturned === "zh-CN") {
+      //     this.changeLanguage("chinese");
+      //   }
+      // });
+    } catch (e) {
+      if (navigator.language === "zh-CN") {
+        this.changeLanguage("chinese");
+      }
+    }
     const loadData = function() {
       this.$store.dispatch(actions.LOAD_BENEFACTORS);
       this.$store.dispatch(actions.LOAD_CARDS);
@@ -359,6 +423,12 @@ body {
 
   @include tabletAndDown() {
     width: 90%;
+  }
+
+  @media (max-width: 630px) {
+    color: #d35443;
+    font-size: 12px;
+    line-height: 14px;
   }
 }
 
@@ -484,11 +554,20 @@ footer {
   }
 }
 
+.show-mobile {
+  @media (min-width: 766px) {
+    display: none;
+  }
+}
+
 .card-slider {
   display: flex;
   margin: 0 -1.25rem;
   padding: 2rem 1.25rem;
   overflow-x: auto;
+  @media (max-width: 560px) {
+    padding-top: 0;
+  }
 
   perspective: 1000px;
 

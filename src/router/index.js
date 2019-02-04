@@ -3,6 +3,7 @@ import Router from "vue-router";
 import HomePage from "@/components/pages/HomePage";
 import Creator from "@/components/pages/Creator";
 import Account from "@/components/pages/Account";
+import SentCards from "@/components/pages/SentCards"
 import CardShop from "@/components/pages/CardShop";
 import ViewCard from "@/components/pages/ViewCard";
 import ClaimGift from "@/components/pages/ClaimGift";
@@ -36,6 +37,11 @@ export default new Router({
       path: "/account",
       name: "account",
       component: Account
+    },
+    {
+      path: "/sent",
+      name: "sent",
+      component: SentCards
     },
     {
       path: "/card/:id",

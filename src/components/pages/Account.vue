@@ -1,83 +1,71 @@
 <template>
   <section class="section">
     <h2 style="margin-bottom: 0.5rem;">
-      Your cards
+      {{ $t("m.myCards")}}
       <span class="badge badge-primary">{{accountCards.length}}</span>
     </h2>
     <clickable-address :eth-address="account"></clickable-address>
 
-    <div class="row mt-5 mb-5 transferedCard" v-if="cardTransferOccured">
-      <div class="col-2">
+    <b-row class="mt-5 mb-5 transferedCard" v-if="cardTransferOccured">
+      <b-col col="2">
         <img src="/static/icons/success.png" alt style="width: 5rem;">
-      </div>
-      <div class="col-10">
+      </b-col>
+      <b-col col="10">
         <h2>Successfully Transfered!</h2>
         <p>Card was transfered to address {{transferedAddress}}</p>
-      </div>
-    </div>
+      </b-col>
+    </b-row>
 
-    <div class="row mt-5" v-if="!accountCards || accountCards.length === 0">
+    <b-row class="mt-5" v-if="!accountCards || accountCards.length === 0">
       <div class="col text-center">
         <img src="/static/icons/radi-cards.svg" alt class="img--placeholder">
         <br>
         <br>
-        <h4>Aww...</h4>
+        <h4>{{ $t("m.aww")}}</h4>
         <br>
         <p
           style="max-width: 24rem; margin: 0 auto;"
-        >You don't seem to have any cards yet. Why not send one to a friend — you might get a card back!</p>
+        >{{ $t("m.notYetSent")}}</p>
         <br>
-        <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+        <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
       </div>
-    </div>
+    </b-row>
     <div v-else>
-      <h3>Premium Cards</h3>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters>
-            <b-col
-              cols="6"
-              sm="6"
-              lg="4"
-              v-if="card.cardMaxQnty > 0"
-              v-for="card in accountCards"
-              :key="card.tokenId"
-              class="pt-3"
-            >
-              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
-            </b-col>
-          </b-row>
-        </div>
+      <div v-if="hasPremiumCards">
+        <h3 class="mt-2">{{ $t("m.premiumCards")}}</h3>
+        <b-row no-gutters>
+          <b-col
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            v-if="card.cardMaxQnty > 0"
+            v-for="card in accountCards"
+            :key="card.tokenId"
+            class="pt-3"
+          >
+            <card classes="card" @cardTransfered="handelCardTransfered" :cdata="card"/>
+          </b-col>
+        </b-row>
+        <hr>
       </div>
-      <hr>
-      <h3>Standard Cards</h3>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters>
-            <b-col
-              cols="6"
-              sm="6"
-              lg="4"
-              v-if="card.cardMaxQnty == 0"
-              v-for="card in accountCards"
-              :key="card.tokenId"
-              class="pt-3"
-            >
-              <card classes="card--gallery" @cardTransfered="handelCardTransfered" :cdata="card"/>
-            </b-col>
-          </b-row>
-        </div>
-      </div>
-      <hr>
-      <h1>Your Sent Cards</h1>
-      <div class="row mt-2">
-        <div class="col">
-          <b-row no-gutters v-for="wallet in ephemeralWallets" :key="wallet.address">
-            <b-col cols="12" class="pt-3">
-              <sent-card :wallet="wallet"/>
-            </b-col>
-          </b-row>
-        </div>
+      <div v-if="hasStandardCards">
+        <h3 class="mt-2">{{ $t("m.standardCards")}}</h3>
+
+        <b-row no-gutters>
+          <b-col
+            cols="12"
+            sm="12"
+            md="6"
+            lg="4"
+            v-if="card.cardMaxQnty == 0"
+            v-for="card in accountCards"
+            :key="card.tokenId"
+            class="pt-3"
+          >
+            <card classes="card" @cardTransfered="handelCardTransfered" :cdata="card"/>
+          </b-col>
+        </b-row>
       </div>
     </div>
   </section>
@@ -88,11 +76,10 @@ import { mapGetters, mapState } from "vuex";
 import * as actions from "../../store/actions";
 import ClickableTransaction from "../widgets/ClickableTransaction";
 import ClickableAddress from "../widgets/ClickableAddress";
-import SentCard from "../widgets/SentCard";
 import Card from "../../components/widgets/Card";
 export default {
   name: "account",
-  components: { ClickableTransaction, ClickableAddress, Card, SentCard },
+  components: { ClickableTransaction, ClickableAddress, Card },
   data() {
     return {
       cardTransferOccured: false,
@@ -107,7 +94,28 @@ export default {
       "cards",
       "ephemeralWallets"
     ]),
-    ...mapGetters(["findTx"])
+    hasPremiumCards() {
+      let hasCard = false;
+      if (this.accountCards) {
+        this.accountCards.forEach(function(card) {
+          if (card.cardMaxQnty > 0) {
+            hasCard = true;
+          }
+        });
+      }
+      return hasCard;
+    },
+    hasStandardCards() {
+      let hasCard = false;
+      if (this.accountCards) {
+        this.accountCards.forEach(function(card) {
+          if (card.cardMaxQnty === 0) {
+            hasCard = true;
+          }
+        });
+      }
+      return hasCard;
+    },
   },
   mounted() {
     this.$store.dispatch(actions.RESET_TRANSFER_STATUS);

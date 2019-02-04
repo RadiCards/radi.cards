@@ -1,10 +1,10 @@
 
 <template>
   <div class="container">
-    <section class="section section--hero">
+    <section class="section section--hero p-0">
       <blockquote class="blockquote--hero">
-        <h1 class="hero">{{ $t("m.sendHongBao")}}</h1>
-        <h1 class="hero">{{ $t("m.viaWeChat")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.sendHongBao")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.viaWeChat")}}</h1>
 
         <!--- <img src="/static/images/title2.png">
         <br>
@@ -33,45 +33,43 @@
     </section>
 
     <section class="section">
-      <windy-title v-bind:text="$t('m.send3Steps')"></windy-title>
+      <windy-title class="smaller-heading" v-bind:text="$t('m.send3Steps')"></windy-title>
       <br>
 
-      <div class="steps">
-        <div>
-          <img src="/static/images/choose.svg">
+      <b-row class="steps">
+        <b-col class cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/choose_onesize.svg">
           <h5>{{ $t("m.Choose")}}</h5>
           <span>
             {{ $t("m.coolHb")}}
             <br>
-            {{ $t("m.artists")}}
+            <div class="hide-mobile">{{ $t("m.artists")}}</div>
           </span>
-        </div>
-        <div>
-          <img src="/static/images/deposit.svg">
+        </b-col>
+        <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/deposit_onesize.svg">
           <h5>{{ $t("m.Deposit")}}</h5>
           <span>
             {{ $t("m.ethOrDai")}}
-            <br>
-            {{ $t("m.generateHb")}}
           </span>
-        </div>
-        <div>
-          <img src="/static/images/send.svg">
+        </b-col>
+        <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/send_onesize.svg">
           <h5>{{ $t("m.Send")}}</h5>
           <span>
             {{ $t("m.hb2f")}}
             <br>
-            {{ $t("m.wc&email")}}
+            <div class="hide-mobile">{{ $t("m.wc&email")}}</div>
           </span>
           <span>
             <br>
           </span>
-        </div>
-      </div>
+        </b-col>
+      </b-row>
     </section>
     <br>
     <section class="section">
-      <windy-title v-bind:text="$t('m.chooseFrom')"></windy-title>
+      <windy-title class="hide-mobile" v-bind:text="$t('m.chooseFrom')"></windy-title>
 
       <div class="card-slider" v-if="cards && cards.length > 0">
         <card
@@ -101,10 +99,10 @@
     </section>
 
     <section class="section section--credits">
-      <windy-title v-bind:text="$t('m.buidlt')"/>
+      <windy-title class="smaller-heading" v-bind:text="$t('m.buidlt')"/>
       <div class="container" style="margin: 0 -2rem;">
-        <div class="col-md-4 col-xs-12">
-          <h5>{{ $t("m.buidltCC")}}</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.buidltCC")}}</strong>
           <ul>
             <li>
               <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
@@ -139,8 +137,8 @@
           </ul>
         </div>
 
-        <div class="col-md-4 col-xs-12">
-          <h5>{{ $t("m.communities")}}</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.communities")}}</strong>
           <ul>
             <li>
               <a href="https://superrare.co" target="_blank">superrare.co</a>
@@ -178,12 +176,17 @@
             <li>
               <a href="https://www.astroledger.org" target="_blank">astroledger.org</a>
             </li>
+            <li>
+              <a href="https://www.nervos.org/" target="_blank">Nervos Network</a>
+            </li>
+            <li>
+              <a href="https://token.im/" target="_blank">imToken</a>
+            </li>
           </ul>
         </div>
 
-        <div class="col-md-4 col-xs-12">
-          <!-- <h5>{{ $t("m.donations")}}</h5> -->
-          <h5>Some donations text?</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.donations")}}</strong>
           <ul>
             <li>
               <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>
@@ -269,17 +272,59 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+// h1 {
+//   font-size: 2.5rem !important;
+// }
+// @media (min-width: 544px) {
+//   h1 {
+//     font-size: 0.1rem !important;
+//   }
+// }
+
+// @media (min-width: 768px) {
+//   h1 {
+//     font-size: 1.5rem;
+//   }
+// }
+
+// @media (min-width: 992px) {
+//   h1 {
+//     font-size: 2.0rem;
+//   }
+// }
+
+// @media (min-width: 1200px) {
+//   h1 {
+//     font-size: 2.5rem;
+//   }
+// }
+
 .blockquote--hero {
+  margin-bottom: 1rem !important;
   img {
     max-width: 100%;
   }
 }
 // Page-specific style
 .hero {
-  font-size: 3.9rem;
+  font-size: 2.5rem !important;
   color: $darkgray;
-}
+  @media (min-width: 544px) {
+    font-size: 2.5rem !important;
+  }
 
+  @media (min-width: 768px) {
+    font-size: 3rem !important;
+  }
+
+  @media (min-width: 992px) {
+    font-size: 3.5rem !important;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 4.0rem !important;
+  }
+}
 .section--hero .cheeky-comment {
   position: absolute;
   top: 140%;
@@ -340,7 +385,6 @@ export default {
 
 .steps {
   display: flex;
-  align-items: center;
   justify-content: space-between;
 
   h5 {
@@ -356,15 +400,54 @@ export default {
   }
 }
 
+.stepMargin {
+  @media (max-width: 767px) {
+    margin-top: 2rem;
+  }
+}
+
+.smaller-heading {
+  @media (max-width: 767px) {
+    font-size: 2rem !important;
+  }
+}
+
+.stepIcon {
+  @media (max-width: 767px) {
+    float: left !important;
+    padding-right: 2rem;
+  }
+  @media (max-width: 352px) {
+    width: 35%;
+    padding-bottom: 0.6rem;
+    padding-top: 0.6rem;
+  }
+}
+
+.hide-mobile {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.communityColumn {
+  @media (max-width: 767px) {
+    margin-top: 2rem;
+  }
+}
+
 .compatible {
   h5 {
-    margin-top: 30px;
+    margin-top: 3rem;
     font-size: 15px;
   }
 
   .icons {
     display: flex;
-    margin-top: 30px;
+    margin-top: 0;
+    @media (max-width: 560px) {
+      padding-bottom: 2rem;
+    }
 
     div {
       margin-right: 50px;
@@ -372,6 +455,9 @@ export default {
       flex-direction: column;
       align-items: center;
       justify-content: center;
+      @media (max-width: 560px) {
+        margin-right: 2rem;
+      }
 
       img {
         margin-top: 20px;
@@ -389,5 +475,6 @@ export default {
       }
     }
   }
+
 }
 </style>

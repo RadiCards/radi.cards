@@ -18,12 +18,17 @@
         <div class="card__meta">
           <div class="row" variant="light" v-if="cdata.cardMaxQnty>0">
             <div class="col-6 pl-0">
-              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}}</p>
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}} minted</p>
             </div>
             <div class="col-6 text-right pr-0">
               <div>
                 <img src="/static/icons/specialedition.svg" alt>
               </div>
+            </div>
+          </div>
+          <div class="row" variant="light" v-if="cdata.cardMaxQnty==0">
+            <div class="col-6 pl-0">
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}} minted</p>
             </div>
           </div>
           <div class="row">
@@ -42,6 +47,7 @@
       </figcaption>
 
       <div class="help" v-if="isFlippable">
+        <span class="flipper-mobile">{{ $t("m.claimGiftClickCard")}}</span>
         <img src="/static/icons/flip.svg" alt>Flip
       </div>
     </figure>
@@ -115,22 +121,39 @@
       v-if="cdata.message"
     >
       <h6 v-html="cardMessageFormatted"></h6>
-      <div v-if="cdata.BenefactorIndex!=0">
-        <div class="descr">
-          <hr>Your donation goes to
-          <strong>
-            <a
-              v-if="cdata.BenefactorIndex && benefactors"
-              :href="benefactors[cdata.BenefactorIndex-1].website"
-              target="_blank"
-            >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-          </strong>
-        </div>
-      </div>
-      <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
+      <div class="descr" v-if="cdata.accountCreatedCard"></div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer</button>
         <button @click="shareCard" class="cancelButton">Share</button>
+      </div>
+      <br>
+
+      <div class="descr aligh">
+        <strong v-if="cdata.tokenId">
+          Token # {{cdata.tokenId}}
+          <br>
+        </strong>
+        <div v-if="cdata.gifter">Creator:
+          <clickable-address :eth-address="cdata.gifter"></clickable-address>
+          <br>
+        </div>
+        <div v-if="cdata.giftAmount">
+          Gift Amount: {{cdata.giftAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
+          <br>
+        </div>
+        <div v-if="cdata.donationAmount>0">
+          Donation Amount: {{cdata.donationAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
+          <div v-if="cdata.BenefactorIndex!=0">
+            Charity
+            <strong>
+              <a
+                v-if="cdata.BenefactorIndex && benefactors"
+                :href="benefactors[cdata.BenefactorIndex-1].website"
+                target="_blank"
+              >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+            </strong>
+          </div>
+        </div>
       </div>
       {{transferedCardNotification}}
     </figure>
@@ -143,10 +166,11 @@
 import { mapGetters, mapState } from "vuex";
 import router from "../../router";
 import * as actions from "../../store/actions";
+import ClickableAddress from "./ClickableAddress";
 
 export default {
   name: "card",
-
+  components: { ClickableAddress },
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {
@@ -309,8 +333,8 @@ export default {
 
   &.card--gallery {
     @include tabletAndDown() {
-      width: calc(50vw - 1rem);
-      padding: $p_v/1.5 $p_h/2;
+      // width: calc(50vw - 1rem);
+      // padding: $p_v/1.5 $p_h/2;
 
       figcaption {
         max-width: 100%;
@@ -410,6 +434,18 @@ export default {
     img {
       width: 0.875rem;
       margin-right: 0.25rem;
+    }
+  }
+
+  .flipper-mobile {
+    @media (min-width: 1000px) {
+      display: none;
+    }
+  }
+
+  .card__meta {
+    @media (min-width: 1000px) {
+      padding-bottom: 0.5rem;
     }
   }
 

@@ -1,16 +1,62 @@
 <template>
   <div class="container">
-    <div v-if="account==null">
+    <div v-if="account===null" class="container" style="text-align: left;">
       <h4>{{ $t("m.noWeb3")}}</h4>
-      <p class="pt-2">
-        {{ $t("m.noWeb3desc")}}
-        <a target="__blank" href="https://metamask.io">Meta Mask</a>,
-        <a target="__blank" href="https://token.im/download?locale=en-US">imToken Wallet</a>,
-        <a target="__blank" href="https://status.im">Status</a>,
-        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
-        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
-        <a target="__blank" href="https://app.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
-      </p>
+      <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
+      <b-row class="logoRow">
+        <b-col cols="6" id="imToken">
+          <a target="__blank" href="https://token.im/download">
+            <span>
+              <img class="walletIcon" src="/static/icons/imToken_color.png">
+              <p>imToken Wallet</p>
+              <p class="walletDesc">Mobile wallet</p>
+            </span>
+          </a>
+        </b-col>
+        <b-col cols="6" id="trust">
+          <a target="__blank" href="https://trustwallet.com/">
+            <span>
+              <img class="walletIcon" src="/static/icons/trust.png">
+              <p>Trust Wallet</p>
+              <p class="walletDesc">Mobile wallet</p>
+            </span>
+          </a>
+        </b-col>
+      </b-row>
+      <b-row class="logoRow">
+        <b-col cols="6" id="status">
+          <a target="__blank" href="https://status.im">
+            <img class="walletIcon" src="/static/icons/status.png">
+            <p>Status</p>
+            <p class="walletDesc">Mobile wallet</p>
+          </a>
+        </b-col>
+        <b-col cols="6" id="opera">
+          <a target="__blank" href="https://www.opera.com/crypto">
+            <img class="walletIcon" src="/static/icons/opera.png">
+            <p>Opera</p>
+            <p class="walletDesc">Android browser</p>
+          </a>
+        </b-col>
+      </b-row>
+      <b-row class="logoRow">
+        <b-col cols="6" id="metamask">
+          <a target="__blank" href="https://metamask.io">
+            <img class="walletIcon" src="/static/icons/metamask.png">
+            <p>MetaMask</p>
+            <p class="walletDesc">Chrome addon</p>
+          </a>
+        </b-col>
+        <!-- <b-col cols="6" id="portis">
+          <div @click="initPortis">
+            <span>
+              <img class="walletIcon" src="/static/icons/portis.png">
+              <p>Portis</p>
+              <p class="walletDesc">Web wallet</p>
+            </span>
+          </div>
+        </b-col> -->
+      </b-row>
     </div>
     <form v-if="account!=null && account != undefined">
       <div role="tablist">
@@ -32,7 +78,7 @@
                 id="textarea"
                 class="field"
                 v-model="formData.message"
-                placeholder="max 128 characters"
+                v-bind:placeholder="$t('m.sendMessage')"
                 :rows="3"
                 :max-rows="6"
               ></b-form-textarea>
@@ -125,9 +171,9 @@
               @click="goToStep(2)"
               value="NEXT"
             >
-            <p
+            <!-- <p
               v-if="formData.sendingMethod==='QR'"
-            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>-->
           </div>
         </div>
 
@@ -147,10 +193,10 @@
                 <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
                 <label for="selectETH" class="field--radio__content">
                   <p class="p--smallitalic">{{ $t("m.topUpCrypto")}}</p>
-                  <span v-if="formData.currency !== 'ETH'" class="pretext">Send ETH</span>
+                  <span v-if="formData.currency !== 'ETH'" class="pretext">{{ $t("m.sendEth")}}</span>
 
                   <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send ETH</p>
+                    <p class="p--bold">{{ $t("m.sendEth")}}</p>
                     <input
                       type="number"
                       class="field form-control"
@@ -160,7 +206,7 @@
                     >
                     <p
                       class="p--smallitalic"
-                    >≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB</p>
+                    >{{equivalentFiatCost(formData.valueInETH)}}USD / {{equivalentCynCost(formData.valueInETH)}}RMB</p>
                     <div class="paymentPresets">
                       <button
                         :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
@@ -183,9 +229,9 @@
                 <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
                 <label for="selectDAI" class="field--radio__content">
                   <p class="p--smallitalic">{{ $t("m.topUpStable")}}</p>
-                  <span v-if="formData.currency !== 'DAI'" class="pretext">Send DAI</span>
+                  <span v-if="formData.currency !== 'DAI'" class="pretext">{{ $t("m.sendStable")}}</span>
                   <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
-                    <p class="p--bold">Send DAI</p>
+                    <p class="p--bold">{{ $t("m.sendStable")}}</p>
                     <input
                       type="number"
                       class="field form-control"
@@ -261,49 +307,166 @@
             <div class="step__title">
               <h4>{{ $t("m.ready")}}</h4>
               <p>{{ $t("m.readyDesc")}}</p>
-              <br>
-              <br>
               <div class="flex-column">
-                <div v-if="formData.currency==='ETH'">
-                  <h5>
-                    Card cost
-                    {{formData.valueInETH}}ETH ≈ {{equivalentFiatCost(formData.valueInETH)}}USD = {{equivalentCynCost(formData.valueInETH)}}RMB
-                  </h5>
-                  <br>
-                  <h5>
-                    Top-up money
-                    {{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}}USD
-                  </h5>
-                  <br>
-                  <hr>
-                  <br>
-                  <h5>Charity: {{(formData.valueInETH*formData.percentage/100).toFixed(3)}}ETH ≈ {{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}USD = {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}}RMB</h5>
-                </div>
-
-                <div v-if="formData.currency==='DAI'">
-                  <h5>Card cost</h5>
-                  {{formData.valueInDAI}}DAI
-                  <h5>Charity: {{(formData.valueInDAI*formData.percentage/100).toFixed(3)}}DAI</h5>
-                  <br>
-                  Recipient: {{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}}DAI
-                </div>
-
                 <div v-if="formData.sendingMethod==='Self'">
-                  <h5>Recipient:</h5>my ETH wallet
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to my ETH wallet
+                    </div>
+                  </div>
                   <h5>{{formData.recipient}}</h5>
                 </div>
                 <div v-if="formData.sendingMethod==='ETH'">
-                  <h5>Recipient: other ETH address</h5>
-
-                  <p class="p--smallitalic">{{formData.recipient}}</p>
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to ETH address
+                    </div>
+                  </div>
+                  <h5>{{formData.recipient}}</h5>
                 </div>
+                <br>
                 <div v-if="formData.sendingMethod==='QR'">
-                  <h5>
-                    <h5>Recipient:</h5>email, WeChat or other chat apps
-                  </h5>
-                  <h5>QR code will be generated in next step.</h5>
+                  <div class="alignleft">
+                    <!-- <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent via email, WeChat or other chat apps
+                    </div>-->
+                  </div>
+                  <br>
+                </div>
+                <br>
+                <div v-if="formData.currency==='ETH'">
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <!-- <hr> -->
+                  <br>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*formData.percentage/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+
+                  <hr>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH.toFixed(3)}} ETH</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? equivalentFiatCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $ / " + equivalentCynCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " ¥": equivalentFiatCost(formData.valueInETH) + " $ / " + equivalentCynCost(formData.valueInETH) + " ¥"}}</div>
+                  </div>
                 </div>
 
+                <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} $ / {{((formData.valueInDAI*(100 - formData.percentage)/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <!-- <hr> -->
+                  <br>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} $ / {{((formData.valueInDAI*formData.percentage/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                  <hr>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? parseFloat(ephemeralAddressFee) + " ETH & " + parseFloat(formData.valueInDAI) + " DAI" : parseFloat(formData.valueInDAI) + " DAI"}}</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? (parseFloat(equivalentFiatCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " +(parseFloat(equivalentCynCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " ¥": (parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " + ((parseFloat(formData.valueInDAI))/cynPrice).toFixed(2) + " ¥"}}</div>
+                  </div>
+                </div>
+
+                <!-- <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">Card cost</h5>
+                  <h5 class="alignright">{{formData.valueInDAI}} DAI</h5>
+                  <br>
+                  <h5 class="alignleft">Charity</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</div>
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <div v-if="formData.currency==='DAI'">
+                    <h4
+                      v-if="formData.sendingMethod==='QR'"
+                      class="alignright"
+                    >{{parseFloat(ephemeralAddressFee)}} ETH</h4>
+                    <h4
+                      v-if="formData.sendingMethod!=='QR'"
+                      class="alignright"
+                    >{{parseFloat(formData.valueInDAI)}} DAI</h4>
+                  </div>
+                </div>-->
                 <!-- <strong>Card Message:</strong>
                 <br>
                 <p class="p--smallitalic">{{formData.message}}</p>-->
@@ -313,7 +476,7 @@
                 type="button"
                 class="button button--fullwidth"
                 @click="giveBirth"
-                value="CREATE HANGBAO"
+                v-bind:value="$t('m.createHongbao')"
               >
             </div>
           </div>
@@ -338,7 +501,7 @@
             <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
             <p
-              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDai"
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
             >{{ $t("m.DAIDisclaimer")}}</p>
           </div>
         </div>
@@ -375,7 +538,6 @@
             <p>{{ $t("m.cardCreatedDesc")}}</p>
             <br>
             <p>{{ $t("m.cardCreatedDesc2")}}</p>
-            <p>{{ $t("m.cardCreatedDesc3")}}</p>
             <br>
             <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
               {{ $t("m.cardCreatedDesc4")}}
@@ -415,16 +577,22 @@
               <div class="qr-link">
                 <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
               </div>
-              <div class="claim-url">
-                https://radi.cards/claim/{{ephemeralPrivateKey}}
-              </div>
+              <!-- <div class="claim-url">https://radi.cards/claim/{{ephemeralPrivateKey}}</div> -->
+              <a
+                :href="'https://radi.cards/claim/' + ephemeralPrivateKey"
+                target="_blank"
+                class="claim-url"
+              >{{ $t("m.yourLink")}}</a>
               <br>
               <a
                 @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle"
                 style="margin-top: 0.5rem;"
-              >Copy</a>
+              >{{ $t("m.copyLink")}}</a>
+              <div v-if="copied">
+                <p class="p--smallitalic">{{ $t("m.linkCopied")}}</p>
+              </div>
             </div>
 
             <br>
@@ -526,6 +694,7 @@ import MailtoLink from "../../components/widgets/MailtoLink";
 import QrCodeImage from "../../components/widgets/QRCodeImage";
 import { AssertionError } from "assert";
 import vueSlider from "vue-slider-component";
+import Portis from "@portis/web3";
 
 export default {
   name: "creator",
@@ -601,7 +770,8 @@ export default {
       walletVisible: false,
       response: {
         ipfsHash: null
-      }
+      },
+      copied: false
     };
   },
   computed: {
@@ -668,6 +838,15 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
     equivalentFiatCost(ethAmount) {
       return parseFloat(ethAmount * this.usdPrice).toFixed(2);
     },
@@ -741,6 +920,7 @@ export default {
     },
     copyToClipboard(text) {
       this.$copyText(text);
+      this.copied = true;
     },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);
@@ -962,12 +1142,23 @@ export default {
 }
 
 .input-label {
-  font-size: 0.79rem;
+  font-size: 0.9rem;
   color: $darkred;
   text-align: left;
   width: 100%;
   padding-bottom: 0.15rem;
 }
+.input-label-currency {
+  font-size: 0.8rem;
+  color: $gray;
+  background-color: $greylightest;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 0.5rem;
+}
+
 input,
 textarea {
   margin-bottom: 1rem;
@@ -1038,6 +1229,46 @@ textarea {
   overflow-wrap: break-word;
   word-wrap: break-word;
   hyphens: auto;
+}
+
+.walletIcon {
+  float: left;
+  max-height: 40px;
+  @media (max-width: 1000px) {
+    padding-right: 100%;
+  }
+}
+
+.walletDesc {
+  font-size: 0.8rem;
+}
+
+.logoRow {
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 765px) {
+  #imToken {
+    display: none;
+  }
+  #trust {
+    display: none;
+  }
+  #status {
+    display: none;
+  }
+  #opera {
+    display: none;
+  }
+}
+
+@media (max-width: 765px) {
+  #metamask {
+    display: none;
+  }
+  #portis {
+    display: none;
+  }
 }
 
 // Steps preview (top)
@@ -1175,5 +1406,13 @@ textarea {
 
 .small-address {
   font-size: 0.6rem;
+}
+
+// Confirmation
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
 }
 </style>

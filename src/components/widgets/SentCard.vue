@@ -1,16 +1,14 @@
 
 
 <template>
-  <div :class="['SentCard', {'isExpanded': expanded}]" v-if="wallet">
+  <div :class="['SentCard', {'isExpanded': expanded}]" v-if="wallet.card">
     <div class="SentCard__heading" @click="toggleDetail">
       <figure class="SentCard__img">
-        <img v-if="wallet" :src="wallet.card.image">
+        <img v-if="wallet.card" :src="wallet.card.image">
       </figure>
-      <h6 class="SentCard__name mt-2">
-        You sent a card on {{wallet.time}}
-      </h6>
+      <h6 class="SentCard__name mt-2">{{ $t("m.sent")}} {{fromNow}}</h6>
       <p class="SentCard__value mt-2">
-        Total value sent with card: {{wallet.card.giftAmount+wallet.card.donationAmount}}
+        {{ $t("m.value")}} {{wallet.card.giftAmount+wallet.card.donationAmount}}
         {{(wallet.card.daiDonation)?'DAI':'ETH'}}
       </p>
 
@@ -27,25 +25,28 @@
             <card :cdata="wallet.card" class="mb-5"/>
           </b-col>
           <b-col cols="12" sm="12" lg="6">
-            <div class="text-center pt-5" v-if="wallet.card.status==='Deposited'">
-              <strong>This card's claimable link has no yet been claimed!</strong>
-              <br>You can cancel the link and get the funds back or regenerate the claimable link.
+            <div class="text-center" v-if="wallet.card.status==='Deposited'">
+              <strong>{{ $t("m.notYetClaimed")}}</strong><br>
+              {{ $t("m.claimBackYourself")}}
+              <br>
+              <br>
               <a
-                @click="copyToClipboard('https://radi.cards/claim/' + wallet.key)"
+                @click="copyToClipboard('https://radi.cards/claim/' + wallet.privateKey)"
                 target="_blank"
                 class="btn btn--narrow btn--subtle mt-3"
-              >Regenerate Claimable Link</a>
-              <a
-                @click
-                target="_blank"
-                class="btn btn--narrow btn--subtle mt-3"
-              >Cancel claimable link</a>
+              >{{ $t("m.copyLink2")}}</a>
+              <a target="_blank" class="btn btn--narrow btn--subtle mt-3">{{ $t("m.cancelLink")}}</a>
               <div class="text-center pt-2" v-if="linkGenerated">
-                <p class="p--smallitalic">Claimable link copied to clipboard!</p>
+                <a
+                  :href="'https://radi.cards/claim/' + wallet.privateKey"
+                  target="_blank"
+                  class="claim-url"
+                >{{ $t("m.yourLink")}}</a>
+                <p class="p--smallitalic">{{ $t("m.linkCopied")}}</p>
               </div>
             </div>
             <div class="text-center pt-5" v-if="wallet.card.status==='Claimed'">
-              <strong>This card's claimable link has already been claimed!</strong>
+              <strong>{{ $t("m.alreadyClaimed")}}</strong>
             </div>
           </b-col>
         </b-row>
@@ -62,19 +63,35 @@ import router from "../../router";
 import Card from "./Card";
 import ClickableAddress from "../widgets/ClickableAddress";
 
+import moment from "moment";
+
 export default {
   name: "SentCard",
   components: { Card, ClickableAddress },
+  date() {
+    return {};
+  },
   props: {
     wallet: {
       type: Object
     }
   },
   computed: {
-    ...mapState(["ClickableAddress", "SentCards", "cards"])
+    ...mapState(["ClickableAddress", "SentCards", "cards"]),
     // cdata() {
     //   return this.cards[this.wallet.cardIndex];
     // }
+    fromNow() {
+      console.log("A");
+      console.log(this.wallet.time);
+      let timeObject = null;
+      if (this.wallet) {
+        timeObject = moment(this.wallet.time, "Do MMMM YYYY, h:mm:ss a");
+        console.log("OBJ");
+        console.log(timeObject);
+      }
+      return timeObject.startOf("minute").fromNow();
+    }
   },
   methods: {
     copyToClipboard(text) {
@@ -101,6 +118,11 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
+
+.mb-5 {
+  width: 100%;
+  height: auto;
+}
 
 .SentCard {
   // margin: 0 -2rem;
@@ -166,7 +188,7 @@ export default {
     opacity: 0;
   }
   &.isExpanded .SentCard__detail {
-    max-height: 70vh;
+    max-height: 100%;
     opacity: 1;
   }
 
