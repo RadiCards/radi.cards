@@ -122,7 +122,7 @@
     </b-row>
     <h3
       v-if="getTransferStatus()==='BADURL'"
-    >Something went wrong with the url and a valid card could not be found 🙁️</h3>
+    >{{ $t("m.somethingWrong")}}</h3>
   </div>
 </template>
 
