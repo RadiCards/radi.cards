@@ -120,7 +120,9 @@
       "claimGiftTotal": "A total of",
       "claimGiftTotalDAI": "DAI was sent with the card!",
       "claimGiftTotalETH": "ETH was sent with the card!",
-      "claimGiftAction": "Claim Gift!"
+      "claimGiftAction": "Claim Gift!",
+      "sendDAI": "If you choose to send DAI you will need to sign two transactions during minting.",
+      "somethingWrong": "Something went wrong with the url and a valid card could not be found 🙁️"
     }
   },
   "zh": {
@@ -244,7 +246,9 @@
       "claimGiftTotal": "一共",
       "claimGiftTotalDAI": "DAI 用红包发送了！",
       "claimGiftTotalETH": "ETH 用红包发送了！",
-      "claimGiftAction": "索赔礼物！"
+      "claimGiftAction": "索赔礼物！",
+      "sendDAI": "如果您选择发送DAI，则需要在铸造期间签署两笔交易。",
+      "somethingWrong": "网址出错了，无法找到有效的红包。🙁️"
     }
   }
 }
