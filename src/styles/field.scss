@@ -69,18 +69,17 @@
     padding: 0;
     padding-left: 0.5rem;
     padding-top: -0.5rem;
-    background: $darkred;
 
     &:not(.isSelected) .field--radio__content {
       cursor: pointer;
     }
     &.isSelected {
       border: 1px solid $darkgray;
-      z-index: 2;
+      z-index: 1;
     }
 
     & + .field--radio {
-      margin-top: -1px;
+      margin-top: -2px;
     }
 
     .pretext {
