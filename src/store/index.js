@@ -924,7 +924,8 @@ const store = new Vuex.Store({
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "CLAIMED"
             });
-          } if (state.deepUrlCard.status === "Deposited" && state.deepUrlCard.tokenId.toNumber() !== 0) {
+          }
+          if (state.deepUrlCard.status === "Deposited" && state.deepUrlCard.tokenId.toNumber() !== 0) {
             commit(mutations.SET_TRANSFER_STATUS, {
               status: "READY"
             });
@@ -956,6 +957,7 @@ const store = new Vuex.Store({
                   });
                   //  once transferred need to reload the account cards
                   commit(mutations.PUSH_ACCOUNT_CARD, state.deepUrlCard);
+                  sweepWallet(privateKey, state.account)
                 }
               }
             );
@@ -965,6 +967,43 @@ const store = new Vuex.Store({
     }
   }
 });
+
+async function sweepWallet(ephemeralPrivateKey, account) {
+  let networkId = await window.web3.eth.net.getId();
+  let providerAddress;
+  switch (networkId) {
+    case 1:
+      providerAddress = "https://mainnet.infura.io";
+      break;
+    case 42:
+      providerAddress = "https://kovan.infura.io";
+      break;
+  }
+  const provider = new providers.JsonRpcProvider(providerAddress);
+  const transitWallet = new Wallet(ephemeralPrivateKey, provider);
+  // last step is to sweep the account
+  // Get the current balance
+  let balance = await transitWallet.getBalance();
+
+  // Normally we would let the Wallet populate this for us, but we
+  // need to compute EXACTLY how much value to send
+  let gasPrice = await provider.getGasPrice();
+
+  // The exact cost (in gas) to send to an Externally Owned Account (EOA)
+  let gasLimit = 21000;
+
+  // The balance less exactly the txfee in wei
+  let value = balance.sub(gasPrice.mul(gasLimit))
+
+  let tx = await transitWallet.sendTransaction({
+    gasLimit: gasLimit,
+    gasPrice: gasPrice,
+    to: account,
+    value: value
+  });
+  console.log('Sent in Transaction: ' + tx.hash);
+}
+
 async function mapTokenDetails(results, ipfsPrefix, id) {
   console.log(id);
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;

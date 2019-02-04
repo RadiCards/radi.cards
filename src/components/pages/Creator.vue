@@ -5,7 +5,7 @@
       <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
       <b-row class="logoRow">
         <b-col cols="6" id="imToken">
-          <a target="__blank" href="https://token.im/download">
+          <a target="__blank" v-b-toggle.collapse1 variant="primary">
             <span>
               <img class="walletIcon" src="/static/icons/imToken_color.png">
               <p>imToken Wallet</p>
@@ -13,7 +13,22 @@
             </span>
           </a>
         </b-col>
-        <b-col cols="6" id="trust">
+        <b-collapse id="collapse1" class="mt-2">
+          <b-card>
+            Don't have ImToken installed? install it
+            <a
+              target="__blank"
+              href="https://trustwalletapp.com"
+            >here</a>
+            <br>
+            Have ImToken installed? Open this link in Imtoken
+            <a
+              target="__blank"
+              :href="generateDeepURL()"
+            >here</a>
+          </b-card>
+        </b-collapse>
+        <!-- <b-col cols="6" id="trust">
           <a target="__blank" href="https://trustwallet.com/">
             <span>
               <img class="walletIcon" src="/static/icons/trust.png">
@@ -37,7 +52,7 @@
             <p>Opera</p>
             <p class="walletDesc">Android browser</p>
           </a>
-        </b-col>
+        </b-col>-->
       </b-row>
       <b-row class="logoRow">
         <b-col cols="6" id="metamask">
@@ -55,7 +70,7 @@
               <p class="walletDesc">Web wallet</p>
             </span>
           </div>
-        </b-col> -->
+        </b-col>-->
       </b-row>
     </div>
     <form v-if="account!=null && account != undefined">
@@ -285,9 +300,7 @@
             <p
               v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance"
             >{{ $t("m.noDAI")}}{{parseFloat(daiBalance).toFixed(3)}}.</p>
-            <p
-              v-if="formData.currency === 'DAI'"
-            >{{ $t("m.sendDAI")}}</p>
+            <p v-if="formData.currency === 'DAI'">{{ $t("m.sendDAI")}}</p>
 
             <p
               v-if="formData.currency === 'ETH' && formData.valueInETH * usdPrice < formData.card.cardMinPrice"
@@ -687,6 +700,7 @@
 </template>
 
 <script>
+import router from "../../router";
 import { mapGetters, mapState } from "vuex";
 import * as _ from "lodash";
 import Web3 from "web3";
@@ -844,6 +858,9 @@ export default {
     this.$nextTick(function() {});
   },
   methods: {
+    generateDeepURL() {
+      return "imtokenv2://navigate/DappView?url=https://radi.cards" + this.$route.fullPath
+    },
     initPortis() {
       const portis = new Portis(
         "90dd46f3-6a56-4162-85dc-f310c53cced7",

@@ -65,7 +65,7 @@
         <div v-if="account===null" class="container" style="text-align: left;">
           <b-row class="logoRow">
             <b-col cols="6" id="imToken">
-              <a target="__blank" href="https://token.im/download">
+              <a target="__blank" v-b-toggle.collapse1 variant="primary">
                 <span>
                   <img class="walletIcon" src="/static/icons/imToken_color.png">
                   <p>imToken Wallet</p>
@@ -73,7 +73,22 @@
                 </span>
               </a>
             </b-col>
-            <b-col cols="6" id="trust">
+            <b-collapse id="collapse1" class="mt-2">
+          <b-card>
+            Don't have ImToken installed? install it
+            <a
+              target="__blank"
+              href="https://trustwalletapp.com"
+            >here</a>
+            <br>
+            Have ImToken installed? Open this link in Imtoken
+            <a
+              target="__blank"
+              :href="generateDeepURL()"
+            >here</a>
+          </b-card>
+        </b-collapse>
+            <!-- <b-col cols="6" id="trust">
               <a target="__blank" href="https://trustwallet.com/">
                 <span>
                   <img class="walletIcon" src="/static/icons/trust.png">
@@ -97,7 +112,7 @@
                 <p>Opera</p>
                 <p class="walletDesc">Android browser</p>
               </a>
-            </b-col>
+            </b-col> -->
           </b-row>
           <b-row class="logoRow">
             <b-col cols="6" id="metamask">
@@ -152,6 +167,9 @@ export default {
     this.$store.dispatch(actions.CLAIM_GIFT, { privateKey, execute: false });
   },
   methods: {
+    generateDeepURL() {
+      return "imtokenv2://navigate/DappView?url=https://radi.cards" + this.$route.fullPath
+    },
     initPortis() {
       const portis = new Portis(
         "90dd46f3-6a56-4162-85dc-f310c53cced7",

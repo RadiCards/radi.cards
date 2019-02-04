@@ -2,7 +2,7 @@
   <div id="app">
     <hr class="m-0 p-0">
     <header>
-      <p class="notice" v-if="!account && currentNetwork">
+      <p class="notice" v-if="!account && currentNetwork && !isWeChatBrowser()">
         Please unlock your web3 wallet or if you do not have one, go install
         <a
           href="https://metamask.io/"
@@ -13,8 +13,13 @@
       </p>
       <p
         class="notice"
-        v-if="currentNetwork!=='Main Ethereum Network'"
+        v-if="currentNetwork!=='Main Ethereum Network' && !isWeChatBrowser()"
       >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
+
+      <p
+        class="notice"
+        v-if="isWeChatBrowser()"
+      >To interact with the dapp click the three dots to open the website in your browser.</p>
 
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
@@ -224,6 +229,11 @@ export default {
     };
   },
   methods: {
+    isWeChatBrowser() {
+      console.log("WWWEEE")
+      console.log(navigator.userAgent.match(/MicroMessenger/) != null)
+      return navigator.userAgent.match(/MicroMessenger/) != null;
+    },
     initPortis() {
       const portis = new Portis(
         "90dd46f3-6a56-4162-85dc-f310c53cced7",
@@ -310,9 +320,12 @@ export default {
           "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
         )
       );
-      console.log("Non-Ethereum browser detected. You should consider trying MetaMask!");
+      console.log(
+        "Non-Ethereum browser detected. You should consider trying MetaMask!"
+      );
       this.$store.dispatch(actions.INIT_APP, window.web3);
-    }``
+    }
+    ``;
   },
   created() {
     let queryLanguage = this.$route.query.locale;
