@@ -8,6 +8,7 @@
       "viaWeChat": "via WeChat",
       "sendEthHongbao": "Send Hongbao",
       "compatibleWith": "COMPATIBLE WITH",
+      "weChat": "WeChat",
       "send3Steps": "In 3 Easy Steps",
       "Choose": "1. Choose",
       "Deposit": "2. Fill",
@@ -123,7 +124,19 @@
       "claimGiftTotalETH": "ETH was sent with this card!",
       "claimGiftAction": "Claim my hongbao!",
       "sendDAI": "If you choose to send DAI you will need to sign two transactions during minting.",
-      "somethingWrong": "Something went wrong with the url and a valid card could not be found 🙁️"
+      "somethingWrong": "Something went wrong with the url and a valid card could not be found 🙁️",
+      "mobileWallet": "Mobile wallet",
+      "webWallet": "Web wallet",
+      "chromeAddon": "Chrome addon",
+      "newUser": "New user",
+      "install": "Install",
+      "existingUser": "Existing user",
+      "logIn": "Log in",
+      "pleaseUnlock": "Please unlock your web3 wallet. If you do not have one, install",
+      "orSignIn": "or sign in using",
+      "currentlyConnected": "You are currently connected to",
+      "SwitchToMainnet": "! Switch to the mainnet to interact with this DApp!",
+      "openNormalBrowser": "Please open the website in your browser.👆"
     }
   },
   "zh": {
@@ -135,6 +148,7 @@
       "viaWeChat": "以太坊红包",
       "sendEthHongbao": "发送红包",
       "compatibleWith": "配合",
+      "weChat": "微信",
       "send3Steps": "用微信发送给你的亲友",
       "Choose": "1. 定制",
       "Deposit": "2. 输入",
@@ -250,7 +264,19 @@
       "claimGiftTotalETH": "ETH 用红包发送了！",
       "claimGiftAction": "索赔礼物！",
       "sendDAI": "如果您选择发送DAI，则需要在铸造期间签署两笔交易。",
-      "somethingWrong": "网址出错了，无法找到有效的红包。🙁️"
+      "somethingWrong": "网址出错了，无法找到有效的红包。🙁️",
+      "mobileWallet": "手机钱包",
+      "webWallet": "网址钱包",
+      "chromeAddon": "chrome插件",
+      "newUser": "新用户",
+      "install": "安装",
+      "existingUser": "现有用户",
+      "logIn": "登录",
+      "pleaseUnlock": "请解锁您的web3钱包。 如果您没有，请安装",
+      "orSignIn": "或使用此应用登录",
+      "currentlyConnected": "您目前已连接到",
+      "SwitchToMainnet": "！ 切换到主网与此DApp交互！",
+      "openNormalBrowser": "点击右上角，选择浏览器打开.👆"
     }
   }
 }
