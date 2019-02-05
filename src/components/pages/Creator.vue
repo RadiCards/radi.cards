@@ -1,266 +1,504 @@
 <template>
   <div class="container">
-    <!-- <h1 style=" margin-bottom:10px;">Card Foundry</h1>
-    <p>Create your own unique card while supporting charity. Follow the steps below to compleate your card creation.</p>-->
-    <div v-if="account==null">
-      <h4>No web3 wallet could be detected! 🧐</h4>
-      <p class="pt-2">
-        In order to create a new radi card you require a web3 browser and account with Ether. We recommend you try
-        <a
-          target="__blank"
-          href="https://metamask.io"
-        >Meta Mask</a>,
-        <a target="__blank" href="https://status.im">Status</a>,
-        <a target="__blank" href="https://trustwallet.com/">Trust Wallet</a>,
-        <a target="__blank" href="https://wallet.coinbase.com/">Coinbase Wallet</a> or
-        <a target="__blank" href="https://wallet.portis.io/">Portis</a>! You can still view all other functionality within the website without one.
-      </p>
+    <div v-if="account===null" class="container" style="text-align: left;">
+      <h4>{{ $t("m.noWeb3")}}</h4>
+      <p class="pt-2">{{ $t("m.noWeb3desc")}}</p>
+      <br>
+      <br>
+      <b-row class="logoRow">
+        <b-col class="wallet-button" cols="6" id="imToken">
+          <a target="__blank" v-b-toggle.collapse1 variant="primary">
+            <span>
+              <img class="walletIcon" src="/static/icons/imToken_color.png">
+              <p>imToken Wallet</p>
+              <p class="walletDesc">Mobile wallet</p>
+            </span>
+          </a>
+          <b-collapse id="collapse1" class="wallet-reg mt-2">
+            <b-card>
+              <div class="walletDesc">New user</div>
+              <a target="__blank" href="https://trustwalletapp.com">Install</a>
+              <br>
+              <hr>
+              <div class="walletDesc">Existing user</div>
+              <a target="__blank" :href="generateDeepURL()">Log in</a>
+            </b-card>
+          </b-collapse>
+        </b-col>
+        <b-col class="wallet-button" cols="6" id="trust">
+          <a target="__blank" @click="initPortis">
+            <span>
+              <img class="walletIcon" src="/static/icons/portis.png">
+              <p>Portis</p>
+              <p class="walletDesc">Web wallet</p>
+            </span>
+          </a>
+        </b-col>
+      </b-row>
+      <!--<b-row class="logoRow">
+        <b-col cols="6" id="status">
+          <a target="__blank" href="https://status.im">
+            <img class="walletIcon" src="/static/icons/status.png">
+            <p>Status</p>
+            <p class="walletDesc">Mobile wallet</p>
+          </a>
+        </b-col>
+        <b-col cols="6" id="opera">
+          <a target="__blank" href="https://www.opera.com/crypto">
+            <img class="walletIcon" src="/static/icons/opera.png">
+            <p>Opera</p>
+            <p class="walletDesc">Android browser</p>
+          </a>
+        </b-col>
+      </b-row>-->
+      <b-row class="logoRow">
+        <b-col class="wallet-button" cols="6" id="metamask">
+          <a target="__blank" href="https://metamask.io">
+            <img class="walletIcon" src="/static/icons/metamask.png">
+            <p>MetaMask</p>
+            <p class="walletDesc">Chrome addon</p>
+          </a>
+        </b-col>
+        <b-col class="wallet-button" cols="6" id="portis">
+          <div @click="initPortis">
+            <span>
+              <img class="walletIcon" src="/static/icons/portis.png">
+              <p>Portis</p>
+              <p class="walletDesc">Web wallet</p>
+            </span>
+          </div>
+        </b-col>
+      </b-row>
     </div>
     <form v-if="account!=null && account != undefined">
       <div role="tablist">
-        <div class="preview">
-          <div
-            class="preview-step"
-            v-if="this.formData.card !== null && this.step > 0"
-            @click="goToStep(0)"
-          >
-            <h4 class="section__title">
-              <img src="/static/icons/Check.svg"> STEP ONE
-            </h4>
-
-            <div class="preview-step__content">
-              <figure class="preview-step__img">
-                <img :src="this.formData.card.image" alt="this.formData.card.name">
-              </figure>
-              <div class="preview-step__text" v-if="this.formData.card">
-                <span class="selCard">Selected Card</span>
-                <h5>{{this.formData.card.name}}</h5>
-                <span class="artist">by {{this.formData.card.attributes.artist}}</span>
-              </div>
-              <div
-                class="btn btn--reveal btn--narrow"
-                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
-              >
-                <img src="/static/icons/Edit.svg">
-              </div>
-            </div>
-          </div>
-
-          <div
-            class="preview-step"
-            @click="goToStep(1)"
-            v-if="this.step > 1 && this.formData.benefactor !== null && this.formData.benefactor != undefined"
-          >
-            <h4 class="section__title">
-              <img src="/static/icons/Check.svg"> STEP TWO
-            </h4>
-
-            <div class="preview-step__content">
-              <figure class="preview-step__img">
-                <img :src="this.formData.benefactor.image" alt="this.formData.benefactor.name">
-              </figure>
-              <div class="preview-step__text">
-                <span class="selCard">Selected Charity</span>
-                <h5>{{this.formData.benefactor.name}}</h5>
-              </div>
-              <div
-                v-if="this.step > 2 && formData.valueInETH !== null && formData.valueInETH != undefined"
-              >
-                Donation:
-                <strong>{{formData.valueInETH}}</strong> ETH
-              </div>
-              <div
-                class="btn btn--reveal btn--narrow"
-                v-if="!getGiftingStatus(formData.recipient, formData.card.cardIndex).status"
-              >
-                <img src="/static/icons/Edit.svg">
-              </div>
-            </div>
-          </div>
-        </div>
-
         <div class="section step step--twocol step1" v-if="step === 0">
           <div class="step__card">
             <card v-if="cards && this.card !== undefined" :cdata="this.formData.card"></card>
           </div>
+          <div class="flex-column">
+            <div class="step__info">
+              <div class="step__title">
+                <h4>{{ $t("m.customiseCard")}}</h4>
+                <p>{{ $t("m.customiseCardDesc")}}</p>
+              </div>
+              <div class="input-label">
+                <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
+                {{ $t("m.addMessage")}}
+              </div>
+              <b-form-textarea
+                id="textarea"
+                class="field"
+                v-model="formData.message"
+                v-bind:placeholder="$t('m.sendMessage')"
+                :rows="3"
+                :max-rows="6"
+              ></b-form-textarea>
 
-          <div class="step__info">
+              <br>
+              <input
+                type="button"
+                class="button button--fullwidth"
+                :disabled="!formData.message"
+                @click="goToStep(1)"
+                value="NEXT"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- select where funds are going page -->
+        <div class="section step step--twocol step2" v-if="step === 1">
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
+          </div>
+          <div class="flex-column">
             <div class="step__title">
-              <h4 class="section__title">STEP ONE</h4>
-              <h4>Customise card</h4>
-              <p>Choose recipient & message</p>
+              <h4>{{ $t("m.sendMethod")}}</h4>
+              <p>{{ $t("m.chooseSendMethod")}}</p>
             </div>
 
-            <span class="input-label">Add a message (This will be visible on the blockchain)</span>
-            <b-form-textarea
-              id="textarea"
-              class="field"
-              v-model="formData.message"
-              placeholder="max 128 characters"
-              :rows="3"
-              :max-rows="6"
-            ></b-form-textarea>
+            <div class="fieldgroup--radio column">
+              <!-- QR -->
+              <div :class="['field field--radio', {'isSelected': formData.sendingMethod === 'QR'}]">
+                <input type="radio" id="selectQR" value="QR" v-model="formData.sendingMethod">
+                <label for="selectQR" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.supported")}}</p>
+                  <span v-if="formData.sendingMethod !== 'QR'" class="pretext">{{ $t("m.QR")}}</span>
+                  <div v-if="formData.sendingMethod === 'QR'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.QR")}}</p>
+                  </div>
+                </label>
+              </div>
 
-            <br>
-
-           <p>Choose one of the sending options</p>
-            <div class="fieldgroup--radio">
-
-              <!-- Option 1 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'wallet'}]">
-                <input
-                  type="radio"
-                  id="sendToWallet"
-                  value="wallet"
-                  v-model="formData.sendOptions"
-                >
-                <label for="sendToWallet" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'wallet'" class="pretext">
-                    Want to transfer the NFT?
-                  </span>
-                  <h6>Send to another ETH wallet address</h6>
-
-                  <div v-if="formData.sendOptions === 'wallet'" class="sendOptionSelectedContent">
+              <!-- ETH -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'ETH'}]"
+              >
+                <input type="radio" id="selectETH" value="ETH" v-model="formData.sendingMethod">
+                <label for="selectETH" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.sendDirect")}}</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'ETH'"
+                    class="pretext"
+                  >{{ $t("m.addEthWallet")}}</span>
+                  <div v-if="formData.sendingMethod === 'ETH'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.addEthWallet")}}</p>
                     <input
                       type="text"
                       placeholder="0x..."
                       class="field form-control"
                       v-model="formData.recipient"
                     >
-                    <br>
-                    <p class="p--small">Transfer the card directly; the web3 way</p>
-                  </div>
-
-                </label>
-              </div>
-
-              <!-- Option 2 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'email'}]">
-
-                <input type="radio" id="sendToEmail" value="email" v-model="formData.sendOptions">
-
-                <label for="sendToEmail" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'email'" class="pretext">
-                    Don’t have a recipient wallet?
-                  </span>
-                  <h6>Send to email address</h6>
-                  <div v-if="formData.sendOptions === 'email'" class="sendOptionSelectedContent">
-                    <input
-                      type="email"
-                      placeholder="Email address"
-                      class="field form-control"
-                      v-model="formData.email"
-                    >
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and send it via email.</p>
-                    <span class="input-label">Your wallet:</span>
-                    <br>
-                    <div class="field field--disabled">{{account}}</div>
-                  </div>
-                </label>
-
-              </div>
-
-              <!-- Option 3 -->
-              <div :class="['field field--radio', {'isSelected': formData.sendOptions === 'personal'}]">
-                <input
-                  type="radio"
-                  id="sendToPersonal"
-                  value="personal"
-                  v-model="formData.sendOptions"
-                >
-                <label for="sendToPersonal" class="field--radio__content">
-                  <span v-if="formData.sendOptions !== 'personal'" class="pretext">
-                    Want to share the link manually?
-                  </span>
-                  <h6>Send to own wallet</h6>
-                  <div v-if="formData.sendOptions === 'personal'" class="sendOptionSelectedContent">
-                    <p class="p--small">This will create the card in your own wallet, create a link to it and lets you share it however you want.</p>
-                    <span class="input-label">Your wallet:</span>
-                    <br>
-                    <div class="field field--disabled">{{account}}</div>
                   </div>
                 </label>
               </div>
 
+              <!-- Self -->
+              <div
+                :class="['field field--radio', {'isSelected': formData.sendingMethod === 'Self'}]"
+              >
+                <input type="radio" id="selectSelf" value="Self" v-model="formData.sendingMethod">
+                <label for="selectSelf" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.sendLater")}}</p>
+                  <span
+                    v-if="formData.sendingMethod !== 'Self'"
+                    class="pretext"
+                  >{{ $t("m.sendOwn")}}</span>
+                  <div v-if="formData.sendingMethod === 'Self'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.sendOwn")}}</p>
+                    <br>
+                    <p>{{ $t("m.yourWallet")}}</p>
+                    <p class="p--smallitalic small-account">{{account}}</p>
+                  </div>
+                </label>
+              </div>
             </div>
-
+            <br>
             <br>
             <input
               type="button"
               class="button button--fullwidth"
-              :disabled="checkMessageAndReceiver()"
-              @click="handleMessageAndReceiver()"
-              value="next"
+              :disabled="!validateSendingMethod()"
+              @click="goToStep(2)"
+              value="NEXT"
             >
+            <!-- <p
+              v-if="formData.sendingMethod==='QR'"
+            >If you choose to generate a claimable link an extra 0.01ETH will be added as a fee.</p>-->
           </div>
         </div>
 
-        <div class="section step step2" v-if="step === 1">
-          <div class="step__title">
-            <h4 class="section__title">STEP TWO</h4>
-            <h4>Choose a project you wish to support</h4>
-            <p>Your donations go directly to charities of your choice</p>
+        <!-- add donation page -->
+        <div class="section step step--twocol step2" v-if="step === 2">
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
           </div>
-
-          <section class="section">
-            <div class="charities" v-if="benefactors && benefactors.length > 0">
-              <benefactor
-                v-for="item in benefactors"
-                :key="item.address"
-                :benefactor="item"
-                @benefactorSelected="handelBenefactorSelected(item)"
-              />
+          <div class="flex-column">
+            <div class="step__title">
+              <h4>{{ $t("m.topUp")}}</h4>
             </div>
-          </section>
+
+            <div class="fieldgroup--radio column">
+              <!-- Option 1 -->
+              <div :class="['field field--radio', {'isSelected': formData.currency === 'ETH'}]">
+                <input type="radio" id="selectETH" value="ETH" v-model="formData.currency">
+                <label for="selectETH" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.topUpCrypto")}}</p>
+                  <span v-if="formData.currency !== 'ETH'" class="pretext">{{ $t("m.sendEth")}}</span>
+
+                  <div v-if="formData.currency === 'ETH'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.sendEth")}}</p>
+                    <input
+                      type="number"
+                      class="field form-control"
+                      v-model="formData.valueInETH"
+                      step="0.1"
+                      :min="premuimCardInformation.minInEth"
+                    >
+                    <p
+                      class="p--smallitalic"
+                    >{{equivalentFiatCost(formData.valueInETH)}}USD / {{equivalentCynCost(formData.valueInETH)}}RMB</p>
+                    <div class="paymentPresets">
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
+                        @click="setDonationAmount(0.2)"
+                      >0.2 ETH</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.5}]"
+                        @click="setDonationAmount(0.5)"
+                      >0.5 ETH</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInETH == 1}]"
+                        @click="setDonationAmount(1)"
+                      >1 ETH</button>
+                    </div>
+                  </div>
+                </label>
+              </div>
+
+              <div :class="['field field--radio', {'isSelected': formData.currency === 'DAI'}]">
+                <input type="radio" id="selectDAI" value="DAI" v-model="formData.currency">
+                <label for="selectDAI" class="field--radio__content">
+                  <p class="p--smallitalic">{{ $t("m.topUpStable")}}</p>
+                  <span v-if="formData.currency !== 'DAI'" class="pretext">{{ $t("m.sendStable")}}</span>
+                  <div v-if="formData.currency === 'DAI'" class="sendOptionSelectedContent">
+                    <p class="p--bold">{{ $t("m.sendStable")}}</p>
+                    <input
+                      type="number"
+                      class="field form-control"
+                      v-model="formData.valueInDAI"
+                      :step="0.5"
+                      :min="premuimCardInformation.minInDai"
+                    >
+                    <div class="paymentPresets">
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 25}]"
+                        @click="setDonationAmount(25)"
+                      >25 DAI</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 60}]"
+                        @click="setDonationAmount(60)"
+                      >60 DAI</button>
+                      <button
+                        :class="['button button--outline', {'isSelected' : formData.valueInDAI == 120}]"
+                        @click="setDonationAmount(120)"
+                      >120 DAI</button>
+                    </div>
+                  </div>
+                </label>
+              </div>
+            </div>
+
+            <p class="margin">{{ $t("m.donateCharity")}}</p>
+            <select class="margin charity-drop" v-model="formData.benefactor">
+              <option v-for="item in benefactors" :value="item" v-bind:key="item.name">{{item.name}}</option>
+            </select>
+            <br>
+            <vue-slider
+              class="margin"
+              ref="slider"
+              v-bind="donationSliderOptions"
+              v-model="formData.percentage"
+              formatter="{value}%"
+            ></vue-slider>
+            <br>
+            <br>
+            <input
+              type="button"
+              class="button button--fullwidth"
+              :disabled="!validateDonationMethod()"
+              @click="goToStep(3)"
+              value="NEXT"
+            >
+            <p
+              v-if="formData.currency === 'ETH' && formData.valueInETH > ethBalance"
+            >{{ $t("m.noETH")}}{{parseFloat(ethBalance).toFixed(3)}}.</p>
+            <p
+              v-if="formData.currency === 'DAI' && formData.valueInDAI > daiBalance"
+            >{{ $t("m.noDAI")}}{{parseFloat(daiBalance).toFixed(3)}}.</p>
+            <p v-if="formData.currency === 'DAI'">{{ $t("m.sendDAI")}}</p>
+
+            <p
+              v-if="formData.currency === 'ETH' && formData.valueInETH * usdPrice < formData.card.cardMinPrice"
+            >{{ $t("m.donateCharity")}}{{parseFloat(formData.card.cardMinPrice / usdPrice).toFixed(3)}} ETH.</p>
+            <p
+              v-if="formData.currency === 'DAI' && formData.valueInDAI < formData.card.cardMinPrice"
+            >{{ $t("m.donateCharity")}}{{parseFloat(formData.card.cardMinPrice).toFixed(3)}} DAI.</p>
+          </div>
         </div>
 
-        <div class="section step step2" v-if="step === 2">
-          <div class="step__title">
-            <h4 class="section__title">STEP THREE</h4>
-            <h4>Add your donation</h4>
-            <p>I’d like to donate...</p>
-          </div>
-
-          <section class="section">
-            <div class="paymentPresets">
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.2}]"
-                @click="setDonationAmount(0.2)"
-              >0.2ETH</button>
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.3}]"
-                @click="setDonationAmount(0.3)"
-              >0.3ETH</button>
-              <button
-                :class="['button button--outline', {'isSelected' : formData.valueInETH == 0.4}]"
-                @click="setDonationAmount(0.4)"
-              >0.4ETH</button>
-            </div>
-            <div>
-              <span class="input-label">Or enter a custom amount</span>
-              <input
-                type="number"
-                class="field field--full"
-                id="valueInETH"
-                v-model="formData.valueInETH"
-                placeholder="0.02ETH"
-                min="0.02"
-              >
-              <div
-                v-if="formData.valueInETH"
-                class="usdLabel"
-              >Equals to ${{(formData.valueInETH * usdPrice).toFixed(2)}}</div>
-            </div>
-            <span
-              class="info"
-            >Every card has a base transactional price of 0.02 ETH, that’s why there is a minimum.</span>
-          </section>
-          <input type="button" @click="goToStep(3)" class="button" value="preview card">
-        </div>
-
+        <!-- CONFIRMATION PAGE -->
         <div
-          class="section step step--twocol step3"
-          v-if="step == 3 && (!getGiftingStatus(formData.recipient, formData.card.cardIndex).status || getGiftingStatus(formData.recipient, formData.card.cardIndex).status==='TRIGGERED')"
+          class="section step step--twocol step2"
+          v-if="step === 3 && !getGiftingStatus(account, formData.card.cardIndex).status"
+        >
+          <div class="step__card">
+            <card v-if="cards && this.card !== undefined" :cdata="previewCardObject"></card>
+          </div>
+          <div class="flex-column">
+            <div class="step__title">
+              <h4>{{ $t("m.ready")}}</h4>
+              <p>{{ $t("m.readyDesc")}}</p>
+              <div class="flex-column">
+                <div v-if="formData.sendingMethod==='Self'">
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to my ETH wallet
+                    </div>
+                  </div>
+                  <h5></h5>
+                </div>
+                <div v-if="formData.sendingMethod==='ETH'">
+                  <div class="alignleft">
+                    <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent to ETH address
+                    </div>
+                  </div>
+                  <h5>{{formData.recipient}}</h5>
+                </div>
+                <br>
+                <div v-if="formData.sendingMethod==='QR'">
+                  <div class="alignleft">
+                    <!-- <div class="input-label">
+                      <img src="/static/icons/send.svg" alt style="width: 0.9rem;"> to be sent via email, WeChat or other chat apps
+                    </div>-->
+                  </div>
+                  <br>
+                </div>
+                <br>
+                <div v-if="formData.currency==='ETH'">
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*(100 - formData.percentage)/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*(100 - formData.percentage)/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <!-- <hr> -->
+                  <br>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInETH*formData.percentage/100).toFixed(3)}} ETH</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{equivalentFiatCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} $ / {{equivalentCynCost((formData.valueInETH*formData.percentage/100).toFixed(3))}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+
+                  <hr>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? (parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)).toFixed(3): formData.valueInETH}} ETH</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? equivalentFiatCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " $ / " + equivalentCynCost(parseFloat(formData.valueInETH) + parseFloat(ephemeralAddressFee)) + " ¥": equivalentFiatCost(formData.valueInETH) + " $ / " + equivalentCynCost(formData.valueInETH) + " ¥"}}</div>
+                  </div>
+                </div>
+
+                <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">{{ $t("m.recipientGift")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} $ / {{((formData.valueInDAI*(100 - formData.percentage)/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <!-- <hr> -->
+                  <br>
+                  <h5 class="alignleft">{{ $t("m.charity")}}</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} $ / {{((formData.valueInDAI*formData.percentage/100)/cynPrice).toFixed(3)}} ¥</div>
+                  </div>
+                  <br>
+                  <br>
+                  <div v-if="formData.sendingMethod==='QR'">
+                    <h5 class="alignleft">{{ $t("m.networkFee")}}</h5>
+                    <h5 class="alignright">{{ephemeralAddressFee}} ETH</h5>
+                    <br>
+                    <div class="alignright">
+                      <div
+                        class="input-label-currency"
+                      >{{equivalentFiatCost(ephemeralAddressFee)}} $ / {{equivalentCynCost(ephemeralAddressFee)}} ¥</div>
+                    </div>
+                    <br>
+                    <br>
+                  </div>
+                  <hr>
+                  <h4 class="alignleft">{{ $t("m.totalCost")}}</h4>
+                  <h4
+                    class="alignright"
+                  >{{formData.sendingMethod==='QR' ? parseFloat(ephemeralAddressFee) + " ETH & " + parseFloat(formData.valueInDAI) + " DAI" : parseFloat(formData.valueInDAI) + " DAI"}}</h4>
+                  <br>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{formData.sendingMethod==='QR' ? (parseFloat(equivalentFiatCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " +(parseFloat(equivalentCynCost(ephemeralAddressFee)) + parseFloat(formData.valueInDAI)).toFixed(2) + " ¥": (parseFloat(formData.valueInDAI)).toFixed(2) + " $ / " + ((parseFloat(formData.valueInDAI))/cynPrice).toFixed(2) + " ¥"}}</div>
+                  </div>
+                </div>
+
+                <!-- <div v-if="formData.currency==='DAI'">
+                  <h5 class="alignleft">Card cost</h5>
+                  <h5 class="alignright">{{formData.valueInDAI}} DAI</h5>
+                  <br>
+                  <h5 class="alignleft">Charity</h5>
+                  <h5
+                    class="alignright"
+                  >{{(formData.valueInDAI*formData.percentage/100).toFixed(3)}} DAI</h5>
+                  <br>
+                  <div class="alignright">
+                    <div
+                      class="input-label-currency"
+                    >{{(formData.valueInDAI*(100 - formData.percentage)/100).toFixed(3)}} DAI</div>
+                  </div>
+                </div>
+                <hr>
+                <div>
+                  <div v-if="formData.currency==='DAI'">
+                    <h4
+                      v-if="formData.sendingMethod==='QR'"
+                      class="alignright"
+                    >{{parseFloat(ephemeralAddressFee)}} ETH</h4>
+                    <h4
+                      v-if="formData.sendingMethod!=='QR'"
+                      class="alignright"
+                    >{{parseFloat(formData.valueInDAI)}} DAI</h4>
+                  </div>
+                </div>-->
+                <!-- <strong>Card Message:</strong>
+                <br>
+                <p class="p--smallitalic">{{formData.message}}</p>-->
+              </div>
+              <br>
+              <input
+                type="button"
+                class="button button--fullwidth"
+                @click="giveBirth"
+                v-bind:value="$t('m.createHongbao')"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- STATUS: SUBMITTED -->
+        <div
+          class="section step step--twocol step4"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'TRIGGERED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -269,55 +507,25 @@
           </div>
 
           <div class="step__info">
-            <h4>Preview your radicard</h4>
+            <br>
 
-            <span class="detailsText">
-              Recipient: {{formData.recipient}}
-              <br>
-              <br>
-              <br>Message (displayed on the back of the card):
-              <br>
-              <br>
-              <h5 v-html="cardMessageFormatted"></h5>
-              <br>
-              <br>
-              <br>
-            </span>
+            <h4>{{ $t("m.transactionTriggered")}}</h4>
+            <br>
+            <p>{{ $t("m.transactionTriggeredDesc")}}</p>
 
-            <button
-              class="button"
-              @click="giveBirth"
-              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status !== 'TRIGGERED'"
-            >gift this awesome card</button>
-
-            <div class="form-group row" v-if="formData.errors.length">
-              <div class="col-sm-12">
-                <blockquote>
-                  <b>Please correct the following error(s):</b>
-                </blockquote>
-                <ul>
-                  <li v-for="error in formData.errors">{{ error }}</li>
-                </ul>
-              </div>
-            </div>
-
-            <div
-              v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'TRIGGERED'"
-              class="transaction-in-progress"
-            >
-              <h6 style="margin-bottom: 0.5rem;">Card is being created...</h6>
-              <p>
-                Please
-                <strong>check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) if you haven't already confirmed this action.
-              </p>
-            </div>
+            <h4
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
+            >{{ $t("m.DAIDisclaimer")}}</h4>
+            <p
+              v-if="formData.currency=='DAI' && daiAllowance < formData.valueInDAI"
+            >{{ $t("m.DAIDisclaimer2")}}</p>
           </div>
         </div>
 
-        <!-- STATUS: PENDING -->
+        <!-- STATUS: SUBMITTED -->
         <div
           class="section step step--twocol step4"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUBMITTED'"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'SUBMITTED'"
         >
           <div class="step__card">
             <div class="centered">
@@ -342,19 +550,18 @@
 
             <br>
 
-            <h4>Card is being created...</h4>
-            <p>This might take few seconds or minutes, depending on how favourable the Ethereum gods are.🤞</p>
+            <h4>{{ $t("m.cardCreated")}}</h4>
+            <p>{{ $t("m.cardCreatedDesc")}}</p>
             <br>
-            <p>Best to not close this tab and go make some tea.</p>
-            <p>Good things will happen.</p>
+            <p>{{ $t("m.cardCreatedDesc2")}}</p>
             <br>
-            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
-              You can view the transaction of Etherscan
+            <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
+              {{ $t("m.cardCreatedDesc4")}}
               <a
                 class="a--external"
-                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
-              >here</a>
+              >{{ $t("m.cardCreatedDesc5")}}</a>
             </p>
           </div>
         </div>
@@ -362,7 +569,7 @@
         <!-- STATUS: SUCCESS -->
         <div
           class="section step step--twocol step5"
-          v-if="(step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'SUCCESS')"
+          v-if="(step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'SUCCESS')"
         >
           <div class="step__card">
             <div class="centered">
@@ -374,17 +581,42 @@
             <br>
             <br>
 
-            <h4>You rock!</h4>
+            <h4>{{$t("m.rock")}}</h4>
 
-            <p>We've successfully sent an awesome radicard to
+            <p v-if="formData.sendingMethod != 'QR'">
+              {{$t("m.sendSuccess")}}
               <clickable-address :eth-address="formData.recipient"></clickable-address>
             </p>
+            <div class="qr" v-if="formData.sendingMethod=='QR'">
+              {{$t("m.claimableLink")}}
+              <br>
+              <div class="qr-link">
+                <qr-code-image :link="'https://radi.cards/claim/' + ephemeralPrivateKey"></qr-code-image>
+              </div>
+              <!-- <div class="claim-url">https://radi.cards/claim/{{ephemeralPrivateKey}}</div> -->
+              <a
+                :href="'https://radi.cards/claim/' + ephemeralPrivateKey"
+                target="_blank"
+                class="claim-url"
+              >{{ $t("m.yourLink")}}</a>
+              <br>
+              <a
+                @click="copyToClipboard('https://radi.cards/claim/' + ephemeralPrivateKey)"
+                target="_blank"
+                class="btn btn--narrow btn--subtle"
+                style="margin-top: 0.5rem;"
+              >{{ $t("m.copyLink")}}</a>
+              <div v-if="copied">
+                <p class="p--smallitalic">{{ $t("m.linkCopied")}}</p>
+              </div>
+            </div>
+
             <br>
 
-            <div class="share-box">
-              <h2>Share with others</h2>
+            <!-- <div class="share-box">
+              <h2>{{$t("m.shareOthers")}}</h2>
               <br>
-              <span class="subtext">email this radicard to your friend</span>
+              <span class="subtext">{{$t("m.shareOthersEmail")}}</span>
               <br>
               <div class="email-field">
                 <input
@@ -397,34 +629,31 @@
                   v-if="formData.email && formData.email.length > 0"
                   :email="formData.email"
                   subject="You've received a Radi.Card!"
-                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
-
+                  :body-text="'Hi there!\n\nSomeone sent you a radicard!\n\nTo see it, go here:\nhttps://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId + '\n\n\n100% income (after gas fee) goes to https://eff.org or other charity of your choice.\nSpread the joy and send crypto eCards to your friends at https://radi.cards.\n\n----------------------------------\n\nDo you know that your radicard is a Non-Fungible Token?\nThis means that it is unique and only created just for you.\n\nHowever, you can only keep your card (token) in an Ethereum wallet.\nSo go install one from MetaMask, Trustwallet, MyEtherwallet or Coinbase wallet.\nOnce you have your own wallet, ask your friend to transfer the token to you. EZ!'"
                 >send</mailto-link>
               </div>
-              <span class="subtext">send this radicard via a chat app by copy and paste this link</span>
+              <span class="subtext">{{$t("m.shareOthersLink")}}</span>
               <div class="copy-field">
                 <a
                   id="copyfield"
-                  :href="'https://radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId"
+                  :href="'https://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId"
                   target="_blank"
                   class="field form-control"
                 >
-                  <strong>{{'radi.cards/card/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId}}</strong>
+                  <strong>{{'radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId}}</strong>
                 </a>
                 <div
-                  @click="copyToClipboard('https://radi.cards/card/' + + getGiftingStatus(formData.recipient, formData.card.cardIndex).tokenId)"
+                  @click="copyToClipboard('https://radi.cards/card/' + getGiftingStatus(account, formData.card.cardIndex).tokenId)"
                   target="_blank"
                 >copy</div>
               </div>
-            </div>
-
+            </div>-->
             <div>
-              <router-link
-                @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
-                :to="{ name: 'cardshop' }"
+              <button
+                @click="startOverCreation"
                 style="width:100%; margin-top:20px;"
                 class="btn pick"
-              >Pick another card and keep rocking</router-link>
+              >{{$t("m.pickAnother")}}</button>
             </div>
           </div>
         </div>
@@ -432,7 +661,7 @@
         <!-- STATUS: FAILED -->
         <div
           class="section step step--twocol step6"
-          v-if="step === 3 && getGiftingStatus(formData.recipient, formData.card.cardIndex).status === 'FAILURE'"
+          v-if="step === 3 && getGiftingStatus(account, formData.card.cardIndex).status === 'FAILURE'"
         >
           <div class="step__card">
             <div class="centered">
@@ -441,27 +670,24 @@
           </div>
 
           <div class="step__info">
-            <h4>Oops...!</h4>
+            <h4>{{$t("m.oops")}}</h4>
 
-            <p>Something seems to have gone wrong and your card could not be created.</p>
+            <p>{{$t("m.oopsDesc")}}</p>
             <br>
             <p class="pb-3">
-              <strong>Please double-check your web3 wallet</strong> (Metamask, Coinbase Wallet, Status, Portis) to see the status of the transaction, or try again.
+              <strong>{{$t("m.checkWallet")}}</strong>
+              {{$t("m.checkWalletDesc")}}
             </p>
 
-            <router-link
-              @click="this.$store.dispatch(actions.RESET_TRANSFER_STATUS);"
-              :to="{ name: 'cardshop' }"
-              class="btn"
-            >Start over</router-link>
-            <button class="btn" @click="giveBirth">Retry Transaction</button>
-            <p v-if="getGiftingStatus(formData.recipient, formData.card.cardIndex).tx">
-              You can view the transaction of Etherscan
+            <button @click="startOverCreation" class="btn">{{$t("m.startOver")}}</button>
+            <button class="btn" @click="giveBirth">{{$t("m.retry")}}</button>
+            <p v-if="getGiftingStatus(account, formData.card.cardIndex).tx">
+              {{$t("m.viewEthScan")}}
               <a
                 class="a--external"
-                :href="etherscanBase + '/tx/' + getGiftingStatus(formData.recipient, formData.card.cardIndex).tx"
+                :href="etherscanBase + '/tx/' + getGiftingStatus(account, formData.card.cardIndex).tx"
                 target="_blank"
-              >here</a>
+              >{{$t("m.cardCreatedDesc5")}}</a>
             </p>
           </div>
         </div>
@@ -471,6 +697,7 @@
 </template>
 
 <script>
+import router from "../../router";
 import { mapGetters, mapState } from "vuex";
 import * as _ from "lodash";
 import Web3 from "web3";
@@ -481,34 +708,87 @@ import Card from "../../components/widgets/Card";
 import Benefactor from "../../components/widgets/Benefactor";
 import Samplequote from "../../components/widgets/SampleQuote";
 import MailtoLink from "../../components/widgets/MailtoLink";
+import QrCodeImage from "../../components/widgets/QRCodeImage";
 import { AssertionError } from "assert";
+import vueSlider from "vue-slider-component";
+import Portis from "@portis/web3";
 
 export default {
   name: "creator",
   components: {
     ClickableTransaction,
+    QrCodeImage,
     Card,
     Benefactor,
     Samplequote,
     MailtoLink,
-    ClickableAddress
+    ClickableAddress,
+    vueSlider
   },
   data() {
     return {
+      donationSliderOptions: {
+        eventType: "auto",
+        width: "auto",
+        height: 4,
+        dotSize: 10,
+        dotHeight: null,
+        dotWidth: null,
+        min: 0,
+        max: 100,
+        interval: 1,
+        show: true,
+        speed: 0.5,
+        disabled: false,
+        piecewise: false,
+        usdKeyboard: false,
+        enableCross: true,
+        tooltip: "always",
+        tooltipDir: "top",
+        reverse: false,
+        clickable: true,
+        realTime: false,
+        lazy: false,
+        formatter: null,
+        bgStyle: {
+          backgroundColor: "#414141",
+          boxShadow: "inset 0.5px 0.5px 3px 1px rgba(0,0,0,.36)"
+        },
+        sliderStyle: {
+          backgroundColor: "#414141"
+        },
+        tooltipStyle: { backgroundColor: "#414141", borderColor: "#414141" },
+        processStyle: {
+          backgroundColor: "#414141"
+        },
+        piecewiseActiveStyle: null,
+        labelStyle: null,
+        labelActiveStyle: null
+      },
       formData: {
         errors: [],
         card: {},
-        valueInETH: null,
-        recipient: null,
-        benefactor: null,
+        valueInETH: 0.02,
+        valueInDAI: 60,
+        recipient: 0,
+        percentage: 5,
+        benefactor: {
+          address: "0xb189f76323678e094d4996d182a792e52369c005",
+          name: "Electronic Frontier Foundation",
+          website: "https://www.eff.org",
+          image:
+            "https://ipfs.infura.io/ipfs/QmY9ECy55kWevPJQ2RDYJxDmB16h5J8SfhEyuEUAUnAyGU",
+          id: 1
+        },
         message: null,
-        email: null
+        currency: null
       },
       step: 0,
       walletVisible: false,
       response: {
         ipfsHash: null
-      }
+      },
+      copied: false
     };
   },
   computed: {
@@ -518,7 +798,13 @@ export default {
       "uploadedHashs",
       "cards",
       "benefactors",
-      "usdPrice"
+      "usdPrice",
+      "ephemeralAddressFee",
+      "ethBalance",
+      "daiBalance",
+      "daiAllowance",
+      "ephemeralPrivateKey",
+      "cynPrice"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
@@ -546,57 +832,118 @@ export default {
         }
       }
     },
-    hasStep1Data() {
-      if (this.formData.message === null || this.formData.recipient === null) {
-        return true;
-      } else if (
-        this.formData.message.length < 1 ||
-        this.formData.recipient.length < 1
-      ) {
-        return true;
-      } else {
-        return false;
+    premuimCardInformation() {
+      let cardInfoObject = {
+        minInEth: 0,
+        minInDai: 0,
+        sendValueUSD: 0,
+        sendValueOTHER: 0
+      };
+      if (this.card.cardMaxQnty > 0) {
+        // the min price for the card in eth will be the card price in usd
+        //deviled by the current usd/eth price as defined by the oracle
+        cardInfoObject.minInEth = (
+          this.card.cardMinPrice / this.usdPrice
+        ).toFixed(2);
+        cardInfoObject.minInDai = this.card.cardMinPrice;
       }
+
+      return cardInfoObject;
     }
   },
   mounted() {
     this.$nextTick(function() {});
   },
   methods: {
-    checkMessageAndReceiver() {
-      if (!this.formData.message) {
-        return true;
-      }
-
+    generateDeepURL() {
+      return (
+        "imtokenv2://navigate/DappView?url=https://radi.cards" +
+        this.$route.fullPath
+      );
+    },
+    initPortis() {
+      const portis = new Portis(
+        "90dd46f3-6a56-4162-85dc-f310c53cced7",
+        "mainnet"
+      );
+      const provider = portis.provider;
+      window.web3 = new Web3(provider);
+      this.$store.dispatch(actions.INIT_APP, window.web3);
+    },
+    equivalentFiatCost(ethAmount) {
+      return parseFloat(ethAmount * this.usdPrice).toFixed(2);
+    },
+    equivalentCynCost(ethAmount) {
+      return (parseFloat(ethAmount * this.usdPrice) / this.cynPrice).toFixed(2);
+    },
+    startOverCreation: function(event) {
+      event.preventDefault();
+      this.$store.dispatch(actions.RESET_GIFT_STATUS);
+      this.$router.push({ name: "cardshop" });
+    },
+    validateDonationMethod() {
+      // valid input
       if (
-        this.formData.sendOptions === "wallet" &&
-        Web3.utils.isAddress(this.formData.recipient)
+        this.formData.currency === undefined ||
+        this.formData.currency === null
       ) {
         return false;
       }
 
-      if (this.formData.sendOptions === "personal") {
+      if (this.formData.percentage === undefined) {
         return false;
       }
 
-      if (this.formData.sendOptions === "email" && this.formData.email) {
+      if (this.formData.benefactor === undefined) {
         return false;
+      }
+
+      // user has enough balance to send card
+      if (
+        this.formData.currency === "ETH" &&
+        this.formData.valueInETH > this.ethBalance
+      ) {
+        return false;
+      }
+
+      if (
+        this.formData.currency === "DAI" &&
+        this.formData.valueInDAI > this.daiBalance
+      ) {
+        return false;
+      }
+
+      // user enough has been selected for the price of the card
+      if (
+        this.formData.currency === "ETH" &&
+        this.formData.valueInETH * this.usdPrice <
+          this.formData.card.cardMinPrice
+      ) {
+        return false;
+      }
+
+      if (
+        this.formData.currency === "DAI" &&
+        this.formData.valueInDAI < this.formData.card.cardMinPrice
+      ) {
+        return false;
+      }
+      return true;
+    },
+    validateSendingMethod() {
+      if (this.formData.sendingMethod === undefined) {
+        return false;
+      }
+
+      if (this.formData.sendingMethod === "ETH") {
+        return Web3.utils.isAddress(this.formData.recipient);
       }
 
       return true;
     },
-    handleMessageAndReceiver() {
-      if (this.checkMessageAndReceiver()) {
-        return;
-      }
-
-      if (this.formData.sendOptions !== "wallet") {
-        this.formData.recipient = this.account;
-      }
-      this.goToStep(1);
-    },
     copyToClipboard(text) {
       this.$copyText(text);
+      this.copied = true;
     },
     handelBenefactorSelected(item) {
       this.setBenefactor(item);
@@ -606,7 +953,13 @@ export default {
     },
     setDonationAmount(amount) {
       event.preventDefault();
-      this.formData.valueInETH = amount;
+      if (this.formData.currency === "ETH") {
+        console.log("saving eth " + this.formData.currency + amount);
+        this.formData.valueInETH = amount;
+      } else {
+        console.log("saving DAI " + this.formData.currency + amount);
+        this.formData.valueInDAI = amount;
+      }
     },
     setBenefactor(benefactor) {
       this.formData.benefactor = benefactor;
@@ -623,24 +976,81 @@ export default {
       event.preventDefault();
 
       this.checkForm();
-      if (this.formData.errors.length === 0) {
-        var recipient = this.account;
-        if (this.formData.sendOptions === "wallet") {
+      var recipient;
+      var totalSendAmount;
+      let claimableLink;
+      let transactionValue;
+      let currency;
+
+      switch (this.formData.sendingMethod) {
+        case "QR":
+          recipient = null; //ephemeral address is generated in the store
+          claimableLink = true;
+          break;
+        case "ETH":
           recipient = this.formData.recipient;
-        }
-        let valueInETH = this.formData.valueInETH + "";
+          claimableLink = false;
+          break;
+        case "Self":
+          recipient = this.account;
+          this.formData.recipient = recipient;
+          claimableLink = false;
+          break;
+        default:
+          this.formData.errors.push("Invalid send method selected");
+      }
+      switch (this.formData.currency) {
+        case "ETH":
+          currency = "ETH";
+          totalSendAmount = this.formData.valueInETH;
+          //the value in eth should be equal to the total selected for both gift and donation
+          transactionValue = parseFloat(totalSendAmount);
+          if (claimableLink) {
+            //if the link is claimable we must add the ephemeral fee
+            console.log(transactionValue);
+            transactionValue += parseFloat(this.ephemeralAddressFee);
+          }
+          break;
+        case "DAI":
+          currency = "DAI";
+          totalSendAmount = this.formData.valueInDAI;
+          // in the case of dai we dont need to send any eth with (unless it is a claimable link)
+          transactionValue = 0;
+          if (claimableLink) {
+            //if the link is claimable we must add the ephemeral fee
+            transactionValue += parseFloat(this.ephemeralAddressFee);
+          }
+          break;
+        default:
+          this.formData.errors.push("Invalid currency type selected");
+      }
+      var donationAmount = (
+        (totalSendAmount * this.formData.percentage) /
+        100
+      ).toFixed(10);
+      var giftAmount = totalSendAmount - donationAmount;
+
+      // last thing to do is to cast the donation,gift and transaction values to strings
+      // as they are converted to wei in the store and this requires string or bignumber inputs
+      donationAmount = donationAmount.toString();
+      giftAmount = giftAmount.toFixed(10).toString();
+      transactionValue = transactionValue.toFixed(10).toString();
+      console.log(transactionValue);
+
+      if (this.formData.errors.length === 0) {
         let benefactorIndex = this.formData.benefactor.id;
         let cardIndex = this.formData.card.cardIndex;
         let message = this.formData.message;
-        let extra = "";
-
-        this.$store.dispatch(actions.BIRTH, {
+        this.$store.dispatch(actions.MINT_CARD, {
+          currency,
           recipient,
           benefactorIndex,
           cardIndex,
           message,
-          extra,
-          valueInETH
+          donationAmount,
+          giftAmount,
+          claimableLink,
+          transactionValue
         });
       }
     },
@@ -654,9 +1064,9 @@ export default {
       ) {
         this.formData.errors.push("Recipient not valid address.");
       }
-      if (this.formData.valueInETH < 0.02) {
-        this.formData.errors.push("Value must be at least 0.02ETH");
-      }
+      // if (this.formData.valueInETH < 0.02) {
+      //   this.formData.errors.push("Value must be at least 0.02ETH");
+      // }
       if (!this.formData.message) {
         this.formData.errors.push("Message is required.");
       }
@@ -683,49 +1093,56 @@ export default {
   font-weight: bold;
 }
 
+.margin {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.charity-drop {
+  color: $darkgray;
+  border: 0px solid $darkgray;
+  height: 30px;
+  width: 100%;
+}
+
 .share-box {
   background: white;
   padding: 20px;
-  box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+}
+.field {
+  background: white;
+}
 
-  .field {
-    background: rgba(196, 196, 196, 0.15);
-  }
+.subtext {
+  line-height: normal;
+  font-size: 14px;
+  color: $darkgray;
+  opacity: 0.9;
+}
 
-  .subtext {
-    line-height: normal;
-    font-size: 14px;
+.email-field {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
 
-    color: $black;
-
-    opacity: 0.3;
-  }
-
-  .email-field {
-    display: flex;
-    flex-direction: row;
-    margin-bottom: 20px;
-
-    a {
-      color: white;
-      background: black;
-      padding: 0px 15px;
-      line-height: 38px;
-    }
+  a {
+    color: white;
+    background: black;
+    padding: 0px 15px;
+    line-height: 38px;
   }
 
   .copy-field {
     display: flex;
     flex-direction: row;
-    border: 1px solid black;
 
     #copyfield {
-      background: rgba(196, 196, 196, 0.15) !important;
+      background: rgba(196, 196, 196, 0) !important;
       border: 0;
     }
 
     div {
-      color: $gray;
+      color: $darkgray;
       background: rgba(196, 196, 196, 0.15);
       padding: 9px 10px;
       height: 100%;
@@ -744,21 +1161,34 @@ export default {
   line-height: normal;
   font-size: 12px;
 
-  color: $black;
+  color: $darkgray;
 }
 
 .input-label {
-  font-size: 0.875rem;
-  margin-bottom: 0.25rem;
-  margin-top: 0.675rem;
-  display: inline-block;
-  color: $black;
+  font-size: 0.9rem;
+  color: $darkred;
+  text-align: left;
+  width: 100%;
+  padding-bottom: 0.15rem;
 }
-input, textarea {
+.input-label-currency {
+  font-size: 0.8rem;
+  color: $gray;
+  background-color: $greylightest;
+  padding-top: 0.2rem;
+  padding-bottom: 0.2rem;
+  padding-left: 0.3rem;
+  padding-right: 0.3rem;
+  border-radius: 0.5rem;
+}
+
+input,
+textarea {
   margin-bottom: 1rem;
+  width: 100%;
 }
 // textarea {
-//   border: 1px solid $black;
+//   border: 1px solid $darkgray;
 
 //   &::placeholder {
 //     text-align: right;
@@ -806,6 +1236,93 @@ input, textarea {
 
   .btn {
     align-self: flex-end;
+  }
+}
+
+.btn {
+  white-space: normal;
+}
+
+.qr-link {
+  word-wrap: break-word;
+  padding-right: 1.5rem;
+}
+
+.claim-url {
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+}
+
+.wallet-reg {
+  box-shadow: 0 0.1rem 0.4rem rgba($gray, 0.3);
+}
+
+.wallet-button {
+  padding-top: 0.8rem;
+  padding-bottom: 0.6rem;
+  padding-left: 0.7rem;
+  padding-right: -0.5rem;
+  transition: all 1s ease-in-out;
+
+  &:visited {
+    color: $white;
+  }
+  &:hover {
+    -moz-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+    -o-transform: scale(1.03);
+    -ms-transform: scale(1.03);
+    -webkit-transform: scale(1.03);
+    transform: scale(1.03);
+
+    -webkit-transition: transform 1.05s ease-in-out;
+    -moz-transition: transform 1.05s ease-in-out;
+    -ms-transition: transform 1.05s ease-in-out;
+  }
+  &:focus {
+    outline: none;
+  }
+}
+
+.walletIcon {
+  float: left;
+  max-height: 40px;
+  @media (max-width: 1000px) {
+    padding-right: 100%;
+  }
+}
+
+.walletDesc {
+  font-size: 0.8rem;
+  color: $gray;
+}
+
+.logoRow {
+  padding-bottom: 1rem;
+}
+
+@media (min-width: 765px) {
+  #imToken {
+    display: none;
+  }
+  #trust {
+    display: none;
+  }
+  #status {
+    display: none;
+  }
+  #opera {
+    display: none;
+  }
+}
+
+@media (max-width: 765px) {
+  #metamask {
+    display: none;
+  }
+  #portis {
+    display: none;
   }
 }
 
@@ -878,6 +1395,7 @@ input, textarea {
   .step__card {
     padding-left: 1rem;
     margin-bottom: 2rem;
+    // color: white;
   }
 
   @include tabletAndUp() {
@@ -893,6 +1411,7 @@ input, textarea {
     }
     .step__title {
       margin-top: 0;
+      margin-bottom: 20px;
     }
   }
 }
@@ -931,6 +1450,24 @@ input, textarea {
   line-height: normal;
   font-size: 15px;
   display: inline-block;
-  color: $black;
+  color: $darkgray;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.small-address {
+  font-size: 0.6rem;
+}
+
+// Confirmation
+.alignleft {
+  float: left;
+}
+.alignright {
+  float: right;
 }
 </style>

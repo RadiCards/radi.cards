@@ -1,24 +1,108 @@
 
 <template>
   <div class="container">
-    <section class="section section--hero">
+    <section class="section section--hero p-0">
       <blockquote class="blockquote--hero">
-        <p>We want to change the world & fight for good.</p>
-        <p>Want to help?</p>
-        <span class="cheeky-comment">with the power of memes, cats, hackers and crypto (jokes)</span>
-      </blockquote>
-      <br>
-      <p
-        style="max-width: 24rem; margin-bottom: 1rem;"
-      >Share NFT eCards with friends and family for FREE (well almost, you just pay the gas) and donate to the charities you wish to support</p>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.sendHongBao")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.viaWeChat")}}</h1>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
+        <!--- <img src="/static/images/title2.png">
+        <br>
+        <img src="/static/images/title1.png">-->
+      </blockquote>
+
+      <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
+
+      <div class="compatible">
+        <h5>{{ $t("m.compatibleWith")}}</h5>
+        <div class="icons">
+          <div>
+            <img src="/static/icons/wechat.svg">
+            <span>WeChat</span>
+          </div>
+          <div>
+            <img src="/static/icons/imToken.svg">
+            <span>imToken</span>
+          </div>
+          <div>
+            <img src="/static/icons/DAI.svg">
+            <span>DAI</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <windy-title class="smaller-heading" v-bind:text="$t('m.send3Steps')"></windy-title>
+      <br>
+
+      <b-row class="steps">
+        <b-col class cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/choose_onesize.svg">
+          <h5>{{ $t("m.Choose")}}</h5>
+          <span>
+            {{ $t("m.coolHb")}}
+            <br>
+            <div class="hide-mobile">{{ $t("m.artists")}}</div>
+          </span>
+        </b-col>
+        <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/deposit_onesize.svg">
+          <h5>{{ $t("m.Deposit")}}</h5>
+          <span>
+            {{ $t("m.ethOrDai")}}
+          </span>
+        </b-col>
+        <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
+          <img class="stepIcon" src="/static/images/send_onesize.svg">
+          <h5>{{ $t("m.Send")}}</h5>
+          <span>
+            {{ $t("m.hb2f")}}
+            <br>
+            <div class="hide-mobile">{{ $t("m.wc&email")}}</div>
+          </span>
+          <span>
+            <br>
+          </span>
+        </b-col>
+      </b-row>
+    </section>
+    <br>
+    <section class="section">
+      <windy-title class="hide-mobile" v-bind:text="$t('m.chooseFrom')"></windy-title>
+
+      <div class="card-slider" v-if="cards && cards.length > 0">
+        <card
+          style="margin-right: 1rem;"
+          v-for="item in cards"
+          :key="item.tokenId"
+          :cdata="item"
+        >{{item}}</card>
+      </div>
+
+      <div v-else class="loading-container">
+        <div class="loading-spinner">
+          <div class="loading-spinner-inner">
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+            <div class="holder">
+              <div class="box"></div>
+            </div>
+          </div>
+        </div>
+        <span class="text">{{ $t("m.gettingCards")}}</span>
+      </div>
     </section>
 
     <section class="section section--credits">
+      <windy-title class="smaller-heading" v-bind:text="$t('m.buidlt')"/>
       <div class="container" style="margin: 0 -2rem;">
-        <div class="col-md-4 col-xs-12">
-          <h5>Buidl-t on Ethereum and IPFS by the crypto collectible community</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.buidltCC")}}</strong>
           <ul>
             <li>
               <a href="https://cryptodecks.co" target="_blank">cryptodecks.co</a>
@@ -42,19 +126,19 @@
               <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
             </li>
             <li>
-              <a href="https://volca.tech" target="_blank">Volca</a>
+              <a href="https://volca.tech" target="_blank">volca.tech</a>
             </li>
             <li>
-              <a href="https://www.gustav.tech" target="_blank">Gustav Tech</a>
+              <a href="https://www.gustav.tech" target="_blank">gustav.tech</a>
             </li>
             <li>
-              <a href="https://www.chris.seifert.space" target="_blank">Chris Seifert</a>
+              <a href="https://www.chris.seifert.space" target="_blank">chris seifert</a>
             </li>
           </ul>
         </div>
 
-        <div class="col-md-4 col-xs-12">
-          <h5>Community buidl-ing and creative partnership</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.communities")}}</strong>
           <ul>
             <li>
               <a href="https://superrare.co" target="_blank">superrare.co</a>
@@ -92,12 +176,30 @@
             <li>
               <a href="https://www.astroledger.org" target="_blank">astroledger.org</a>
             </li>
+            <li>
+              <a href="https://www.nervos.org/" target="_blank">Nervos Network</a>
+            </li>
+            <li>
+              <a href="https://token.im/" target="_blank">imToken</a>
+            </li>
           </ul>
         </div>
 
-        <div class="col-md-4 col-xs-12">
-          <h5>All donations go to</h5>
+        <div class="col-md-4 col-xs-12 communityColumn">
+          <strong>{{ $t("m.donations")}}</strong>
           <ul>
+            <li>
+              <a href="https://www.grassrootseconomics.org" target="_blank">grassrootseconomics.org</a>
+            </li>
+            <li>
+              <a
+                href="https://helpdesk.unicef.org.nz/help/donate-to-unicef-via-cryptocurrencies"
+                target="_blank"
+              >unicef.org</a>
+            </li>
+            <li>
+              <a href="https://www.bitcoinvenezuela.com" target="_blank">bitcoinvenezuela.com</a>
+            </li>
             <li>
               <a href="https://eff.org" target="_blank">eff.org</a>
             </li>
@@ -107,119 +209,6 @@
           </ul>
         </div>
       </div>
-    </section>
-
-    <section class="section">
-      <h4 class="section__title">STEP ONE</h4>
-      <h2>Choose and personalise your RadiCards</h2>
-      <p>Send to any ETH addresses and emails</p>
-
-      <div class="card-slider" v-if="cards && cards.length > 0">
-        <card
-          style="margin-right: 1rem;"
-          v-for="item in cards"
-          :key="item.tokenId"
-          :cdata="item"
-        >{{item}}</card>
-      </div>
-
-      <div v-else class="loading-container">
-        <div class="loading-spinner">
-          <div class="loading-spinner-inner">
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-            <div class="holder">
-              <div class="box"></div>
-            </div>
-          </div>
-        </div>
-        <span class="text">Getting cards...</span>
-      </div>
-    </section>
-
-    <section class="section">
-      <h4 class="section__title">STEP TWO</h4>
-      <h2>Choose a project you wish to support</h2>
-      <p>All profit goes directly to the charity (excludes gas cost)</p>
-      <br>
-
-      <div class="charities" v-if="benefactors && benefactors.length > 0">
-        <benefactor v-for="item in benefactors" :key="item.address" :benefactor="item"></benefactor>
-      </div>
-    </section>
-
-    <section class="section">
-      <h4 class="section__title">STEP THREE</h4>
-      <h2>Share radiCards with friends and donate to good causes</h2>
-      <p>Help spread hope and joy with eCards</p>
-      <!-- <img src="/static/images/step3.png" alt class="img--placeholder" height="450"> -->
-      <!-- <samplequote></samplequote> -->
-      <div class="row text-center pt-3">
-        <div class="col">
-          <card :cdata="cardData"/>
-        </div>
-      </div>
-    </section>
-
-    <hr>
-
-    <section class="section">
-      <b-row>
-        <b-col cols="12" md="6" class="pt-3 text-center">
-          <span v-if="totalSupply">
-            <p class="p--large">Total cards minted:</p>
-            <br>
-            <span class="badge badge-yellow badge-huge">{{ totalSupply }}</span>
-            <br>radiCard
-            <span v-if="totalSupply !== 1">s</span>
-            <br>
-            <br>
-          </span>
-          <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
-          </span>
-        </b-col>
-        <b-col cols="12" md="6" class="pt-3 text-center">
-          <span v-if="totalGifted">
-            <p class="p--large">Donated so far:</p>
-            <br>
-            <span class="badge badge-yellow badge-huge">
-              {{totalGifted}}
-              <span style="font-weight: normal; opacity: 0.3;">ETH</span>
-            </span>
-            <br>Equals to $
-            <strong>{{Math.round(totalGifted * usdPrice)}}</strong>
-            <br>
-            <br>
-          </span>
-          <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
-          </span>
-        </b-col>
-        <b-col cols="12" class="pt-3 text-center">
-          <router-link :to="{ name: 'cardshop' }" class="btn">Send a card</router-link>
-        </b-col>
-      </b-row>
-    </section>
-
-    <hr>
-
-    <section class="section">
-      <b-row>
-        <b-col cols="12" class="pt-3 text-center">
-          <p class="p--large">Want to help buidl-ing?</p>
-          <br>
-          <a
-            class="btn btn--outline btn--small a--external"
-            href="https://t.me/joinchat/GBiop1dC2yYsgFwo4O3gMA"
-            target="_blank"
-          >Join our Telegram group!</a>
-        </b-col>
-      </b-row>
     </section>
 
     <cookiebanner></cookiebanner>
@@ -234,10 +223,18 @@ import Card from "../../components/widgets/Card";
 import Samplequote from "../../components/widgets/SampleQuote";
 import Benefactor from "../../components/widgets/Benefactor";
 import Cookiebanner from "../../components/widgets/CookieBanner";
+import WindyTitle from "../widgets/WindyTitle";
 
 export default {
   name: "home",
-  components: { Card, Benefactor, Samplequote, Buidlers, Cookiebanner },
+  components: {
+    Card,
+    Benefactor,
+    Samplequote,
+    Buidlers,
+    Cookiebanner,
+    WindyTitle
+  },
   data() {
     return {
       cardData: {
@@ -275,7 +272,59 @@ export default {
 @import "../../styles/variables.scss";
 @import "../../styles/mixins.scss";
 
+// h1 {
+//   font-size: 2.5rem !important;
+// }
+// @media (min-width: 544px) {
+//   h1 {
+//     font-size: 0.1rem !important;
+//   }
+// }
+
+// @media (min-width: 768px) {
+//   h1 {
+//     font-size: 1.5rem;
+//   }
+// }
+
+// @media (min-width: 992px) {
+//   h1 {
+//     font-size: 2.0rem;
+//   }
+// }
+
+// @media (min-width: 1200px) {
+//   h1 {
+//     font-size: 2.5rem;
+//   }
+// }
+
+.blockquote--hero {
+  margin-bottom: 1rem !important;
+  img {
+    max-width: 100%;
+  }
+}
 // Page-specific style
+.hero {
+  font-size: 2.5rem !important;
+  color: $darkgray;
+  @media (min-width: 544px) {
+    font-size: 2.5rem !important;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 3rem !important;
+  }
+
+  @media (min-width: 992px) {
+    font-size: 3.5rem !important;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 4.0rem !important;
+  }
+}
 .section--hero .cheeky-comment {
   position: absolute;
   top: 140%;
@@ -312,10 +361,9 @@ export default {
 }
 .section--credits {
   h5 {
-    margin-bottom: 1rem;
-    padding: 0 1rem;
-    border-left: 2px solid $gray;
-    color: $gray;
+    margin-bottom: 0.1rem;
+    padding: 0;
+    color: $darkgray;
   }
   .container {
     display: flex;
@@ -333,5 +381,100 @@ export default {
       }
     }
   }
+}
+
+.steps {
+  display: flex;
+  justify-content: space-between;
+
+  h5 {
+    font-size: 25px;
+  }
+
+  span {
+    font-size: 20px;
+  }
+
+  img {
+    margin-bottom: 10px;
+  }
+}
+
+.stepMargin {
+  @media (max-width: 767px) {
+    margin-top: 2rem;
+  }
+}
+
+.smaller-heading {
+  @media (max-width: 767px) {
+    font-size: 2rem !important;
+  }
+}
+
+.stepIcon {
+  @media (max-width: 767px) {
+    float: left !important;
+    padding-right: 2rem;
+  }
+  @media (max-width: 352px) {
+    width: 35%;
+    padding-bottom: 0.6rem;
+    padding-top: 0.6rem;
+  }
+}
+
+.hide-mobile {
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.communityColumn {
+  @media (max-width: 767px) {
+    margin-top: 2rem;
+  }
+}
+
+.compatible {
+  h5 {
+    margin-top: 3rem;
+    font-size: 15px;
+  }
+
+  .icons {
+    display: flex;
+    margin-top: 0;
+    @media (max-width: 560px) {
+      padding-bottom: 2rem;
+    }
+
+    div {
+      margin-right: 50px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      @media (max-width: 560px) {
+        margin-right: 2rem;
+      }
+
+      img {
+        margin-top: 20px;
+        height: 40px;
+        width: 40px;
+        margin-bottom: 10px;
+      }
+
+      span {
+        font-family: Helvetica;
+        line-height: 11px;
+        font-size: 12px;
+
+        color: #414141;
+      }
+    }
+  }
+
 }
 </style>

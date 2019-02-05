@@ -1,26 +1,65 @@
 <template>
   <section class="section">
-    <h2>Card Shop</h2>
+    <h2>{{ $t("m.cardShop")}}</h2>
+    <p class="p--small">{{ $t("m.cardShopSub")}}</p>
     <br>
-    <p>Creative, unique art pieces from from all around the interwebs.</p>
-
+    <br>
+    <br>
+    <h3>{{ $t("m.premiumCards")}}</h3>
+    <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
-      <b-col cols="6" sm="6" lg="4" v-for="card in shuffledCards" :key="card.tokenId" class="pt-3">
-        <card :cdata="card" classes="card--gallery" />
+      <b-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="4"
+        v-for="card in shuffledCards"
+        :key="card.tokenId"
+        class="pt-3"
+        v-if="card.cardMaxQnty > 0  && card.cardActive"
+      >
+        <card :cdata="card" classes="card"/>
+      </b-col>
+    </b-row>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
+    <br>
+    <h3>{{ $t("m.standardCards")}}</h3>
+    <br>
+    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+      <b-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="4"
+        v-for="card in shuffledCards"
+        :key="card.tokenId"
+        class="pt-3"
+        v-if="card.cardMaxQnty == 0  && card.cardActive"
+      >
+        <card :cdata="card" classes="card"/>
       </b-col>
     </b-row>
 
     <div v-else class="loading-container">
       <div class="loading-spinner">
         <div class="loading-spinner-inner">
-          <div class="holder"><div class="box"></div></div>
-          <div class="holder"><div class="box"></div></div>
-          <div class="holder"><div class="box"></div></div>
+          <div class="holder">
+            <div class="box"></div>
+          </div>
+          <div class="holder">
+            <div class="box"></div>
+          </div>
+          <div class="holder">
+            <div class="box"></div>
+          </div>
         </div>
       </div>
-      <span class="text">Getting cards...</span>
+      <span class="text">{{ $t("m.gettingCards")}}</span>
     </div>
-
   </section>
 </template>
 

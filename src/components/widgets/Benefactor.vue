@@ -89,7 +89,7 @@ export default {
   &:hover,
   &.isExpanded {
     background: $white;
-    box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
+    box-shadow: 0 0.25rem 1rem rgba($darkgray, 0.1);
   }
 
   &__heading {
