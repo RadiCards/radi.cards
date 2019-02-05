@@ -417,15 +417,20 @@ body {
   line-height: 1.25rem;
 }
 // Notification */
+.wechatNotice {
+  background-color: rgba(0,0,0,0.5);
+  z-index: 1;
+  position: fixed;
+  display: none;
+  width: 100%;
+  height: 100%;
+}
 
 .notice {
   color: $darkred;
   background: white;
   font-size: 1rem;
-  padding-top: 0.5rem;
-  padding-bottom: 0.5rem;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding: 1rem;
   border-radius: 1rem;
   box-shadow: 0 0.1rem 1rem rgba(0, 0, 0, 0.1);
   text-align: center;
