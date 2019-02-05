@@ -10,14 +10,14 @@
           <a target="__blank" v-b-toggle.collapse1 variant="primary">
             <span>
               <img class="walletIcon" src="/static/icons/imToken_color.png">
-              <p>imToken Wallet</p>
+              <p>imToken</p>
               <p class="walletDesc">Mobile wallet</p>
             </span>
           </a>
           <b-collapse id="collapse1" class="wallet-reg mt-2">
             <b-card>
               <div class="walletDesc">New user</div>
-              <a target="__blank" href="https://trustwalletapp.com">Install</a>
+              <a target="__blank" href="https://token.im/download">Install</a>
               <br>
               <hr>
               <div class="walletDesc">Existing user</div>
