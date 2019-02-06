@@ -131,7 +131,9 @@
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
-                <span v-if="portisClicked">Opening Portis login. Please wait...</span>
+                <span v-if="portisClicked">
+                Opening Portis login. Please wait...
+                </span>
               </div>
             </b-col>
           </b-row>
