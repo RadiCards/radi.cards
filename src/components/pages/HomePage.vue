@@ -132,7 +132,7 @@
               <a href="https://www.gustav.tech" target="_blank">gustav.tech</a>
             </li>
             <li>
-              <a href="https://www.chris.seifert.space" target="_blank">chris seifert</a>
+              <a href="https://chris.seifert.space" target="_blank">chris seifert</a>
             </li>
           </ul>
         </div>
