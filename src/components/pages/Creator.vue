@@ -32,7 +32,7 @@
               <p>Portis</p>
               <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
-            <span v-if="portisClicked">Opening Portis login. Please wait...</span>
+            <span v-if="portisClicked">{{ $t("m.pleaseWait2")}}</span>
           </a>
         </b-col>
       </b-row>
@@ -67,7 +67,7 @@
               <p>Portis</p>
               <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
-            <span v-if="portisClicked">Opening Portis login. Please wait...</span>
+            <span v-if="portisClicked">{{ $t("m.pleaseWait2")}}</span>
           </div>
         </b-col>
       </b-row>
