@@ -30,7 +30,7 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
-            <a href="https://github.com/RadiCards/radi.cards">
+            <a href="https://github.com/RadiCards/radi.cards" target="_blank">
               <img
                 border="0"
                 alt="Radi's Github"
@@ -41,7 +41,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="https://t.me/RadiCards">
+            <a href="https://t.me/RadiCards" target="_blank">
               <img
                 border="0"
                 alt="Radi's Telegram"
