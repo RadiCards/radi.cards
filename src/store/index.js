@@ -58,7 +58,7 @@ const store = new Vuex.Store({
     transferStatus: "EMPTY",
     totalSupply: null,
     usdPrice: 0,
-    cynPrice: 0,
+    cynPrice: 1.5,
     donatedInEth: 0,
     donatedInDai: 0,
     giftedInEth: 0,
