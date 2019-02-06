@@ -18,7 +18,7 @@
         <div class="icons">
           <div>
             <img src="/static/icons/wechat.svg">
-            <span>WeChat</span>
+            <span>{{ $t("m.weChat")}}</span>
           </div>
           <div>
             <img src="/static/icons/imToken.svg">

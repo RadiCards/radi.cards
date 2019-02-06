@@ -3,23 +3,23 @@
     <hr class="m-0 p-0">
     <header>
       <p class="notice" v-if="!account && currentNetwork && !isWeChatBrowser()">
-        Please unlock your web3 wallet or if you do not have one, go install
+        {{ $t("m.pleaseUnlock")}}
         <a
           href="https://metamask.io/"
           target="_blank"
           style="color: #ff9284"
         >MetaMask</a>
-        or sign in using <a @click="initPortis"> Portis</a>.
+        {{ $t("m.orSignIn")}} <a @click="initPortis"> Portis</a>.
       </p>
       <p
         class="notice"
         v-if="currentNetwork!=='Main Ethereum Network' && !isWeChatBrowser()"
-      >You are currently connected to {{currentNetwork}}! Switch to the mainnet to interact with this Dapp!</p>
+      >{{ $t("m.currentlyConnected")}} {{currentNetwork}}{{ $t("m.SwitchToMainnet")}}</p>
 
       <p
         class="notice"
         v-if="isWeChatBrowser()"
-      >To interact with the dapp click the three dots to open the website in your browser.</p>
+      >{{ $t("m.openNormalBrowser")}}</p>
 
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
@@ -421,7 +421,7 @@ body {
 .notice {
   color: $darkred;
   background: white;
-  font-size: 0.8rem;
+  font-size: 1rem;
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   padding-left: 1rem;

@@ -10,18 +10,18 @@
           <a target="__blank" v-b-toggle.collapse1 variant="primary">
             <span>
               <img class="walletIcon" src="/static/icons/imToken_color.png">
-              <p>imToken Wallet</p>
-              <p class="walletDesc">Mobile wallet</p>
+              <p>imToken</p>
+              <p class="walletDesc">{{ $t("m.mobileWallet")}}</p>
             </span>
           </a>
           <b-collapse id="collapse1" class="wallet-reg mt-2">
             <b-card>
-              <div class="walletDesc">New user</div>
-              <a target="__blank" href="https://trustwalletapp.com">Install</a>
+              <div class="walletDesc">{{ $t("m.newUser")}}</div>
+              <a target="__blank" href="https://token.im/download">{{ $t("m.install")}}</a>
               <br>
               <hr>
-              <div class="walletDesc">Existing user</div>
-              <a target="__blank" :href="generateDeepURL()">Log in</a>
+              <div class="walletDesc">{{ $t("m.existingUser")}}</div>
+              <a target="__blank" :href="generateDeepURL()">{{ $t("m.logIn")}}</a>
             </b-card>
           </b-collapse>
         </b-col>
@@ -30,7 +30,7 @@
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
               <p>Portis</p>
-              <p class="walletDesc">Web wallet</p>
+              <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
           </a>
         </b-col>
@@ -40,14 +40,14 @@
           <a target="__blank" href="https://status.im">
             <img class="walletIcon" src="/static/icons/status.png">
             <p>Status</p>
-            <p class="walletDesc">Mobile wallet</p>
+            <p class="walletDesc">{{ $t("m.mobileWallet")}}</p>
           </a>
         </b-col>
         <b-col cols="6" id="opera">
           <a target="__blank" href="https://www.opera.com/crypto">
             <img class="walletIcon" src="/static/icons/opera.png">
             <p>Opera</p>
-            <p class="walletDesc">Android browser</p>
+            <p class="walletDesc">{{ $t("m.mobileWallet")}}</p>
           </a>
         </b-col>
       </b-row>-->
@@ -56,7 +56,7 @@
           <a target="__blank" href="https://metamask.io">
             <img class="walletIcon" src="/static/icons/metamask.png">
             <p>MetaMask</p>
-            <p class="walletDesc">Chrome addon</p>
+            <p class="walletDesc">{{ $t("m.chromeAddon")}}</p>
           </a>
         </b-col>
         <b-col class="wallet-button" cols="6" id="portis">
@@ -64,7 +64,7 @@
             <span>
               <img class="walletIcon" src="/static/icons/portis.png">
               <p>Portis</p>
-              <p class="walletDesc">Web wallet</p>
+              <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
           </div>
         </b-col>
