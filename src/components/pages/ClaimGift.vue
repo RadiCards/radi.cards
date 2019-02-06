@@ -24,7 +24,7 @@
         <p
           class="pt-4 pb-4 input-label"
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
-        >Please wait</p>
+        >{{ $t("m.pleaseWait")}}</p>
         <h3 class="gift-desc" v-if="getTransferStatus()==='READY'">{{ $t("m.claimGiftReady")}}</h3>
         <div class="input-label" v-if="deepUrlCard">
           <p v-if="deepUrlCard.giftAmount>0"></p>
@@ -96,7 +96,7 @@
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
-                <span v-if="portisClicked">Opening Portis login. Please wait...</span>
+                <span v-if="portisClicked">{{ $t("m.pleaseWait2")}}</span>
               </a>
             </b-col>
           </b-row>
@@ -132,7 +132,7 @@
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
                 <span v-if="portisClicked">
-                Opening Portis login. Please wait...
+                {{ $t("m.pleaseWait2")}}
                 </span>
               </div>
             </b-col>

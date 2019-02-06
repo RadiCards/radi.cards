@@ -136,7 +136,9 @@
       "orSignIn": "or sign in using",
       "currentlyConnected": "You are currently connected to",
       "SwitchToMainnet": "! Switch to the mainnet to interact with this DApp!",
-      "openNormalBrowser": "Please open the website in your browser.👆"
+      "openNormalBrowser": "Please open the website in your browser.👆",
+      "pleaseWait": "Please wait",
+      "pleaseWait2": "Opening Portis login. Please wait..."
     }
   },
   "zh": {
@@ -276,7 +278,9 @@
       "orSignIn": "或使用此应用登录",
       "currentlyConnected": "您目前已连接到",
       "SwitchToMainnet": "！ 切换到主网与此DApp交互！",
-      "openNormalBrowser": "点击右上角，选择浏览器打开.👆"
+      "openNormalBrowser": "点击右上角，选择浏览器打开.👆",
+      "pleaseWait": "请等一下。",
+      "pleaseWait2": "打开Portis登录。 请等一下。"
     }
   }
 }
