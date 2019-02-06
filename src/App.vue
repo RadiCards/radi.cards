@@ -30,6 +30,17 @@
 
         <ul class="navbar-nav">
           <li class="nav-item">
+            <a href="https://github.com/RadiCards/radi.cards">
+              <img
+                border="0"
+                alt="Radi's Github"
+                src="static/icons/github-brands.svg"
+                width="25"
+                height="25"
+              >
+            </a>
+          </li>
+          <li class="nav-item">
             <a href="https://t.me/RadiCards">
               <img
                 border="0"
