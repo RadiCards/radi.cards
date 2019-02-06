@@ -15,16 +15,7 @@
       </b-col>
 
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
-        <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}
-          <input
-          v-if="account"
-          type="button"
-          class="button button--fullwidth"
-          @click="claimGift"
-          v-bind:value="$t('m.claimGiftAction')"
-          style="margin-top:10px"
-        >
-        </h3>
+        <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
         <br>
         <h3
           class="gift-desc"
@@ -34,7 +25,17 @@
           class="pt-4 pb-4 input-label"
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
         >{{ $t("m.pleaseWait")}}</p>
-        <h3 class="gift-desc" v-if="getTransferStatus()==='READY'">{{ $t("m.claimGiftReady")}}</h3>
+        <div class="gift-desc" v-if="getTransferStatus()==='READY'">
+          <h3>{{ $t("m.claimGiftReady")}}</h3>
+          <input
+            v-if="account"
+            type="button"
+            class="button button--fullwidth"
+            @click="claimGift"
+            v-bind:value="$t('m.claimGiftAction')"
+            style="margin-top:10px"
+          >
+        </div>
         <div class="input-label" v-if="deepUrlCard">
           <p v-if="deepUrlCard.giftAmount>0"></p>
           <p
@@ -132,9 +133,7 @@
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
-                <span v-if="portisClicked">
-                {{ $t("m.pleaseWait2")}}
-                </span>
+                <span v-if="portisClicked">{{ $t("m.pleaseWait2")}}</span>
               </div>
             </b-col>
           </b-row>
