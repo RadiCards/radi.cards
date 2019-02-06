@@ -15,7 +15,16 @@
       </b-col>
 
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
-        <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}</h3>
+        <h3 v-if="getTransferStatus()==='EMPTY'">{{ $t("m.claimGiftLoading")}}
+          <input
+          v-if="account"
+          type="button"
+          class="button button--fullwidth"
+          @click="claimGift"
+          v-bind:value="$t('m.claimGiftAction')"
+          style="margin-top:10px"
+        >
+        </h3>
         <br>
         <h3
           class="gift-desc"
@@ -35,14 +44,6 @@
             v-if="!deepUrlCard.daiDonation"
           >{{ $t("m.claimGiftTotal")}} {{deepUrlCard.giftAmount}} {{ $t("m.claimGiftTotalETH")}}</p>
         </div>
-        <input
-          v-if="account"
-          type="button"
-          class="button button--fullwidth"
-          @click="claimGift"
-          v-bind:value="$t('m.claimGiftAction')"
-          style="margin-top:10px"
-        >
 
         <h3 style="padding-top: 1rem;" v-if="getTransferStatus()==='SUBMITTED'">
           <h3 class="input-label">{{ $t("m.claimGiftTrans")}}</h3>
