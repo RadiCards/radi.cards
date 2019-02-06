@@ -3,16 +3,15 @@
     <b-row v-if="getTransferStatus()!=='BADURL'">
       <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
         <div v-if="deepUrlCard">
-        <card :cdata="deepUrlCard"/>
-        <span class="cheeky-comment">
-          <img src="/static/images/red-arrow.svg" class="dl-1">
-          {{ $t("m.claimGiftClickCard")}}
-        </span>
+          <card :cdata="deepUrlCard"/>
+          <span class="cheeky-comment">
+            <img src="/static/images/red-arrow.svg" class="dl-1">
+            {{ $t("m.claimGiftClickCard")}}
+          </span>
         </div>
-          <div v-if="!deepUrlCard">
-            <h3>{{ $t("m.claimGiftGetInfo2")}}</h3>
-          </div>
-
+        <div v-if="!deepUrlCard">
+          <h3>{{ $t("m.claimGiftGetInfo2")}}</h3>
+        </div>
       </b-col>
 
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
@@ -91,12 +90,13 @@
               </b-collapse>
             </b-col>
             <b-col class="wallet-button" cols="6" id="trust">
-              <a target="__blank" @click="initPortis">
-                <span>
+              <a target="__blank">
+                <span v-if="portisClicked===false" @click="initPortis">
                   <img class="walletIcon" src="/static/icons/portis.png">
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
+                <span v-if="portisClicked">Opening Portis login. Please wait...</span>
               </a>
             </b-col>
           </b-row>
@@ -125,12 +125,13 @@
               </a>
             </b-col>
             <b-col class="wallet-button" cols="6" id="portis">
-              <div @click="initPortis">
-                <span>
+              <div v-if="portisClicked===false">
+                <span @click="initPortis">
                   <img class="walletIcon" src="/static/icons/portis.png">
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
+                <span v-if="portisClicked">Opening Portis login. Please wait...</span>
               </div>
             </b-col>
           </b-row>
@@ -155,6 +156,7 @@ export default {
   components: { Card },
   data() {
     return {
+      portisClicked: false,
       dispatchCardCount: 0,
       dispatchCardDeep: 0
     };
@@ -176,6 +178,7 @@ export default {
       );
     },
     initPortis() {
+      this.portisClicked = true;
       const portis = new Portis(
         "90dd46f3-6a56-4162-85dc-f310c53cced7",
         "mainnet"

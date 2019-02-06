@@ -26,12 +26,13 @@
           </b-collapse>
         </b-col>
         <b-col class="wallet-button" cols="6" id="trust">
-          <a target="__blank" @click="initPortis">
-            <span>
+          <a target="__blank">
+            <span @click="initPortis" v-if="portisClicked===false">
               <img class="walletIcon" src="/static/icons/portis.png">
               <p>Portis</p>
               <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
+            <span v-if="portisClicked">Opening Portis login. Please wait...</span>
           </a>
         </b-col>
       </b-row>
@@ -60,12 +61,13 @@
           </a>
         </b-col>
         <b-col class="wallet-button" cols="6" id="portis">
-          <div @click="initPortis">
-            <span>
+          <div>
+            <span v-if="portisClicked===false" @click="initPortis">
               <img class="walletIcon" src="/static/icons/portis.png">
               <p>Portis</p>
               <p class="walletDesc">{{ $t("m.webWallet")}}</p>
             </span>
+            <span v-if="portisClicked">Opening Portis login. Please wait...</span>
           </div>
         </b-col>
       </b-row>
@@ -727,6 +729,7 @@ export default {
   },
   data() {
     return {
+      portisClicked: false,
       donationSliderOptions: {
         eventType: "auto",
         width: "auto",
@@ -862,6 +865,7 @@ export default {
       );
     },
     initPortis() {
+      this.portisClicked = true;
       const portis = new Portis(
         "90dd46f3-6a56-4162-85dc-f310c53cced7",
         "mainnet"
