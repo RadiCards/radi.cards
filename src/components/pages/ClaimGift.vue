@@ -2,11 +2,17 @@
   <div class="container">
     <b-row v-if="getTransferStatus()!=='BADURL'">
       <b-col cols="12" md="6" style="display: flex; justify-content: center; padding-left: 2rem;">
+        <div v-if="deepUrlCard">
         <card :cdata="deepUrlCard"/>
         <span class="cheeky-comment">
           <img src="/static/images/red-arrow.svg" class="dl-1">
           {{ $t("m.claimGiftClickCard")}}
         </span>
+        </div>
+          <div v-if="!deepUrlCard">
+            <h3>{{ $t("m.claimGiftGetInfo2")}}</h3>
+          </div>
+
       </b-col>
 
       <b-col cols="12" md="6" style="padding-left: 30px;padding-right: 30px;">
@@ -17,9 +23,9 @@
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
         >{{ $t("m.claimGiftGetInfo")}}</h3>
         <p
-          class="gift-desc pt-4 pb-4"
+          class="pt-4 pb-4 input-label"
           v-if="getTransferStatus()==='TRIGGERED' && account!=null"
-        >{{ $t("m.claimGiftGetInfo2")}}</p>
+        >Please wait</p>
         <h3 class="gift-desc" v-if="getTransferStatus()==='READY'">{{ $t("m.claimGiftReady")}}</h3>
         <div class="input-label" v-if="deepUrlCard">
           <p v-if="deepUrlCard.giftAmount>0"></p>
@@ -62,8 +68,6 @@
           <img src="/static/icons/warning.svg" alt style="width: 0.9rem;">
           {{ $t("m.claimGiftAlreadyClaimed")}}
         </h3>
-        <h3 class="gift-desc" v-if="account===null">{{ $t("m.claimGiftProviders")}}</h3>
-        <p class="input-label pt-4 pb-4" v-if="account===null">{{ $t("m.claimGiftProviders2")}}</p>
 
         <div v-if="account===null" class="container" style="text-align: left;">
           <b-row class="logoRow">
