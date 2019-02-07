@@ -34,7 +34,7 @@
               <img
                 border="0"
                 alt="Radi's Github"
-                src="static/icons/github-brands.svg"
+                src="/static/icons/github-brands.svg"
                 width="25"
                 height="25"
               >
