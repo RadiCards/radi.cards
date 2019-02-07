@@ -13,7 +13,7 @@
       </p>
       <p
         class="notice"
-        v-if="currentNetwork!=='Main Ethereum Network' && !isWeChatBrowser()"
+        v-if="currentNetwork!=='Main Ethereum Network' && !isWeChatBrowser() && currentNetwork"
       >{{ $t("m.currentlyConnected")}} {{currentNetwork}}{{ $t("m.SwitchToMainnet")}}</p>
 
       <p

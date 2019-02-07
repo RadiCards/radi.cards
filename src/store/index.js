@@ -506,7 +506,7 @@ const store = new Vuex.Store({
       const blockNumber = await state.web3.eth.getBlockNumber();
       await contract.CardGifted({
         filter: {
-          _from: `0x0`,
+          _from: state.account,
           _to: recipient,
           _benefactorIndex: benefactorIndex,
           _cardIndex: cardIndex,
