@@ -1005,8 +1005,14 @@ async function sweepWallet(ephemeralPrivateKey, account) {
 }
 
 async function mapTokenDetails(results, ipfsPrefix, id) {
-  console.log(id);
+
+
   var dataResp = (await axios.get(ipfsPrefix + results[0])).data;
+  if (id.toNumber() === 21) {
+    console.log("found")
+    console.log(dataResp);
+    console.log(results)
+  }
   dataResp.cardIndex = id.toNumber();
   dataResp.cardActive = results[1];
   dataResp.cardMinted = results[2].toNumber();

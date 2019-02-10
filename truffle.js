@@ -53,7 +53,7 @@ module.exports = {
     },
     live: {
       provider: function () {
-        return new HDWalletProvider(require('./mnemonic_live'), `https://mainnet.infura.io/v3/${infuraApikey}`);
+        return new HDWalletProvider(require('./mnemonic_live.js'), `https://mainnet.infura.io/v3/${infuraApikey}`);
       },
       network_id: 1,
       gas: 7000000, // default = 4712388

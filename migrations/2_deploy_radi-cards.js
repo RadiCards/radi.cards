@@ -13,7 +13,7 @@ module.exports = async (deployer, network, accounts) => {
   }
 
   if (network === 'live' || network === 'live-fork') {
-    account = new HDWalletProvider(require('../mnemonic_live'), `https://mainnet.infura.io/v3/${infuraApikey}`, 0).getAddress();
+    account = new HDWalletProvider(require('../mnemonic_live.js'), `https://mainnet.infura.io/v3/${infuraApikey}`, 0).getAddress();
   }
 
   console.log(`Running within network = ${network}`);

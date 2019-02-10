@@ -2,8 +2,15 @@
   <section class="section">
     <h2>{{ $t("m.cardShop")}}</h2>
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
-    <br>
-    <br>
+    <b-form-group>
+      <b-form-radio-group
+        id="btnradios1"
+        buttons
+        v-model="selected"
+        :options="options"
+        name="radiosBtnDefault"
+      />
+    </b-form-group>
     <br>
     <h3>{{ $t("m.premiumCards")}}</h3>
     <br>
@@ -16,7 +23,7 @@
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
-        v-if="card.cardMaxQnty > 0  && card.cardActive"
+        v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
       >
         <card :cdata="card" classes="card"/>
       </b-col>
@@ -38,7 +45,7 @@
         v-for="card in shuffledCards"
         :key="card.tokenId"
         class="pt-3"
-        v-if="card.cardMaxQnty == 0  && card.cardActive"
+        v-if="card.cardMaxQnty == 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
       >
         <card :cdata="card" classes="card"/>
       </b-col>
@@ -66,12 +73,23 @@
 <script>
 import { mapState } from "vuex";
 import Card from "../../components/widgets/Card";
+import _ from "lodash";
 
 export default {
   name: "creator",
   components: { Card },
   data() {
-    return {};
+    return {
+      selected: "all",
+      options: [
+        { text: "All", value: "all" },
+
+        { text: "Chinese New Year", value: "chineseNewYear" },
+        { text: "EthDenver", value: "ethDenver" },
+        { text: "Christmas", value: "christmas" },
+        { text: "Other", value: "other" }
+      ]
+    };
   },
   computed: {
     ...mapState(["cards"]),
@@ -80,6 +98,23 @@ export default {
         return this.cards.sort(function() {
           return 0.5 - Math.random();
         });
+      }
+    },
+    selectedGroup() {
+      let cardFilter = {
+        chineseNewYear: _.range(1, 30), //cards 1 to 29 are chineseNY cards
+        ethDenver: [],
+        christmas: [1, 2], //card 1 and 2 are christmas
+        other: _.range(30, 59).concat([3, 4, 20]) //cards 3, 4, 20 and 30 to 58 are other
+      };
+
+      if (this.selected === "all") {
+        return Array.apply(null, { length: this.cards.length }).map(
+          Number.call,
+          Number
+        );
+      } else {
+        return cardFilter[this.selected];
       }
     }
   },

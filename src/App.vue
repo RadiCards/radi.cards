@@ -307,7 +307,7 @@ export default {
           );
           window.web3 = new Web3(
             new Web3.providers.HttpProvider(
-              "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
+              "https://mainnet.infura.io/v3/fb32a606c5c646c7932e43cfaf6c39df"
             )
           );
           this.$store.dispatch(actions.INIT_APP, window.web3);
@@ -326,7 +326,7 @@ export default {
       // window.web3 = new Web3(provider);
       window.web3 = new Web3(
         new Web3.providers.HttpProvider(
-          "https://mainnet.infura.io/v3/4ed01157025d44b0b0ad5932e1d877ea"
+          "https://mainnet.infura.io/v3/fb32a606c5c646c7932e43cfaf6c39df"
         )
       );
       console.log(
