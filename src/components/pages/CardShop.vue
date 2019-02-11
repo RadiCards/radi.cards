@@ -83,7 +83,7 @@ export default {
       selected: "all",
       options: [
         { text: "All", value: "all" },
-        { text: "Ethereum community", value: "ethDenver" },
+        { text: "Ethereum community", value: "ethereumCommunity" },
         { text: "Chinese Lunar New Year", value: "chineseNewYear" },
         { text: "Christmas & New Year", value: "christmas" }
       ]
@@ -100,7 +100,7 @@ export default {
     },
     selectedGroup() {
       let cardFilter = {
-        ethDenver: [8, 19, 20, 30, 31, 47, 48, 49, 50, 53, 54, 56, 57, 58],
+        ethereumCommunity: [8, 19, 20, 30, 31, 47, 48, 49, 50, 53, 54, 56, 57, 58],
         chineseNewYear: [3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], //these cards are for chineseNY
         christmas: [1, 2, 51, 52, 55] //these cards are for christmas
       };
