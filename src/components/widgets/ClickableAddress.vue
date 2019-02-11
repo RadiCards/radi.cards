@@ -38,10 +38,10 @@
 .eth-address {
   display: inline-block;
   padding: 0.125rem 0.25rem;
-  background: rgba($black, 0.05);
+  background: rgba($darkgray, 0.05);
 
   &:hover {
-    background: rgba($black, 0.1);
+    background: rgba($darkgray, 0.1);
     border-bottom: none;
 
   }

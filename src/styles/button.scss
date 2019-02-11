@@ -1,11 +1,12 @@
 // Button
-.btn, .button {
+.btn,
+.button {
   appearance: none;
   display: inline-block;
   padding: 0.5rem 1.5rem;
   border: none;
   border-radius: 0;
-  background: rgba($black, 0.8);
+  background: $darkgray;
 
   font: inherit;
   line-height: 1.5rem;
@@ -18,56 +19,82 @@
     color: $white;
   }
   &:hover {
-    background: $black;
+    background: $darkgray;
     color: $white;
   }
   &:focus {
     outline: none;
   }
   &.isSelected {
-    background: $black;
+    background: $darkgray;
     color: $white;
   }
 
+
   // Appearance
   &--subtle {
-    background-color: rgba($black, 0.05);
+    background-color: rgba($darkgray, 0.05);
     border: 0;
-    color: $black;
+    color: $darkgray;
 
     &:hover {
-      background: rgba($black, 0.1);
+      background: rgba($darkgray, 0.1);
     }
-    &:visited { color: $black; }
+    &:visited {
+      color: $darkgray;
+    }
   }
+
+  &--tiny {
+    background-color: white;
+    border: 0;
+    color: $darkgray;
+    padding:0.3rem;    
+    font-size: 0.9rem;
+
+    &:hover {
+      background: rgba($darkgray, 0);
+      color: black;
+    }
+    &:visited {
+      color: white;
+    }
+    &.isSelected {
+      background: $white;
+      color: black;
+      font-weight: bolder;
+    }
+  }
+  
   &--reveal {
     background: transparent;
     border: 2px solid transparent;
-    color: $black;
+    color: $darkgray;
 
     &:hover {
       border: 2px solid currentColor;
       background: none;
     }
-    &.btn--subtle, &.button--subtle {
+    &.btn--subtle,
+    &.button--subtle {
       &:hover {
-        background: rgba($black, 0.05);
+        background: rgba($darkgray, 0.5);
         border-color: transparent;
       }
     }
   }
   &--outline {
     background: transparent;
-    border: 2px solid $black;
-    color: $black;
+    border: 2px solid $darkgray;
+    color: $darkgray;
 
     &:hover {
-      background: $black;
-      border-bottom: 2px solid $black;
+      background: $darkgray;
+      border-bottom: 2px solid $darkgray;
       color: $white;
     }
     &:visited {
-      color: $black;
+      color: $darkgray;
 
       &:hover {
         color: $white;
@@ -81,9 +108,10 @@
   }
   &--small {
     padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
+    font-size: 0.5rem;
 
-    &.btn--outline, &.button--outline {
+    &.btn--outline,
+    &.button--outline {
       border-width: 1px;
     }
   }
@@ -104,20 +132,20 @@
     opacity: 0.5;
   }
   &--arrow-left:before {
-    border-bottom: 2px solid $black;
+    border-bottom: 2px solid $darkgray;
     border-left: 2px solid currentColor;
     transform: rotate(45deg);
   }
   &--arrow-down:after,
   &--arrow-up:after {
     margin: 0 0 0 0.5rem;
-    border-bottom: 2px solid $black;
-    border-right: 2px solid $black;
+    border-bottom: 2px solid $darkgray;
+    border-right: 2px solid $darkgray;
     transform: translateY(-2px) rotate(45deg);
   }
   &--arrow-up:after {
     border-right: 0;
-    border-left: 2px solid $black;
+    border-left: 2px solid $darkgray;
     transform: translateY(2px) rotate(135deg);
   }
   &[disabled] {

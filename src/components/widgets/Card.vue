@@ -5,19 +5,45 @@
     @click="redirect"
   >
     <figure class="card__front" @click="flip" v-if="!transfer && !share">
-      <div class="card__image">
+      <div
+        v-if="maxMinted"
+        class="pb-4"
+      >Maximum number of this card type minted. Can't select this card!</div>
+      <div class="card__image" style="margin-bottom: 10px;">
         <img v-if="(cdata.image && cdata.image.length > 0)" :src="cdata.image" :alt="cdata.name">
         <img v-else src="/static/icons/radi-cards.svg" alt class="img--placeholder">
       </div>
 
       <figcaption>
         <div class="card__meta">
-          <h4 class="title">{{ cdata.name }}</h4>
-          <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
+          <div class="row" variant="light" v-if="cdata.cardMaxQnty>0">
+            <div class="col-6 pl-0">
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}}/{{cdata.cardMaxQnty}} minted</p>
+            </div>
+            <div class="col-6 text-right pr-0">
+              <div>
+                <img src="/static/icons/specialedition.svg" alt>
+              </div>
+            </div>
+          </div>
+          <div class="row" variant="light" v-if="cdata.cardMaxQnty==0">
+            <div class="col-6 pl-0">
+              <p class="p--smallitalic mb-0">{{cdata.cardMinted}} minted</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-8 pl-0">
+              <h4 class="title">{{ cdata.name }}</h4>
+              <p class="creator" v-if="cdata.attributes">{{ cdata.attributes.artist }}</p>
+            </div>
+            <div class="col-4 text-right pr-0">
+              {{(cdata.cardMinPrice /usdPrice).toFixed(2)}} ETH
+              <p class="p--smallitalic">{{cdata.cardMinPrice}} USD</p>
+            </div>
+          </div>
           <p class="descr" v-if="cdata.description">{{ cdata.description }}</p>
           <b-badge variant="light" class="mt-2" v-if="company">{{company}}</b-badge>
         </div>
-
       </figcaption>
 
       <div class="help" v-if="isFlippable">
@@ -94,21 +120,39 @@
       v-if="cdata.message"
     >
       <h6 v-html="cardMessageFormatted"></h6>
-      <hr>
-      <p class="descr">
-        Your donation goes to
-        <strong>
-          <a
-            v-if="cdata.BenefactorIndex && benefactors"
-            :href="benefactors[cdata.BenefactorIndex-1].website"
-            target="_blank"
-          >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
-        </strong>
-      </p>
-      <div class="descr" v-if="cdata.accountCreatedCard">Your web3 account created this card!</div>
+      <div class="descr" v-if="cdata.accountCreatedCard"></div>
       <div class="descr pt-2" v-if="this.$route.path.lastIndexOf('account') !== -1">
         <button @click="transferCard" class="transferButton">Transfer</button>
         <button @click="shareCard" class="cancelButton">Share</button>
+      </div>
+      <br>
+
+      <div class="descr aligh">
+        <strong v-if="cdata.tokenId">
+          Token # {{cdata.tokenId}}
+          <br>
+        </strong>
+        <div v-if="cdata.gifter">Creator:
+          <clickable-address :eth-address="cdata.gifter"></clickable-address>
+          <br>
+        </div>
+        <div v-if="cdata.giftAmount">
+          Gift Amount: {{cdata.giftAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
+          <br>
+        </div>
+        <div v-if="cdata.donationAmount>0">
+          Donation Amount: {{cdata.donationAmount}} {{(cdata.daiDonation)?'DAI':'ETH'}}
+          <div v-if="cdata.BenefactorIndex!=0">
+            Charity
+            <strong>
+              <a
+                v-if="cdata.BenefactorIndex && benefactors"
+                :href="benefactors[cdata.BenefactorIndex-1].website"
+                target="_blank"
+              >{{benefactors[cdata.BenefactorIndex-1].name}}</a>
+            </strong>
+          </div>
+        </div>
       </div>
       {{transferedCardNotification}}
     </figure>
@@ -121,10 +165,11 @@
 import { mapGetters, mapState } from "vuex";
 import router from "../../router";
 import * as actions from "../../store/actions";
+import ClickableAddress from "./ClickableAddress";
 
 export default {
   name: "card",
-
+  components: { ClickableAddress },
   computed: {
     transferedCardNotification() {
       if (this.getTransferStatus() === "SUCCESS") {
@@ -158,7 +203,7 @@ export default {
         return null;
       }
     },
-    ...mapState(["card", "benefactors"]),
+    ...mapState(["card", "benefactors", "usdPrice"]),
     ...mapGetters(["getTransferStatus"]),
     isFlippable: function() {
       return this.cdata.message && this.cdata.message.length > 0;
@@ -180,7 +225,8 @@ export default {
       transferRecipient: "",
       isFlipped: false,
       transfered: false,
-      transferPending: false
+      transferPending: false,
+      maxMinted: false
     };
   },
 
@@ -214,10 +260,18 @@ export default {
         !this.cdata.message &&
         this.$route.path.lastIndexOf("create") === -1
       ) {
-        var index = this.cdata.cardIndex;
-        router.push({
-          path: "create/" + index
-        });
+        //check if another card can be minted
+        if (
+          this.cdata.cardMaxQnty === this.cdata.cardMinted &&
+          this.cdata.cardMinted > 0
+        ) {
+          this.maxMinted = true;
+        } else {
+          var index = this.cdata.cardIndex;
+          router.push({
+            path: "create/" + index
+          });
+        }
       }
     },
     flip: function(event) {
@@ -245,7 +299,7 @@ export default {
   margin-right: 1rem;
   padding: $p_v $p_h;
 
-  box-shadow: 0 0.25rem 1rem rgba($black, 0.1);
+  box-shadow: 0 0.25rem 1rem rgba($darkgray, 0.1);
   background: $white;
   border-radius: 0;
   border: 0;
@@ -256,7 +310,7 @@ export default {
   transition: all 0.2s ease-in-out;
 
   &:hover {
-    box-shadow: 0 0.25rem 1.5rem rgba($black, 0.2);
+    box-shadow: 0 0.25rem 1.5rem rgba($darkgray, 0.2);
     border-bottom: none;
   }
   &:not(.card--flippable):hover {
@@ -278,8 +332,8 @@ export default {
 
   &.card--gallery {
     @include tabletAndDown() {
-      width: calc(50vw - 1rem);
-      padding: $p_v/1.5 $p_h/2;
+      // width: calc(50vw - 1rem);
+      // padding: $p_v/1.5 $p_h/2;
 
       figcaption {
         max-width: 100%;
@@ -379,6 +433,18 @@ export default {
     img {
       width: 0.875rem;
       margin-right: 0.25rem;
+    }
+  }
+
+  .flipper-mobile {
+    @media (min-width: 1000px) {
+      display: none;
+    }
+  }
+
+  .card__meta {
+    @media (min-width: 1000px) {
+      padding-bottom: 0.5rem;
     }
   }
 

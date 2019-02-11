@@ -62,5 +62,5 @@ if [ "$SOLIDITY_COVERAGE" = true ]; then
     cat coverage/lcov.info | node_modules/.bin/coveralls
   fi
 else
-  node_modules/.bin/truffle test --show-events "$@"
+  node_modules/.bin/truffle test test/truffle/RadiCards.erc721.common.test.js --show-events "$@"
 fi

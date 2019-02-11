@@ -1,8 +1,9 @@
 export const INIT_APP = "INIT_APP";
+export const PORTIS_SIGNED_IN = "PORTIS_SIGNED_IN";
 
 export const GET_CURRENT_NETWORK = "GET_CURRENT_NETWORK";
 
-export const BIRTH = "BIRTH";
+export const MINT_CARD = "MINT_CARD";
 export const TRANSFER_CARD = "TRANSFER_CARD";
 
 export const RESET_TRANSFER_STATUS = "RESET_TRANSFER_STATUS";
@@ -12,5 +13,8 @@ export const LOAD_CARDS = "LOAD_CARDS";
 export const LOAD_BENEFACTORS = "LOAD_BENEFACTORS";
 export const LOAD_DEEP_URL_CARD = "LOAD_DEEP_URL_CARD";
 export const GET_USD_PRICE = "GET_USD_PRICE";
+
+export const CLAIM_GIFT = "CLAIM_GIFT";
+export const GET_ACCOUNT_GIFT_STATUS = "GET_ACCOUNT_GIFT_STATUS";
 
 export const RESET_GIFT_STATUS = "RESET_GIFT_STATUS";

@@ -5,18 +5,20 @@ $white: #fff;
 $greylightest: #f3f4f5;
 $greylight: #ccc;
 $gray: #979797;
-$black: #000;
+$darkgray: #272727;
+$darkred: #ff9284;
+$lightred: #ffcdc6;
 
-$yellow: #FFFF53;
-$blue: #4321EA;
-$primary: $black;
+$yellow: #ffff53;
+$blue: #4321ea;
+$primary: $darkgray;
 
 .c-blue {
-	color: $blue;
+  color: $blue;
 }
 
 // Layout
-$maxWidth: 58rem;
+$maxWidth: 90%;
 
 //bootstrap overides
 $enable-rounded: false;
