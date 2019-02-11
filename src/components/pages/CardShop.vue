@@ -83,11 +83,9 @@ export default {
       selected: "all",
       options: [
         { text: "All", value: "all" },
-
-        { text: "Chinese New Year", value: "chineseNewYear" },
-        { text: "EthDenver", value: "ethDenver" },
-        { text: "Christmas", value: "christmas" },
-        { text: "Other", value: "other" }
+        { text: "Ethereum community", value: "ethDenver" },
+        { text: "Chinese Lunar New Year", value: "chineseNewYear" },
+        { text: "Christmas & New Year", value: "christmas" }
       ]
     };
   },
@@ -102,10 +100,9 @@ export default {
     },
     selectedGroup() {
       let cardFilter = {
-        chineseNewYear: _.range(1, 30), //cards 1 to 29 are chineseNY cards
-        ethDenver: [],
-        christmas: [1, 2], //card 1 and 2 are christmas
-        other: _.range(30, 59).concat([3, 4, 20]) //cards 3, 4, 20 and 30 to 58 are other
+        ethDenver: [8, 19, 20, 30, 31, 47, 48, 49, 50, 53, 54, 56, 57, 58],
+        chineseNewYear: [3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], //these cards are for chineseNY
+        christmas: [1, 2, 51, 52, 55] //these cards are for christmas
       };
 
       if (this.selected === "all") {
