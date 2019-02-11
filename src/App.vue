@@ -9,17 +9,15 @@
           target="_blank"
           style="color: #ff9284"
         >MetaMask</a>
-        {{ $t("m.orSignIn")}} <a @click="initPortis"> Portis</a>.
+        {{ $t("m.orSignIn")}}
+        <a @click="initPortis">Portis</a>.
       </p>
       <p
         class="notice"
         v-if="currentNetwork!=='Main Ethereum Network' && !isWeChatBrowser() && currentNetwork"
       >{{ $t("m.currentlyConnected")}} {{currentNetwork}}{{ $t("m.SwitchToMainnet")}}</p>
 
-      <p
-        class="notice"
-        v-if="isWeChatBrowser()"
-      >{{ $t("m.openNormalBrowser")}}</p>
+      <p class="notice" v-if="isWeChatBrowser()">{{ $t("m.openNormalBrowser")}}</p>
 
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
@@ -197,6 +195,15 @@
               {{ethBalanceRound}} |
               <strong>{{ $t("m.myBalanceDai")}}</strong>
               {{daiBalanceRound}}
+              <div v-if="portisSignedIn">
+                You Signed in with Portis!
+                <input
+                  type="button"
+                  class="button button--subtle"
+                  @click="portis.showPortis()"
+                  value="Open Portis Window"
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -251,6 +258,7 @@ export default {
       const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
+      this.$store.dispatch(actions.PORTIS_SIGNED_IN, portis);
     },
     changeLanguage(newLanguage) {
       this.language = newLanguage;
@@ -274,7 +282,9 @@ export default {
       "ethBalance",
       "daiBalance",
       "currentNetwork",
-      "ephemeralWallets"
+      "ephemeralWallets",
+      "portisSignedIn",
+      "portis"
     ]),
     ethBalanceRound() {
       if (this.ethBalance) {

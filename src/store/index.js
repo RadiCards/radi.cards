@@ -40,6 +40,8 @@ const store = new Vuex.Store({
   ],
   state: {
     web3: null,
+    portisSignedIn: false,
+    portis: null,
     contract: null,
     contractAddress: null,
     account: null,
@@ -115,6 +117,9 @@ const store = new Vuex.Store({
       state.web3 = web3;
       state.contract = contract;
       state.contractAddress = (await RadiCards.deployed()).address;
+    },
+    [mutations.SET_PORTIS_SIGNED_IN](state, signedIn) {
+      state.portisSignedIn = signedIn;
     },
     [mutations.SET_UPLOAD_HASH](state, hash) {
       state.uploadedHash = hash;
@@ -356,6 +361,16 @@ const store = new Vuex.Store({
       state
     }) {
       commit(mutations.CLEAR_GIFT_STATUS);
+    },
+    [actions.PORTIS_SIGNED_IN]: async function ({
+      commit,
+      dispatch,
+      state
+    }, {
+      portis
+    }) {
+      commit(mutations.SET_PORTIS_SIGNED_IN, true);
+      state.portis = portis
     },
     async [actions.MINT_CARD]({
       commit,
@@ -883,7 +898,7 @@ const store = new Vuex.Store({
       } else {
         //load the ephemeral wallet from the private key using ethers.js
         const contract = await state.contract.deployed();
-        let networkId = await window.web3.eth.net.getId();
+        let networkId = 1;
         let providerAddress;
         switch (networkId) {
           case 1:
@@ -969,7 +984,7 @@ const store = new Vuex.Store({
 });
 
 async function sweepWallet(ephemeralPrivateKey, account) {
-  let networkId = await window.web3.eth.net.getId();
+  let networkId = 1;
   let providerAddress;
   switch (networkId) {
     case 1:

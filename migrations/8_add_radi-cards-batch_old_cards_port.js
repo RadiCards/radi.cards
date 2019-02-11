@@ -217,66 +217,66 @@ module.exports = async (deployer, network, accounts) => {
   //     from: account
   //   }
   // ); // A Very Vitalik Xmas - Colony
-  await contract.addCard(
-    47,
-    "QmUupXjyvT1K4ic4VTsRh4uRp1D9u9VZvzFTRVShU2SBTW",
-    true,
-    20,
-    "30000000000000000000",
-    {
-      from: account
-    }
-  ); // Solstice - Oficinas TK
-  await contract.addCard(
-    48,
-    "QmXXjCo4Pas5euHLELaiGGy3x1En8vPw1kenjjrdMBGtgY",
-    true,
-    0,
-    "2000000000000000000",
-    {
-      from: account
-    }
-  ); // mattyb - The Disillusioned One
-  await contract.addCard(
-    49,
-    "QmQUPbjkKhFH4sst9ujGsKLcfCshEX1ZgCNxFsVd9rVEVV",
-    true,
-    0,
-    0,
-    {
-      from: account
-    }
-  ); // mattyb - ETH-LAD
-  await contract.addCard(
-    50,
-    "QmSGVcVWDfc9k9YYxH3ApCWhtWr1g5kyUbmDoddg8TCXu6",
-    true,
-    0,
-    "2000000000000000000",
-    {
-      from: account
-    }
-  ); // mattyb - 1P-ETH-LAD
-  await contract.addCard(
-    51,
-    "QmfPhYmnaRER13t9Sb2S17FvGgBSmAG3Z7myqcrjZUGoen",
-    true,
-    0,
-    "2000000000000000000",
-    {
-      from: account
-    }
-  ); // Astro Ledger - Happy Mew Year
-  await contract.addCard(
-    52,
-    "QmeB9nZrorTysmVx9J6SEB1xaxtRCYBSFZydc8YDVxikTK",
-    true,
-    0,
-    "2000000000000000000",
-    {
-      from: account
-    }
-  ); // Preston Attebery - Transamerican Gold
+  // await contract.addCard(
+  //   47,
+  //   "QmUupXjyvT1K4ic4VTsRh4uRp1D9u9VZvzFTRVShU2SBTW",
+  //   true,
+  //   20,
+  //   "30000000000000000000",
+  //   {
+  //     from: account
+  //   }
+  // ); // Solstice - Oficinas TK
+  // await contract.addCard(
+  //   48,
+  //   "QmXXjCo4Pas5euHLELaiGGy3x1En8vPw1kenjjrdMBGtgY",
+  //   true,
+  //   0,
+  //   "2000000000000000000",
+  //   {
+  //     from: account
+  //   }
+  // ); // mattyb - The Disillusioned One
+  // await contract.addCard(
+  //   49,
+  //   "QmQUPbjkKhFH4sst9ujGsKLcfCshEX1ZgCNxFsVd9rVEVV",
+  //   true,
+  //   0,
+  //   0,
+  //   {
+  //     from: account
+  //   }
+  // ); // mattyb - ETH-LAD
+  // await contract.addCard(
+  //   50,
+  //   "QmSGVcVWDfc9k9YYxH3ApCWhtWr1g5kyUbmDoddg8TCXu6",
+  //   true,
+  //   0,
+  //   "2000000000000000000",
+  //   {
+  //     from: account
+  //   }
+  // ); // mattyb - 1P-ETH-LAD
+  // await contract.addCard(
+  //   51,
+  //   "QmfPhYmnaRER13t9Sb2S17FvGgBSmAG3Z7myqcrjZUGoen",
+  //   true,
+  //   0,
+  //   "2000000000000000000",
+  //   {
+  //     from: account
+  //   }
+  // ); // Astro Ledger - Happy Mew Year
+  // await contract.addCard(
+  //   52,
+  //   "QmeB9nZrorTysmVx9J6SEB1xaxtRCYBSFZydc8YDVxikTK",
+  //   true,
+  //   0,
+  //   "2000000000000000000",
+  //   {
+  //     from: account
+  //   }
+  // ); // Preston Attebery - Transamerican Gold
   await contract.addCard(
     53,
     "QmXH4cvW8APCosPY3sCAHmqu6CfxZ5jLdvSnNykwhBNSYm",

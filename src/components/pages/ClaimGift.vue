@@ -188,6 +188,7 @@ export default {
       const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
+      this.$store.dispatch(actions.PORTIS_SIGNED_IN, portis);
     },
     claimGift() {
       let privateKey = this.$route.params.pk;
