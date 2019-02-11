@@ -93,7 +93,7 @@
             </b-col>
             <b-col class="wallet-button" cols="6" id="trust">
               <a target="__blank">
-                <span v-if="portisClicked===false" @click="initPortis">
+                <span @click="initPortis" v-if="portisClicked===false">
                   <img class="walletIcon" src="/static/icons/portis.png">
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
@@ -127,14 +127,12 @@
               </a>
             </b-col>
             <b-col class="wallet-button" cols="6" id="portis">
-              <div v-if="portisClicked===false">
-                <span @click="initPortis">
+                <span v-if="portisClicked===false" @click="initPortis">
                   <img class="walletIcon" src="/static/icons/portis.png">
                   <p>Portis</p>
                   <p class="walletDesc">{{ $t("m.webWallet")}}</p>
                 </span>
                 <span v-if="portisClicked">{{ $t("m.pleaseWait2")}}</span>
-              </div>
             </b-col>
           </b-row>
         </div>
@@ -151,6 +149,7 @@ import { mapGetters, mapState } from "vuex";
 import Card from "../../components/widgets/Card";
 import router from "../../router";
 import * as actions from "../../store/actions";
+import Web3 from "web3";
 import Portis from "@portis/web3";
 
 export default {
@@ -188,7 +187,7 @@ export default {
       const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
-      this.$store.dispatch(actions.PORTIS_SIGNED_IN, portis);
+      this.$store.dispatch(actions.PORTIS_SIGNED_IN, {portis});
     },
     claimGift() {
       let privateKey = this.$route.params.pk;
