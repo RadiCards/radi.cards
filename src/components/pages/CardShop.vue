@@ -2,16 +2,26 @@
   <section class="section">
     <h2>{{ $t("m.cardShop")}}</h2>
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
-    <b-form-group>
-      <b-form-radio-group
-        id="btnradios1"
-        buttons
-        v-model="selected"
-        :options="options"
-        name="radiosBtnDefault"
-      />
-    </b-form-group>
+
+    <div id="filter-selector">
+      <div>
+        <img id="dropdown" src="/static/icons/dropdown-arrow.svg">
+        <span v-b-toggle.collapse>
+          {{ optionText(selected) }}
+        </span>
+      </div>
+      <b-collapse id="collapse">
+        <br>
+        <div>
+          <div class="option-text" v-for="option in options" @click="selectOption(option)" v-b-toggle.collapse>
+            {{ option.text }}
+        </div>
+        </div>
+      </b-collapse>
+    </div>
+
     <br>
+
     <h3>{{ $t("m.premiumCards")}}</h3>
     <br>
     <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
@@ -118,7 +128,15 @@ export default {
   mounted() {
     this.$nextTick(function() {});
   },
-  methods: {}
+  methods: {
+    selectOption(option) {
+      this.selected = option.value;
+    },
+    optionText(optionValue) {
+      const option = this.options.find(o => o.value === optionValue);
+      return option.text;
+    }
+  }
 };
 </script>
 
@@ -128,5 +146,22 @@ export default {
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;
+}
+
+.option-text {
+  color: #8B8B8B;
+}
+
+#dropdown {
+  margin-bottom: 2px;
+  margin-right: 4px;
+}
+
+#filter-selector {
+  display: flex;
+  justify-content: flex-end;
+  flex-direction: column;
+  text-align: right;
+  font-size: 12px;
 }
 </style>
