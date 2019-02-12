@@ -4,12 +4,23 @@
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
     <b-form-group>
       <b-form-radio-group
+        v-if="window.width>720"
         id="btnradios1"
         buttons
         v-model="selected"
         :options="options"
         name="radiosBtnDefault"
       />
+      <div class="text-center" v-if="window.width<720">
+        <b-form-radio-group
+          stacked
+          id="btnradios1"
+          buttons
+          v-model="selected"
+          :options="options"
+          name="radiosBtnDefault"
+        />
+      </div>
     </b-form-group>
     <br>
     <h3>{{ $t("m.premiumCards")}}</h3>
@@ -86,7 +97,11 @@ export default {
         { text: "Ethereum community", value: "ethereumCommunity" },
         { text: "Chinese Lunar New Year", value: "chineseNewYear" },
         { text: "Christmas & New Year", value: "christmas" }
-      ]
+      ],
+      window: {
+        width: 0,
+        height: 0
+      }
     };
   },
   computed: {
@@ -100,7 +115,22 @@ export default {
     },
     selectedGroup() {
       let cardFilter = {
-        ethereumCommunity: [8, 19, 20, 30, 31, 47, 48, 49, 50, 53, 54, 56, 57, 58],
+        ethereumCommunity: [
+          8,
+          19,
+          20,
+          30,
+          31,
+          47,
+          48,
+          49,
+          50,
+          53,
+          54,
+          56,
+          57,
+          58
+        ],
         chineseNewYear: [3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], //these cards are for chineseNY
         christmas: [1, 2, 51, 52, 55] //these cards are for christmas
       };
@@ -118,7 +148,19 @@ export default {
   mounted() {
     this.$nextTick(function() {});
   },
-  methods: {}
+  created() {
+    window.addEventListener("resize", this.handleResize);
+    this.handleResize();
+  },
+  destroyed() {
+    window.removeEventListener("resize", this.handleResize);
+  },
+  methods: {
+    handleResize() {
+      this.window.width = window.innerWidth;
+      this.window.height = window.innerHeight;
+    }
+  }
 };
 </script>
 
