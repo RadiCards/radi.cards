@@ -11,7 +11,6 @@
         </span>
       </div>
       <b-collapse id="collapse">
-        <br>
         <div>
           <div class="option-text" v-for="option in options" @click="selectOption(option)" v-b-toggle.collapse>
             {{ option.text }}
@@ -179,7 +178,15 @@ export default {
 }
 
 .option-text {
+  padding-right: 0.25em;
   color: #8B8B8B;
+}
+
+#collapse {
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  z-index: 1;
+  width: 180px;
+  background: white;
 }
 
 #dropdown {
@@ -188,9 +195,11 @@ export default {
 }
 
 #filter-selector {
+  position: absolute;
   display: flex;
-  justify-content: flex-end;
+  cursor: pointer;
   flex-direction: column;
+  align-items: end;
   text-align: right;
   font-size: 12px;
 }
