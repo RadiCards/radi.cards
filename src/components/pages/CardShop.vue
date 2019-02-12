@@ -171,7 +171,7 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
-@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;
@@ -201,6 +201,13 @@ export default {
   flex-direction: column;
   align-items: end;
   text-align: right;
-  font-size: 12px;
+
+  @include tabletAndDown() {
+    right: 40px;
+  }
+
+  @include tabletAndUp() {
+    right: 120px;
+  }
 }
 </style>
