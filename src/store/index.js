@@ -42,6 +42,7 @@ const store = new Vuex.Store({
     web3: null,
     portisSignedIn: false,
     portis: null,
+    portisEthDenverLink: false,
     contract: null,
     contractAddress: null,
     account: null,
@@ -371,6 +372,13 @@ const store = new Vuex.Store({
     }) {
       commit(mutations.SET_PORTIS_SIGNED_IN, true);
       state.portis = portis
+    },
+    [actions.PORTIS_DEEP_LINK]: async function ({
+      commit,
+      dispatch,
+      state
+    }) {
+      state.portisEthDenverLink = true
     },
     async [actions.MINT_CARD]({
       commit,
