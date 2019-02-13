@@ -3,43 +3,45 @@
     <h2>{{ $t("m.cardShop")}}</h2>
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
 
-    <div id="filter-selector">
+    <div id="filter-selector" >
       <div>
         <img id="dropdown" src="/static/icons/dropdown-arrow.svg">
-        <span v-b-toggle.collapse>
-          {{ optionText(selected) }}
-        </span>
+        <span v-b-toggle.collapse>{{ optionText(selected) }}</span>
       </div>
       <b-collapse id="collapse">
         <div>
-          <div class="option-text" v-for="option in options" @click="selectOption(option)" v-b-toggle.collapse>
-            {{ option.text }}
-        </div>
+          <div
+            class="option-text"
+            v-for="option in options"
+            @click="selectOption(option)"
+            v-b-toggle.collapse
+          >{{ option.text }}</div>
         </div>
       </b-collapse>
     </div>
 
     <br>
-
-    <h3>{{ $t("m.premiumCards")}}</h3>
-    <br>
-    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
-      <b-col
-        cols="12"
-        sm="12"
-        md="6"
-        lg="4"
-        v-for="card in shuffledCards"
-        :key="card.tokenId"
-        class="pt-3"
-        v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
-      >
-        <card :cdata="card" classes="card"/>
-      </b-col>
-    </b-row>
-    <br>
-    <br>
-    <hr>
+    <div v-if="!portisEthDenverLink">
+      <h3>{{ $t("m.premiumCards")}}</h3>
+      <br>
+      <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+        <b-col
+          cols="12"
+          sm="12"
+          md="6"
+          lg="4"
+          v-for="card in shuffledCards"
+          :key="card.tokenId"
+          class="pt-3"
+          v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
+        >
+          <card :cdata="card" classes="card"/>
+        </b-col>
+      </b-row>
+      <br>
+      <br>
+      <hr>
+    </div>
     <br>
     <br>
     <br>
@@ -185,11 +187,11 @@ export default {
 
 .option-text {
   padding-right: 0.25em;
-  color: #8B8B8B;
+  color: #8b8b8b;
 }
 
 #collapse {
-  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
   z-index: 1;
   width: 180px;
   background: white;
