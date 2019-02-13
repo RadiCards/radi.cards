@@ -807,7 +807,8 @@ export default {
       "daiBalance",
       "daiAllowance",
       "ephemeralPrivateKey",
-      "cynPrice"
+      "cynPrice",
+      "portisEthDenverLink"
     ]),
     ...mapGetters(["getGiftingStatus"]),
     cardMessageFormatted() {
@@ -873,7 +874,7 @@ export default {
       const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
-      this.$store.dispatch(actions.PORTIS_SIGNED_IN, {portis});
+      this.$store.dispatch(actions.PORTIS_SIGNED_IN, { portis });
     },
     equivalentFiatCost(ethAmount) {
       return parseFloat(ethAmount * this.usdPrice).toFixed(2);
@@ -954,7 +955,16 @@ export default {
       this.setBenefactor(item);
     },
     goToStep(pageNumber) {
-      this.step = pageNumber;
+      if (this.step === 0 && this.portisEthDenverLink) {
+        console.log("DEEP PORTIS LINK");
+        this.step = 3;
+        this.formData.valueInETH = 0.02;
+        this.formData.percentage = 100;
+        this.formData.currency = "ETH";
+        this.formData.sendingMethod = "Self";
+      } else {
+        this.step = pageNumber;
+      }
     },
     setDonationAmount(amount) {
       event.preventDefault();

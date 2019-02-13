@@ -1,5 +1,6 @@
 export const INIT_APP = "INIT_APP";
 export const PORTIS_SIGNED_IN = "PORTIS_SIGNED_IN";
+export const PORTIS_DEEP_LINK = "PORTIS_DEEP_LINK";
 
 export const GET_CURRENT_NETWORK = "GET_CURRENT_NETWORK";
 

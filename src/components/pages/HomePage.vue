@@ -3,15 +3,17 @@
   <div class="container">
     <section class="section section--hero p-0">
       <blockquote class="blockquote--hero">
-        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.sendHongBao")}}</h1>
-        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.viaWeChat")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">Send DAI/ETH</h1>
+        <h1 style="font-size: 3.5em;" class="hero">with NFT e-Cards</h1>
+        <br>
+        <h4>and donate to the charity of your choice in one go!</h4>
 
         <!--- <img src="/static/images/title2.png">
         <br>
         <img src="/static/images/title1.png">-->
       </blockquote>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
+      <router-link :to="{ name: 'cardshop' }" class="btn">Send RadiCards!</router-link>
 
       <div class="compatible">
         <h5>{{ $t("m.compatibleWith")}}</h5>
@@ -40,8 +42,7 @@
         <b-col class cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/choose_onesize.svg">
           <h5>{{ $t("m.Choose")}}</h5>
-          <span>
-            {{ $t("m.coolHb")}}
+          <span>E-cards design
             <br>
             <div class="hide-mobile">{{ $t("m.artists")}}</div>
           </span>
@@ -49,17 +50,14 @@
         <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/deposit_onesize.svg">
           <h5>{{ $t("m.Deposit")}}</h5>
-          <span>
-            {{ $t("m.ethOrDai")}}
-          </span>
+          <span>with crypto currency DAI or ETH</span>
         </b-col>
         <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/send_onesize.svg">
           <h5>{{ $t("m.Send")}}</h5>
-          <span>
-            {{ $t("m.hb2f")}}
+          <span>Send it to your friends
             <br>
-            <div class="hide-mobile">{{ $t("m.wc&email")}}</div>
+            <div class="hide-mobile">via chatapp</div>
           </span>
           <span>
             <br>
@@ -115,6 +113,9 @@
             </li>
             <li>
               <a href="https://d1labs.com" target="_blank">d1labs.com</a>
+            </li>
+            <li>
+              <a href="https://lililashka.com" target="_blank">lililashka.com</a>
             </li>
             <li>
               <a href="http://blockrocket.tech" target="_blank">blockrocket.tech</a>
@@ -322,7 +323,7 @@ export default {
   }
 
   @media (min-width: 1200px) {
-    font-size: 4.0rem !important;
+    font-size: 4rem !important;
   }
 }
 .section--hero .cheeky-comment {
@@ -475,6 +476,5 @@ export default {
       }
     }
   }
-
 }
 </style>

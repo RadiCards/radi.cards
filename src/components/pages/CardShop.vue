@@ -73,6 +73,7 @@
 import { mapState } from "vuex";
 import Card from "../../components/widgets/Card";
 import _ from "lodash";
+import * as actions from "../../store/actions";
 
 export default {
   name: "creator",
@@ -93,7 +94,7 @@ export default {
     };
   },
   computed: {
-    ...mapState(["cards"]),
+    ...mapState(["cards", "portisEthDenverLink"]),
     shuffledCards() {
       if (this.cards) {
         return this.cards.sort(function() {
@@ -119,7 +120,7 @@ export default {
           57,
           58
         ],
-        chineseNewYear: [3, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], //these cards are for chineseNY
+        chineseNewYear: [3, 4, 5, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18], //these cards are for chineseNY
         christmas: [1, 2, 51, 52, 55] //these cards are for christmas
       };
 
@@ -135,6 +136,11 @@ export default {
   },
   mounted() {
     this.$nextTick(function() {});
+    console.log("path");
+    console.log(this.$route);
+    if (this.$route.query.portisethdenverlink) {
+      this.$store.dispatch(actions.PORTIS_DEEP_LINK);
+    }
   },
   created() {
     window.addEventListener("resize", this.handleResize);
