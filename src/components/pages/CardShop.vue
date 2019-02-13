@@ -2,51 +2,46 @@
   <section class="section">
     <h2>{{ $t("m.cardShop")}}</h2>
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
-    <b-form-group>
-      <b-form-radio-group
-        v-if="window.width>720"
-        id="btnradios1"
-        buttons
-        v-model="selected"
-        :options="options"
-        name="radiosBtnDefault"
-      />
-      <div class="text-center" v-if="window.width<720">
-        <b-form-radio-group
-          stacked
-          id="btnradios1"
-          buttons
-          v-model="selected"
-          :options="options"
-          name="radiosBtnDefault"
-        />
+
+    <div id="filter-selector">
+      <div>
+        <img id="dropdown" src="/static/icons/dropdown-arrow.svg">
+        <span v-b-toggle.collapse>
+          {{ optionText(selected) }}
+        </span>
       </div>
-    </b-form-group>
-    <div v-if="!portisEthDenverLink">
-      <br>
-      <h3>{{ $t("m.premiumCards")}}</h3>
-      <br>
-      <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
-        <b-col
-          cols="12"
-          sm="12"
-          md="6"
-          lg="4"
-          v-for="card in shuffledCards"
-          :key="card.tokenId"
-          class="pt-3"
-          v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
-        >
-          <card :cdata="card" classes="card"/>
-        </b-col>
-      </b-row>
-      <br>
-      <br>
-      <hr>
-      <br>
-      <br>
-      <br>
+      <b-collapse id="collapse">
+        <div>
+          <div class="option-text" v-for="option in options" @click="selectOption(option)" v-b-toggle.collapse>
+            {{ option.text }}
+        </div>
+        </div>
+      </b-collapse>
     </div>
+
+    <br>
+
+    <h3>{{ $t("m.premiumCards")}}</h3>
+    <br>
+    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+      <b-col
+        cols="12"
+        sm="12"
+        md="6"
+        lg="4"
+        v-for="card in shuffledCards"
+        :key="card.tokenId"
+        class="pt-3"
+        v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
+      >
+        <card :cdata="card" classes="card"/>
+      </b-col>
+    </b-row>
+    <br>
+    <br>
+    <hr>
+    <br>
+    <br>
     <br>
     <h3>{{ $t("m.standardCards")}}</h3>
     <br>
@@ -168,6 +163,13 @@ export default {
     handleResize() {
       this.window.width = window.innerWidth;
       this.window.height = window.innerHeight;
+    },
+    selectOption(option) {
+      this.selected = option.value;
+    },
+    optionText(optionValue) {
+      const option = this.options.find(o => o.value === optionValue);
+      return option.text;
     }
   }
 };
@@ -175,9 +177,43 @@ export default {
 
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
-@import "../../styles/variables.scss";
+@import "../../styles/mixins.scss";
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;
+}
+
+.option-text {
+  padding-right: 0.25em;
+  color: #8B8B8B;
+}
+
+#collapse {
+  box-shadow: 2px 2px 5px 0px rgba(0,0,0,0.75);
+  z-index: 1;
+  width: 180px;
+  background: white;
+}
+
+#dropdown {
+  margin-bottom: 2px;
+  margin-right: 4px;
+}
+
+#filter-selector {
+  position: absolute;
+  display: flex;
+  cursor: pointer;
+  flex-direction: column;
+  align-items: end;
+  text-align: right;
+
+  @include tabletAndDown() {
+    right: 40px;
+  }
+
+  @include tabletAndUp() {
+    right: 120px;
+  }
 }
 </style>
