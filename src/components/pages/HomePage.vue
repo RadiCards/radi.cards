@@ -75,6 +75,7 @@
           v-for="item in cards"
           :key="item.tokenId"
           :cdata="item"
+          v-if="item.cardActive"
         >{{item}}</card>
       </div>
 

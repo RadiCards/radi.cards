@@ -10,26 +10,27 @@
     </div>
 
     <br>
-
-    <h3>{{ $t("m.premiumCards")}}</h3>
-    <br>
-    <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
-      <b-col
-        cols="12"
-        sm="12"
-        md="6"
-        lg="4"
-        v-for="card in shuffledCards"
-        :key="card.tokenId"
-        class="pt-3"
-        v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
-      >
-        <card :cdata="card" classes="card"/>
-      </b-col>
-    </b-row>
-    <br>
-    <br>
-    <hr>
+    <div v-if="!portisEthDenverLink">
+      <h3>{{ $t("m.premiumCards")}}</h3>
+      <br>
+      <b-row no-gutters v-if="shuffledCards && shuffledCards.length > 0">
+        <b-col
+          cols="12"
+          sm="12"
+          md="6"
+          lg="4"
+          v-for="card in shuffledCards"
+          :key="card.tokenId"
+          class="pt-3"
+          v-if="card.cardMaxQnty > 0  && card.cardActive && selectedGroup.includes(card.cardIndex)"
+        >
+          <card :cdata="card" classes="card"/>
+        </b-col>
+      </b-row>
+      <br>
+      <br>
+      <hr>
+    </div>
     <br>
     <br>
     <br>

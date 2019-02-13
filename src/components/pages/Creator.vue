@@ -6,7 +6,7 @@
       <br>
       <br>
       <b-row class="logoRow">
-        <b-col class="wallet-button" cols="6" id="imToken">
+        <b-col class="wallet-button" cols="6" id="imToken" v-if="!portisEthDenverLink">
           <a target="__blank" v-b-toggle.collapse1 variant="primary">
             <span>
               <img class="walletIcon" src="/static/icons/imToken_color.png">
@@ -53,7 +53,7 @@
         </b-col>
       </b-row>-->
       <b-row class="logoRow">
-        <b-col class="wallet-button" cols="6" id="metamask">
+        <b-col class="wallet-button" cols="6" id="metamask" v-if="!portisEthDenverLink">
           <a target="__blank" href="https://metamask.io">
             <img class="walletIcon" src="/static/icons/metamask.png">
             <p>MetaMask</p>
