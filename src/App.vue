@@ -21,8 +21,8 @@
 
       <nav class="navbar navbar-expand-md">
         <router-link :to="{ name: 'home' }" class="navbar-brand">
-          <h1>
-            <img src="/static/images/logo_cn.svg" alt="RadiCards">
+          <h1 class="logo">
+            <img src="/static/images/logo.svg" alt="RadiCards">
           </h1>
         </router-link>
 
@@ -83,7 +83,7 @@
                 @click="changeLanguage('english')"
                 :class="['button button--tiny', {'isSelected' : language==='english'}]"
               >EN</button>
-
+              
               <button
                 @click="changeLanguage('chinese')"
                 :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
@@ -258,7 +258,7 @@ export default {
       const provider = portis.provider;
       window.web3 = new Web3(provider);
       this.$store.dispatch(actions.INIT_APP, window.web3);
-      this.$store.dispatch(actions.PORTIS_SIGNED_IN, {portis});
+      this.$store.dispatch(actions.PORTIS_SIGNED_IN, { portis });
     },
     changeLanguage(newLanguage) {
       this.language = newLanguage;
@@ -422,8 +422,8 @@ body {
   padding: 0;
 
   background-color: #ffffff;
-  background-image: url("/static/images/pattern.svg");
-  background-repeat: repeat;
+  background-image: url("/static/images/background.svg");
+  background-repeat: no-repeat;
   background-attachment: static;
   background-position: top left;
 
@@ -491,6 +491,10 @@ main {
   @include tabletAndUp() {
     padding: 1.25rem;
   }
+}
+
+.navbar-brand img {
+  padding-left: 0;
 }
 
 // Header
