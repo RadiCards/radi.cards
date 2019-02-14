@@ -3,21 +3,10 @@
     <h2>{{ $t("m.cardShop")}}</h2>
     <p class="p--small">{{ $t("m.cardShopSub")}}</p>
 
-    <div id="filter-selector" >
-      <div>
-        <img id="dropdown" src="/static/icons/dropdown-arrow.svg">
-        <span v-b-toggle.collapse>{{ optionText(selected) }}</span>
-      </div>
-      <b-collapse id="collapse">
-        <div>
-          <div
-            class="option-text"
-            v-for="option in options"
-            @click="selectOption(option)"
-            v-b-toggle.collapse
-          >{{ option.text }}</div>
-        </div>
-      </b-collapse>
+    <div id="filter-dropdown">
+      <b-dropdown right :text="optionText(selected)" class="m-md-2">
+        <b-dropdown-item v-for="option in options" :key="option.value" @click="selectOption(option)">{{ option.text }}</b-dropdown-item>
+      </b-dropdown>
     </div>
 
     <br>
@@ -185,37 +174,20 @@ export default {
   transition: all 0.2s ease-in-out;
 }
 
-.option-text {
-  padding-right: 0.25em;
-  color: #8b8b8b;
-}
-
-#collapse {
-  box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.75);
-  z-index: 1;
-  width: 180px;
-  background: white;
-}
-
-#dropdown {
-  margin-bottom: 2px;
-  margin-right: 4px;
-}
-
-#filter-selector {
-  position: absolute;
+#filter-dropdown {
   display: flex;
-  cursor: pointer;
-  flex-direction: column;
   align-items: end;
-  text-align: right;
-
-  @include tabletAndDown() {
-    right: 40px;
-  }
-
-  @include tabletAndUp() {
-    right: 120px;
-  }
+  flex-direction: column;
 }
+
+b-dropdown {
+  text-align: right;
+}
+
+</style>
+
+<style lang="scss">
+  div.dropdown-menu {
+    text-align: right;
+  }
 </style>
