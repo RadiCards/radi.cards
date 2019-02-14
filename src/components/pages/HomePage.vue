@@ -113,8 +113,8 @@
           </span>
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
-          <span v-if="giftedInEth">
-            <p class="p--large">Gifted so far:</p>
+          <span v-if="giftedInEth && giftedInDai">
+            <p class="p--large">Gifted in cards so far:</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(giftedInEth)).toFixed(2)}}
@@ -136,8 +136,8 @@
           </span>
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
-          <span v-if="giftedInEth">
-            <p class="p--large">Donated so far:</p>
+          <span v-if="giftedInEth && donatedInDai">
+            <p class="p--large">Donated to charity so far:</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(donatedInEth) + 5.12 +17.62).toFixed(2)}}
