@@ -103,7 +103,7 @@
           <span v-if="totalSupply">
             <p class="p--large">Total cards minted:</p>
             <br>
-            <span class="badge badge-yellow badge-large">{{ parseFloat(totalSupply) + 106}}</span>
+            <span class="badge badge-yellow badge-large">{{ parseFloat(totalSupply) + 106 + 176}}</span>
             <br>radiCards
             <br>
             <br>
@@ -121,7 +121,6 @@
               <span
                 style="font-weight: normal; opacity: 0.3;"
               >ETH &</span>
-
               {{parseFloat(giftedInDai)}}
               <span
                 style="font-weight: normal; opacity: 0.3;"
@@ -141,18 +140,17 @@
             <p class="p--large">Donated so far:</p>
             <br>
             <span class="badge badge-yellow badge-large">
-              {{(parseFloat(donatedInEth) + 5.12).toFixed(2)}}
+              {{(parseFloat(donatedInEth) + 5.12 +17.62).toFixed(2)}}
               <span
                 style="font-weight: normal; opacity: 0.3;"
               >ETH &</span>
-
-              {{parseFloat(donatedInDai)}}
+              {{parseFloat(donatedInDai)+60}}
               <span
                 style="font-weight: normal; opacity: 0.3;"
               >DAI</span>
             </span>
             <br>Equals to $
-            <strong>{{Math.round((parseFloat(donatedInEth) + 5.12) * usdPrice + parseFloat(donatedInDai) )}}</strong>
+            <strong>{{Math.round((parseFloat(donatedInEth) + 5.12 + 17.62) * usdPrice + parseFloat(donatedInDai) + 60 )}}</strong>
             <br>
             <br>
           </span>
