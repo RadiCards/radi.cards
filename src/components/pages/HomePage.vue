@@ -101,7 +101,7 @@
       <b-row>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="totalSupply">
-            <p class="p--large">Total cards minted:</p>
+            <p class="p--large">Cards minted:</p>
             <br>
             <span class="badge badge-yellow badge-large">{{ parseFloat(totalSupply) + 106 + 176}}</span>
             <br>radiCards
@@ -114,7 +114,7 @@
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="giftedInEth && giftedInDai">
-            <p class="p--large">Gifted in cards so far:</p>
+            <p class="p--large">Gifted in cards:</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(giftedInEth)).toFixed(2)}}
@@ -137,7 +137,7 @@
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="giftedInEth && donatedInDai">
-            <p class="p--large">Donated to charity so far:</p>
+            <p class="p--large">Donated to charity:</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(donatedInEth) + 5.12 +17.62).toFixed(2)}}
