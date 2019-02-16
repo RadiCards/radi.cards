@@ -4,20 +4,21 @@
       "sendMethod": "Sent via Wechat or to Ethereum address",
       "chooseSendMethod": "Choose how you would like to send your hongbao",
       "addEthWallet": "Add recipient ETH wallet address",
-      "sendHongBao": "Send your Ethereum hongbao",
-      "viaWeChat": "via WeChat",
-      "sendEthHongbao": "Send Hongbao",
+      "sendHongBao": "Send DAI/ETH",
+      "viaWeChat": "with NFT e-Cards",
+      "andDonate": "and donate to the charity of your choice in one go!",
+      "sendEthHongbao": "Send RadiCards!",
       "compatibleWith": "COMPATIBLE WITH",
       "weChat": "WeChat",
       "send3Steps": "In 3 Easy Steps",
       "Choose": "1. Choose",
       "Deposit": "2. Fill",
       "Send": "3. Send",
-      "coolHb": "unique hongbao design",
+      "coolHb": "E-cards design",
       "artists": "by artists around the world",
-      "ethOrDai": "hongbao with ETH or DAI",
-      "hb2f": "hongbao to friends",
-      "wc&email": "via WeChat & Email",
+      "ethOrDai": "with crypto currency DAI or ETH",
+      "hb2f": "Send it to your friends",
+      "wc&email": "via chatapp",
       "chooseFrom": "Choose from our collection",
       "gettingCards": "Getting cards...",
       "buidlt": "Buidl-t with <3 on Ethereum and IPFS",
@@ -138,7 +139,12 @@
       "SwitchToMainnet": "! Switch to the mainnet to interact with this DApp!",
       "openNormalBrowser": "Please open the website in your browser.👆",
       "pleaseWait": "Please wait",
-      "pleaseWait2": "Opening Portis login. Please wait..."
+      "pleaseWait2": "Opening Portis login. Please wait...",
+      "cardsMinted": "Cards minted:",
+      "valueSent": "Gifted in cards:",
+      "donatedStatistics": "Donated to charity:",
+      "equalsTo": "Equals to $",
+      "loadingStatistics": "Getting totals..."
     }
   },
   "zh": {
@@ -146,8 +152,9 @@
       "sendMethod": "通过微信或以太坊地址发送",
       "chooseSendMethod": "选择您希望如何发送您的红包",
       "addEthWallet": "添加收件人ETH钱包地址",
-      "sendHongBao": "用微信发送",
-      "viaWeChat": "以太坊红包",
+      "sendHongBao": "发送DAI/ETH",
+      "viaWeChat": "用以太坊明信片",
+      "andDonate": "并捐赠给您选择的慈善机构！",
       "sendEthHongbao": "发送红包",
       "compatibleWith": "配合",
       "weChat": "微信",
@@ -280,7 +287,12 @@
       "SwitchToMainnet": "！ 切换到主网与此DApp交互！",
       "openNormalBrowser": "点击右上角，选择浏览器打开.👆",
       "pleaseWait": "请等一下。",
-      "pleaseWait2": "打开Portis登录。 请等一下。"
+      "pleaseWait2": "打开Portis登录。 请等一下。",
+      "cardsMinted": "红包代币已创建",
+      "valueSent": "价值已发送",
+      "donatedStatistics": "已捐赠给慈善机构",
+      "equalsTo": "等于 $",
+      "loadingStatistics": "在载入信息..."
     }
   }
 }

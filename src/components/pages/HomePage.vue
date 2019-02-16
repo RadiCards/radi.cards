@@ -3,17 +3,17 @@
   <div class="container">
     <section class="section section--hero p-0">
       <blockquote class="blockquote--hero">
-        <h1 style="font-size: 3.5em;" class="hero">Send DAI/ETH</h1>
-        <h1 style="font-size: 3.5em;" class="hero">with NFT e-Cards</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.sendHongBao")}}</h1>
+        <h1 style="font-size: 3.5em;" class="hero">{{ $t("m.viaWeChat")}}</h1>
         <br>
-        <h4>and donate to the charity of your choice in one go!</h4>
+        <h4>{{ $t("m.andDonate")}}</h4>
 
         <!--- <img src="/static/images/title2.png">
         <br>
         <img src="/static/images/title1.png">-->
       </blockquote>
 
-      <router-link :to="{ name: 'cardshop' }" class="btn">Send RadiCards!</router-link>
+      <router-link :to="{ name: 'cardshop' }" class="btn">{{ $t("m.sendEthHongbao")}}</router-link>
 
       <div class="compatible">
         <h5>{{ $t("m.compatibleWith")}}</h5>
@@ -42,7 +42,7 @@
         <b-col class cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/choose_onesize.svg">
           <h5>{{ $t("m.Choose")}}</h5>
-          <span>E-cards design
+          <span>{{ $t("m.coolHb")}}
             <br>
             <div class="hide-mobile">{{ $t("m.artists")}}</div>
           </span>
@@ -50,14 +50,14 @@
         <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/deposit_onesize.svg">
           <h5>{{ $t("m.Deposit")}}</h5>
-          <span>with crypto currency DAI or ETH</span>
+          <span>{{ $t("m.ethOrDai")}}</span>
         </b-col>
         <b-col class="stepMargin" cols="12" sm="12" md="4" lg="4">
           <img class="stepIcon" src="/static/images/send_onesize.svg">
           <h5>{{ $t("m.Send")}}</h5>
-          <span>Send it to your friends
+          <span>{{ $t("m.hb2f")}}
             <br>
-            <div class="hide-mobile">via chatapp</div>
+            <div class="hide-mobile">{{ $t("m.wc&email")}}</div>
           </span>
           <span>
             <br>
@@ -101,7 +101,7 @@
       <b-row>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="totalSupply">
-            <p class="p--large">Cards minted:</p>
+            <p class="p--large">{{ $t("m.cardsMinted")}}</p>
             <br>
             <span class="badge badge-yellow badge-large">{{ parseFloat(totalSupply) + 106 + 176}}</span>
             <br>radiCards
@@ -109,12 +109,12 @@
             <br>
           </span>
           <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
+            <p class="p--large" style="opacity: 0.2;">{{ $t("m.loadingStatistics")}}</p>
           </span>
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="giftedInEth && giftedInDai">
-            <p class="p--large">Gifted in cards:</p>
+            <p class="p--large">{{ $t("m.valueSent")}}</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(giftedInEth)).toFixed(2)}}
@@ -126,18 +126,18 @@
                 style="font-weight: normal; opacity: 0.3;"
               >DAI</span>
             </span>
-            <br>Equals to $
+            <br>{{ $t("m.equalsTo")}}
             <strong>{{Math.round((parseFloat(giftedInEth)) * usdPrice + parseFloat(giftedInDai) )}}</strong>
             <br>
             <br>
           </span>
           <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
+            <p class="p--large" style="opacity: 0.2;">{{ $t("m.loadingStatistics")}}</p>
           </span>
         </b-col>
         <b-col cols="12" md="12" lg="4" class="pt-3 text-center">
           <span v-if="giftedInEth && donatedInDai">
-            <p class="p--large">Donated to charity:</p>
+            <p class="p--large">{{ $t("m.donatedStatistics")}}</p>
             <br>
             <span class="badge badge-yellow badge-large">
               {{(parseFloat(donatedInEth) + 5.12 +17.62).toFixed(2)}}
@@ -149,13 +149,13 @@
                 style="font-weight: normal; opacity: 0.3;"
               >DAI</span>
             </span>
-            <br>Equals to $
+            <br>{{ $t("m.equalsTo")}}
             <strong>{{Math.round((parseFloat(donatedInEth) + 5.12 + 17.62) * usdPrice + parseFloat(donatedInDai) + 60 )}}</strong>
             <br>
             <br>
           </span>
           <span v-else>
-            <p class="p--large" style="opacity: 0.2;">Getting totals...</p>
+            <p class="p--large" style="opacity: 0.2;">{{ $t("m.loadingStatistics")}}</p>
           </span>
         </b-col>
         <b-col cols="12" class="pt-3 text-center">
