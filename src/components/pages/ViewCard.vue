@@ -8,8 +8,10 @@
       </b-col>
       <b-col cols="12" md="6" class="text-center">
         <img src="/static/icons/gift.png" class="pt-5" alt style="width: 4rem;">
-        <p class="pt-4 pb-4">RadiCards lets you send e-cards to your friends and family using crypto! 100% of the purchase goes to charities fighting for freedom around the world.</p>
-      <router-link :to="{ name: 'cardshop' }" class="btn mt-2">Gift another card like this</router-link>
+        <p
+          class="pt-4 pb-4"
+        >RadiCards lets you send e-cards to your friends and family using crypto! 100% of the purchase goes to charities fighting for freedom around the world.</p>
+        <router-link :to="{ name: 'cardshop' }" class="btn mt-2">Gift another card like this</router-link>
       </b-col>
     </b-row>
   </div>
@@ -44,21 +46,20 @@ export default {
 <style lang="scss" scoped>
 @import "../../styles/variables.scss";
 
-
 .card-selected {
   margin-top: -25px;
   transition: all 0.2s ease-in-out;
 }
-  .transferButton {
-    background: #000000;
-    font-family: Helvetica;
-    line-height: normal;
-    text-align: center;
-    color: #ffffff;
-    font-size: 16px;
-    padding: 15px;
-    border: 1px solid black;
-  }
+.transferButton {
+  background: #000000;
+  font-family: Helvetica;
+  line-height: normal;
+  text-align: center;
+  color: #ffffff;
+  font-size: 1rem;
+  padding: 0.9rem;
+  border: 1px solid black;
+}
 
 .cheeky-comment {
   position: absolute;
@@ -68,7 +69,7 @@ export default {
   transform: rotate(6deg);
   font-weight: bold;
 }
-.dl-1{
+.dl-1 {
   -moz-transform: scaleX(-1);
   -o-transform: scaleX(-1);
   -webkit-transform: scaleX(-1);
@@ -76,8 +77,5 @@ export default {
   filter: FlipH;
   -ms-filter: "FlipH";
   width: 12%;
-
 }
-
-
 </style>

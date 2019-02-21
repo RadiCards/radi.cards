@@ -1,9 +1,6 @@
 <template>
   <div>
-    <h1 class="smaller-heading">
-      {{text}}
-      <img src="/static/icons/wind.svg">
-    </h1>
+    <h1 class="smaller-heading">{{text}}</h1>
   </div>
 </template>
 
@@ -41,7 +38,4 @@ img {
     display: none;
   }
 }
-
-
-
 </style>
