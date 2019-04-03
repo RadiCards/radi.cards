@@ -1,7 +1,7 @@
-import Vue from "vue";
-import Vuex from "vuex";
-import axios from "axios";
 import Web3 from "web3";
+import Vuex from "vuex";
+import Vue from "vue";
+import axios from "axios";
 import createPersistedState from "vuex-persistedstate";
 import {
   Wallet,
@@ -695,19 +695,19 @@ const store = new Vuex.Store({
       //       console.error(response);
       //     }
       //   );
-      axios
-        .get(
-          "https://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y"
-        )
-        .then(
-          response => {
-            let currentUSDtoCYN = response.data["CNY_USD"]["val"];
-            commit(mutations.SET_CYN_PRICE, currentUSDtoCYN);
-          },
-          response => {
-            console.error(response);
-          }
-        );
+      // axios
+      //   .get(
+      //     "https://free.currencyconverterapi.com/api/v5/convert?q=CNY_USD&compact=y"
+      //   )
+      //   .then(
+      //     response => {
+      //       let currentUSDtoCYN = response.data["CNY_USD"]["val"];
+      //       commit(mutations.SET_CYN_PRICE, currentUSDtoCYN);
+      //     },
+      //     response => {
+      //       console.error(response);
+      //     }
+      //   );
     },
     [actions.RESET_TRANSFER_STATUS]: async function ({
       commit,

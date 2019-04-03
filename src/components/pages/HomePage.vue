@@ -191,7 +191,7 @@
               <a href="https://mbdoesthings.com" target="_blank">mbdoesthings.com</a>
             </li>
             <li>
-              <a href="https://github.com/SoIidarity" target="_blank">chris maree</a>
+              <a href="https://github.com/chrismaree" target="_blank">chris maree</a>
             </li>
             <li>
               <a href="https://volca.tech" target="_blank">volca.tech</a>
