@@ -83,7 +83,7 @@
                 @click="changeLanguage('english')"
                 :class="['button button--tiny', {'isSelected' : language==='english'}]"
               >EN</button>
-              
+
               <button
                 @click="changeLanguage('chinese')"
                 :class="['button button--tiny', {'isSelected' : language==='chinese'}]"
@@ -494,7 +494,7 @@ main {
 }
 
 .navbar-brand img {
-  padding-left: 2.5rem;
+  padding-left: 0;
 }
 
 // Header

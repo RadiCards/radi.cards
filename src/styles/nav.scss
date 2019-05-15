@@ -12,7 +12,7 @@
 
     img {
       max-width: 22rem;
-      padding-left: 1rem;
+      padding-left: 0;
 
       @include tabletAndUp() {
         max-width: auto;
