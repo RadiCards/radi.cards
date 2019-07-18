@@ -250,6 +250,9 @@
             <li>
               <a href="https://token.im/" target="_blank">imToken</a>
             </li>
+            <li>
+              <a href="https://www.dapppocket.io/" target="_blank">Dapp Pocket</a>
+            </li>
           </ul>
         </div>
 
